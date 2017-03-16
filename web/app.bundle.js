@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "82be4a0e23b3c2b737df"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "e0561657fae2110a2624"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotMainModule = true; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -4844,7 +4844,8 @@ module.exports = {
     REMOVE_VEHICLE: 'REMOVE_VEHICLE',
     RECEIVE_VEHICLES: 'RECEIVE_VEHICLES',
     RECEIVE_ERROR: 'RECEIVE_ERROR',
-    RECEIVE_MFGS: 'RECEIVE_MFGS'
+    RECEIVE_MFGS: 'RECEIVE_MFGS',
+    RECEIVE_MFGS_MODELS: 'RECEIVE_MFGS_MODELS'
 };
 
 /***/ }),
@@ -9141,6 +9142,20 @@ var ActionCreator = {
                 error: 'There was a problem getting the manufacturers'
             });
         });
+    },
+
+    getModelsByMfgId: function getModelsByMfgId(id) {
+        _Api2.default.get('http://mcs.dev/api/vehicles/mfgs/' + id).then(function (models) {
+            _appDispatcher2.default.handleViewAction({
+                actionType: _actionConstants2.default.RECEIVE_MFGS_MODELS,
+                models: models
+            });
+        }).catch(function () {
+            _appDispatcher2.default.handleViewAction({
+                actionType: _actionConstants2.default.RECEIVE_ERROR,
+                error: 'There was a problem getting the vehicle models'
+            });
+        });
     }
 };
 
@@ -9201,6 +9216,7 @@ var VehicleForm = function (_React$Component) {
 
         _this.state = {
             manufacturers: [],
+            models: [],
             mfg_vehicle: {
                 mfg: '',
                 model: '',
@@ -9234,6 +9250,7 @@ var VehicleForm = function (_React$Component) {
         key: '_onChange',
         value: function _onChange() {
             this.setState({ manufacturers: _vehiclesStore2.default.getManufacturers() });
+            this.setState({ models: _vehiclesStore2.default.getModels() });
         }
     }, {
         key: 'handleChange',
@@ -9242,11 +9259,13 @@ var VehicleForm = function (_React$Component) {
 
             switch (propertyName) {
                 case 'manufacturers':
-                    var id = event.target.value;
+                    var mfgId = event.target.value;
 
-                    if (id == 0) {
+                    if (mfgId == 0) {
                         alert('Please select correct manufacturer.');
-                    } else {}
+                    } else {
+                        _actionCreator2.default.getModelsByMfgId(mfgId);
+                    }
                     break;
 
                 case 'vin':
@@ -9297,6 +9316,15 @@ var VehicleForm = function (_React$Component) {
                     'option',
                     { key: veh.id, value: veh.mfg_id },
                     veh.mfg
+                );
+            });
+
+            // Models options by ID
+            var modelOptions = this.state.models.map(function (veh) {
+                return _react2.default.createElement(
+                    'option',
+                    { key: veh.id, value: veh.model_id },
+                    veh.model
                 );
             });
 
@@ -9354,7 +9382,11 @@ var VehicleForm = function (_React$Component) {
                         _react2.default.createElement(
                             'div',
                             { className: 'input-group' },
-                            _react2.default.createElement('input', { type: 'text', onChange: this.handleChange.bind(this, 'model'), value: this.state.mfg_vehicle.model, className: 'form-control input-sm required' })
+                            _react2.default.createElement(
+                                'select',
+                                { name: 'models', onChange: this.handleChange.bind(this, 'models'), className: 'form-control input-sm required' },
+                                modelOptions
+                            )
                         )
                     )
                 ),
@@ -9489,6 +9521,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var _vehicles = [];
 var _manufacturers = [];
+var _models = [];
 
 function setVehicles(vehicles) {
     _vehicles = vehicles;
@@ -9496,6 +9529,10 @@ function setVehicles(vehicles) {
 
 function setManufacturers(manufacturers) {
     _manufacturers = manufacturers;
+}
+
+function setModels(models) {
+    _models = models;
 }
 
 var VehiclesStore = (0, _objectAssign2.default)({}, _events.EventEmitter.prototype, {
@@ -9519,6 +9556,10 @@ var VehiclesStore = (0, _objectAssign2.default)({}, _events.EventEmitter.prototy
 
     getManufacturers: function getManufacturers() {
         return _manufacturers;
+    },
+
+    getModels: function getModels() {
+        return _models;
     },
 
     // Emit Change event
@@ -9565,6 +9606,10 @@ VehiclesStore.dispatchToken = _appDispatcher2.default.register(function (payload
 
         case _actionConstants2.default.RECEIVE_MFGS:
             setManufacturers(action.manufacturers);
+            break;
+
+        case _actionConstants2.default.RECEIVE_MFGS_MODELS:
+            setModels(action.models);
             break;
 
         default:

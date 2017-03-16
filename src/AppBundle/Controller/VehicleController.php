@@ -118,13 +118,13 @@ class VehicleController extends FOSRestController
      */
     public function getModelsByMfgIdAction($id)
     {
-        $repo   = $this->getDoctrine()->getRepository('AppBundle:VehicleModelsEntity');
-        $result = $repo->findByMfgId($id);
+        $repo    = $this->getDoctrine()->getRepository('AppBundle:VehicleModelsEntity');
+        $results = $repo->findByMfgId($id);
 
-        if ($result === null) {
+        if ($results === null) {
             return new View("Manufacturer models not found", Response::HTTP_NOT_FOUND);
         }
 
-        return $result;
+        return $results;
     }
 }

@@ -53,6 +53,23 @@ var ActionCreator = {
                 });
             });
     },
+
+    getModelsByMfgId: function (id) {
+        Api
+            .get('http://mcs.dev/api/vehicles/mfgs/' + id)
+            .then(function (models) {
+                AppDispatcher.handleViewAction({
+                    actionType: ActionConstants.RECEIVE_MFGS_MODELS,
+                    models: models
+                });
+            })
+            .catch(function () {
+                AppDispatcher.handleViewAction({
+                    actionType: ActionConstants.RECEIVE_ERROR,
+                    error: 'There was a problem getting the vehicle models'
+                });
+            });
+    },
 };
 
 export default ActionCreator;

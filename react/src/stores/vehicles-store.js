@@ -6,6 +6,7 @@ import _ from 'lodash';
 
 var _vehicles = [];
 var _manufacturers = [];
+var _models = [];
 
 function setVehicles(vehicles) {
     _vehicles = vehicles ;
@@ -13,6 +14,10 @@ function setVehicles(vehicles) {
 
 function setManufacturers(manufacturers) {
     _manufacturers = manufacturers ;
+}
+
+function setModels(models) {
+    _models = models ;
 }
 
 var VehiclesStore = assign({}, EventEmitter.prototype, {
@@ -36,6 +41,10 @@ var VehiclesStore = assign({}, EventEmitter.prototype, {
 
     getManufacturers: function () {
         return _manufacturers;
+    },
+
+    getModels: function () {
+        return _models;
     },
 
     // Emit Change event
@@ -82,6 +91,10 @@ VehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
 
         case ActionConstants.RECEIVE_MFGS:
             setManufacturers(action.manufacturers);
+        break;
+
+        case ActionConstants.RECEIVE_MFGS_MODELS:
+            setModels(action.models);
         break;
 
         default:

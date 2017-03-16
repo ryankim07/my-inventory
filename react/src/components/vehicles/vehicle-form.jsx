@@ -11,6 +11,7 @@ class VehicleForm extends React.Component {
         super(props);
         this.state = {
             manufacturers: [],
+            models: [],
             mfg_vehicle: {
                 mfg: '',
                 model: '',
@@ -30,7 +31,7 @@ class VehicleForm extends React.Component {
 
     componentDidMount() {
         ActionCreator.getManufacturers();
-    }
+}
 
     componentWillUnmount() {
         VehiclesStore.removeChangeListener(this._onChange.bind(this));
@@ -38,6 +39,7 @@ class VehicleForm extends React.Component {
 
     _onChange() {
         this.setState({manufacturers: VehiclesStore.getManufacturers()});
+        this.setState({models: VehiclesStore.getModels()});
     }
 
     handleChange(propertyName, event) {
@@ -45,12 +47,12 @@ class VehicleForm extends React.Component {
 
         switch(propertyName) {
             case 'manufacturers':
-                let id = event.target.value;
+                let mfgId = event.target.value;
 
-                if (id == 0) {
+                if (mfgId == 0) {
                     alert('Please select correct manufacturer.');
                 } else {
-
+                    ActionCreator.getModelsByMfgId(mfgId);
                 }
             break;
 
@@ -101,6 +103,13 @@ class VehicleForm extends React.Component {
             );
         });
 
+        // Models options by ID
+        let modelOptions = this.state.models.map((veh) => {
+            return (
+                <option key={veh.id} value={veh.model_id}>{ veh.model }</option>
+            );
+        });
+
         // Years options
         let yearsOptions = [];
         for (let i = 2014; i <= 2020; i++) {
@@ -124,7 +133,9 @@ class VehicleForm extends React.Component {
                     <div className="col-xs-12 col-md-8">
                         <label className="">Model</label>
                         <div className="input-group">
-                            <input type="text" onChange={this.handleChange.bind(this, 'model')} value={this.state.mfg_vehicle.model} className="form-control input-sm required"/>
+                            <select name="models" onChange={this.handleChange.bind(this, 'models')} className="form-control input-sm required">
+                                { modelOptions }
+                            </select>
                         </div>
                     </div>
                 </div>

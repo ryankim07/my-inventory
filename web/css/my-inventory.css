@@ -1,0 +1,87 @@
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+    padding-top: 50px;
+}
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+
+.navbar-fixed-top {
+    border: 0;
+}
+
+/*
+ * Main layout
+ */
+
+@media (min-width: 768px) {
+    .main {
+        left: 0px;
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+}
+
+/*
+ * Panel
+ */
+
+.main {
+    margin-top: 20px;
+}
+
+/*
+ * Panel
+ */
+
+.panel {
+    margin-top: 20px;
+}
+
+.nested-block {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #f7f7f8;
+    border-color: #eee #eee #eee #d4d5d9;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px 1px 1px 5px;
+    margin: 5px 0 10px 0px;
+    padding: 20px 30px 0 20px;
+    position: relative;
+}
+
+.jumbotron {
+    background-color: #f7f7f8;
+}
+
+#response-main .nested-block:first-child,
+#respond-main  .nested-block:first-child {
+    margin-top: 20px;
+}
+
+#system-main-panel-body,
+#response-main .panel-body, #respond-main .panel-body {
+    min-height: 500px;
+}
+
+#response-main legend, #respond-main legend {
+    font-size: 18.5px;
+}

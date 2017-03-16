@@ -1,0 +1,84 @@
+import React from 'react';
+import { Link } from 'react-router'
+
+class Header extends React.Component {
+    render() {
+        return (
+            <nav className="navbar navbar-inverse navbar-fixed-top">
+                <div className="container-fluid">
+                    <div className="navbar-header">
+                        <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span className="sr-only">Toggle navigation</span>
+                            <span className="icon-bar"></span>
+                            <span className="icon-bar"></span>
+                            <span className="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div id="navbar" className="navbar-collapse collapse">
+                        <ul className="nav navbar-nav navbar-left">
+                            <li className="dropdown">
+                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">House <span className="caret"></span></a>
+                                <ul className="dropdown-menu" role="menu">
+
+                                    <li>
+                                        <a href="" className="menu-link"><i className="fa fa-home menu-link-icon"></i>Add new</a>
+                                    </li>
+                                    <li>
+                                        <a href="" className="menu-link"><i className="fa fa-list-alt menu-link-icon"></i>List</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li className="dropdown">
+                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Auto <span className="caret"></span></a>
+                                <ul className="dropdown-menu" role="menu">
+                                    <li>
+                                        <Link to="/vehicle/add" className="menu-link"><i className="fa fa-car menu-link-icon"></i>Add</Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/vehicles" className="menu-link"><i className="fa fa-list-alt menu-link-icon"></i>All</Link>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li className="dropdown">
+                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Logs <span className="caret"></span></a>
+                                <ul className="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="" className="menu-link"><i className="fa fa-tasks menu-link-icon"></i>View</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li className="dropdown">
+                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Accounts <span className="caret"></span></a>
+                                <ul className="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="" className="menu-link"><i className="fa fa-users menu-link-icon"></i>Users</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li className="dropdown">
+                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">System <span className="caret"></span></a>
+                                <ul className="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="" className="menu-link"><i className="fa fa-cogs menu-link-icon"></i>Settings</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul className="nav navbar-nav navbar-right">
+                            <li className="dropdown">
+                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ryan<span className="caret"></span></a>
+                                <ul className="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="" className="menu-link"><i className="fa fa-power-off menu-link-icon"></i>Logout</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        );
+    }
+}
+
+export default Header;

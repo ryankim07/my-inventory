@@ -1,0 +1,13 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+    NhtsaApi:
+        class: AppBundle\Service\Vehicle\Api\NhtsaApi
+        arguments: ["@doctrine.orm.entity_manager"]
+
+    EdmundsApi:
+        class: AppBundle\Service\Vehicle\Api\EdmundsApi
+        arguments: ["@doctrine.orm.entity_manager"]

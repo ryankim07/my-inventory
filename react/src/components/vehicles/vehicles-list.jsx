@@ -1,5 +1,5 @@
 import React from 'react';
-import VehiclesStore from '../../stores/vehicles-store';
+import MyVehiclesStore from '../../stores/my-vehicles-store';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
 import ActionCreator from '../../actions/action-creator';
@@ -17,30 +17,19 @@ class VehiclesList extends React.Component {
     }
 
     componentWillMount() {
-        VehiclesStore.addChangeListener(this._onChange.bind(this));
+        MyVehiclesStore.addChangeListener(this._onChange.bind(this));
     }
 
     componentDidMount() {
-        ActionCreator.getVehicles();
+        ActionCreator.getMyVehicles();
     }
 
     componentWillUnmount() {
-        VehiclesStore.removeChangeListener(this._onChange.bind(this));
-    }
-
-    removeVehicle(e) {
-        var id = e.target.dataset.id;
-
-        ActionCreator.removeVehicles(id);
-
-        AppDispatcher.handleViewAction({
-            actionType: ActionConstants.REMOVE_VEHICLE,
-            id: id
-        });
+        MyVehiclesStore.removeChangeListener(this._onChange.bind(this));
     }
 
     _onChange() {
-        this.setState({vehicles: VehiclesStore.getVehicles()});
+        this.setState({vehicles: MyVehiclesStore.getMyVehicles()});
     }
 
     onClick(selectedVehicle) {
@@ -50,8 +39,19 @@ class VehiclesList extends React.Component {
         });
     }
 
+    removeMyVehicle(e) {
+        let id = e.target.dataset.id;
+
+        ActionCreator.removeMyVehicle(id);
+
+        AppDispatcher.handleViewAction({
+            actionType: ActionConstants.REMOVE_MY_VEHICLE,
+            id: id
+        });
+    }
+
     render() {
-        var vehiclesHtml = this.state.vehicles.map((vehicle) => {
+        let vehiclesHtml = this.state.vehicles.map((vehicle) => {
             return (
                 <tr key={ vehicle.id }>
                     <td>{ vehicle.mfg }</td>
@@ -61,7 +61,7 @@ class VehiclesList extends React.Component {
                     <td>{ vehicle.vin }</td>
                     <td>{ vehicle.plate }</td>
                     <td>
-                        <button onClick={this.removeVehicle } data-id={vehicle.id}>×</button>
+                        <button onClick={this.removeMyVehicle} data-id={vehicle.id}>×</button>
                         <button onClick={this.onClick.bind(this)} data-id={vehicle.id}>edit</button>
                     </td>
                 </tr>

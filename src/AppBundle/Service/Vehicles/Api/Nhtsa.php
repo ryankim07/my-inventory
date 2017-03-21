@@ -1,15 +1,15 @@
 <?php
 
-namespace AppBundle\Service\Vehicle\Api;
+namespace AppBundle\Service\Vehicles\Api;
 
-class NhtsaApi extends AbstractApi implements InterfaceApi
+class Nhtsa extends SyncAbstract
 {
     /**
      * Call NHTSA API
      *
      * @return array
      */
-    public function callApi()
+    public function getApiVehicles()
     {
         $blacklist = [
             992, 986, 972, 847, 667, 629, 606, 539, 519, 497, 470,
@@ -19,7 +19,7 @@ class NhtsaApi extends AbstractApi implements InterfaceApi
             1824, 1755, 1683, 1532, 1498, 1393, 1288, 1151, 1146, 1142, 1104, 1034, 1075, 1292, 5122
         ];
 
-        $mfgData = json_decode(file_get_contents('https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json'));
+        $mfgData = json_decode(file_get_contents("https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json"));
         $mfgs    = $mfgData->Results;
 
         $results = [];
@@ -30,7 +30,7 @@ class NhtsaApi extends AbstractApi implements InterfaceApi
                 continue;
             }
 
-            $modelData = $this->getModelsByMfg($mfgId);
+            $modelData = $this->getApiModelsByMfg($mfgId);
 
             $results[] = [
                 'mfg_id' => $mfgId,
@@ -48,7 +48,7 @@ class NhtsaApi extends AbstractApi implements InterfaceApi
      * @param $mfgId
      * @return array|bool
      */
-    private function getModelsByMfg($mfgId)
+    private function getApiModelsByMfg($mfgId)
     {
         if (!isset($mfgId)) {
             return false;

@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Service\Vehicle\Api;
+namespace AppBundle\Service\Vehicles\Api;
 
-class EdmundsApi extends AbstractApi implements InterfaceApi
+class Edmunds extends SyncAbstract
 {
     const API_KEY = "8z5gs5zedbpdadhnzdqbmvdk";
 
@@ -11,7 +11,7 @@ class EdmundsApi extends AbstractApi implements InterfaceApi
      *
      * @return array
      */
-    public function callApi()
+    public function getApiVehicles()
     {
         $mfgData = json_decode(file_get_contents('http://api.edmunds.com/api/vehicle/v2/makes?fmt=json&api_key=' . self::API_KEY));
         $results = [];

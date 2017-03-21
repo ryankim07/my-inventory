@@ -7,9 +7,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="vehicles")
+ * @ORM\Table(name="my_vehicles")
  */
-class VehicleEntity
+class MyVehicleEntity
 {
     /**
      * @ORM\Column(type="integer")
@@ -17,6 +17,12 @@ class VehicleEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
+     */
+    private $mfgId;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -78,6 +84,30 @@ class VehicleEntity
     public function setMfg($mfg)
     {
         $this->mfg = ucwords($mfg);
+
+        return $this;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getMfgId()
+    {
+        return $this->mfgId;
+    }
+
+    /**
+     * Set mfg
+     *
+     * @param string $mfg
+     *
+     * @return Cars
+     */
+    public function setMfgId($mfgId)
+    {
+        $this->mfgId = $mfgId;
 
         return $this;
     }

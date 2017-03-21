@@ -3,12 +3,12 @@ import ActionConstants from '../constants/action-constants';
 import Api from '../services/Api';
 
 var ActionCreator = {
-    getVehicles: function () {
+    getMyVehicles: function () {
         Api
             .get('http://mcs.dev/api/vehicles')
             .then(function (vehicles) {
                 AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.RECEIVE_VEHICLES,
+                    actionType: ActionConstants.RECEIVE_MY_VEHICLES,
                     vehicles: vehicles
                 });
             })
@@ -20,15 +20,20 @@ var ActionCreator = {
             });
     },
 
-    removeVehicles: function (id) {
+    addMyVehicle: function (data) {
+        Api
+            .post('http://mcs.dev/api/vehicle', data)
+            .catch(function () {
+                AppDispatcher.handleViewAction({
+                    actionType: ActionConstants.ADD_MY_VEHICLE_ERROR,
+                    error: 'There was a problem adding new vehicle'
+                });
+            });
+    },
+
+    removeMyVehicle: function (id) {
         Api
             .delete('http://mcs.dev/api/vehicles/' + id)
-            .then(function (vehicles) {
-                AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.RECEIVE_VEHICLES,
-                    vehicles: vehicles
-                });
-            })
             .catch(function () {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.RECEIVE_ERROR,
@@ -37,9 +42,9 @@ var ActionCreator = {
             });
     },
 
-    getManufacturers: function () {
+    getApiVehicles: function () {
         Api
-            .get('http://mcs.dev/api/vehicles/mfgs')
+            .get('http://mcs.dev/api/sync/list')
             .then(function (manufacturers) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.RECEIVE_MFGS,
@@ -52,24 +57,7 @@ var ActionCreator = {
                     error: 'There was a problem getting the manufacturers'
                 });
             });
-    },
-
-    getModelsByMfgId: function (id) {
-        Api
-            .get('http://mcs.dev/api/vehicles/mfgs/' + id)
-            .then(function (models) {
-                AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.RECEIVE_MFGS_MODELS,
-                    models: models
-                });
-            })
-            .catch(function () {
-                AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.RECEIVE_ERROR,
-                    error: 'There was a problem getting the vehicle models'
-                });
-            });
-    },
+    }
 };
 
 export default ActionCreator;

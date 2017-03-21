@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import VehiclesStore from '../../stores/vehicles-store';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
+import ApiVehiclesStore from '../../stores/api-vehicles-store';
 import ActionCreator from '../../actions/action-creator';
 
 class VehicleForm extends React.Component {
@@ -19,49 +19,45 @@ class VehicleForm extends React.Component {
                 color: '',
                 vin: '',
                 plate: '',
-            }
+            },
+            selectedMfg: '',
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentWillMount() {
-        VehiclesStore.addChangeListener(this._onChange.bind(this));
+        ApiVehiclesStore.addChangeListener(this._onChange.bind(this));
     }
 
     componentDidMount() {
-        ActionCreator.getManufacturers();
+        ActionCreator.getApiVehicles();
 }
 
     componentWillUnmount() {
-        VehiclesStore.removeChangeListener(this._onChange.bind(this));
+        ApiVehiclesStore.removeChangeListener(this._onChange.bind(this));
     }
 
     _onChange() {
-        this.setState({manufacturers: VehiclesStore.getManufacturers()});
-        this.setState({models: VehiclesStore.getModels()});
+        this.setState({manufacturers: ApiVehiclesStore.getApiVehicles()});
     }
 
     handleChange(propertyName, event) {
         const vehicle = this.state.mfg_vehicle;
 
         switch(propertyName) {
-            case 'manufacturers':
+            case 'manufacturer':
                 let mfgId = event.target.value;
 
                 if (mfgId == 0) {
                     alert('Please select correct manufacturer.');
                 } else {
-                    ActionCreator.getModelsByMfgId(mfgId);
+                    this.setState({selectedMfg: mfgId});
                 }
             break;
 
-            case 'vin':
-                vehicle[propertyName] = event.target.value.toUpperCase();
-            break;
-
             default:
-                vehicle[propertyName] = event.target.value;
+                vehicle[propertyName] = event.target.value.toUpperCase();
         }
 
         this.setState({vehicle: vehicle});
@@ -70,61 +66,68 @@ class VehicleForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
 
-        // create ID
-        let id = guid();
+        // This gets the value from the input
+        let formData = {
+            mfg_id: ReactDOM.findDOMNode(this.refs.manufacturer).value.trim(),
+            model: ReactDOM.findDOMNode(this.refs.model).value.trim(),
+            year: ReactDOM.findDOMNode(this.refs.year).value.trim(),
+            color: ReactDOM.findDOMNode(this.refs.color).value.trim(),
+            vin: ReactDOM.findDOMNode(this.refs.vin).value.trim(),
+            plate: ReactDOM.findDOMNode(this.refs.plate).value.trim()
+        };
 
-        // this gets the value from the input
-        let mfg = ReactDOM.findDOMNode(this.refs.mfg).value.trim();
-        let model = ReactDOM.findDOMNode(this.refs.model).value.trim();
-        let year = ReactDOM.findDOMNode(this.refs.year).value.trim();
-        let color = ReactDOM.findDOMNode(this.refs.color).value.trim();
-        let vin = ReactDOM.findDOMNode(this.refs.vin).value.trim();
-        let plate = ReactDOM.findDOMNode(this.refs.plate).value.trim();
-
-        AppDispatcher.handleViewAction({
-            actionType: ActionConstants.ADD_VEHICLE,
-            new_vehicle: {
-                id: id,
-                mfg: mfg,
-                model: model,
-                year: year,
-                color: color,
-                vin: vin,
-                plate: plate
-            }
-        });
+        ActionCreator.addMyVehicle(formData);
     }
 
     render() {
         // Manufacturers options
-        let mfgOptions = this.state.manufacturers.map((veh) => {
+        let apiMfgsOptions = this.state.manufacturers.map((mfgs, mfgIndex) => {
             return (
-                <option key={veh.id} value={veh.mfg_id}>{ veh.mfg }</option>
+                <option key={mfgIndex} value={mfgs.id}>{ mfgs.mfg }</option>
             );
         });
 
-        // Models options by ID
-        let modelOptions = this.state.models.map((veh) => {
-            return (
-                <option key={veh.id} value={veh.model_id}>{ veh.model }</option>
-            );
+        // Get selected choice from dropdown
+        let chosenMfg = this.state.manufacturers.filter(manufacturer => {
+            return manufacturer.id == this.state.selectedMfg
         });
+
+        // Models options by ID
+        let apiModelsOptions = '';
+
+        if (chosenMfg.length != 0) {
+            apiModelsOptions = chosenMfg[0].models.map((veh, modelIndex) => {
+                return (
+                    <option key={modelIndex} value={veh.model_id}>{ veh.model }</option>
+                );
+            });
+        }
 
         // Years options
         let yearsOptions = [];
         for (let i = 2014; i <= 2020; i++) {
-            yearsOptions.push(<option key={i} value={i}>{ i }</option>)
+            yearsOptions.push(<option key={'y-' + i} value={i}>{ i }</option>)
         }
 
         return (
             <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
                     <div className="col-xs-12 col-md-8">
+                        <label className="">Year</label>
+                        <div className="input-group">
+                            <select name="year" ref="year">
+                                { yearsOptions }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <div className="col-xs-12 col-md-8">
                         <label className="">Manufacturer</label>
                         <div className="input-group">
-                            <select name="manufacturers" onChange={this.handleChange.bind(this, 'manufacturers')} className="form-control input-sm required">
+                            <select ref="manufacturer" onChange={this.handleChange.bind(this, 'manufacturer')} value={this.state.selectedMfg} className="form-control input-sm required">
                                 <option key={0} value={0}>Select One</option>
-                                { mfgOptions }
+                                { apiMfgsOptions }
                             </select>
                         </div>
                     </div>
@@ -133,18 +136,9 @@ class VehicleForm extends React.Component {
                     <div className="col-xs-12 col-md-8">
                         <label className="">Model</label>
                         <div className="input-group">
-                            <select name="models" onChange={this.handleChange.bind(this, 'models')} className="form-control input-sm required">
-                                { modelOptions }
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div className="form-group">
-                    <div className="col-xs-12 col-md-8">
-                        <label className="">Year</label>
-                        <div className="input-group">
-                            <select name="years">
-                                { yearsOptions }
+                            <select ref="model" onChange={this.handleChange.bind(this, 'model')} value={this.state.mfg_vehicle.model} className="form-control input-sm required">
+                                <option key={0} value={0}>Select One</option>
+                                { apiModelsOptions }
                             </select>
                         </div>
                     </div>
@@ -153,7 +147,15 @@ class VehicleForm extends React.Component {
                     <div className="col-xs-12 col-md-8">
                         <label className="">Color</label>
                         <div className="input-group">
-                            <input type="text" onChange={this.handleChange.bind(this, 'color')} value={this.state.mfg_vehicle.color} className="form-control input-sm required"/>
+                            <select ref="color" onChange={this.handleChange.bind(this, 'color')} value={this.state.mfg_vehicle.color} className="form-control input-sm required">
+                                <option value="0">Select One</option>
+                                <option value="white">White</option>
+                                <option value="black">Black</option>
+                                <option value="silver">Silver</option>
+                                <option value="red">Red</option>
+                                <option value="yellow">Yellow</option>
+                                <option value="orange">Orange</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -161,7 +163,7 @@ class VehicleForm extends React.Component {
                     <div className="col-xs-12 col-md-8">
                         <label className="">VIN</label>
                         <div className="input-group">
-                            <input type="text" onChange={this.handleChange.bind(this, 'vin')} value={this.state.mfg_vehicle.vin} className="form-control input-sm required"/>
+                            <input type="text" ref="vin" onChange={this.handleChange.bind(this, 'vin')} value={this.state.mfg_vehicle.vin} className="form-control input-sm required"/>
                         </div>
                     </div>
                 </div>
@@ -169,7 +171,7 @@ class VehicleForm extends React.Component {
                     <div className="col-xs-12 col-md-8">
                         <label className="">Plate</label>
                         <div className="input-group">
-                            <input type="text" onChange={this.handleChange.bind(this, 'plate')} value={this.state.mfg_vehicle.plate} className="form-control input-sm required"/>
+                            <input type="text" ref="plate" onChange={this.handleChange.bind(this, 'plate')} value={this.state.mfg_vehicle.plate} className="form-control input-sm required"/>
                         </div>
                     </div>
                 </div>

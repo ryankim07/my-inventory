@@ -9,8 +9,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="vehicle_models")
  */
-class VehicleModelsEntity
+class VehicleModelsApiEntity
 {
+    /**
+     * @ORM\ManyToOne(targetEntity="VehicleMfgsApiEntity", inversedBy="models")
+     * @ORM\JoinColumn(name="mfg_id", referencedColumnName="id")
+     */
+    private $manufacturers;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -113,5 +119,29 @@ class VehicleModelsEntity
         $this->model = ucwords(strtolower($model));
 
         return $this;
+    }
+
+    /**
+     * Set manufacturers
+     *
+     * @param \AppBundle\Entity\VehicleMfgsApiEntity $manufacturers
+     *
+     * @return VehicleModelsApiEntity
+     */
+    public function setManufacturers(\AppBundle\Entity\VehicleMfgsApiEntity $manufacturers = null)
+    {
+        $this->manufacturers = $manufacturers;
+
+        return $this;
+    }
+
+    /**
+     * Get manufacturers
+     *
+     * @return \AppBundle\Entity\VehicleMfgsApiEntity
+     */
+    public function getManufacturers()
+    {
+        return $this->manufacturers;
     }
 }

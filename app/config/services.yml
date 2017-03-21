@@ -4,10 +4,42 @@ parameters:
 #    parameter_name: value
 
 services:
-    NhtsaApi:
-        class: AppBundle\Service\Vehicle\Api\NhtsaApi
-        arguments: ["@doctrine.orm.entity_manager"]
+    # Factories
+    Api_Factory:
+        class: AppBundle\Service\Vehicles\Api\SyncFactory
+        arguments:
+          - "%vehicle_api_type%"
+          - "@doctrine.orm.entity_manager"
 
-    EdmundsApi:
-        class: AppBundle\Service\Vehicle\Api\EdmundsApi
+    # Services
+    Sync_Abstract:
+        class: AppBundle\Service\Vehicles\Api\SyncAbstract
+        abstract: true
         arguments: ["@doctrine.orm.entity_manager"]
+        calls:
+            - [syncApiVehiclesToDb, ['mfgs']]
+
+    Nhtsa_Api:
+        class: AppBundle\Service\Vehicles\Api\Nhtsa
+        parent: Sync_Abstract
+
+    Edmunds_Api:
+        class: AppBundle\Service\Vehicles\Api\Edmunds
+        parent: Sync_Abstract
+
+    Sync_Api:
+      class: AppBundle\Service\Vehicles\Api\SyncInterface
+      factory: ["@Api_Factory", get]
+      arguments:
+          - "%vehicle_api_type%"
+          - "@doctrine.orm.entity_manager"
+
+    Sync_Db:
+      class: AppBundle\Service\Vehicles\Api\SyncDb
+      arguments: ["@doctrine.orm.entity_manager"]
+
+    My_Vehicles:
+        class: AppBundle\Service\Vehicles\MyVehicles
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@Sync_Db"

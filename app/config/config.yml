@@ -7,6 +7,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    vehicle_api_type: Nhtsa
 
 framework:
     #esi:             ~
@@ -62,6 +63,12 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
 
+doctrine_migrations:
+    dir_name: "%kernel.root_dir%/DoctrineMigrations"
+    namespace: AppBundle\Migrations
+    table_name: migration_versions
+    name: Application Migrations
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"
@@ -75,7 +82,7 @@ fos_rest:
     body_listener: true
     format_listener:
             rules:
-                - { path: '^/api/', priorities: ['json', 'xml'], fallback_format: json, prefer_extension: false }
+                - { path: '^/api/', priorities: ['json'], fallback_format: json, prefer_extension: false }
                 - { path: '^/',  stop: true }
     param_fetcher_listener: true
     view:

@@ -6,11 +6,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\Vehicles\Api\VehiclesRepository")
  * @ORM\Table(name="vehicle_mfgs")
  */
-class VehicleMfgsEntity
+class VehicleMfgsApiEntity
 {
+    /**
+     * @ORM\OneToMany(targetEntity="VehicleModelsApiEntity", mappedBy="manufacturers")
+     */
+    private $models;
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -29,6 +34,14 @@ class VehicleMfgsEntity
      * @Assert\NotBlank()
      */
     private $mfg;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->models = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get ID
@@ -85,5 +98,39 @@ class VehicleMfgsEntity
         $this->mfg = ucwords(strtolower($mfg));
 
         return $this;
+    }
+
+    /**
+     * Add model
+     *
+     * @param \AppBundle\Entity\VehicleModelsApiEntity $model
+     *
+     * @return VehicleMfgsApiEntity
+     */
+    public function addModel(\AppBundle\Entity\VehicleModelsApiEntity $model)
+    {
+        $this->models[] = $model;
+
+        return $this;
+    }
+
+    /**
+     * Remove model
+     *
+     * @param \AppBundle\Entity\VehicleModelsApiEntity $model
+     */
+    public function removeModel(\AppBundle\Entity\VehicleModelsApiEntity $model)
+    {
+        $this->models->removeElement($model);
+    }
+
+    /**
+     * Get models
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getModels()
+    {
+        return $this->models;
     }
 }

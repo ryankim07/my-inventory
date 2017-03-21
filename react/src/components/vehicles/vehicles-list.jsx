@@ -14,10 +14,12 @@ class VehiclesList extends React.Component {
             vehicle: {},
             isSideBarVisible: false
         };
+
+        this._onChange = this._onChange.bind(this);
     }
 
     componentWillMount() {
-        MyVehiclesStore.addChangeListener(this._onChange.bind(this));
+        MyVehiclesStore.addChangeListener(this._onChange);
     }
 
     componentDidMount() {
@@ -25,7 +27,7 @@ class VehiclesList extends React.Component {
     }
 
     componentWillUnmount() {
-        MyVehiclesStore.removeChangeListener(this._onChange.bind(this));
+        MyVehiclesStore.removeChangeListener(this._onChange);
     }
 
     _onChange() {

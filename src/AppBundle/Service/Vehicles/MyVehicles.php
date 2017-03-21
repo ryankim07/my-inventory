@@ -63,20 +63,20 @@ class MyVehicles
                 foreach($models as $model) {
                     if ($model->getModelId() == (int)$vehicle['model_id']) {
                         $modelName = $model->getModel();
-                        break;
+                        $newVehicle = new MyVehicleEntity();
+                        $newVehicle->setMfgId($mfgId);
+                        $newVehicle->setMfg($mfg->getMfg());
+                        $newVehicle->setModel($modelName);
+                        $newVehicle->setYear($year);
+                        $newVehicle->setColor($color);
+                        $newVehicle->setVin($vin);
+                        $newVehicle->setPlate($plate);
+                        $this->em->persist($newVehicle);
+                        $this->em->flush();
+                    } else {
+                        continue;
                     }
                 }
-
-                $newVehicle = new MyVehicleEntity();
-                $newVehicle->setMfgId($mfgId);
-                $newVehicle->setMfg($mfg->getMfg());
-                $newVehicle->setModel($modelName);
-                $newVehicle->setYear($year);
-                $newVehicle->setColor($color);
-                $newVehicle->setVin($vin);
-                $newVehicle->setPlate($plate);
-                $this->em->persist($newVehicle);
-                $this->em->flush();
             } else {
                 $existingVehicle->setYear($year);
                 $existingVehicle->setColor($color);

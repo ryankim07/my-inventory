@@ -47,41 +47,47 @@ class MyVehicles
             return 'Empty new vehicle information.';
         }
 
-        $mfgId = $vehicle['mfg_id'];
-        $year  = $vehicle['year'];
-        $color = $vehicle['color'];
-        $vin   = $vehicle['vin'];
-        $plate = $vehicle['plate'];
-        $existingVehicle = $this->repo->findOneByVin($vin);
+        $paramId         = (int)$vehicle['id'];
+        $paramModelId    = (int)$vehicle['model_id'];
+        $parammfgId      = (int)$vehicle['mfg_id'];
+        $paramYear       = $vehicle['year'];
+        $paramColor      = $vehicle['color'];
+        $paramVin        = $vehicle['vin'];
+        $paramPlate      = $vehicle['plate'];
+        $existingVehicle = $this->repo->find($paramId);
 
         try {
             if (is_null($existingVehicle)) {
-                $mfg    = $this->syncDb->find($mfgId);
+                $mfg    = $this->syncDb->find($parammfgId);
                 $models = $mfg->getModels();
 
-                $modelName = '';
                 foreach($models as $model) {
-                    if ($model->getModelId() == (int)$vehicle['model_id']) {
+                    $modelId = $model->getModelId();
+
+                    if ($modelId == $paramModelId) {
                         $modelName = $model->getModel();
                         $newVehicle = new MyVehicleEntity();
-                        $newVehicle->setMfgId($mfgId);
+                        $newVehicle->setMfgId($parammfgId);
                         $newVehicle->setMfg($mfg->getMfg());
+                        $newVehicle->setModelId($modelId);
                         $newVehicle->setModel($modelName);
-                        $newVehicle->setYear($year);
-                        $newVehicle->setColor($color);
-                        $newVehicle->setVin($vin);
-                        $newVehicle->setPlate($plate);
+                        $newVehicle->setYear($paramYear);
+                        $newVehicle->setColor($paramColor);
+                        $newVehicle->setVin($paramVin);
+                        $newVehicle->setPlate($paramPlate);
                         $this->em->persist($newVehicle);
                         $this->em->flush();
+
+                        break;
                     } else {
                         continue;
                     }
                 }
             } else {
-                $existingVehicle->setYear($year);
-                $existingVehicle->setColor($color);
-                $existingVehicle->setVin($vin);
-                $existingVehicle->setPlate($plate);
+                $existingVehicle->setYear($paramYear);
+                $existingVehicle->setColor($paramColor);
+                $existingVehicle->setVin($paramVin);
+                $existingVehicle->setPlate($paramPlate);
                 $this->em->flush();
                 return 'Vehicle already exists, and has been updated.';
             }

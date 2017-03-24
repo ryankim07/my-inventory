@@ -10,7 +10,7 @@ class Sidebar extends React.Component
                     <div className="panel panel-info">
                         <div className="panel-heading"><span>Vehicle Edit</span></div>
                         <div className="panel-body">
-                            <VehicleForm/>
+                            <VehicleForm />
                         </div>
                     </div>
                 </div>

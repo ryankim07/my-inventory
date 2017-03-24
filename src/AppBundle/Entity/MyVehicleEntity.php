@@ -31,6 +31,12 @@ class MyVehicleEntity
     private $mfg;
 
     /**
+     * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
+     */
+    private $modelId;
+
+    /**
      * @ORM\Column(type="string", length=50)
      * @Assert\NotBlank()
      */
@@ -65,7 +71,7 @@ class MyVehicleEntity
     private $plate;
 
     /**
-     * Get id
+     * Get ID
      *
      * @return integer
      */
@@ -75,21 +81,7 @@ class MyVehicleEntity
     }
 
     /**
-     * Set mfg
-     *
-     * @param string $mfg
-     *
-     * @return Cars
-     */
-    public function setMfg($mfg)
-    {
-        $this->mfg = ucwords($mfg);
-
-        return $this;
-    }
-
-    /**
-     * Get id
+     * Get mfg ID
      *
      * @return integer
      */
@@ -120,6 +112,44 @@ class MyVehicleEntity
     public function getMfg()
     {
         return $this->mfg;
+    }
+
+    /**
+     * Set mfg
+     *
+     * @param string $mfg
+     *
+     * @return Cars
+     */
+    public function setMfg($mfg)
+    {
+        $this->mfg = ucwords($mfg);
+
+        return $this;
+    }
+
+    /**
+     * Get model id
+     *
+     * @return integer
+     */
+    public function getModelId()
+    {
+        return $this->modelId;
+    }
+
+    /**
+     * Set model ID
+     *
+     * @param string $modelId
+     *
+     * @return Cars
+     */
+    public function setModelId($modelId)
+    {
+        $this->modelId = $modelId;
+
+        return $this;
     }
 
     /**

@@ -7,6 +7,14 @@ import Sidebar from '../vehicles/sidebar';
 
 class VehiclesList extends React.Component {
 
+    // Context
+    getChildContext() {
+        let myVehicle = this.state.vehicle == 'undefined' ? '' : this.state.vehicle;
+        return {
+            myVehicle: myVehicle,
+        };
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -16,6 +24,7 @@ class VehiclesList extends React.Component {
         };
 
         this._onChange = this._onChange.bind(this);
+        this.onClick = this.onClick.bind(this);
     }
 
     componentWillMount() {
@@ -34,10 +43,19 @@ class VehiclesList extends React.Component {
         this.setState({vehicles: MyVehiclesStore.getMyVehicles()});
     }
 
-    onClick(selectedVehicle) {
+    onClick(e) {
+        let data = e.target.dataset;
         this.setState({
             isSideBarVisible: !this.state.isSideBarVisible,
-            vehicle: selectedVehicle
+            vehicle: {
+                id: data.id,
+                mfg_id: data.mfg,
+                model_id: data.model,
+                year: data.year,
+                color: data.color.toLowerCase(),
+                vin: data.vin,
+                plate: data.plate
+            }
         });
     }
 
@@ -54,6 +72,7 @@ class VehiclesList extends React.Component {
 
     render() {
         let vehiclesHtml = this.state.vehicles.map((vehicle) => {
+
             return (
                 <tr key={ vehicle.id }>
                     <td>{ vehicle.mfg }</td>
@@ -64,7 +83,7 @@ class VehiclesList extends React.Component {
                     <td>{ vehicle.plate }</td>
                     <td>
                         <button onClick={this.removeMyVehicle} data-id={vehicle.id}>×</button>
-                        <button onClick={this.onClick.bind(this)} data-id={vehicle.id}>edit</button>
+                        <button onClick={this.onClick} data-id={vehicle.id} data-mfg={vehicle.mfg_id} data-model={vehicle.model_id} data-year={vehicle.year} data-color={vehicle.color} data-vin={vehicle.vin} data-plate={vehicle.plate}>edit</button>
                     </td>
                 </tr>
             );
@@ -102,10 +121,14 @@ class VehiclesList extends React.Component {
                         </div>
                     </div>
                 </div>
-                { this.state.isSideBarVisible ? <Sidebar data={ this.state.vehicle }/> : null }
+                { this.state.isSideBarVisible ? <Sidebar /> : null }
             </div>
         )
     }
+}
+
+VehiclesList.childContextTypes = {
+    myVehicle: React.PropTypes.object
 }
 
 export default VehiclesList;

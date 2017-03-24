@@ -13,6 +13,7 @@ class VehicleForm extends React.Component {
             manufacturers: [],
             models: [],
             mfg_vehicle: {
+                id: '',
                 mfg: '',
                 model: '',
                 year: '',
@@ -21,6 +22,7 @@ class VehicleForm extends React.Component {
                 plate: '',
             },
             selectedMfg: '',
+            didSwitchParentObject: true
         };
 
         this._onChange = this._onChange.bind(this);
@@ -33,7 +35,24 @@ class VehicleForm extends React.Component {
 
     componentDidMount() {
         ActionCreator.getApiVehicles();
-}
+
+        if (this.state.didSwitchParentObject && this.context.myVehicle !== undefined) {
+            let params = this.context.myVehicle;
+
+            this.setState({
+                selectedMfg: params.mfg_id,
+                mfg_vehicle: {
+                    id: params.id,
+                    mfg: params.mfg_id,
+                    model: params.model_id,
+                    year: params.year,
+                    color: params.color,
+                    vin: params.vin,
+                    plate: params.plate
+                }
+            });
+        }
+    }
 
     componentWillUnmount() {
         ApiVehiclesStore.removeChangeListener(this._onChange);
@@ -65,7 +84,10 @@ class VehicleForm extends React.Component {
                 vehicle[propertyName] = event.target.value.toUpperCase();
         }
 
-        this.setState({mfg_vehicle: vehicle});
+        this.setState({
+            mfg_vehicle: vehicle,
+            didSwitchParentObject: false
+        });
     }
 
     handleSubmit(event) {
@@ -73,6 +95,7 @@ class VehicleForm extends React.Component {
 
         // This gets the value from the input
         let formData = {
+            id: this.state.mfg_vehicle.id,
             mfg_id: ReactDOM.findDOMNode(this.refs.manufacturer).value.trim(),
             model_id: ReactDOM.findDOMNode(this.refs.model).value.trim(),
             year: ReactDOM.findDOMNode(this.refs.year).value.trim(),
@@ -190,6 +213,11 @@ class VehicleForm extends React.Component {
             </form>
         );
     }
+}
+
+// Context
+VehicleForm.contextTypes = {
+    myVehicle: React.PropTypes.object
 }
 
 export default VehicleForm;

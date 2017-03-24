@@ -9,6 +9,7 @@ import VehiclesList from './src/components/vehicles/vehicles-list';
 ReactDOM.render(
     <Router history={hashHistory}>
         <Route component={Main}>
+            <IndexRoute component={Home} />
             <Route path="/" component={Home} />
             <Route path="/vehicle/add" component={VehicleForm} />
             <Route path="/vehicles" component={VehiclesList} />

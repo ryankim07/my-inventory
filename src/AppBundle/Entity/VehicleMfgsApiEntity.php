@@ -13,6 +13,7 @@ class VehicleMfgsApiEntity
 {
     /**
      * @ORM\OneToMany(targetEntity="VehicleModelsApiEntity", mappedBy="manufacturers")
+     * @ORM\OrderBy({"model" = "ASC"})
      */
     private $models;
 

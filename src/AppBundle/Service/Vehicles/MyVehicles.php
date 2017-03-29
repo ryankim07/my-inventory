@@ -32,7 +32,7 @@ class MyVehicles
      */
     public function getMyVehicles()
     {
-        return $this->repo->findAll();
+        return $this->repo->findBy([], ['mfg' => 'ASC']);
     }
 
     /**

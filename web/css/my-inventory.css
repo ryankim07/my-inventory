@@ -72,16 +72,7 @@ body {
     background-color: #f7f7f8;
 }
 
-#response-main .nested-block:first-child,
-#respond-main  .nested-block:first-child {
-    margin-top: 20px;
-}
-
-#system-main-panel-body,
-#response-main .panel-body, #respond-main .panel-body {
-    min-height: 500px;
-}
-
-#response-main legend, #respond-main legend {
-    font-size: 18.5px;
+.form-group.required .control-label:after {
+    content:"*";
+    color:red;
 }

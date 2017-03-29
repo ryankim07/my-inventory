@@ -15,7 +15,7 @@ var ActionCreator = {
             .catch(function () {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.RECEIVE_ERROR,
-                    error: 'There was a problem getting the vehicles'
+                    msg: 'There was a problem getting the vehicles'
                 });
             });
     },
@@ -23,10 +23,16 @@ var ActionCreator = {
     addMyVehicle: function (data) {
         Api
             .post('http://mcs.dev/api/vehicle', data)
+            .then(function (msg) {
+                AppDispatcher.handleViewAction({
+                    actionType: ActionConstants.ADD_MY_VEHICLE,
+                    msg: msg
+                });
+            })
             .catch(function () {
                 AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.ADD_MY_VEHICLE_ERROR,
-                    error: 'There was a problem adding new vehicle'
+                    actionType: ActionConstants.RECEIVE_ERROR,
+                    msg: 'There was a problem adding new vehicle'
                 });
             });
     },
@@ -34,10 +40,16 @@ var ActionCreator = {
     removeMyVehicle: function (id) {
         Api
             .delete('http://mcs.dev/api/vehicles/' + id)
+            .then(function (msg) {
+                AppDispatcher.handleViewAction({
+                    actionType: ActionConstants.REMOVE_MY_VEHICLE,
+                    msg: msg
+                });
+            })
             .catch(function () {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.RECEIVE_ERROR,
-                    error: 'There was a problem removing the vehicle'
+                    msg: 'There was a problem removing the vehicle'
                 });
             });
     },
@@ -54,7 +66,7 @@ var ActionCreator = {
             .catch(function () {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.RECEIVE_ERROR,
-                    error: 'There was a problem getting the manufacturers'
+                    msg: 'There was a problem getting the manufacturers'
                 });
             });
     }

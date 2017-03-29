@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 class SyncDb
 {
     protected $em;
+    protected $repo;
 
     /**
      * Constructor
@@ -16,6 +17,7 @@ class SyncDb
     public function __construct(EntityManager $entityManager)
     {
         $this->em = $entityManager;
+        $this->repo = $this->em->getRepository('AppBundle:VehicleMfgsApiEntity');
     }
 
     /**
@@ -47,9 +49,7 @@ class SyncDb
      */
     private function doSelect($id = null)
     {
-        $results = !is_null($id) ?
-            $this->em->getRepository('AppBundle:VehicleMfgsApiEntity')->find($id) :
-            $this->em->getRepository('AppBundle:VehicleMfgsApiEntity')->findAll();
+        $results = !is_null($id) ? $this->repo->find($id) : $this->repo->findBy([], ['mfg' => 'ASC']);
 
         if (count($results) == 0) {
             return false;

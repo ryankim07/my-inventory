@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import AppDispatcher from '../../dispatcher/app-dispatcher';
+import ActionConstants from '../../constants/action-constants';
 import ApiVehiclesStore from '../../stores/api-vehicles-store';
+import MyVehiclesStore from '../../stores/my-vehicles-store';
 import ActionCreator from '../../actions/action-creator';
 import Loader from '../loader';
 
@@ -15,25 +18,29 @@ class VehicleForm extends React.Component {
             mfg_vehicle: {
                 id: '',
                 mfg_id: '',
+                mfg: '',
                 model_id: '',
-                year: '',
+                model: '',
+                year: new Date().getFullYear(),
                 color: '',
                 vin: '',
                 plate: '',
             },
             editingMode: false,
+            newVehicleAdded: false,
             loader: true
         };
 
         this._onChange = this._onChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.setDefaultValue = this.setDefaultValue.bind(this);
-        this.getFormData = this.getFormData.bind(this);
+        this.getVehicleFormValues = this.getVehicleFormValues.bind(this);
         this.hasContextData = this.hasContextData.bind(this);
     }
 
     componentWillMount() {
         ApiVehiclesStore.addChangeListener(this._onChange);
+        MyVehiclesStore.addChangeListener(this._onChange);
 
         // Check if form is in editing mode
 
@@ -41,10 +48,7 @@ class VehicleForm extends React.Component {
             this.setState({editingMode: true});
         }
 
-        this.setState({
-            mfg_id: 52,
-            year: new Date().getFullYear()
-        });
+        this.setState({mfg_id: 52});
     }
 
     componentDidMount() {
@@ -53,15 +57,31 @@ class VehicleForm extends React.Component {
 
     componentWillUnmount() {
         ApiVehiclesStore.removeChangeListener(this._onChange);
+        MyVehiclesStore.removeChangeListener(this._onChange);
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextState.newVehicleAdded) {
+            // Only redirect to list if new vehicle is being added
+            MyVehiclesStore.unFlagNewVehicle();
+            this.context.router.push('/vehicles');
+            return false;
+        }
+
+        return true;
     }
 
     _onChange() {
-        this.setState({manufacturers: ApiVehiclesStore.getApiVehicles(), loader: false});
+        this.setState({
+            manufacturers: ApiVehiclesStore.getApiVehicles(),
+            newVehicleAdded: MyVehiclesStore.isNewVehicleAdded(),
+            loader: false
+        });
     }
 
     // Handle input changes
     handleChange(propertyName, event) {
-        let vehicle = this.getFormData();
+        let vehicle = this.getVehicleFormValues();
         let chosenValue = event.target.value;
 
         switch (propertyName) {
@@ -98,26 +118,35 @@ class VehicleForm extends React.Component {
         event.preventDefault();
 
         // This gets the value from the input
-        let formData = this.getFormData();
+        let formData = this.getVehicleFormValues();
 
         // Add new vehicle
         ActionCreator.addMyVehicle(formData);
 
-        // Only redirect to list if new vehicle is being added
-        this.context.router.push('/vehicles');
+        // Close panel after update
+        if (this.state.editingMode) {
+            AppDispatcher.handleViewAction({
+                actionType: ActionConstants.UPDATE_MY_VEHICLE,
+                vehicle: formData
+            });
+
+            this.props.closeRightPanel();
+        }
     }
 
     // Get form data
 
-    getFormData() {
+    getVehicleFormValues() {
         let data = {
-            id: ReactDOM.findDOMNode(this.refs.id).value.trim(),
-            mfg_id: ReactDOM.findDOMNode(this.refs.mfg_id).value.trim(),
-            model_id: ReactDOM.findDOMNode(this.refs.model_id).value.trim(),
-            year: ReactDOM.findDOMNode(this.refs.year).value.trim(),
-            color: ReactDOM.findDOMNode(this.refs.color).value.trim(),
-            vin: ReactDOM.findDOMNode(this.refs.vin).value.trim(),
-            plate: ReactDOM.findDOMNode(this.refs.plate).value.trim()
+            id: this.refs.id.value,
+            mfg_id: this.refs.mfg_id.value,
+            mfg: this.refs.mfg.value,
+            model_id: this.refs.model_id.value,
+            model: this.refs.model.value,
+            year: this.refs.year.value,
+            color: this.refs.color.value,
+            vin: this.refs.vin.value.trim(),
+            plate: this.refs.plate.value.trim()
         };
 
         return data;
@@ -141,10 +170,12 @@ class VehicleForm extends React.Component {
         }
     }
 
+    // Handle event
+
     render() {
         // If loading is complete
         if (!this.state.loader) {
-            let defaultMfgId = this.state.mfg_vehicle.mfg_id;
+            let defaultMfgId = this.setDefaultValue('mfg_id');
 
             // Get manufacturers list
             let apiMfgsOptions = this.state.manufacturers.map((mfgs, mfgIndex) => {
@@ -246,6 +277,8 @@ class VehicleForm extends React.Component {
                         <div className="col-xs-12 col-md-8">
                             <div className="input-group">
                                 <input type="hidden" ref="id" value={this.setDefaultValue('id')} />
+                                <input type="hidden" ref="mfg" value={this.setDefaultValue('mfg')} />
+                                <input type="hidden" ref="model" value={this.setDefaultValue('model')} />
                             </div>
                         </div>
                     </div>

@@ -19,13 +19,13 @@ class MyVehicleController extends FOSRestController
      * 
      * @Rest\Get("/api/vehicles", name="get_all_vehicles")
      */
-    public function getAction()
+    public function getListAction()
     {
         $service = $this->get('My_Vehicles');
-        $results = $service->getMyVehicles();
+        $results = $service->findAll();
 
         if (is_null($results)) {
-            return new View("Vehicles not found.", Response::HTTP_NOT_FOUND);
+            return new View("My vehicles not found.", Response::HTTP_NOT_FOUND);
         }
         
         return $results;
@@ -36,7 +36,7 @@ class MyVehicleController extends FOSRestController
      *
      * @Rest\Get("/api/vehicles/{id}", name="get_vehicle")
      */
-    /*public function showAction($id)
+    /*public function getAction($id)
     {
         $repo   = $this->getDoctrine()->getRepository('AppBundle:VehicleEntity');
         $result = $repo->find($id);

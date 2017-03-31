@@ -19,7 +19,7 @@ class RightPanel extends React.Component
                             </div>
                         </div>
                         <div className="panel-body">
-                            <VehicleForm />
+                            <VehicleForm closeRightPanel={this.props.closeRightPanel}/>
                         </div>
                     </div>
                 </div>

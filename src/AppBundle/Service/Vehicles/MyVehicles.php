@@ -28,11 +28,54 @@ class MyVehicles
     /**
      * Get all my vehicles
      *
-     * @return array
+     * @return mixed|string
      */
-    public function getMyVehicles()
+    public function findAll()
     {
-        return $this->repo->findBy([], ['mfg' => 'ASC']);
+        return $this->doSelect();
+    }
+
+    /**
+     * Find my specific vehicle
+     *
+     * @param $id
+     * @return mixed|null|object|string
+     */
+    public function find($id = null)
+    {
+        return $this->doSelect($id);
+    }
+
+    /**
+     * Query and add dependencies
+     *
+     * @param null $id
+     * @return mixed|string
+     */
+    private function doSelect($id = null)
+    {
+        $results = !is_null($id) ? $this->repo->find($id) : $this->repo->findBy([], ['mfg' => 'ASC']);
+
+        if (count($results) == 0) {
+            return false;
+        }
+
+        if (!is_null($id)) {
+            $results = $this->addDependencies($results);
+        }
+
+        return $results;
+    }
+
+    /**
+     * Add dependencies
+     *
+     * @param $results
+     * @return mixed
+     */
+    private function addDependencies($results)
+    {
+        return $results;
     }
 
     /**
@@ -48,17 +91,17 @@ class MyVehicles
         }
 
         $paramId         = (int)$vehicle['id'];
+        $paramMfgId      = (int)$vehicle['mfg_id'];
         $paramModelId    = (int)$vehicle['model_id'];
-        $parammfgId      = (int)$vehicle['mfg_id'];
         $paramYear       = $vehicle['year'];
         $paramColor      = $vehicle['color'];
         $paramVin        = $vehicle['vin'];
         $paramPlate      = $vehicle['plate'];
-        $existingVehicle = $this->repo->find($paramId);
+        $existingVehicle = $this->findByIdOrVin($paramId, $paramVin);
 
         try {
             if (is_null($existingVehicle)) {
-                $mfg    = $this->syncDb->find($parammfgId);
+                $mfg    = $this->syncDb->find($paramMfgId);
                 $models = $mfg->getModels();
 
                 foreach($models as $model) {
@@ -67,7 +110,7 @@ class MyVehicles
                     if ($modelId == $paramModelId) {
                         $modelName = $model->getModel();
                         $newVehicle = new MyVehicleEntity();
-                        $newVehicle->setMfgId($parammfgId);
+                        $newVehicle->setMfgId($paramMfgId);
                         $newVehicle->setMfg($mfg->getMfg());
                         $newVehicle->setModelId($modelId);
                         $newVehicle->setModel($modelName);
@@ -119,5 +162,23 @@ class MyVehicles
         }
 
         return true;
+    }
+
+    /**
+     * Find either by ID or VIN
+     *
+     * @param $id
+     * @param $vin
+     * @return null|object
+     */
+    public function findByIdOrVin($id, $vin)
+    {
+        $results = $this->repo->find($id);
+
+        if (is_null($results)) {
+            return $this->repo->findOneByVin($vin);
+        }
+
+        return $results;
     }
 }

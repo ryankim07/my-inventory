@@ -69,7 +69,9 @@ class VehiclesList extends React.Component {
             vehicle: {
                 id: data.id,
                 mfg_id: data.mfgid,
-                model_id: data.model,
+                mfg: data.mfg,
+                model_id: data.modelid,
+                model: data.model,
                 year: data.year,
                 color: data.color.toLowerCase(),
                 vin: data.vin,
@@ -81,7 +83,7 @@ class VehiclesList extends React.Component {
     removeMyVehicle(e) {
         let id = e.target.dataset.id;
 
-        ActionCreator.removeMyVehicle(id);
+        //ActionCreator.removeMyVehicle(id);
 
         AppDispatcher.handleViewAction({
             actionType: ActionConstants.REMOVE_MY_VEHICLE,
@@ -114,8 +116,8 @@ class VehiclesList extends React.Component {
                         <td>{ vehicle.plate }</td>
                         <td>
                             <button onClick={this.removeMyVehicle} data-id={vehicle.id}>×</button>
-                            <button onClick={this.editMyVehicle} data-id={vehicle.id} data-mfgid={vehicle.mfg_id}
-                                    data-model={vehicle.model_id} data-year={vehicle.year} data-color={vehicle.color}
+                            <button onClick={this.editMyVehicle} data-id={vehicle.id} data-mfg={vehicle.mfg} data-mfgid={vehicle.mfg_id}
+                                    data-model={vehicle.model} data-modelid={vehicle.model_id} data-year={vehicle.year} data-color={vehicle.color}
                                     data-vin={vehicle.vin} data-plate={vehicle.plate}>edit
                             </button>
                         </td>

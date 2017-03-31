@@ -27,18 +27,18 @@ class SyncDb
      */
     public function findAll()
     {
-        return $this->doSelect(null);
+        return $this->doSelect();
     }
 
     /**
      * Find specific manufacturer and models
      *
-     * @param $mfgId
+     * @param $id
      * @return mixed|null|object|string
      */
-    public function find($mfgId)
+    public function find($id = null)
     {
-        return $this->doSelect($mfgId);
+        return $this->doSelect($id);
     }
 
     /**

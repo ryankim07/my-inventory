@@ -5,10 +5,15 @@ import ActionConstants from '../constants/action-constants';
 import _ from 'lodash';
 
 let _my_vehicles = [];
+let _my_vehicle = {};
 let _myVehicleAdded = false;
 
-function setMyVehicles(vehicles) {
+function setAllMyVehicles(vehicles) {
     _my_vehicles = vehicles ;
+}
+
+function setMyVehicle(vehicle) {
+	_my_vehicle = vehicle ;
 }
 
 function flagNewVehicle() {
@@ -18,6 +23,10 @@ function flagNewVehicle() {
 let MyVehiclesStore = assign({}, EventEmitter.prototype, {
     getMyVehicles: function () {
         return _my_vehicles;
+    },
+
+	getVehicleToUpdate: function () {
+        return _my_vehicle;
     },
 
     isNewVehicleAdded: function () {
@@ -86,11 +95,15 @@ MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
 
     switch(action.actionType) {
         case ActionConstants.RECEIVE_MY_VEHICLES:
-            setMyVehicles(action.vehicles);
+            setAllMyVehicles(action.vehicles);
         break;
 
         case ActionConstants.ADD_MY_VEHICLE:
             flagNewVehicle();
+        break;
+
+        case ActionConstants.EDIT_MY_VEHICLE:
+			setMyVehicle(action.vehicle);
         break;
 
         case ActionConstants.UPDATE_MY_VEHICLE:

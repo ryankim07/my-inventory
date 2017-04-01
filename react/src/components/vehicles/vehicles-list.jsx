@@ -3,7 +3,6 @@ import MyVehiclesStore from '../../stores/my-vehicles-store';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
 import ActionCreator from '../../actions/action-creator';
-import RightPanel from '../vehicles/right-panel';
 import Loader from '../loader';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -13,13 +12,6 @@ let mainShrinkedDesktopColumnWidth = 'col-md-8';
 let mainClassName = 'main-column';
 
 class VehiclesList extends React.Component {
-
-    // Context
-    getChildContext() {
-        return {
-            myVehicle: this.state.vehicle == 'undefined' ? {} : this.state.vehicle
-        };
-    }
 
     constructor(props) {
         super(props);
@@ -38,7 +30,7 @@ class VehiclesList extends React.Component {
 
         this._onChange = this._onChange.bind(this);
         this.editMyVehicle = this.editMyVehicle.bind(this);
-        this.closeRightPanel = this.closeRightPanel.bind(this);
+        this.removeMyVehicle = this.removeMyVehicle.bind(this);
     }
 
     componentWillMount() {
@@ -58,52 +50,38 @@ class VehiclesList extends React.Component {
     }
 
     editMyVehicle(e) {
+        // Set panel width
+        this.props.setPanel();
+
         let data = e.target.dataset;
-        this.setState({
-            columnCss: {
-                'mobileWidth': mainShrinkedMobileColumnWidth,
-                'desktopWidth': mainShrinkedDesktopColumnWidth,
-                'className': mainClassName
-            },
-            showRightPanel: true,
-            vehicle: {
-                id: data.id,
-                mfg_id: data.mfgid,
-                mfg: data.mfg,
-                model_id: data.modelid,
-                model: data.model,
-                year: data.year,
-                color: data.color.toLowerCase(),
-                vin: data.vin,
-                plate: data.plate
-            }
-        });
+
+		AppDispatcher.handleViewAction({
+			actionType: ActionConstants.EDIT_MY_VEHICLE,
+			vehicle: {
+				id: data.id,
+				mfg_id: data.mfgid,
+				mfg: data.mfg,
+				model_id: data.modelid,
+				model: data.model,
+				year: data.year,
+				color: data.color.toLowerCase(),
+				vin: data.vin,
+				plate: data.plate
+			}
+		});
     }
 
     removeMyVehicle(e) {
         let id = e.target.dataset.id;
 
-        //ActionCreator.removeMyVehicle(id);
-
-        AppDispatcher.handleViewAction({
-            actionType: ActionConstants.REMOVE_MY_VEHICLE,
-            id: id
-        });
-    }
-
-    closeRightPanel() {
-        this.setState({
-            columnCss: {
-                'mobileWidth': mainDefaultMobileColumnWidth,
-                'desktopWidth': mainDefaultDesktopColumnWidth
-            },
-            showRightPanel: false
-        });
+        ActionCreator.removeMyVehicle(id);
+		MyVehiclesStore.removeMyVehicle(id);
     }
 
     render() {
         let vehiclesHtml = '';
 
+		// If loading is complete
         if (!this.state.loader) {
             vehiclesHtml = this.state.vehicles.map((vehicle) => {
                 return (
@@ -129,45 +107,40 @@ class VehiclesList extends React.Component {
         }
 
         return (
-            <div className={[this.state.columnCss.mobileWidth, this.state.columnCss.desktopWidth, this.state.columnCss.className].join(' ')} id="vehicles-main">
-                <div className="page-header">
-                    <h2>My Vehicles</h2>
-                </div>
-                <div className="col-xs-12 col-md-7">
-                    <div className="row">
-                        <div className="panel panel-info">
-                            <div className="panel-heading"><span>Vehicles</span></div>
-                            <div className="panel-body">
-                                <div className="table-responsive vehicles-table">
-                                    <table className="table">
-                                        <thead>
-                                        <tr>
-                                            <th>Manufacturer</th>
-                                            <th>Model</th>
-                                            <th>Year</th>
-                                            <th>Color</th>
-                                            <th>Vin</th>
-                                            <th>Plate</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        { vehiclesHtml }
-                                        </tbody>
-                                    </table>
+            <div className={[this.props.mobileWidth, this.props.desktopWidth, this.props.className].join(' ')} id="vehicles-main">
+                <div className="row">
+                    <div className="panel panel-info">
+                        <div className="panel-heading">
+                            <div className="row">
+                                <div className="col-xs-10 col-md-10">
+                                    <span>Vehicle Edit</span>
                                 </div>
+                                <div className="col-xs-2 col-md-2"></div>
                             </div>
+                        </div>
+                        <div className="panel-body">
+                            <table className="table">
+                                <thead>
+                                <tr>
+                                    <th>Manufacturer</th>
+                                    <th>Model</th>
+                                    <th>Year</th>
+                                    <th>Color</th>
+                                    <th>Vin</th>
+                                    <th>Plate</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                { vehiclesHtml }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-                { !this.state.showRightPanel ? null : <RightPanel closeRightPanel={this.closeRightPanel} /> }
             </div>
         )
     }
-}
-
-VehiclesList.childContextTypes = {
-    myVehicle: React.PropTypes.object
 }
 
 export default VehiclesList;

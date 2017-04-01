@@ -31,11 +31,11 @@ class Header extends React.Component {
                             <li className="dropdown">
                                 <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Auto <span className="caret"></span></a>
                                 <ul className="dropdown-menu" role="menu">
-                                    <li>
+                                   <li>
                                         <Link to="/vehicle/add" className="menu-link"><i className="fa fa-car menu-link-icon"></i>Add</Link>
                                     </li>
                                     <li>
-                                        <Link to="/vehicles" className="menu-link"><i className="fa fa-list-alt menu-link-icon"></i>All</Link>
+                                        <Link to="/vehicles/dashboard" className="menu-link"><i className="fa fa-list-alt menu-link-icon"></i>All</Link>
                                     </li>
                                 </ul>
                             </li>

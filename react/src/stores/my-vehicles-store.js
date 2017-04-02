@@ -29,6 +29,10 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
         return _my_vehicle;
     },
 
+    unsetVehicleToUpdate: function () {
+        return _my_vehicle = {};
+    },
+
     isNewVehicleAdded: function () {
         return _myVehicleAdded;
     },

@@ -24,7 +24,7 @@ class VehicleAdd extends React.Component {
                 vin: '',
                 plate: '',
             },
-            editingMode: false,
+            isEditingMode: false,
             newVehicleAdded: false,
             loader: true
         };
@@ -37,10 +37,6 @@ class VehicleAdd extends React.Component {
     componentWillMount() {
         ApiVehiclesStore.addChangeListener(this._onChange);
         MyVehiclesStore.addChangeListener(this._onChange);
-
-        let vehicle = this.state.vehicle;
-        vehicle['year'] = new Date().getFullYear();
-        this.setState({vehicle: vehicle});
     }
 
     componentDidMount() {
@@ -50,12 +46,14 @@ class VehicleAdd extends React.Component {
     componentWillUnmount() {
 		ApiVehiclesStore.removeChangeListener(this._onChange);
 		MyVehiclesStore.removeChangeListener(this._onChange);
+		MyVehiclesStore.unsetVehicleToUpdate();
 	}
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (nextState.newVehicleAdded) {
+        if (nextState.newVehicleAdded || this.state.newVehicleAdded) {
 			// Only redirect to list if new vehicle is being added
 			MyVehiclesStore.unFlagNewVehicle();
+			nextState.newVehicleAdded = false;
 			this.context.router.push('/vehicles/dashboard');
 		}
 
@@ -65,12 +63,19 @@ class VehicleAdd extends React.Component {
     // Listen to changes in store, update it's own state
     _onChange() {
     	let isNewVehicle = MyVehiclesStore.isNewVehicleAdded();
-		let storeVehicle = MyVehiclesStore.getVehicleToUpdate();
+		let vehicleToUpdate = MyVehiclesStore.getVehicleToUpdate();
+		let isEditingMode = this.state.isEditingMode;
+		let stateVehicle = this.state.vehicle;
+
+		if (Object.keys(vehicleToUpdate).length != 0) {
+			stateVehicle = vehicleToUpdate;
+			isEditingMode = true;
+		}
 
 		this.setState({
-			vehicle: Object.keys(storeVehicle).length != 0 ? storeVehicle : this.state.vehicle,
+		    vehicle: stateVehicle,
 			manufacturers: ApiVehiclesStore.getApiVehicles(),
-			editingMode: Object.keys(storeVehicle).length != 0 ? true : this.state.editingMode,
+			isEditingMode: isEditingMode,
 			newVehicleAdded: isNewVehicle,
 			loader: false
 		});
@@ -110,12 +115,12 @@ class VehicleAdd extends React.Component {
     handleFormSubmit(event) {
         event.preventDefault();
 
-        // Add new vehicle
-        ActionCreator.addMyVehicle(this.state.vehicle);
-
-        // Close panel after update
-        if (this.state.editingMode) {
-        	MyVehiclesStore.updateMyVehicle(this.state.vehicle);
+        if (!this.state.isEditingMode) {
+			// Add new vehicle
+			ActionCreator.addMyVehicle(this.state.vehicle);
+		} else {
+			ActionCreator.updateMyVehicle(this.state.vehicle);
+            MyVehiclesStore.updateMyVehicle(this.state.vehicle);
 
         	// Close the panel
             this.props.closeRightPanel();
@@ -264,10 +269,10 @@ class VehicleAdd extends React.Component {
                         <div className="panel-heading">
                             <div className="row">
                                 <div className="col-xs-10 col-md-10">
-                                    <span>{ this.state.editingMode ? 'Edit' : 'Add' } Vehicle</span>
+                                    <span>Vehicle</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2">
-                                    { this.state.editingMode ? <button onClick={this.props.closeRightPanel} className="close close-viewer" value="Close"><span>&times;</span></button> : ''}
+                                    { this.state.isEditingMode ? <button onClick={this.props.closeRightPanel} className="close close-viewer" value="Close"><span>&times;</span></button> : ''}
                                 </div>
                             </div>
                         </div>

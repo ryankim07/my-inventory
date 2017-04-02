@@ -37,6 +37,23 @@ var ActionCreator = {
             });
     },
 
+	updateMyVehicle: function (data) {
+		Api
+			.post('http://mcs.dev/api/vehicle', data)
+			.then(function (msg) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.UPDATE_MY_VEHICLE,
+					msg: msg
+				});
+			})
+			.catch(function () {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.RECEIVE_ERROR,
+					msg: 'There was a problem updating vehicle'
+				});
+			});
+	},
+
     removeMyVehicle: function (id) {
         Api
             .delete('http://mcs.dev/api/vehicles/' + id)

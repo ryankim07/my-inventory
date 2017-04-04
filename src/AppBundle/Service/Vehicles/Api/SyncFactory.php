@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 
 class SyncFactory
 {
-    public static function get($type, EntityManager $entityManager)
+    public static function get(EntityManager $entityManager, $type)
     {
         $instance = null;
 

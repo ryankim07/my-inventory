@@ -58,7 +58,7 @@ class MyVehicleController extends FOSRestController
     public function postAction(Request $request)
     {
         // Request param
-        $data = $request->get('my_new_vehicle');
+        $data = $request->get('data');
 
         // Call service to save
         $service = $this->get('My_Vehicles');

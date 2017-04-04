@@ -7,6 +7,7 @@ import _ from 'lodash';
 let _my_vehicles = [];
 let _my_vehicle = {};
 let _myVehicleAdded = false;
+let _media;
 
 function setAllMyVehicles(vehicles) {
     _my_vehicles = vehicles ;
@@ -18,6 +19,10 @@ function setMyVehicle(vehicle) {
 
 function flagNewVehicle() {
     _myVehicleAdded = true;
+}
+
+function setMedia(media) {
+    _media = media;
 }
 
 let MyVehiclesStore = assign({}, EventEmitter.prototype, {
@@ -116,6 +121,10 @@ MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
 
         case ActionConstants.REMOVE_MY_VEHICLE:
             MyVehiclesStore.removeMyVehicle(action.id);
+        break;
+
+		case ActionConstants.ADD_MEDIA:
+			setMedia(action.file);
         break;
 
         default:

@@ -86,7 +86,24 @@ var ActionCreator = {
                     msg: 'There was a problem getting the manufacturers'
                 });
             });
-    }
+    },
+
+    addMedia: function (file) {
+		Api
+			.postImage('http://mcs.dev/api/asset', file)
+			.then(function (msg) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.ADD_MEDIA,
+					file: file
+				});
+			})
+			.catch(function () {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.RECEIVE_ERROR,
+					msg: 'There was a problem adding new media'
+				});
+			});
+	}
 };
 
 export default ActionCreator;

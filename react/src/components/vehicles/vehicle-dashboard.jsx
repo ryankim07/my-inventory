@@ -7,8 +7,8 @@ let mainDefaultDesktopColumnWidth = 'col-md-12';
 let mainShrinkedMobileColumnWidth = 'col-xs-8';
 let mainShrinkedDesktopColumnWidth = 'col-md-8';
 
-class VehiclesDashboard extends React.Component {
-
+class VehiclesDashboard extends React.Component
+{
 	constructor(props) {
 		super(props);
 

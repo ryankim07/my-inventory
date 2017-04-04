@@ -5,11 +5,11 @@ parameters:
 
 services:
     # Factories
-    Api_Factory:
+    Sync_Factory:
         class: AppBundle\Service\Vehicles\Api\SyncFactory
         arguments:
-          - "%vehicle_api_type%"
-          - "@doctrine.orm.entity_manager"
+            - "@doctrine.orm.entity_manager"
+            - "%vehicle_api_type%"
 
     # Services
     Sync_Abstract:
@@ -29,10 +29,10 @@ services:
 
     Sync_Api:
       class: AppBundle\Service\Vehicles\Api\SyncInterface
-      factory: ["@Api_Factory", get]
+      factory: ["@Sync_Factory", get]
       arguments:
-          - "%vehicle_api_type%"
           - "@doctrine.orm.entity_manager"
+          - "%vehicle_api_type%"
 
     Sync_Db:
       class: AppBundle\Service\Vehicles\Api\SyncDb
@@ -43,3 +43,9 @@ services:
         arguments:
             - "@doctrine.orm.entity_manager"
             - "@Sync_Db"
+
+    Assets:
+        class: AppBundle\Service\Assets
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "%assets_dir%"

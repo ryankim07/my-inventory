@@ -118,6 +118,7 @@ class MyVehicles
                         $newVehicle->setColor($paramColor);
                         $newVehicle->setVin($paramVin);
                         $newVehicle->setPlate($paramPlate);
+
                         $this->em->persist($newVehicle);
                         $this->em->flush();
 
@@ -131,7 +132,9 @@ class MyVehicles
                 $existingVehicle->setColor($paramColor);
                 $existingVehicle->setVin($paramVin);
                 $existingVehicle->setPlate($paramPlate);
+
                 $this->em->flush();
+
                 return 'Vehicle already exists, and has been updated.';
             }
         } catch(\Exception $e) {

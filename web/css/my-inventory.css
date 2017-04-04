@@ -76,3 +76,16 @@ body {
     content:"*";
     color:red;
 }
+
+/*
+ * Loading spinner
+ */
+.loadingSpinner {
+    position: relative;
+    margin: 0 auto;
+    top: -50%;
+    width: 200px;
+    height: 19px;
+    z-index: 9999;
+    background: #fff;
+}

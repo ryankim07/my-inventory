@@ -20,6 +20,11 @@ class MyVehicleEntity
 
     /**
      * @ORM\Column(type="integer")
+     */
+    private $imageId;
+
+    /**
+     * @ORM\Column(type="integer")
      * @Assert\NotBlank()
      */
     private $mfgId;
@@ -78,6 +83,29 @@ class MyVehicleEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set image ID
+     *
+     * @param $imageId
+     * @return $this
+     */
+    public function setImageId($imageId)
+    {
+        $this->imageId = $imageId;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return mixed
+     */
+    public function getImageId()
+    {
+        return $this->imageId;
     }
 
     /**

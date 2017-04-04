@@ -1,9 +1,14 @@
 import React from 'react';
 
-class Loader extends React.Component{
+class Loader extends React.Component
+{
     render() {
-        return (<span>Loading...</span>);
-    };
-};
+        return (
+            <div>
+                <img src={'../images/ajax-loader.gif'} className="loadingSpinner" />
+            </div>
+        );
+    }
+}
 
 export default Loader;

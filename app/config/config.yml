@@ -8,6 +8,7 @@ imports:
 parameters:
     locale: en
     vehicle_api_type: Nhtsa
+    assets_dir: '/uploads/assets'
 
 framework:
     #esi:             ~

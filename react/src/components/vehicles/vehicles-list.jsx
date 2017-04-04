@@ -11,8 +11,8 @@ let mainShrinkedMobileColumnWidth = 'col-xs-8';
 let mainShrinkedDesktopColumnWidth = 'col-md-8';
 let mainClassName = 'main-column';
 
-class VehiclesList extends React.Component {
-
+class VehiclesList extends React.Component
+{
     constructor(props) {
         super(props);
 

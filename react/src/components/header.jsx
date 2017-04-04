@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router'
 
-class Header extends React.Component {
+class Header extends React.Component
+{
     render() {
         return (
             <nav className="navbar navbar-inverse navbar-fixed-top">

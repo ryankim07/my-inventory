@@ -1,13 +1,12 @@
 import React from 'react';
-import AppDispatcher from '../../dispatcher/app-dispatcher';
-import ActionConstants from '../../constants/action-constants';
 import ApiVehiclesStore from '../../stores/api-vehicles-store';
 import MyVehiclesStore from '../../stores/my-vehicles-store';
 import ActionCreator from '../../actions/action-creator';
+import Uploader from '../utils/uploader';
 import Loader from '../loader';
 
-class VehicleAdd extends React.Component {
-
+class VehicleAdd extends React.Component
+{
     constructor(props) {
         super(props);
 
@@ -163,6 +162,14 @@ class VehicleAdd extends React.Component {
 			}
 
 			vehicleForm = <form onSubmit={this.handleFormSubmit}>
+								<div className="form-group required">
+									<div className="col-xs-12 col-md-8">
+										<label className="control-label">Image</label>
+										<div className="input-group">
+											<Uploader/>
+										</div>
+									</div>
+								</div>
                                 <div className="form-group required">
                                     <div className="col-xs-12 col-md-8">
                                         <label className="control-label">Year</label>

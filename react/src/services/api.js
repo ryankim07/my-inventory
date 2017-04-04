@@ -31,7 +31,7 @@ var Api = {
         return new Promise(function (resolve, reject) {
             request
                 .post(url)
-                .send({ my_new_vehicle: data })
+                .send({ data: data })
                 .set('Accept', 'application/json')
                 .end(function (res) {
                     if (res.status === 404) {
@@ -40,19 +40,23 @@ var Api = {
                         resolve(JSON.parse(res.text));
                     }
                 });
-            /*fetch(url, {
-                method: 'POST',
-                body: data
-                })
-                .then(json)
-                .then(function (msg) {
-                    console.log('Request succeeded with JSON response', msg);
-                })
-                .catch(function(err) {
-                    console.log('Fetch Error :-S', err);
-                });*/
         });
     },
+
+    postImage: function (url, data) {
+		return new Promise(function (resolve, reject) {
+			request
+				.post(url)
+				.attach('file', data)
+				.end(function (res) {
+					if (res.status === 404) {
+						reject();
+					} else {
+						resolve(JSON.parse(res.text));
+					}
+				});
+		});
+	},
 
     delete: function (url) {
         return new Promise(function (resolve, reject) {

@@ -49,4 +49,4 @@ services:
         arguments:
             - "@doctrine.orm.entity_manager"
             - "@Sync_Db"
-            - "@Assets"
+            - "%assets_dir%"

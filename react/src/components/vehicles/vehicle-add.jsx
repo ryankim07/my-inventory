@@ -4,6 +4,7 @@ import MyVehiclesStore from '../../stores/my-vehicles-store';
 import ActionCreator from '../../actions/action-creator';
 import Uploader from '../utils/uploader';
 import Loader from '../loader';
+import _ from 'lodash';
 
 class VehicleAdd extends React.Component
 {
@@ -21,16 +22,18 @@ class VehicleAdd extends React.Component
                 year: '',
                 color: '',
                 vin: '',
-                plate: '',
+                plate: ''
             },
             isEditingMode: false,
             newVehicleAdded: false,
-            loader: true
+            loader: true,
+			asset: ''
         };
 
         this._onChange = this._onChange.bind(this);
         this.handleFormChange = this.handleFormChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
+		this.setAsset = this.setAsset.bind(this);
     }
 
     componentWillMount() {
@@ -49,11 +52,17 @@ class VehicleAdd extends React.Component
 	}
 
     shouldComponentUpdate(nextProps, nextState) {
+		let emptyObj = _.every(_.values(nextState.vehicle), function(v) {return !v;});
+		if (nextState.asset !== '' && emptyObj) {
+			return false;
+		}
+
         if (nextState.newVehicleAdded || this.state.newVehicleAdded) {
 			// Only redirect to list if new vehicle is being added
 			MyVehiclesStore.unFlagNewVehicle();
 			nextState.newVehicleAdded = false;
 			this.context.router.push('/vehicles/dashboard');
+			return false;
 		}
 
 		return true;
@@ -65,8 +74,7 @@ class VehicleAdd extends React.Component
 		let vehicleToUpdate = MyVehiclesStore.getVehicleToUpdate();
 		let isEditingMode = this.state.isEditingMode;
 		let stateVehicle = this.state.vehicle;
-
-		if (Object.keys(vehicleToUpdate).length != 0) {
+		if (Object.keys(vehicleToUpdate).length !== 0) {
 			stateVehicle = vehicleToUpdate;
 			isEditingMode = true;
 		}
@@ -89,7 +97,7 @@ class VehicleAdd extends React.Component
             case 'mfg_id':
             case 'model_id':
             case 'year':
-                if (chosenValue == 0) {
+                if (chosenValue === 0) {
                     alert('Please select correct manufacturer.');
                 } else {
                     vehicle[propertyName] = chosenValue;
@@ -115,8 +123,7 @@ class VehicleAdd extends React.Component
         event.preventDefault();
 
         if (!this.state.isEditingMode) {
-			// Add new vehicle
-			ActionCreator.addMyVehicle(this.state.vehicle);
+			ActionCreator.addMyVehicle(this.state.vehicle,  this.state.asset);
 		} else {
 			ActionCreator.updateMyVehicle(this.state.vehicle);
             MyVehiclesStore.updateMyVehicle(this.state.vehicle);
@@ -125,6 +132,10 @@ class VehicleAdd extends React.Component
             this.props.closeRightPanel();
         }
     }
+
+    setAsset(asset) {
+    	this.setState({asset: asset});
+	}
 
     render() {
         let vehicleForm = '';
@@ -144,11 +155,11 @@ class VehicleAdd extends React.Component
 
 			// Get selected choice from dropdown
 			let selectedMfg = this.state.manufacturers.filter(manufacturer => {
-				return manufacturer.id == defaultMfgId
+				return manufacturer.id === defaultMfgId
 			});
 
 			// Models options by ID
-			if (selectedMfg.length != 0) {
+			if (selectedMfg.length !== 0) {
 				apiModelsOptions = selectedMfg[0].models.map((veh, modelIndex) => {
 					return (
                         <option key={modelIndex} value={veh.model_id}>{ veh.model }</option>
@@ -166,7 +177,7 @@ class VehicleAdd extends React.Component
 									<div className="col-xs-12 col-md-8">
 										<label className="control-label">Image</label>
 										<div className="input-group">
-											<Uploader/>
+											<Uploader setAsset={this.setAsset} />
 										</div>
 									</div>
 								</div>

@@ -38,14 +38,15 @@ services:
       class: AppBundle\Service\Vehicles\Api\SyncDb
       arguments: ["@doctrine.orm.entity_manager"]
 
-    My_Vehicles:
-        class: AppBundle\Service\Vehicles\MyVehicles
-        arguments:
-            - "@doctrine.orm.entity_manager"
-            - "@Sync_Db"
-
     Assets:
         class: AppBundle\Service\Assets
         arguments:
             - "@doctrine.orm.entity_manager"
             - "%assets_dir%"
+
+    My_Vehicles:
+        class: AppBundle\Service\Vehicles\MyVehicles
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@Sync_Db"
+            - "@Assets"

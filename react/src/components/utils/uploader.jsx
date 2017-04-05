@@ -14,13 +14,22 @@ class Uploader extends React.Component
 		this.onDrop = this.onDrop.bind(this);
 	}
 
+	componentWillReceiveProps(nextProps) {
+		console.log(nextProps);
+	}
+
 	onDrop(acceptedFiles) {
-		ActionCreator.addMedia(acceptedFiles[0]);
+		if (this.props.setAsset) {
+			this.props.setAsset(acceptedFiles[0]);
+		} else {
+			ActionCreator.addMedia(acceptedFiles[0]);
+		}
 
 		this.setState({imageFile: acceptedFiles});
 	}
 
 	render() {
+		// Set preview
 		let assetPreview = this.state.imageFile.map((file, id) => {
 			return (
 				<img key={id} src={file.preview}/>

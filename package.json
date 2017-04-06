@@ -1,7 +1,7 @@
 {
   "name": "my-inventory",
   "version": "1.0.0",
-  "description": "my-inventory ==============",
+  "description": "my-inventory",
   "main": "index.js",
   "directories": {
     "test": "tests"

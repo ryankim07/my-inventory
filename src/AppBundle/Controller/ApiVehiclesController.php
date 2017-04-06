@@ -19,9 +19,9 @@ class ApiVehiclesController extends FOSRestController
      */
     public function syncAction()
     {
-        $services  = $this->get('Sync_Api');
-        $mfgs      = $services->getApiVehicles();
-        $results = $services->save($mfgs);
+        $services = $this->get('Sync_Api');
+        $mfgs     = $services->getApiVehicles();
+        $results  = $services->save($mfgs);
 
         $msg = !is_bool($results) && !empty($results) ? $results : 'Sync completed successfully.';
 

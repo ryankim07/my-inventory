@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\Vehicles\Api\VehiclesRepository")
@@ -41,7 +42,7 @@ class VehicleMfgsApiEntity
      */
     public function __construct()
     {
-        $this->models = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->models = new ArrayCollection();
     }
 
     /**
@@ -108,7 +109,7 @@ class VehicleMfgsApiEntity
      *
      * @return VehicleMfgsApiEntity
      */
-    public function addModel(\AppBundle\Entity\VehicleModelsApiEntity $model)
+    public function addModel(VehicleModelsApiEntity $model)
     {
         $this->models[] = $model;
 
@@ -120,7 +121,7 @@ class VehicleMfgsApiEntity
      *
      * @param \AppBundle\Entity\VehicleModelsApiEntity $model
      */
-    public function removeModel(\AppBundle\Entity\VehicleModelsApiEntity $model)
+    public function removeModel(VehicleModelsApiEntity $model)
     {
         $this->models->removeElement($model);
     }

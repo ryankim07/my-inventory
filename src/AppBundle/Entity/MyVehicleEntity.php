@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -12,16 +13,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MyVehicleEntity
 {
     /**
+     * @ORM\OneToMany(targetEntity="AssetsEntity", mappedBy="myVehicles")
+     * @ORM\OrderBy({"name" = "ASC"})
+     */
+    private $assets;
+
+    /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $imageId;
 
     /**
      * @ORM\Column(type="integer")
@@ -75,6 +77,17 @@ class MyVehicleEntity
      */
     private $plate;
 
+    private $imageName;
+    private $imagePath;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->assets = new ArrayCollection();
+    }
+
     /**
      * Get ID
      *
@@ -83,29 +96,6 @@ class MyVehicleEntity
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set image ID
-     *
-     * @param $imageId
-     * @return $this
-     */
-    public function setImageId($imageId)
-    {
-        $this->imageId = $imageId;
-
-        return $this;
-    }
-
-    /**
-     * Get image
-     *
-     * @return mixed
-     */
-    public function getImageId()
-    {
-        return $this->imageId;
     }
 
     /**
@@ -298,5 +288,53 @@ class MyVehicleEntity
     public function getPlate()
     {
         return $this->plate;
+    }
+
+    /**
+     * Add asset
+     *
+     * @param AssetsEntity $asset
+     *
+     * @return MyVehicleEntity
+     */
+    public function addAsset(AssetsEntity $asset)
+    {
+        $this->assets[] = $asset;
+
+        return $this;
+    }
+
+    /**
+     * Remove asset
+     *
+     * @param AssetsEntity $asset
+     */
+    public function removeAsset(AssetsEntity $asset)
+    {
+        $this->assets->removeElement($asset);
+    }
+
+    /**
+     * Get assets
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAssets()
+    {
+        return $this->assets;
+    }
+
+    public function setImageName($imageName)
+    {
+        $this->imageName = $imageName;
+
+        return $this;
+    }
+
+    public function setImagePath($imagePath)
+    {
+        $this->imagePath = $imagePath;
+
+        return $this;
     }
 }

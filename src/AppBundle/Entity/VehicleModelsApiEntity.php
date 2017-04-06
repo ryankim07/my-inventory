@@ -128,7 +128,7 @@ class VehicleModelsApiEntity
      *
      * @return VehicleModelsApiEntity
      */
-    public function setManufacturers(\AppBundle\Entity\VehicleMfgsApiEntity $manufacturers = null)
+    public function setManufacturers(VehicleMfgsApiEntity $manufacturers = null)
     {
         $this->manufacturers = $manufacturers;
 

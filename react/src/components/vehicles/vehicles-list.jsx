@@ -46,7 +46,10 @@ class VehiclesList extends React.Component
     }
 
     _onChange() {
-        this.setState({vehicles: MyVehiclesStore.getMyVehicles(), loader: false});
+        this.setState({
+            vehicles: MyVehiclesStore.getMyVehicles(),
+            loader: false
+        });
     }
 
     editMyVehicle(e) {
@@ -66,7 +69,11 @@ class VehiclesList extends React.Component
 				year: data.year,
 				color: data.color.toLowerCase(),
 				vin: data.vin,
-				plate: data.plate
+				plate: data.plate,
+				assets: {
+					name: data.imagename,
+					path: data.imagepath
+				}
 			}
 		});
     }
@@ -84,6 +91,9 @@ class VehiclesList extends React.Component
 		// If loading is complete
         if (!this.state.loader) {
             vehiclesHtml = this.state.vehicles.map((vehicle) => {
+                let imageName = vehicle.assets.length !== 0 ? vehicle.assets[0].name : '';
+                let imagePath = vehicle.assets.length !== 0 ? vehicle.assets[0].path : '';
+
                 return (
                     <tr key={ vehicle.id }>
                         <td>{ vehicle.mfg }</td>
@@ -96,7 +106,7 @@ class VehiclesList extends React.Component
                             <button onClick={this.removeMyVehicle} data-id={vehicle.id}>×</button>
                             <button onClick={this.editMyVehicle} data-id={vehicle.id} data-mfg={vehicle.mfg} data-mfgid={vehicle.mfg_id}
                                     data-model={vehicle.model} data-modelid={vehicle.model_id} data-year={vehicle.year} data-color={vehicle.color}
-                                    data-vin={vehicle.vin} data-plate={vehicle.plate}>edit
+                                    data-vin={vehicle.vin} data-plate={vehicle.plate} data-imagename={imageName} data-imagepath={imagePath}>edit
                             </button>
                         </td>
                     </tr>

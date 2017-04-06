@@ -2,7 +2,7 @@ import AppDispatcher from '../dispatcher/app-dispatcher';
 import ActionConstants from '../constants/action-constants';
 import Api from '../services/Api';
 
-var ActionCreator = {
+let ActionCreator = {
     getMyVehicles: function () {
         Api
             .get('http://mcs.dev/api/vehicles')
@@ -20,9 +20,9 @@ var ActionCreator = {
             });
     },
 
-    addMyVehicle: function (data) {
+    addMyVehicle: function (data, asset) {
         Api
-            .post('http://mcs.dev/api/vehicle', data)
+            .post('http://mcs.dev/api/vehicle', data, asset)
             .then(function (msg) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.ADD_MY_VEHICLE,
@@ -88,19 +88,19 @@ var ActionCreator = {
             });
     },
 
-    addMedia: function (file) {
+	setAssets: function (file) {
 		Api
 			.postImage('http://mcs.dev/api/asset', file)
 			.then(function (msg) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.ADD_MEDIA,
+					actionType: ActionConstants.SET_ASSETS,
 					file: file
 				});
 			})
 			.catch(function () {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.RECEIVE_ERROR,
-					msg: 'There was a problem adding new media'
+					msg: 'There was a problem adding new assets'
 				});
 			});
 	}

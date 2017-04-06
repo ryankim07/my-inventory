@@ -4,24 +4,25 @@ namespace AppBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\AssetsEntity;
+use AppBundle\Entity\MyVehicleEntity;
 
 class Assets
 {
-    private $uploadDir;
     protected $em;
     protected $repo;
+    protected $fileUploader;
 
     /**
      * Constructor
      *
      * @param EntityManager $entityManager
-     * @param $uploadDir
+     * @param FileUploader $fileUploader
      */
-    public function __construct(EntityManager $entityManager, $uploadDir)
+    public function __construct(EntityManager $entityManager, FileUploader $fileUploader)
     {
-        $this->em        = $entityManager;
-        $this->repo      = $this->em->getRepository('AppBundle:AssetsEntity');
-        $this->uploadDir = $uploadDir;
+        $this->em           = $entityManager;
+        $this->repo         = $this->em->getRepository('AppBundle:AssetsEntity');
+        $this->fileUploader = $fileUploader;
     }
 
     /**
@@ -43,9 +44,10 @@ class Assets
             if (is_null($existingAsset)) {
                 $asset = new AssetsEntity();
                 $asset->setFile($file);
+                $asset->setMyVehicleId(null);
                 $asset->setPath($file->getPathName());
                 $asset->setName($file->getClientOriginalName());
-                $asset->setUploadDir($this->uploadDir);
+                //$asset->setUploadDir($this->fileUploader->uploadDir);
                 $asset->upload();
 
                 $this->em->persist($asset);
@@ -54,7 +56,7 @@ class Assets
                 $existingAsset->setFile($file);
                 $existingAsset->setPath($file->getPathName());
                 $existingAsset->setName($file->getClientOriginalName());
-                $existingAsset->setUploadDir($this->uploadDir);
+                //$existingAsset->setUploadDir($this->fileUploader->uploadDir);
                 $existingAsset->upload();
 
                 $this->em->flush();

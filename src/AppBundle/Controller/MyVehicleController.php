@@ -24,7 +24,7 @@ class MyVehicleController extends FOSRestController
         $service = $this->get('My_Vehicles');
         $results = $service->findAll();
 
-        if (is_null($results)) {
+        if (!$results) {
             return new View("My vehicles not found.", Response::HTTP_NOT_FOUND);
         }
         
@@ -58,7 +58,8 @@ class MyVehicleController extends FOSRestController
     public function postAction(Request $request)
     {
         // Request param
-        $data = $request->get('data');
+        $data          = json_decode(stripslashes($request->get('data')), true);
+        $data['asset'] = $request->files->get('file');
 
         // Call service to save
         $service = $this->get('My_Vehicles');

@@ -27,12 +27,12 @@ var Api = {
         });
     },
 
-    post: function (url, data) {
+    post: function (url, data, asset) {
         return new Promise(function (resolve, reject) {
             request
                 .post(url)
-                .send({ data: data })
-                .set('Accept', 'application/json')
+				.field('data', JSON.stringify(data))
+				.attach('file', asset)
                 .end(function (res) {
                     if (res.status === 404) {
                         reject();

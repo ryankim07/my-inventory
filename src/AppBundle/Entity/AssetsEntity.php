@@ -4,7 +4,6 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity
@@ -13,11 +12,23 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class AssetsEntity
 {
     /**
+     * @ORM\ManyToOne(targetEntity="MyVehicleEntity", inversedBy="assets")
+     * @ORM\JoinColumn(name="my_vehicle_id", referencedColumnName="id")
+     */
+    private $myVehicles;
+
+    /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
+     */
+    private $myVehicleId;
     
     /**
      * @ORM\Column(type="string", length=255)
@@ -30,12 +41,6 @@ class AssetsEntity
      */
     public $path;
 
-    /**
-     * @Assert\File(maxSize="6000000")
-     */
-    private $file;
-
-    private $uploadDir;
 
     /**
      * Get id
@@ -45,6 +50,29 @@ class AssetsEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get my vehicle ID
+     *
+     * @return integer
+     */
+    public function getMyVehicleId()
+    {
+        return $this->myVehicleId;
+    }
+
+    /**
+     * Set my vehicle ID
+     *
+     * @param $myVehicleId
+     * @return $this
+     */
+    public function setMyVehicleId($myVehicleId)
+    {
+        $this->myVehicleId = $myVehicleId;
+
+        return $this;
     }
 
     /**
@@ -92,119 +120,28 @@ class AssetsEntity
     {
         return $this->path;
     }
+
     /**
-     * Sets file.
+     * Set myVehicles
      *
-     * @param UploadedFile $file
-     */
-    public function setFile(UploadedFile $file = null)
-    {
-        $this->file = $file;
-        // check if we have an old image path
-        if (isset($this->path)) {
-            // store the old name to delete after the update
-            $this->temp = $this->path;
-            $this->path = null;
-        } else {
-            $this->path = 'initial';
-        }
-    }
-
-    /**
-     * Get file.
+     * @param MyVehicleEntity $myVehicles
      *
-     * @return UploadedFile
+     * @return AssetsEntity
      */
-    public function getFile()
+    public function setMyVehicles(MyVehicleEntity $myVehicles = null)
     {
-        return $this->file;
+        $this->myVehicles = $myVehicles;
+
+        return $this;
     }
 
     /**
-     * Get absolute path
+     * Get myVehicles
      *
-     * @return null|string
+     * @return MyVehicleEntity
      */
-    public function getAbsolutePath()
+    public function getMyVehicles()
     {
-        return null === $this->path
-            ? null
-            : $this->getUploadRootDir() . '/' . $this->path;
-    }
-
-    /**
-     * Get web path
-     *
-     * @return null|string
-     */
-    public function getWebPath()
-    {
-        return null === $this->path
-            ? null
-            : $this->getUploadDir().'/' . $this->path;
-    }
-
-    /**
-     * Get full path of upload directory
-     *
-     * @return string
-     */
-    protected function getUploadRootDir()
-    {
-        return __DIR__.'/../../../../web/' . $this->getUploadDir();
-    }
-
-    /**
-     * Set target directory
-     *
-     * @param $dir
-     */
-    public function setUploadDir($dir)
-    {
-        $this->uploadDir = $dir;
-    }
-
-    /**
-     * Get target directory
-     *
-     * @return mixed
-     */
-    protected function getUploadDir()
-    {
-        return $this->uploadDir;
-    }
-
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function preUpload()
-    {
-        if (null === $this->file) {
-            return;
-        }
-
-        if ($this->path != $this->file->getClientOriginalName()) {
-            $this->path = $this->file->getClientOriginalName();
-        }
-    }
-
-    /**
-     * @ORM\PostPersist()
-     * @ORM\PostUpdate()
-     */
-    public function upload()
-    {
-        if (null === $this->file) {
-            return;
-        }
-
-        $fileName = $this->file->getClientOriginalName();
-
-        if (!file_exists($this->getUploadRootDir())) {
-            mkdir($this->getUploadRootDir(), 0775, true);
-        }
-        $this->file->move($this->getUploadRootDir(), $fileName);
-        $this->file = null;
+        return $this->myVehicles;
     }
 }

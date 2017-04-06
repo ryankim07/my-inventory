@@ -4,25 +4,30 @@ namespace AppBundle\Service\Vehicles;
 
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\MyVehicleEntity;
+use AppBundle\Entity\AssetsEntity;
 use AppBundle\Service\Vehicles\Api\SyncDb;
+use AppBundle\Service\FileUploader;
 
 class MyVehicles
 {
     protected $em;
     protected $repo;
     protected $syncDb;
+    protected $fileUploader;
 
     /**
      * Constructor
      *
      * @param EntityManager $entityManager
      * @param SyncDb $syncDb
+     * @param FileUploader $fileUploader
      */
-    public function __construct(EntityManager $entityManager, SyncDb $syncDb)
+    public function __construct(EntityManager $entityManager, SyncDb $syncDb, FileUploader $fileUploader)
     {
-        $this->em     = $entityManager;
-        $this->repo   = $this->em->getRepository('AppBundle:MyVehicleEntity');
-        $this->syncDb = $syncDb;
+        $this->em           = $entityManager;
+        $this->repo         = $this->em->getRepository('AppBundle:MyVehicleEntity');
+        $this->syncDb       = $syncDb;
+        $this->fileUploader = $fileUploader;
     }
 
     /**
@@ -90,17 +95,19 @@ class MyVehicles
             return 'Empty new vehicle information.';
         }
 
-        $paramId         = (int)$vehicle['id'];
-        $paramMfgId      = (int)$vehicle['mfg_id'];
-        $paramModelId    = (int)$vehicle['model_id'];
-        $paramYear       = $vehicle['year'];
-        $paramColor      = $vehicle['color'];
-        $paramVin        = $vehicle['vin'];
-        $paramPlate      = $vehicle['plate'];
-        $existingVehicle = $this->findByIdOrVin($paramId, $paramVin);
-
         try {
+            $paramId         = (int)$vehicle['id'];
+            $paramMfgId      = (int)$vehicle['mfg_id'];
+            $paramModelId    = (int)$vehicle['model_id'];
+            $paramYear       = $vehicle['year'];
+            $paramColor      = $vehicle['color'];
+            $paramVin        = $vehicle['vin'];
+            $paramPlate      = $vehicle['plate'];
+            $image           = $vehicle['asset'];
+            $existingVehicle = $this->findByIdOrVin($paramId, $paramVin);
+
             if (is_null($existingVehicle)) {
+                // Save new my vehicle
                 $mfg    = $this->syncDb->find($paramMfgId);
                 $models = $mfg->getModels();
 
@@ -118,16 +125,28 @@ class MyVehicles
                         $newVehicle->setColor($paramColor);
                         $newVehicle->setVin($paramVin);
                         $newVehicle->setPlate($paramPlate);
-
-                        $this->em->persist($newVehicle);
-                        $this->em->flush();
-
                         break;
                     } else {
                         continue;
                     }
                 }
+
+                $this->em->persist($newVehicle);
+                $this->em->flush();
+
+                // Upload file and save new asset
+                if (!is_null($image)) {
+                    $assetFullPath = $this->fileUploader->upload($image);
+                    $assetEntity = new AssetsEntity();
+                    $assetEntity->setMyVehicles($newVehicle);
+                    $assetEntity->setName($image->getClientOriginalName());
+                    $assetEntity->setPath($assetFullPath);
+
+                    $this->em->persist($assetEntity);
+                    $this->em->flush();
+                }
             } else {
+                // Update existing my vehicle
                 $existingVehicle->setYear($paramYear);
                 $existingVehicle->setColor($paramColor);
                 $existingVehicle->setVin($paramVin);
@@ -135,7 +154,32 @@ class MyVehicles
 
                 $this->em->flush();
 
-                return 'Vehicle already exists, and has been updated.';
+                if (!is_null($image)) {
+                    // Upload file
+                    $assetFullPath = $this->fileUploader->upload($image);
+
+                    // Insert or update existing path for updated image
+                    $existingAsset = $this->em->getRepository('AppBundle:AssetsEntity')->findOneByMyVehicleId($existingVehicle->getId());
+
+                    if (!$existingAsset) {
+                        $assetEntity = new AssetsEntity();
+                        $assetEntity->setMyVehicles($existingVehicle->getId());
+                        $assetEntity->setName($image->getClientOriginalName());
+                        $assetEntity->setPath($assetFullPath);
+
+                        $this->em->persist($assetEntity);
+                        $this->em->flush();
+                    } else {
+                        //@TODO Remove existing image
+                        $currentPath = $existingAsset->getPath();
+                        // $this->fileUploader->removeCurrentAsset($currentPath);
+
+                        $existingAsset->setPath($assetFullPath);
+                        $this->em->flush();
+
+                        return 'Vehicle already exists, and has been updated.';
+                    }
+                }
             }
         } catch(\Exception $e) {
             return 'Failed to save new vehicle information.';

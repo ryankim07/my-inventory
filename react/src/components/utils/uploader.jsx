@@ -8,33 +8,45 @@ class Uploader extends React.Component
 		super(props);
 
 		this.state = {
-			imageFile: []
+			asset: []
 		}
 
 		this.onDrop = this.onDrop.bind(this);
 	}
 
+	componentWillMount() {
+		if (this.props.setAsset) {
+			this.setState({asset: this.props.assets});
+		}
+	}
+
 	componentWillReceiveProps(nextProps) {
-		console.log(nextProps);
+		console.log('received props');
 	}
 
 	onDrop(acceptedFiles) {
 		if (this.props.setAsset) {
 			this.props.setAsset(acceptedFiles[0]);
 		} else {
-			ActionCreator.addMedia(acceptedFiles[0]);
+			ActionCreator.setAssets(acceptedFiles[0]);
 		}
 
-		this.setState({imageFile: acceptedFiles});
+		this.setState({asset: acceptedFiles});
 	}
 
 	render() {
 		// Set preview
-		let assetPreview = this.state.imageFile.map((file, id) => {
-			return (
-				<img key={id} src={file.preview}/>
-			);
-		});
+		let assetPreview = '';
+
+		if (this.props.isEditingMode) {
+			assetPreview = <img src={this.state.asset.path} />;
+		} else {
+			assetPreview = this.state.asset.map((file, id) => {
+				return (
+					<img key={id} src={file.preview} />
+				);
+			});
+		}
 
 		return (
 			<div>

@@ -22,12 +22,12 @@ class VehicleAdd extends React.Component
                 year: '',
                 color: '',
                 vin: '',
-                plate: ''
+                plate: '',
+				assets: []
             },
             isEditingMode: false,
             newVehicleAdded: false,
-            loader: true,
-			asset: ''
+            loader: true
         };
 
         this._onChange = this._onChange.bind(this);
@@ -52,8 +52,9 @@ class VehicleAdd extends React.Component
 	}
 
     shouldComponentUpdate(nextProps, nextState) {
+    	// Check here and don't render component again if it's an image upload action
 		let emptyObj = _.every(_.values(nextState.vehicle), function(v) {return !v;});
-		if (nextState.asset !== '' && emptyObj) {
+		if (nextState.vehicle.assets !== '' && emptyObj) {
 			return false;
 		}
 
@@ -74,7 +75,8 @@ class VehicleAdd extends React.Component
 		let vehicleToUpdate = MyVehiclesStore.getVehicleToUpdate();
 		let isEditingMode = this.state.isEditingMode;
 		let stateVehicle = this.state.vehicle;
-		if (Object.keys(vehicleToUpdate).length !== 0) {
+
+		if (!_.every(_.values(vehicleToUpdate), function(v) {return !v;})) {
 			stateVehicle = vehicleToUpdate;
 			isEditingMode = true;
 		}
@@ -123,7 +125,7 @@ class VehicleAdd extends React.Component
         event.preventDefault();
 
         if (!this.state.isEditingMode) {
-			ActionCreator.addMyVehicle(this.state.vehicle,  this.state.asset);
+			ActionCreator.addMyVehicle(this.state.vehicle,  this.state.vehicle.assets);
 		} else {
 			ActionCreator.updateMyVehicle(this.state.vehicle);
             MyVehiclesStore.updateMyVehicle(this.state.vehicle);
@@ -133,8 +135,10 @@ class VehicleAdd extends React.Component
         }
     }
 
-    setAsset(asset) {
-    	this.setState({asset: asset});
+    setAsset(assets) {
+		let vehicle = this.state.vehicle;
+		vehicle['assets'] = assets
+    	this.setState({vehicle: vehicle});
 	}
 
     render() {
@@ -155,7 +159,7 @@ class VehicleAdd extends React.Component
 
 			// Get selected choice from dropdown
 			let selectedMfg = this.state.manufacturers.filter(manufacturer => {
-				return manufacturer.id === defaultMfgId
+				return manufacturer.id == defaultMfgId
 			});
 
 			// Models options by ID
@@ -173,11 +177,11 @@ class VehicleAdd extends React.Component
 			}
 
 			vehicleForm = <form onSubmit={this.handleFormSubmit}>
-								<div className="form-group required">
+								<div className="form-group">
 									<div className="col-xs-12 col-md-8">
 										<label className="control-label">Image</label>
 										<div className="input-group">
-											<Uploader setAsset={this.setAsset} />
+											<Uploader setAsset={this.setAsset} isEditingMode={this.state.isEditingMode} assets={this.state.vehicle.assets} />
 										</div>
 									</div>
 								</div>

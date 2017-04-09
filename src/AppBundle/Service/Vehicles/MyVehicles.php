@@ -62,7 +62,7 @@ class MyVehicles
         $results = !is_null($id) ? $this->repo->find($id) : $this->repo->findBy([], ['mfg' => 'ASC']);
 
         if (count($results) == 0) {
-            return false;
+            return ['msg' => 'No vehicles found.'];
         }
 
         if (!is_null($id)) {
@@ -93,7 +93,6 @@ class MyVehicles
     {
         if (count($vehicle) == 0) {
             return ['msg' => 'Empty new vehicle information.'];
-
         }
 
         try {
@@ -196,8 +195,8 @@ class MyVehicles
                 }
 
                 return [
-                    'vehicle' => $existingVehicle,
-                    'msg'     => 'Vehicle successfully updated.'
+                    'msg'     => 'Vehicle successfully updated.',
+                    'vehicle' => $existingVehicle
                 ];
             }
         } catch(\Exception $e) {
@@ -234,7 +233,10 @@ class MyVehicles
             $this->em->remove($vehicle);
             $this->em->flush();
 
-            return ['msg' => 'Vehicle successfully deleted.'];
+            return [
+                'msg'     => 'Vehicle successfully deleted.',
+                'vehicle' => $id
+            ];
         } catch(\Exception $e) {
             return ['msg' => $e->getMessage()];
         }

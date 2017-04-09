@@ -24,11 +24,7 @@ class MyVehicleController extends FOSRestController
         $service = $this->get('My_Vehicles');
         $results = $service->findAll();
 
-        if (!$results) {
-            return new View("My vehicles not found.", Response::HTTP_NOT_FOUND);
-        }
-        
-        return $results;
+        return new View($results, Response::HTTP_OK);
     }
 
     /**
@@ -63,8 +59,6 @@ class MyVehicleController extends FOSRestController
         $service = $this->get('My_Vehicles');
         $results = $service->delete($id);
 
-        $msg = !is_bool($results) && !empty($results) ? $results : 'Deleted successfully.';
-
-        return new View($msg, Response::HTTP_OK);
+        return new View($results, Response::HTTP_OK);
     }
 }

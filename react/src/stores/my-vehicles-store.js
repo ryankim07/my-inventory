@@ -66,11 +66,11 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
         });
     },
 
-    removeMyVehicle: function(vehicle_id) {
+    removeMyVehicle: function(myVehicleId) {
         let vehicles = _my_vehicles;
 
         _.remove(vehicles, (vehicle) => {
-            return vehicle_id == vehicle.id;
+            return myVehicleId == vehicle.id;
         });
 
         _my_vehicles = vehicles;
@@ -121,7 +121,7 @@ MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
         break;
 
         case ActionConstants.REMOVE_MY_VEHICLE:
-            MyVehiclesStore.removeMyVehicle(action.id);
+            MyVehiclesStore.removeMyVehicle(action.results.vehicle);
         break;
 
 		case ActionConstants.SET_ASSETS:

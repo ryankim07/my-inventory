@@ -30,7 +30,7 @@ class VehiclesDashboard extends React.Component
 				'mobileWidth': mainShrinkedMobileColumnWidth,
 				'desktopWidth': mainShrinkedDesktopColumnWidth
 			},
-			showRightPanel: true,
+			showRightPanel: true
 		});
 	}
 

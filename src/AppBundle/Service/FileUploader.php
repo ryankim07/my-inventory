@@ -90,7 +90,7 @@ class FileUploader
      */
     protected function getUploadRootDir()
     {
-        return __DIR__ . '/../../../web' . $this->getUploadDir();
+        return $this->getRootDir() . $this->getUploadDir();
     }
 
     /**
@@ -101,6 +101,11 @@ class FileUploader
     public function setCustomUploadDir($dir)
     {
         $this->uploadDir = $dir;
+    }
+
+    protected function getRootDir()
+    {
+        return __DIR__ . '/../../../web';
     }
 
     /**
@@ -179,8 +184,18 @@ class FileUploader
         return $results;
     }
 
-    public function removeCurrentAsset($file)
+    /**
+     * Remove upload
+     *
+     * @param $file
+     * @return bool
+     */
+    public function removeUpload($file)
     {
+        if (isset($file)) {
+            unlink($this->getRootDir() . $file);
+        }
 
+        return true;
     }
 }

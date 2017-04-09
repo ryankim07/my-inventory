@@ -62,17 +62,17 @@ class VehiclesList extends React.Component
 			actionType: ActionConstants.EDIT_MY_VEHICLE,
 			vehicle: {
 				id: data.id,
-				mfg_id: data.mfgid,
+				mfg_id: data.mfgId,
 				mfg: data.mfg,
-				model_id: data.modelid,
+				model_id: data.modelId,
 				model: data.model,
 				year: data.year,
 				color: data.color.toLowerCase(),
 				vin: data.vin,
 				plate: data.plate,
 				assets: {
-					name: data.imagename,
-					path: data.imagepath
+					name: data.imageName,
+					path: data.imagePath
 				}
 			}
 		});
@@ -82,7 +82,7 @@ class VehiclesList extends React.Component
         let id = e.target.dataset.id;
 
         ActionCreator.removeMyVehicle(id);
-		MyVehiclesStore.removeMyVehicle(id);
+		//MyVehiclesStore.removeMyVehicle(id);
     }
 
     render() {
@@ -91,8 +91,8 @@ class VehiclesList extends React.Component
 		// If loading is complete
         if (!this.state.loader) {
             vehiclesHtml = this.state.vehicles.map((vehicle) => {
-                let imageName = vehicle.assets.length !== 0 ? vehicle.assets[0].name : '';
-                let imagePath = vehicle.assets.length !== 0 ? vehicle.assets[0].path : '';
+				let imageName = vehicle.assets[0] === undefined ? vehicle.assets.name : vehicle.assets[0].name;
+                let imagePath = vehicle.assets[0] === undefined ? vehicle.assets.path : vehicle.assets[0].path;
 
                 return (
                     <tr key={ vehicle.id }>
@@ -104,9 +104,9 @@ class VehiclesList extends React.Component
                         <td>{ vehicle.plate }</td>
                         <td>
                             <button onClick={this.removeMyVehicle} data-id={vehicle.id}>×</button>
-                            <button onClick={this.editMyVehicle} data-id={vehicle.id} data-mfg={vehicle.mfg} data-mfgid={vehicle.mfg_id}
-                                    data-model={vehicle.model} data-modelid={vehicle.model_id} data-year={vehicle.year} data-color={vehicle.color}
-                                    data-vin={vehicle.vin} data-plate={vehicle.plate} data-imagename={imageName} data-imagepath={imagePath}>edit
+                            <button onClick={this.editMyVehicle} data-id={vehicle.id} data-mfg={vehicle.mfg} data-mfg-id={vehicle.mfg_id}
+                                    data-model={vehicle.model} data-model-id={vehicle.model_id} data-year={vehicle.year} data-color={vehicle.color}
+                                    data-vin={vehicle.vin} data-plate={vehicle.plate} data-image-name={imageName} data-image-path={imagePath}>edit
                             </button>
                         </td>
                     </tr>

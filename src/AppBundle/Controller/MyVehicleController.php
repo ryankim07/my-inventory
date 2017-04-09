@@ -32,23 +32,6 @@ class MyVehicleController extends FOSRestController
     }
 
     /**
-     * Show specific vehicle
-     *
-     * @Rest\Get("/api/vehicles/{id}", name="get_vehicle")
-     */
-    /*public function getAction($id)
-    {
-        $repo   = $this->getDoctrine()->getRepository('AppBundle:VehicleEntity');
-        $result = $repo->find($id);
-
-        if ($result === null) {
-            return new View("Vehicle not found", Response::HTTP_NOT_FOUND);
-        }
-
-        return $result;
-    }*/
-
-    /**
      * Add my new vehicle
      *
      * @Rest\Post("/api/vehicle", name="new_vehicle")
@@ -58,16 +41,14 @@ class MyVehicleController extends FOSRestController
     public function postAction(Request $request)
     {
         // Request param
-        $data          = json_decode(stripslashes($request->get('data')), true);
-        $data['asset'] = $request->files->get('file');
+        $data           = json_decode(stripslashes($request->get('data')), true);
+        $data['assets'] = $request->files->get('file');
 
         // Call service to save
         $service = $this->get('My_Vehicles');
         $results = $service->save($data);
 
-        $msg = !is_bool($results) && !empty($results) ? $results : 'New vehicle added successfully.';
-
-        return new View($msg, Response::HTTP_OK);
+        return new View($results, Response::HTTP_OK);
     }
 
     /**

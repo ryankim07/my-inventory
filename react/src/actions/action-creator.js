@@ -20,13 +20,13 @@ let ActionCreator = {
             });
     },
 
-    addMyVehicle: function (data, asset) {
+    addMyVehicle: function (data) {
         Api
-            .post('http://mcs.dev/api/vehicle', data, asset)
-            .then(function (msg) {
+            .post('http://mcs.dev/api/vehicle', data, data.assets)
+            .then(function (results) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.ADD_MY_VEHICLE,
-                    msg: msg
+					results: results
                 });
             })
             .catch(function () {
@@ -39,11 +39,11 @@ let ActionCreator = {
 
 	updateMyVehicle: function (data) {
 		Api
-			.post('http://mcs.dev/api/vehicle', data)
-			.then(function (msg) {
+			.post('http://mcs.dev/api/vehicle', data, data.assets)
+			.then(function (results) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.UPDATE_MY_VEHICLE,
-					msg: msg
+					results: results
 				});
 			})
 			.catch(function () {
@@ -57,10 +57,10 @@ let ActionCreator = {
     removeMyVehicle: function (id) {
         Api
             .delete('http://mcs.dev/api/vehicles/' + id)
-            .then(function (msg) {
+            .then(function (results) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.REMOVE_MY_VEHICLE,
-                    msg: msg
+					results: results
                 });
             })
             .catch(function () {

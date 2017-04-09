@@ -33,7 +33,7 @@ class VehicleAdd extends React.Component
         this._onChange = this._onChange.bind(this);
         this.handleFormChange = this.handleFormChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
-		this.setAsset = this.setAsset.bind(this);
+		this.setAssets = this.setAssets.bind(this);
     }
 
     componentWillMount() {
@@ -58,8 +58,8 @@ class VehicleAdd extends React.Component
 			return false;
 		}
 
+		// Only redirect to list if new vehicle is being added
         if (nextState.newVehicleAdded || this.state.newVehicleAdded) {
-			// Only redirect to list if new vehicle is being added
 			MyVehiclesStore.unFlagNewVehicle();
 			nextState.newVehicleAdded = false;
 			this.context.router.push('/vehicles/dashboard');
@@ -125,20 +125,18 @@ class VehicleAdd extends React.Component
         event.preventDefault();
 
         if (!this.state.isEditingMode) {
-			ActionCreator.addMyVehicle(this.state.vehicle,  this.state.vehicle.assets);
+			ActionCreator.addMyVehicle(this.state.vehicle);
 		} else {
 			ActionCreator.updateMyVehicle(this.state.vehicle);
-            MyVehiclesStore.updateMyVehicle(this.state.vehicle);
 
         	// Close the panel
             this.props.closeRightPanel();
         }
     }
 
-    setAsset(assets) {
+    setAssets(assets) {
 		let vehicle = this.state.vehicle;
-		vehicle['assets'] = assets
-    	this.setState({vehicle: vehicle});
+		vehicle['assets'] = assets;
 	}
 
     render() {
@@ -181,7 +179,7 @@ class VehicleAdd extends React.Component
 									<div className="col-xs-12 col-md-8">
 										<label className="control-label">Image</label>
 										<div className="input-group">
-											<Uploader setAsset={this.setAsset} isEditingMode={this.state.isEditingMode} assets={this.state.vehicle.assets} />
+											<Uploader setAssets={this.setAssets} isEditingMode={this.state.isEditingMode} assets={this.state.vehicle.assets} />
 										</div>
 									</div>
 								</div>

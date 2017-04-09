@@ -61,7 +61,8 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
             model_id: vehicle.model_id,
             plate: vehicle.plate,
             vin: vehicle.vin,
-            year: vehicle.year
+            year: vehicle.year,
+            assets: vehicle.assets
         });
     },
 
@@ -116,7 +117,7 @@ MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
         break;
 
         case ActionConstants.UPDATE_MY_VEHICLE:
-            MyVehiclesStore.updateMyVehicle(action.vehicle)
+            MyVehiclesStore.updateMyVehicle(action.results.vehicle);
         break;
 
         case ActionConstants.REMOVE_MY_VEHICLE:

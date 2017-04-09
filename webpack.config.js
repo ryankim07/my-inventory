@@ -1,6 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
-var BUILD_DIR = path.resolve(__dirname, 'my-inventory');
+var BUILD_DIR = path.resolve(__dirname, 'web');
 var APP_DIR = path.resolve(__dirname, 'react');
 
 var config = {

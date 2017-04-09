@@ -43,21 +43,6 @@ var Api = {
         });
     },
 
-    postImage: function (url, data) {
-		return new Promise(function (resolve, reject) {
-			request
-				.post(url)
-				.attach('file', data)
-				.end(function (res) {
-					if (res.status === 404) {
-						reject();
-					} else {
-						resolve(JSON.parse(res.text));
-					}
-				});
-		});
-	},
-
     delete: function (url) {
         return new Promise(function (resolve, reject) {
             request
@@ -66,7 +51,7 @@ var Api = {
                     if (res.status === 404) {
                         reject();
                     } else {
-                        resolve(res.text);
+                        resolve(JSON.parse(res.text));
                     }
                 });
         });

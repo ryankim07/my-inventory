@@ -46,6 +46,12 @@ class VehiclesList extends React.Component
     }
 
     _onChange() {
+        let msg = MyVehiclesStore.getStoreFlashMessage();
+
+        if (msg !== undefined) {
+			this.props.setFlashMessage(msg);
+		}
+
         this.setState({
             vehicles: MyVehiclesStore.getMyVehicles(),
             loader: false
@@ -82,7 +88,6 @@ class VehiclesList extends React.Component
         let id = e.target.dataset.id;
 
         ActionCreator.removeMyVehicle(id);
-		//MyVehiclesStore.removeMyVehicle(id);
     }
 
     render() {
@@ -90,11 +95,11 @@ class VehiclesList extends React.Component
 
 		// If loading is complete
         if (!this.state.loader) {
-            vehiclesHtml = this.state.vehicles.map((vehicle) => {
+			vehiclesHtml = this.state.vehicles.map((vehicle) => {
 				let imageName = vehicle.assets[0] === undefined ? vehicle.assets.name : vehicle.assets[0].name;
-                let imagePath = vehicle.assets[0] === undefined ? vehicle.assets.path : vehicle.assets[0].path;
+				let imagePath = vehicle.assets[0] === undefined ? vehicle.assets.path : vehicle.assets[0].path;
 
-                return (
+				return (
                     <tr key={ vehicle.id }>
                         <td>{ vehicle.mfg }</td>
                         <td>{ vehicle.model }</td>
@@ -104,14 +109,17 @@ class VehiclesList extends React.Component
                         <td>{ vehicle.plate }</td>
                         <td>
                             <button onClick={this.removeMyVehicle} data-id={vehicle.id}>×</button>
-                            <button onClick={this.editMyVehicle} data-id={vehicle.id} data-mfg={vehicle.mfg} data-mfg-id={vehicle.mfg_id}
-                                    data-model={vehicle.model} data-model-id={vehicle.model_id} data-year={vehicle.year} data-color={vehicle.color}
-                                    data-vin={vehicle.vin} data-plate={vehicle.plate} data-image-name={imageName} data-image-path={imagePath}>edit
+                            <button onClick={this.editMyVehicle} data-id={vehicle.id} data-mfg={vehicle.mfg}
+                                    data-mfg-id={vehicle.mfg_id}
+                                    data-model={vehicle.model} data-model-id={vehicle.model_id}
+                                    data-year={vehicle.year} data-color={vehicle.color}
+                                    data-vin={vehicle.vin} data-plate={vehicle.plate} data-image-name={imageName}
+                                    data-image-path={imagePath}>edit
                             </button>
                         </td>
                     </tr>
                 );
-            });
+			});
         } else {
             vehiclesHtml = <tr><td><Loader /></td></tr>;
         }

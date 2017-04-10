@@ -77,9 +77,6 @@ class MyVehicleEntity
      */
     private $plate;
 
-    private $imageName;
-    private $imagePath;
-
     /**
      * Constructor
      */
@@ -227,7 +224,7 @@ class MyVehicleEntity
      */
     public function setColor($color)
     {
-        $this->color = ucwords($color);
+        $this->color = $color;
 
         return $this;
     }
@@ -322,19 +319,5 @@ class MyVehicleEntity
     public function getAssets()
     {
         return $this->assets;
-    }
-
-    public function setImageName($imageName)
-    {
-        $this->imageName = $imageName;
-
-        return $this;
-    }
-
-    public function setImagePath($imagePath)
-    {
-        $this->imagePath = $imagePath;
-
-        return $this;
     }
 }

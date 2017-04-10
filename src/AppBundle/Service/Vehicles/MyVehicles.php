@@ -103,7 +103,7 @@ class MyVehicles
             $paramColor      = $vehicle['color'];
             $paramVin        = $vehicle['vin'];
             $paramPlate      = $vehicle['plate'];
-            $assets           = $vehicle['assets'];
+            $assets          = $vehicle['assets'];
             $existingVehicle = $this->findByIdOrVin($paramId, $paramVin);
 
             $mfg    = $this->syncDb->find($paramMfgId);
@@ -234,8 +234,8 @@ class MyVehicles
             $this->em->flush();
 
             return [
-                'msg'     => 'Vehicle successfully deleted.',
-                'vehicle' => $id
+                'msg' => 'Vehicle successfully deleted.',
+                'id'  => $id
             ];
         } catch(\Exception $e) {
             return ['msg' => $e->getMessage()];

@@ -8,6 +8,7 @@ let _my_vehicles = [];
 let _my_vehicle = {};
 let _myVehicleAdded = false;
 let _assets;
+let _storeMsg;
 
 function setAllMyVehicles(vehicles) {
     _my_vehicles = vehicles ;
@@ -25,10 +26,32 @@ function setAssets(assets) {
     _assets = assets;
 }
 
+function setStoreFlashMessage(msg) {
+	_storeMsg = msg;
+}
+
 let MyVehiclesStore = assign({}, EventEmitter.prototype, {
     getMyVehicles: function () {
         return _my_vehicles;
     },
+
+	setMyVehicles: function (vehicles) {
+		if (vehicles.msg) {
+			setStoreFlashMessage(vehicles.msg)
+		} else {
+			setAllMyVehicles(vehicles)
+		}
+	},
+
+	addMyVehicle: function (msg) {
+    	setStoreFlashMessage(msg);
+		flagNewVehicle();
+	},
+
+	editMyVehicle: function (vehicle) {
+		setStoreFlashMessage('');
+		setMyVehicle(vehicle);
+	},
 
 	getVehicleToUpdate: function () {
         return _my_vehicle;
@@ -46,7 +69,8 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
         return _myVehicleAdded = false;
     },
 
-    updateMyVehicle: function(vehicle) {
+    updateMyVehicle: function(data) {
+    	let vehicle = data.vehicle;
         let index = _.indexOf(_my_vehicles, _.find(_my_vehicles, (record) => {
                 return record.id == vehicle.id;
             })
@@ -64,16 +88,24 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
             year: vehicle.year,
             assets: vehicle.assets
         });
+
+        setStoreFlashMessage(data.msg);
     },
 
-    removeMyVehicle: function(myVehicleId) {
+    removeMyVehicle: function(vehicle) {
         let vehicles = _my_vehicles;
 
-        _.remove(vehicles, (vehicle) => {
-            return myVehicleId == vehicle.id;
+        _.remove(vehicles, (myVehicle) => {
+            return vehicle.id == myVehicle.id;
         });
 
         _my_vehicles = vehicles;
+
+        setStoreFlashMessage(vehicle.msg);
+    },
+
+    getStoreFlashMessage: function() {
+    	return _storeMsg;
     },
 
     // Emit Change event
@@ -105,23 +137,23 @@ MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
 
     switch(action.actionType) {
         case ActionConstants.RECEIVE_MY_VEHICLES:
-            setAllMyVehicles(action.vehicles);
+			MyVehiclesStore.setMyVehicles(action.vehicles);
         break;
 
         case ActionConstants.ADD_MY_VEHICLE:
-            flagNewVehicle();
+            MyVehiclesStore.addMyVehicle(action.results.msg);
         break;
 
         case ActionConstants.EDIT_MY_VEHICLE:
-			setMyVehicle(action.vehicle);
+			MyVehiclesStore.editMyVehicle(action.vehicle);
         break;
 
         case ActionConstants.UPDATE_MY_VEHICLE:
-            MyVehiclesStore.updateMyVehicle(action.results.vehicle);
+            MyVehiclesStore.updateMyVehicle(action.results);
         break;
 
         case ActionConstants.REMOVE_MY_VEHICLE:
-            MyVehiclesStore.removeMyVehicle(action.results.vehicle);
+            MyVehiclesStore.removeMyVehicle(action.results);
         break;
 
 		case ActionConstants.SET_ASSETS:

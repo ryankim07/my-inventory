@@ -17,10 +17,12 @@ class VehiclesDashboard extends React.Component
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
 			},
-			showRightPanel: false
+			showRightPanel: false,
+			flashMessage: ''
 		};
 
 		this.setPanel = this.setPanel.bind(this);
+		this.setFlashMessage = this.setFlashMessage.bind(this);
 		this.closeRightPanel = this.closeRightPanel.bind(this);
 	}
 
@@ -32,6 +34,10 @@ class VehiclesDashboard extends React.Component
 			},
 			showRightPanel: true
 		});
+	}
+
+	setFlashMessage($msg) {
+		this.setState({flashMessage: $msg})
 	}
 
 	closeRightPanel() {
@@ -47,7 +53,8 @@ class VehiclesDashboard extends React.Component
 	render() {
 		return (
 			<div className="row">
-				<VehicleList mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} className="main-column" setPanel={this.setPanel} />
+				<div><span>{ this.state.flashMessage }</span></div>
+				<VehicleList mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} className="main-column" setPanel={this.setPanel} setFlashMessage={this.setFlashMessage} />
 				{ !this.state.showRightPanel ? null : <VehicleAdd closeRightPanel={this.closeRightPanel} />}
 			</div>
 		)

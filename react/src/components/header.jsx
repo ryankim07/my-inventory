@@ -10,67 +10,67 @@ class Header extends React.Component
                     <div className="navbar-header">
                         <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                             <span className="sr-only">Toggle navigation</span>
-                            <span className="icon-bar"></span>
-                            <span className="icon-bar"></span>
-                            <span className="icon-bar"></span>
+                            <span className="icon-bar"/>
+                            <span className="icon-bar"/>
+                            <span className="icon-bar"/>
                         </button>
                     </div>
                     <div id="navbar" className="navbar-collapse collapse">
                         <ul className="nav navbar-nav navbar-left">
                             <li className="dropdown">
-                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">House <span className="caret"></span></a>
+                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">House <span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
 
                                     <li>
-                                        <a href="" className="menu-link"><i className="fa fa-home menu-link-icon"></i>Add new</a>
+                                        <a href="" className="menu-link"><i className="fa fa-home menu-link-icon"/> Add new</a>
                                     </li>
                                     <li>
-                                        <a href="" className="menu-link"><i className="fa fa-list-alt menu-link-icon"></i>List</a>
+                                        <a href="" className="menu-link"><i className="fa fa-list-alt menu-link-icon"/> List</a>
                                     </li>
                                 </ul>
                             </li>
                             <li className="dropdown">
-                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Auto <span className="caret"></span></a>
+                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Auto <span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                    <li>
-                                        <Link to="/vehicle/add" className="menu-link"><i className="fa fa-car menu-link-icon"></i>Add</Link>
+                                        <Link to="/vehicle/add" className="menu-link"><i className="fa fa-car menu-link-icon"/>Add</Link>
                                     </li>
                                     <li>
-                                        <Link to="/vehicles/dashboard" className="menu-link"><i className="fa fa-list-alt menu-link-icon"></i>All</Link>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li className="dropdown">
-                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Logs <span className="caret"></span></a>
-                                <ul className="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="" className="menu-link"><i className="fa fa-tasks menu-link-icon"></i>View</a>
+                                        <Link to="/vehicles/dashboard" className="menu-link"><i className="fa fa-list-alt menu-link-icon"/>All</Link>
                                     </li>
                                 </ul>
                             </li>
                             <li className="dropdown">
-                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Accounts <span className="caret"></span></a>
+                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Logs <span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="" className="menu-link"><i className="fa fa-users menu-link-icon"></i>Users</a>
+                                        <a href="" className="menu-link"><i className="fa fa-tasks menu-link-icon"/>View</a>
                                     </li>
                                 </ul>
                             </li>
                             <li className="dropdown">
-                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">System <span className="caret"></span></a>
+                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Accounts <span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="" className="menu-link"><i className="fa fa-cogs menu-link-icon"></i>Settings</a>
+                                        <a href="" className="menu-link"><i className="fa fa-users menu-link-icon"/>Users</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li className="dropdown">
+                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">System <span className="caret"/></a>
+                                <ul className="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="" className="menu-link"><i className="fa fa-cogs menu-link-icon"/>Settings</a>
                                     </li>
                                 </ul>
                             </li>
                         </ul>
                         <ul className="nav navbar-nav navbar-right">
                             <li className="dropdown">
-                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ryan<span className="caret"></span></a>
+                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ryan<span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="" className="menu-link"><i className="fa fa-power-off menu-link-icon"></i>Logout</a>
+                                        <a href="" className="menu-link"><i className="fa fa-power-off menu-link-icon"/>Logout</a>
                                     </li>
                                 </ul>
                             </li>

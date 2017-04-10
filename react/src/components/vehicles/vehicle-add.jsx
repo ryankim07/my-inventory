@@ -71,7 +71,7 @@ class VehicleAdd extends React.Component
 
     // Listen to changes in store, update it's own state
     _onChange() {
-    	let isNewVehicle = MyVehiclesStore.isNewVehicleAdded();
+    	let $addingNewVehicle = MyVehiclesStore.isNewVehicleAdded();
 		let vehicleToUpdate = MyVehiclesStore.getVehicleToUpdate();
 		let isEditingMode = this.state.isEditingMode;
 		let stateVehicle = this.state.vehicle;
@@ -85,7 +85,7 @@ class VehicleAdd extends React.Component
 		    vehicle: stateVehicle,
 			manufacturers: ApiVehiclesStore.getApiVehicles(),
 			isEditingMode: isEditingMode,
-			newVehicleAdded: isNewVehicle,
+			newVehicleAdded: $addingNewVehicle,
 			loader: false
 		});
     }

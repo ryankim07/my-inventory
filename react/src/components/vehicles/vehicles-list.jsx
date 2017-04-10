@@ -46,12 +46,6 @@ class VehiclesList extends React.Component
     }
 
     _onChange() {
-        let msg = MyVehiclesStore.getStoreFlashMessage();
-
-        if (msg !== undefined) {
-			this.props.setFlashMessage(msg);
-		}
-
         this.setState({
             vehicles: MyVehiclesStore.getMyVehicles(),
             loader: false

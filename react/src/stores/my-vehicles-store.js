@@ -108,6 +108,10 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
     	return _storeMsg;
     },
 
+    unsetStoreFlashMessage: function() {
+    	_storeMsg = '';
+	},
+
     // Emit Change event
     emitChange: function(){
         this.emit('change');

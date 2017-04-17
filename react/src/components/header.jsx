@@ -4,6 +4,8 @@ import { Link } from 'react-router'
 class Header extends React.Component
 {
     render() {
+        let isAuthenticated = this.props.isAuthenticated();
+
         return (
             <nav className="navbar navbar-inverse navbar-fixed-top">
                 <div className="container-fluid">
@@ -20,7 +22,6 @@ class Header extends React.Component
                             <li className="dropdown">
                                 <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">House <span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
-
                                     <li>
                                         <a href="" className="menu-link"><i className="fa fa-home menu-link-icon"/> Add new</a>
                                     </li>
@@ -32,7 +33,7 @@ class Header extends React.Component
                             <li className="dropdown">
                                 <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Auto <span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
-                                   <li>
+                                    <li>
                                         <Link to="/vehicle/add" className="menu-link"><i className="fa fa-car menu-link-icon"/>Add</Link>
                                     </li>
                                     <li>
@@ -70,7 +71,7 @@ class Header extends React.Component
                                 <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ryan<span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="" className="menu-link"><i className="fa fa-power-off menu-link-icon"/>Logout</a>
+                                        <Link to="/auth/logout" className="menu-link"><i className="fa fa-car menu-link-icon"/>Logout</Link>
                                     </li>
                                 </ul>
                             </li>

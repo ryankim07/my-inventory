@@ -1,6 +1,6 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
-import ActionCreator from '../../actions/action-creator';
+import VehiclesAction from '../../actions/vehicles-action';
 
 class Uploader extends React.Component
 {
@@ -32,7 +32,7 @@ class Uploader extends React.Component
 		if (this.props.setAssets) {
 			this.props.setAssets(acceptedFiles[0]);
 		} else {
-			ActionCreator.setAssets(acceptedFiles[0]);
+			VehiclesAction.setAssets(acceptedFiles[0]);
 		}
 
 		this.setState({

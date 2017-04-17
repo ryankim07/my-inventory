@@ -2,23 +2,40 @@
 # http://symfony.com/doc/current/security.html
 security:
 
-    # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    encoders:
+        AppBundle\Entity\UserEntity:
+            algorithm: bcrypt
+
     providers:
-        in_memory:
-            memory: ~
+        database_users:
+            entity:
+                class: AppBundle:UserEntity
+                property: username
 
     firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        login:
+            pattern:  ^/login$
+            anonymous: true
+            stateless: true
+            guard:
+                authenticators:
+                    - 'Username_Password_Authenticator'
+
+        api:
+            pattern: ^/api$
+            anonymous: true
+            stateless: true
+            guard:
+                authenticators:
+                    - 'Jwt_Token_Authenticator'
+
         main:
             anonymous: ~
-            # activate different ways to authenticate
-
-            # http_basic: ~
-            # http://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+            pattern: ^/
+            logout: true
+            http_basic: ~
+            provider: database_users

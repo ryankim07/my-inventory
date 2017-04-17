@@ -11,8 +11,8 @@ let mainShrinkedDesktopColumnWidth = 'col-md-8';
 
 class VehiclesDashboard extends React.Component
 {
-	constructor(props) {
-		super(props);
+	constructor() {
+		super();
 
 		this.state = {
 			columnCss: {

@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Entity\VehicleEntity;
 
 
@@ -24,7 +25,7 @@ class MyVehicleController extends FOSRestController
         $service = $this->get('My_Vehicles');
         $results = $service->findAll();
 
-        return new View($results, Response::HTTP_OK);
+        return $results;
     }
 
     /**

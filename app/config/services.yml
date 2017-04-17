@@ -54,3 +54,12 @@ services:
             - "@doctrine.orm.entity_manager"
             - "@Sync_Db"
             - "@File_Uploader"
+
+    Jwt_Token_Authenticator:
+        class: AppBundle\Security\JwtTokenAuthenticator
+        autowire: true
+
+    Username_Password_Authenticator:
+        class: AppBundle\Security\UsernamePasswordAuthenticator
+        arguments: ["@security.password_encoder"]
+        public: false

@@ -2,7 +2,7 @@ import React from 'react';
 import MyVehiclesStore from '../../stores/my-vehicles-store';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
-import ActionCreator from '../../actions/action-creator';
+import VehiclesAction from '../../actions/vehicles-action';
 import Loader from '../loader';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -38,7 +38,7 @@ class VehiclesList extends React.Component
     }
 
     componentDidMount() {
-        ActionCreator.getMyVehicles();
+        VehiclesAction.getMyVehicles();
     }
 
     componentWillUnmount() {
@@ -81,7 +81,7 @@ class VehiclesList extends React.Component
     removeMyVehicle(e) {
         let id = e.target.dataset.id;
 
-        ActionCreator.removeMyVehicle(id);
+        VehiclesAction.removeMyVehicle(id);
     }
 
     render() {

@@ -131,7 +131,7 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
      */
     removeChangeListener: function(callback){
         this.removeListener('change', callback);
-    }
+	}
 });
 
 // Register callback with AppDispatcher

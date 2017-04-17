@@ -1,7 +1,7 @@
 import React from 'react';
 import ApiVehiclesStore from '../../stores/api-vehicles-store';
 import MyVehiclesStore from '../../stores/my-vehicles-store';
-import ActionCreator from '../../actions/action-creator';
+import VehiclesAction from '../../actions/vehicles-action';
 import Uploader from '../utils/uploader';
 import Loader from '../loader';
 import _ from 'lodash';
@@ -42,7 +42,7 @@ class VehicleAdd extends React.Component
     }
 
     componentDidMount() {
-        ActionCreator.getApiVehicles();
+        VehiclesAction.getApiVehicles();
     }
 
     componentWillUnmount() {
@@ -125,9 +125,9 @@ class VehicleAdd extends React.Component
         event.preventDefault();
 
         if (!this.state.isEditingMode) {
-			ActionCreator.addMyVehicle(this.state.vehicle);
+			VehiclesAction.addMyVehicle(this.state.vehicle);
 		} else {
-			ActionCreator.updateMyVehicle(this.state.vehicle);
+			VehiclesAction.updateMyVehicle(this.state.vehicle);
 
         	// Close the panel
             this.props.closeRightPanel();

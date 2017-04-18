@@ -10,14 +10,14 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="users")
  */
-class UserEntity implements UserInterface
+class UserEntity implements AdvancedUserInterface, \Serializable
 {
     /**
      * @ORM\Column(type="integer")
@@ -46,13 +46,6 @@ class UserEntity implements UserInterface
      */
     private $isActive;
 
-    public function __construct()
-    {
-        $this->isActive = true;
-        // may not be needed, see section on salt below
-        // $this->salt = md5(uniqid(null, true));
-    }
-
     public function getUsername()
     {
         return $this->username;
@@ -79,27 +72,37 @@ class UserEntity implements UserInterface
     {
     }
 
-    /** @see \Serializable::serialize() */
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    public function isEnabled()
+    {
+        return $this->isActive;
+    }
+
+    // serialize and unserialize must be updated - see below
     public function serialize()
     {
         return serialize(array(
-            $this->id,
-            $this->username,
-            $this->password,
-            // see section on salt below
-            // $this->salt,
+            $this->isActive
         ));
     }
-
-    /** @see \Serializable::unserialize() */
     public function unserialize($serialized)
     {
         list (
-            $this->id,
-            $this->username,
-            $this->password,
-            // see section on salt below
-            // $this->salt
+            $this->isActive
             ) = unserialize($serialized);
     }
 }

@@ -2,7 +2,6 @@ import {EventEmitter} from 'events';
 import assign from 'object-assign';
 import Dispatcher from '../dispatcher/app-dispatcher';
 import ActionConstants from '../constants/action-constants';
-import _ from 'lodash';
 
 let _manufacturers = [];
 

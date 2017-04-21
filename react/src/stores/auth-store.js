@@ -1,5 +1,4 @@
 import {EventEmitter} from 'events';
-
 import assign from 'object-assign';
 import Dispatcher from '../dispatcher/app-dispatcher';
 import ActionConstants from '../constants/action-constants';
@@ -94,4 +93,3 @@ AuthStore.dispatchToken = Dispatcher.register(function(payload)
 });
 
 export default AuthStore;
-

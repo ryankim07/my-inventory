@@ -12,12 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class VehicleModelsApiEntity
 {
     /**
-     * @ORM\ManyToOne(targetEntity="VehicleMfgsApiEntity", inversedBy="models")
-     * @ORM\JoinColumn(name="mfg_id", referencedColumnName="id")
-     */
-    private $manufacturers;
-
-    /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -41,6 +35,12 @@ class VehicleModelsApiEntity
      * @Assert\NotBlank()
      */
     private $model;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="VehicleMfgsApiEntity", inversedBy="models")
+     * @ORM\JoinColumn(name="mfg_id", referencedColumnName="id")
+     */
+    private $manufacturers;
 
     /**
      * Get ID

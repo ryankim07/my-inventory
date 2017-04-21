@@ -4,6 +4,8 @@ import assign from 'object-assign';
 import Dispatcher from '../dispatcher/app-dispatcher';
 import ActionConstants from '../constants/action-constants';
 
+let _storeMsg;
+
 function setUser(token) {
 	if (!localStorage.getItem('id_token')) {
 		localStorage.setItem('id_token', token);
@@ -12,6 +14,10 @@ function setUser(token) {
 
 function removeUser() {
 	localStorage.removeItem('id_token');
+}
+
+function setStoreFlashMessage(msg) {
+	_storeMsg = msg;
 }
 
 let AuthStore = assign({}, EventEmitter.prototype, {
@@ -44,8 +50,21 @@ let AuthStore = assign({}, EventEmitter.prototype, {
 		return localStorage.getItem('profile');
 	},
 
+	removeUser: function(msg) {
+		removeUser();
+		setStoreFlashMessage(msg);
+	},
+
 	getJwt: function() {
 		return localStorage.getItem('id_token');
+	},
+
+	getStoreFlashMessage: function() {
+		return _storeMsg;
+	},
+
+	unsetStoreFlashMessage: function() {
+		_storeMsg = '';
 	}
 });
 
@@ -64,7 +83,7 @@ AuthStore.dispatchToken = Dispatcher.register(function(payload)
 		break;
 
 		case ActionConstants.LOGIN_USER_ERROR:
-			removeUser(null);
+			AuthStore.removeUser(action.msg);
 		break;
 	}
 

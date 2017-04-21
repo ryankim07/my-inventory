@@ -13,12 +13,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 class MyVehicleEntity
 {
     /**
-     * @ORM\OneToMany(targetEntity="AssetsEntity", mappedBy="myVehicles")
-     * @ORM\OrderBy({"name" = "ASC"})
-     */
-    private $assets;
-
-    /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -76,6 +70,12 @@ class MyVehicleEntity
      * @ORM\Column(type="string", length=10)
      */
     private $plate;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AssetsEntity", mappedBy="myVehicles")
+     * @ORM\OrderBy({"name" = "ASC"})
+     */
+    private $assets;
 
     /**
      * Constructor

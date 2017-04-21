@@ -20,24 +20,7 @@ let AuthAction = {
 					msg: 'There was a problem login user'
 				});
 			});
-	},
-
-	/*logout: function(data) {
-		Auth
-			.post('http://mcs.dev/logout', data)
-			.then(function (results) {
-				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.LOGOUT_USER,
-					results: results
-				});
-			})
-			.catch(function() {
-				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.LOGOUT_USER_ERROR,
-					msg: 'There was a problem login out user'
-				});
-			});
-	}*/
+	}
 };
 
 export default AuthAction;

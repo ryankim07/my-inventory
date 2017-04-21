@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -46,6 +47,19 @@ class UserEntity implements AdvancedUserInterface, \Serializable
      */
     private $isActive;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="GroupEntity", inversedBy="users")
+     */
+    private $groups;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->groups = new ArrayCollection();
+    }
+
     public function getUsername()
     {
         return $this->username;
@@ -53,8 +67,6 @@ class UserEntity implements AdvancedUserInterface, \Serializable
 
     public function getSalt()
     {
-        // you *may* need a real salt depending on your encoder
-        // see section on salt below
         return null;
     }
 
@@ -65,7 +77,7 @@ class UserEntity implements AdvancedUserInterface, \Serializable
 
     public function getRoles()
     {
-        return array('ROLE_USER');
+        return $this->groups->toArray();
     }
 
     public function eraseCredentials()

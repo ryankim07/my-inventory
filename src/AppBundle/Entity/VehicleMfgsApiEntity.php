@@ -4,7 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\Vehicles\Api\VehiclesRepository")
@@ -12,12 +12,6 @@ use Doctrine\Common\Collections\ArrayCollection;;
  */
 class VehicleMfgsApiEntity
 {
-    /**
-     * @ORM\OneToMany(targetEntity="VehicleModelsApiEntity", mappedBy="manufacturers")
-     * @ORM\OrderBy({"model" = "ASC"})
-     */
-    private $models;
-
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -36,6 +30,12 @@ class VehicleMfgsApiEntity
      * @Assert\NotBlank()
      */
     private $mfg;
+
+    /**
+     * @ORM\OneToMany(targetEntity="VehicleModelsApiEntity", mappedBy="manufacturers")
+     * @ORM\OrderBy({"model" = "ASC"})
+     */
+    private $models;
 
     /**
      * Constructor

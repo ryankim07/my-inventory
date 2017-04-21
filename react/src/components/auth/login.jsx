@@ -1,6 +1,7 @@
 import React from 'react';
 import AuthStore from '../../stores/auth-store';
 import AuthAction from '../../actions/auth-action';
+import FlashMessage from '../flash-message';
 
 class Login extends React.Component
 {
@@ -9,7 +10,8 @@ class Login extends React.Component
 		this.state = {
 			username: '',
 			password: '',
-			authenticated: false
+			authenticated: false,
+			flashMessage: null
 		}
 
 		this._onChange = this._onChange.bind(this);
@@ -25,6 +27,7 @@ class Login extends React.Component
 	}
 
 	_onChange() {
+		let flashMsg = AuthStore.getStoreFlashMessage();
 		let isAuthenticated = AuthStore.isAuthenticated();
 
 		if (isAuthenticated){
@@ -32,7 +35,10 @@ class Login extends React.Component
 			return false;
 		}
 
-		this.setState({authenticated: isAuthenticated});
+		this.setState({
+			authenticated: isAuthenticated,
+			flashMessage: flashMsg !== undefined ? flashMsg : null
+		});
 	}
 
 	// Submit
@@ -46,15 +52,6 @@ class Login extends React.Component
 	}
 
 	render() {
-		let errorMessage;
-		if (this.state.error) {
-			errorMessage = (
-				<div className='state-error' style={{ paddingBottom: 16 }}>
-					{ this.state.error }
-				</div>
-			);
-		}
-
 		let loginForm;
 		if (this.state.username) {
 			loginForm = (
@@ -67,7 +64,6 @@ class Login extends React.Component
 		} else {
 			loginForm = (
 				<div>
-					{ errorMessage }
 					Email: <input defaultValue="rkim07" ref="username" style={{ maxWidth: "100%" }} type="text" />
 					<br/>
 					Password: <input defaultValue="123" ref="password" style={{ maxWidth: "100%" }} type="password" />
@@ -83,13 +79,16 @@ class Login extends React.Component
 			);
 		}
 		return (
-			<form onSubmit={this.login}>
-        		 <div className="col-xs-12 col-md-12" id="auth">
-					 <div className="row">
-						 { loginForm }
-					</div>
-				 </div>
-			</form>
+			<div className="row">
+				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-danger" />}
+				<form onSubmit={this.login}>
+					 <div className="col-xs-12 col-md-12" id="auth">
+						 <div className="row">
+							 { loginForm }
+						</div>
+					 </div>
+				</form>
+			</div>
 		);
 	}
 }

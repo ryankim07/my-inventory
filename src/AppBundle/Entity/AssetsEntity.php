@@ -12,12 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class AssetsEntity
 {
     /**
-     * @ORM\ManyToOne(targetEntity="MyVehicleEntity", inversedBy="assets")
-     * @ORM\JoinColumn(name="my_vehicle_id", referencedColumnName="id")
-     */
-    private $myVehicles;
-
-    /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -41,6 +35,11 @@ class AssetsEntity
      */
     public $path;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="MyVehicleEntity", inversedBy="assets")
+     * @ORM\JoinColumn(name="my_vehicle_id", referencedColumnName="id")
+     */
+    private $myVehicles;
 
     /**
      * Get id

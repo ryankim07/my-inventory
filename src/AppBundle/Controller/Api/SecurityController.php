@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
- * @Security("is_granted('ROLE_USER')")
+ * @Security("is_granted(['ROLE_USER','ROLE_ADMIN'])")
  */
 class SecurityController extends FOSRestController
 {

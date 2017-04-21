@@ -20,7 +20,7 @@ class VehiclesDashboard extends React.Component
 				'desktopWidth': mainDefaultDesktopColumnWidth
 			},
 			showRightPanel: false,
-			flashMessage: ''
+			flashMessage: null
 		};
 
 		this._onChange = this._onChange.bind(this);
@@ -46,7 +46,7 @@ class VehiclesDashboard extends React.Component
 					'desktopWidth': mainDefaultDesktopColumnWidth
 				},
 				showRightPanel: false,
-				flashMessage: ''
+				flashMessage: null
 			});
 		}
 	}
@@ -86,7 +86,7 @@ class VehiclesDashboard extends React.Component
 	render() {
 		return (
 			<div className="row">
-				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} />}
+				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-success" />}
 				<VehicleList mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} className="main-column" setPanel={this.setPanel} />
 				{ !this.state.showRightPanel ? null : <VehicleAdd closeRightPanel={this.closeRightPanel} />}
 			</div>

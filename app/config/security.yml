@@ -26,16 +26,18 @@ security:
                     - 'Username_Password_Authenticator'
 
         api:
-            pattern: ^/api$
-            anonymous: true
+            pattern: ^/api
+            anonymous: false
             stateless: true
             guard:
                 authenticators:
                     - 'Jwt_Token_Authenticator'
 
         main:
-            anonymous: ~
             pattern: ^/
-            logout: true
-            http_basic: ~
+            anonymous: ~
             provider: database_users
+
+    access_control:
+        - { path: ^/api, roles: [ROLE_ADMIN] }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }

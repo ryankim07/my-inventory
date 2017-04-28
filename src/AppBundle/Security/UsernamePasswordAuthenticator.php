@@ -2,16 +2,14 @@
 
 namespace AppBundle\Security;
 
-use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
 class UsernamePasswordAuthenticator extends AbstractGuardAuthenticator
@@ -65,7 +63,7 @@ class UsernamePasswordAuthenticator extends AbstractGuardAuthenticator
         $plainPassword = $credentials['password'];
 
         if (!$this->passwordEncoder->isPasswordValid($user, $plainPassword)) {
-            throw new BadCredentialsException();
+            throw new AuthenticationException('Invalid credentials');
         }
 
         return true;
@@ -88,7 +86,7 @@ class UsernamePasswordAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        return new JsonResponse(['message' => 'Auth header required'], 401);
+        return new JsonResponse(['msg' => $exception->getMessage()], 401);
     }
 
     /**

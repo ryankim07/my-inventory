@@ -42,7 +42,7 @@ class TokenController extends FOSRestController
         // Create token
         $token = $this->get('lexik_jwt_authentication.encoder')->encode([
             'username' => $user->getUsername(),
-            'exp' => time() + 3600 // 1 hour expiration
+            'exp'      => time() + $this->container->getParameter('lexik_jwt_authentication.token_ttl')
         ]);
 
         return new View(['token' => $token], Response::HTTP_OK);

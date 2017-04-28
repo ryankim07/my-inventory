@@ -11,8 +11,11 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Entity\VehicleEntity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
-
+/**
+ * @Security("is_granted(['ROLE_USER','ROLE_ADMIN'])")
+ */
 class MyVehicleController extends FOSRestController
 {
     /**

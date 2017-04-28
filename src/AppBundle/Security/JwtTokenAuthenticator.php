@@ -11,6 +11,7 @@ namespace AppBundle\Security;
 use Doctrine\ORM\EntityManager;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\TokenExtractor\AuthorizationHeaderTokenExtractor;
+use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -67,7 +68,7 @@ class JwtTokenAuthenticator extends AbstractGuardAuthenticator
                 ->findOneBy(['username' => $username]);
 
         } catch (JWTDecodeFailureException $e) {
-            throw new CustomUserMessageAuthenticationException('Invalid Token');
+            throw new AuthenticationException('Invalid Token');
         }
     }
 
@@ -78,12 +79,12 @@ class JwtTokenAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        return new JsonResponse(['message' => $exception->getMessage()], 401);
+        return new JsonResponse(['msg' => $exception->getMessage()], 401);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        return true;
+        return null;
     }
 
     public function supportsRememberMe()

@@ -111,10 +111,9 @@ class UserEntity implements AdvancedUserInterface, \Serializable
             $this->isActive
         ));
     }
+
     public function unserialize($serialized)
     {
-        list (
-            $this->isActive
-            ) = unserialize($serialized);
+        list($this->isActive) = unserialize($serialized);
     }
 }

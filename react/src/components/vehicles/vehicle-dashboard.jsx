@@ -11,8 +11,8 @@ let mainShrinkedDesktopColumnWidth = 'col-md-8';
 
 class VehiclesDashboard extends React.Component
 {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 
 		this.state = {
 			columnCss: {
@@ -24,7 +24,6 @@ class VehiclesDashboard extends React.Component
 		};
 
 		this._onChange = this._onChange.bind(this);
-		this.setPanel = this.setPanel.bind(this);
 		this.setFlashMessage = this.setFlashMessage.bind(this);
 		this.closeRightPanel = this.closeRightPanel.bind(this);
 	}
@@ -52,20 +51,22 @@ class VehiclesDashboard extends React.Component
 	}
 
 	_onChange() {
-		let msg = MyVehiclesStore.getStoreFlashMessage();
+		let flashMsg = MyVehiclesStore.getStoreFlashMessage();
+		let isAuthenticated = MyVehiclesStore.isAuthenticated();
+		let openRightPanel = MyVehiclesStore.openRightPanel();
 
-		if (msg !== undefined) {
-			this.setState({flashMessage: msg});
+		if (!isAuthenticated){
+			this.context.router.push("/auth/login");
+			return false;
 		}
-	}
 
-	setPanel() {
 		this.setState({
 			columnCss: {
-				'mobileWidth': mainShrinkedMobileColumnWidth,
-				'desktopWidth': mainShrinkedDesktopColumnWidth
+				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
+				'desktopWidth': openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
 			},
-			showRightPanel: true
+			showRightPanel: !!openRightPanel,
+			flashMessage: flashMsg !== undefined ? flashMsg : null
 		});
 	}
 
@@ -79,7 +80,8 @@ class VehiclesDashboard extends React.Component
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
 			},
-			showRightPanel: false
+			showRightPanel: false,
+			flashMessage: this.state.flashMessage
 		});
 	}
 
@@ -87,11 +89,15 @@ class VehiclesDashboard extends React.Component
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-success" />}
-				<VehicleList mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} className="main-column" setPanel={this.setPanel} />
+				<VehicleList mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} className="main-column" />
 				{ !this.state.showRightPanel ? null : <VehicleAdd closeRightPanel={this.closeRightPanel} />}
 			</div>
 		)
 	}
+}
+
+VehiclesDashboard.contextTypes = {
+	router: React.PropTypes.object.isRequired
 }
 
 export default VehiclesDashboard;

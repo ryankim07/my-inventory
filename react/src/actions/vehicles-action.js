@@ -12,10 +12,11 @@ let VehiclesAction = {
                     vehicles: vehicles
                 });
             })
-            .catch(function() {
+            .catch(function(resp) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.RECEIVE_ERROR,
-                    msg: 'There was a problem getting the vehicles'
+                    status: resp.status,
+					msg: resp.msg
                 });
             });
     },
@@ -29,10 +30,11 @@ let VehiclesAction = {
 					results: results
                 });
             })
-            .catch(function() {
+            .catch(function(resp) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.RECEIVE_ERROR,
-                    msg: 'There was a problem adding new vehicle'
+					status: resp.status,
+					msg: resp.msg
                 });
             });
     },
@@ -46,10 +48,11 @@ let VehiclesAction = {
 					results: results
 				});
 			})
-			.catch(function() {
+			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.RECEIVE_ERROR,
-					msg: 'There was a problem updating vehicle'
+					status: resp.status,
+					msg: resp.msg
 				});
 			});
 	},
@@ -63,10 +66,11 @@ let VehiclesAction = {
 					results: results
                 });
             })
-            .catch(function() {
+            .catch(function(resp) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.RECEIVE_ERROR,
-                    msg: 'There was a problem removing the vehicle'
+					status: resp.status,
+					msg: resp.msg
                 });
             });
     },
@@ -80,10 +84,11 @@ let VehiclesAction = {
                     manufacturers: manufacturers
                 });
             })
-            .catch(function() {
+            .catch(function(resp) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.RECEIVE_ERROR,
-                    msg: 'There was a problem getting the manufacturers'
+					status: resp.status,
+					msg: resp.msg
                 });
             });
     },
@@ -97,10 +102,11 @@ let VehiclesAction = {
 					file: file
 				});
 			})
-			.catch(function() {
+			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.RECEIVE_ERROR,
-					msg: 'There was a problem adding new assets'
+					status: resp.status,
+					msg: resp.msg
 				});
 			});
 	}

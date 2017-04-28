@@ -13,7 +13,12 @@ let Auth = {
 				.set('Authorization', 'Bearer ' + AuthStore.getJwt())
 				.end(function(err, res){
 					if (err || res.status !== 200) {
-						reject();
+						let errBody = JSON.parse(res.text);
+
+						reject({
+							status: res.status,
+							msg: errBody.msg
+						});
 					} else {
 						resolve(JSON.parse(res.text));
 					}
@@ -28,7 +33,12 @@ let Auth = {
 				.send(data)
 				.end(function(err, res){
 					if (err || res.status !== 200) {
-						reject();
+						let errBody = JSON.parse(res.text);
+
+						reject({
+							status: res.status,
+							msg: errBody.msg
+						});
 					} else {
 						resolve(JSON.parse(res.text));
 					}

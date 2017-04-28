@@ -5,11 +5,11 @@ import FlashMessage from '../flash-message';
 
 class Login extends React.Component
 {
-	constructor(props) {
-		super(props);
+	constructor() {
+		super();
 		this.state = {
-			username: '',
-			password: '',
+			username: null,
+			password: null,
 			authenticated: false,
 			flashMessage: null
 		}
@@ -36,6 +36,8 @@ class Login extends React.Component
 		}
 
 		this.setState({
+			username: this.state.username,
+			password: this.state.password,
 			authenticated: isAuthenticated,
 			flashMessage: flashMsg !== undefined ? flashMsg : null
 		});

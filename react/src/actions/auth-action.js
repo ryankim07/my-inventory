@@ -14,10 +14,11 @@ let AuthAction = {
 					token: token
 				});
 			})
-			.catch(function() {
+			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.LOGIN_USER_ERROR,
-					msg: 'There was a problem login user'
+					status: resp.status,
+					msg: resp.msg
 				});
 			});
 	}

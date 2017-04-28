@@ -12,7 +12,6 @@ class VehicleAdd extends React.Component
         super(props);
 
         this.state = {
-            manufacturers: [],
             vehicle: {
                 id: '',
                 mfg_id: '',
@@ -25,9 +24,11 @@ class VehicleAdd extends React.Component
                 plate: '',
 				assets: []
             },
+			manufacturers: [],
             isEditingMode: false,
             newVehicleAdded: false,
-            loader: true
+            loader: true,
+			flashMessage: null
         };
 
         this._onChange = this._onChange.bind(this);
@@ -75,6 +76,13 @@ class VehicleAdd extends React.Component
 		let vehicleToUpdate = MyVehiclesStore.getVehicleToUpdate();
 		let isEditingMode = this.state.isEditingMode;
 		let stateVehicle = this.state.vehicle;
+		let flashMsg = MyVehiclesStore.getStoreFlashMessage();
+		let isAuthenticated = MyVehiclesStore.isAuthenticated();
+
+		if (!isAuthenticated){
+			this.context.router.push("/auth/login");
+			return false;
+		}
 
 		if (!_.every(_.values(vehicleToUpdate), function(v) {return !v;})) {
 			stateVehicle = vehicleToUpdate;
@@ -86,7 +94,8 @@ class VehicleAdd extends React.Component
 			manufacturers: ApiVehiclesStore.getApiVehicles(),
 			isEditingMode: isEditingMode,
 			newVehicleAdded: $addingNewVehicle,
-			loader: false
+			loader: false,
+			flashMessage: flashMsg !== undefined ? flashMsg : null
 		});
     }
 
@@ -116,7 +125,12 @@ class VehicleAdd extends React.Component
         }
 
         this.setState({
-            vehicle: vehicle
+            vehicle: vehicle,
+			manufacturers: this.state.manufacturers,
+			isEditingMode: this.state.isEditingMode,
+			newVehicleAdded: this.state.newVehicleAdded,
+			loader: this.state.loader,
+			flashMessage: this.state.flashMessage
         });
     }
 

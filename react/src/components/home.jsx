@@ -3,7 +3,7 @@ import React from 'react';
 class Home extends React.Component
 {
     render() {
-        return (<h1>Welcome to the Home Page Test</h1>);
+        return (<h1>My Inventory</h1>);
     }
 }
 

@@ -17,7 +17,10 @@ class Uploader extends React.Component
 
 	componentWillMount() {
 		if (this.props.setAssets) {
-			this.setState({assets: this.props.assets});
+			this.setState({
+				assets: this.props.assets,
+				reUpload: false
+			});
 		}
 	}
 

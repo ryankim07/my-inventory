@@ -19,12 +19,6 @@ class VehiclesList extends React.Component
         this.state = {
             vehicles: [],
             vehicle: {},
-            columnCss: {
-                'mobileWidth': mainDefaultMobileColumnWidth,
-                'desktopWidth': mainDefaultDesktopColumnWidth,
-                'className': mainClassName
-            },
-            showRightPanel: false,
             loader: true
         };
 
@@ -48,14 +42,13 @@ class VehiclesList extends React.Component
     _onChange() {
         this.setState({
             vehicles: MyVehiclesStore.getMyVehicles(),
+			vehicle: {},
             loader: false
         });
     }
 
     editMyVehicle(e) {
         // Set panel width
-        this.props.setPanel();
-
         let data = e.target.dataset;
 
 		AppDispatcher.handleViewAction({
@@ -74,13 +67,13 @@ class VehiclesList extends React.Component
 					name: data.imageName,
 					path: data.imagePath
 				}
-			}
+			},
+			openRightPanel: true
 		});
     }
 
     removeMyVehicle(e) {
         let id = e.target.dataset.id;
-
         VehiclesAction.removeMyVehicle(id);
     }
 

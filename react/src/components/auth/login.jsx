@@ -15,7 +15,7 @@ class Login extends React.Component
 		}
 
 		this._onChange = this._onChange.bind(this);
-		this.login = this.login.bind(this);
+		this.handleFormSubmit = this.handleFormSubmit.bind(this);
 	}
 
 	componentWillMount() {
@@ -44,7 +44,7 @@ class Login extends React.Component
 	}
 
 	// Submit
-	login(event) {
+	handleFormSubmit(event) {
 		event.preventDefault();
 
 		AuthAction.login({
@@ -66,10 +66,30 @@ class Login extends React.Component
 		} else {
 			loginForm = (
 				<div>
-					Email: <input defaultValue="rkim07" ref="username" style={{ maxWidth: "100%" }} type="text" />
-					<br/>
-					Password: <input defaultValue="123" ref="password" style={{ maxWidth: "100%" }} type="password" />
-					<br/>
+					<div className="form-group required">
+						<div className="col-xs-12 col-md-8">
+							<label className="control-label">Username</label>
+							<div className="input-group">
+								<input type="text"
+									   ref="username"
+									   className="form-control input-sm"
+									   required="required"
+									   defaultValue="rkim07"/>
+							</div>
+						</div>
+					</div>
+					<div className="form-group required">
+						<div className="col-xs-12 col-md-8">
+							<label className="control-label">Password</label>
+							<div className="input-group">
+								<input type="password"
+									   ref="password"
+									   className="form-control input-sm"
+									   required="required"
+									   defaultValue="123"/>
+							</div>
+						</div>
+					</div>
 					<div className="form-group">
 						<div className="col-xs-12 col-md-12">
 							<div className="clearfix">
@@ -83,7 +103,7 @@ class Login extends React.Component
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-danger" />}
-				<form onSubmit={this.login}>
+				<form onSubmit={this.handleFormSubmit}>
 					 <div className="col-xs-12 col-md-12" id="auth">
 						 <div className="row">
 							 { loginForm }

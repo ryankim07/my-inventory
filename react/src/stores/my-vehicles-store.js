@@ -50,18 +50,10 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
         this.emit('change');
     },
 
-    /**
-     *
-     * @param callback
-     */
     addChangeListener: function(callback){
         this.on('change', callback);
     },
 
-    /**
-     *
-     * @param callback
-     */
     removeChangeListener: function(callback){
         this.removeListener('change', callback);
 	},
@@ -159,7 +151,7 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 
 	unsetStoreFlashMessage: function() {
 		_storeMsg = '';
-	},
+	}
 });
 
 // Register callback with AppDispatcher
@@ -207,7 +199,6 @@ MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
     MyVehiclesStore.emitChange();
 
     return true;
-
 });
 
 export default MyVehiclesStore;

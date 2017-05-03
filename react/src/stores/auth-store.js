@@ -6,13 +6,13 @@ import ActionConstants from '../constants/action-constants';
 let _errStatus;
 let _storeMsg;
 
-function setUser(token) {
+function setToken(token) {
 	if (!localStorage.getItem('id_token')) {
 		localStorage.setItem('id_token', token);
 	}
 }
 
-function removeUser() {
+function removeToken() {
 	localStorage.removeItem('id_token');
 }
 
@@ -54,8 +54,8 @@ let AuthStore = assign({}, EventEmitter.prototype, {
 		return localStorage.getItem('profile');
 	},
 
-	removeUser: function(msg) {
-		removeUser();
+	removeToken: function(msg) {
+		removeToken();
 		setStoreFlashMessage(msg);
 	},
 
@@ -79,15 +79,15 @@ AuthStore.dispatchToken = Dispatcher.register(function(payload)
 
 	switch(action.actionType) {
 		case ActionConstants.LOGIN_USER:
-			setUser(action.token);
+			setToken(action.token);
 		break;
 
 		case ActionConstants.LOGOUT_USER:
-			removeUser();
+			removeToken();
 		break;
 
 		case ActionConstants.LOGIN_USER_ERROR:
-			AuthStore.removeUser(action.msg);
+			AuthStore.removeToken(action.msg);
 		break;
 	}
 

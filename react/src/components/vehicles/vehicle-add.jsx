@@ -72,7 +72,7 @@ class VehicleAdd extends React.Component
 
     // Listen to changes in store, update it's own state
     _onChange() {
-    	let $addingNewVehicle = MyVehiclesStore.isNewVehicleAdded();
+    	let addingNewVehicle = MyVehiclesStore.isNewVehicleAdded();
 		let vehicleToUpdate = MyVehiclesStore.getVehicleToUpdate();
 		let isEditingMode = this.state.isEditingMode;
 		let stateVehicle = this.state.vehicle;
@@ -93,7 +93,7 @@ class VehicleAdd extends React.Component
 		    vehicle: stateVehicle,
 			manufacturers: ApiVehiclesStore.getApiVehicles(),
 			isEditingMode: isEditingMode,
-			newVehicleAdded: $addingNewVehicle,
+			newVehicleAdded: addingNewVehicle,
 			loader: false,
 			flashMessage: flashMsg !== undefined ? flashMsg : null
 		});
@@ -201,8 +201,10 @@ class VehicleAdd extends React.Component
                                     <div className="col-xs-12 col-md-8">
                                         <label className="control-label">Year</label>
                                         <div className="input-group">
-                                            <select ref="year" onChange={this.handleFormChange.bind(this, 'year')}
-                                                    value={this.state.vehicle.year} className="form-control input-sm"
+                                            <select ref="year"
+													onChange={this.handleFormChange.bind(this, 'year')}
+                                                    value={this.state.vehicle.year}
+													className="form-control input-sm"
                                                     required="required">
                                                 <option value="">Select One</option>
                                                 { yearsOptions }
@@ -214,8 +216,10 @@ class VehicleAdd extends React.Component
                                     <div className="col-xs-12 col-md-8">
                                         <label className="control-label">Manufacturer</label>
                                         <div className="input-group">
-                                            <select ref="mfg_id" onChange={this.handleFormChange.bind(this, 'mfg_id')}
-                                                    value={this.state.vehicle.mfg_id} className="form-control input-sm"
+                                            <select ref="mfg_id"
+													onChange={this.handleFormChange.bind(this, 'mfg_id')}
+                                                    value={this.state.vehicle.mfg_id}
+													className="form-control input-sm"
                                                     required="required">
                                                 <option value="">Select One</option>
                                                 { apiMfgsOptions }
@@ -227,8 +231,10 @@ class VehicleAdd extends React.Component
                                     <div className="col-xs-12 col-md-8">
                                         <label className="control-label">Model</label>
                                         <div className="input-group">
-                                            <select ref="model_id" onChange={this.handleFormChange.bind(this, 'model_id')}
-                                                    value={this.state.vehicle.model_id} className="form-control input-sm"
+                                            <select ref="model_id"
+													onChange={this.handleFormChange.bind(this, 'model_id')}
+                                                    value={this.state.vehicle.model_id}
+													className="form-control input-sm"
                                                     required="required">
                                                 <option value="">Select One</option>
                                                 { apiModelsOptions }
@@ -240,8 +246,10 @@ class VehicleAdd extends React.Component
                                     <div className="col-xs-12 col-md-8">
                                         <label className="control-label">Color</label>
                                         <div className="input-group">
-                                            <select ref="color" onChange={this.handleFormChange.bind(this, 'color')}
-                                                    value={this.state.vehicle.color} className="form-control input-sm"
+                                            <select ref="color"
+													onChange={this.handleFormChange.bind(this, 'color')}
+                                                    value={this.state.vehicle.color}
+													className="form-control input-sm"
                                                     required="required">
                                                 <option value="">Select One</option>
                                                 <option value="white">White</option>
@@ -258,8 +266,11 @@ class VehicleAdd extends React.Component
                                     <div className="col-xs-12 col-md-8">
                                         <label className="control-label">VIN</label>
                                         <div className="input-group">
-                                            <input type="text" ref="vin" onChange={this.handleFormChange.bind(this, 'vin')}
-                                                   value={this.state.vehicle.vin} className="form-control input-sm"
+                                            <input type="text"
+												   ref="vin"
+												   onChange={this.handleFormChange.bind(this, 'vin')}
+                                                   value={this.state.vehicle.vin}
+												   className="form-control input-sm"
                                                    required="required"/>
                                         </div>
                                     </div>
@@ -268,8 +279,11 @@ class VehicleAdd extends React.Component
                                     <div className="col-xs-12 col-md-8">
                                         <label className="control-label">Plate</label>
                                         <div className="input-group">
-                                            <input type="text" ref="plate" onChange={this.handleFormChange.bind(this, 'plate')}
-                                                   value={this.state.vehicle.plate} className="form-control input-sm"
+                                            <input type="text"
+												   ref="plate"
+												   onChange={this.handleFormChange.bind(this, 'plate')}
+                                                   value={this.state.vehicle.plate}
+												   className="form-control input-sm"
                                                    required="required"/>
                                         </div>
                                     </div>

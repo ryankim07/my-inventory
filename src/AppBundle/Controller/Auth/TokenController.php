@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace AppBundle\Controller\Auth;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -16,7 +16,7 @@ class TokenController extends FOSRestController
     /**
      * New token generator
      *
-     * @Rest\Post("/api/tokens", name="api_tokens")
+     * @Rest\Post("/api/token", name="api_token")
      *
      * @param Request $request
      * @return View

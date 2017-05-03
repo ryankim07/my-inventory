@@ -20,48 +20,24 @@ class Header extends React.Component
                     <div id="navbar" className="navbar-collapse collapse">
                         <ul className="nav navbar-nav navbar-left">
                             <li className="dropdown">
-                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">House <span className="caret"/></a>
-                                <ul className="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="" className="menu-link"><i className="fa fa-home menu-link-icon"/> Add new</a>
-                                    </li>
-                                    <li>
-                                        <a href="" className="menu-link"><i className="fa fa-list-alt menu-link-icon"/> List</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li className="dropdown">
                                 <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Auto <span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <Link to="/vehicle/add" className="menu-link"><i className="fa fa-car menu-link-icon"/>Add</Link>
+                                        <Link to="/vehicle/add" className="menu-link"><i className="fa fa-car menu-link-icon"/> Add</Link>
                                     </li>
                                     <li>
-                                        <Link to="/vehicles/dashboard" className="menu-link"><i className="fa fa-list-alt menu-link-icon"/>All</Link>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li className="dropdown">
-                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Logs <span className="caret"/></a>
-                                <ul className="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="" className="menu-link"><i className="fa fa-tasks menu-link-icon"/>View</a>
+                                        <Link to="/vehicles/dashboard" className="menu-link"><i className="fa fa-list-alt menu-link-icon"/> All</Link>
                                     </li>
                                 </ul>
                             </li>
                             <li className="dropdown">
-                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Accounts <span className="caret"/></a>
+                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Users <span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="" className="menu-link"><i className="fa fa-users menu-link-icon"/>Users</a>
+                                        <Link to="/auth/signup" className="menu-link"><i className="fa fa-users menu-link-icon"/> Add</Link>
                                     </li>
-                                </ul>
-                            </li>
-                            <li className="dropdown">
-                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">System <span className="caret"/></a>
-                                <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="" className="menu-link"><i className="fa fa-cogs menu-link-icon"/>Settings</a>
+                                        <Link to="/auth/dashboard" className="menu-link"><i className="fa fa-list-alt menu-link-icon"/> All</Link>
                                     </li>
                                 </ul>
                             </li>
@@ -71,7 +47,7 @@ class Header extends React.Component
                                 <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ryan<span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <Link to="/auth/logout" className="menu-link"><i className="fa fa-car menu-link-icon"/>Logout</Link>
+                                        <Link to="/auth/logout" className="menu-link"><i className="fa fa-car menu-link-icon"/> Logout</Link>
                                     </li>
                                 </ul>
                             </li>

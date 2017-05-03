@@ -25,10 +25,10 @@ ReactDOM.render(
     <Router history={hashHistory}>
         <Route path="/auth/login" component={Login}/>
 		<Route path="/auth/logout" component={Logout}/>
-        <Route path="/auth/signup" component={Signup}/>
         <Route component={Main} onEnter={requireAuth}>
             <IndexRoute component={Home} />
             <Route path="/" component={Home} />
+			<Route path="/auth/signup" component={Signup}/>
             <Route path="/vehicle/add" component={VehicleAdd} />
             <Route path="/vehicles/dashboard" component={VehicleDashboard} >
                 <Route path="/vehicle/add" component={VehicleAdd} />

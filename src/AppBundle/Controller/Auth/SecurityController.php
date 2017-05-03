@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace AppBundle\Controller\Auth;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,15 +17,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  */
 class SecurityController extends FOSRestController
 {
-    public function newAction(Request $request)
-    {
-        //$this->denyAccessUnlessGranted('ROLE_USER');
-    }
-
     /**
      * Login
-     * 
+     *
      * @Rest\Post("/login", name="security_login")
+     * @param Request $request
+     * @return JsonResponse
      */
     public function loginAction(Request $request)
     {

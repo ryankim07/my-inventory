@@ -49,7 +49,42 @@ class GroupEntity implements RoleInterface
     }
 
     /**
-     * @see RoleInterface
+     * Set username
+     *
+     * @param $username
+     * @return $this
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Get username
+     *
+     * @return mixed
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * Set role
+     *
+     * @param $role
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+    }
+
+    /**
+     * Get role
+     *
+     * @return mixed
      */
     public function getRole()
     {

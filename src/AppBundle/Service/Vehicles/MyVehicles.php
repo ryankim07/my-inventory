@@ -92,7 +92,7 @@ class MyVehicles
     public function save($vehicle)
     {
         if (count($vehicle) == 0) {
-            return ['msg' => 'Empty new vehicle information.'];
+            return ['msg' => 'New vehicle information empty.'];
         }
 
         try {
@@ -195,8 +195,8 @@ class MyVehicles
                 }
 
                 return [
-                    'msg'     => 'Vehicle successfully updated.',
-                    'vehicle' => $existingVehicle
+                    'vehicle' => $existingVehicle,
+                    'msg'     => 'Vehicle successfully updated.'
                 ];
             }
         } catch(\Exception $e) {
@@ -249,7 +249,7 @@ class MyVehicles
      * @param $vin
      * @return MyVehicleEntity|null|object
      */
-    public function findByIdOrVin($id, $vin)
+    private function findByIdOrVin($id, $vin)
     {
         $results = $this->repo->find($id);
 

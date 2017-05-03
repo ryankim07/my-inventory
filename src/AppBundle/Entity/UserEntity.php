@@ -60,51 +60,166 @@ class UserEntity implements AdvancedUserInterface, \Serializable
         $this->groups = new ArrayCollection();
     }
 
+    /**
+     * Get ID
+     *
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set username
+     *
+     * @param $username
+     * @return $this
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Get username
+     *
+     * @return mixed
+     */
     public function getUsername()
     {
         return $this->username;
     }
 
+    /**
+     * Get salt
+     *
+     * @return null
+     */
     public function getSalt()
     {
         return null;
     }
 
+    /**
+     * Set password
+     *
+     * @param $password
+     * @return $this
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get passord
+     * @return mixed
+     */
     public function getPassword()
     {
         return $this->password;
     }
 
+    /**
+     * Set email
+     *
+     * @param $email
+     * @return $this
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set is active
+     *
+     * @param $active
+     */
+    public function setIsActive($active)
+    {
+        $this->isActive = $active;
+    }
+
+    /**
+     * Get roles
+     *
+     * @return array
+     */
     public function getRoles()
     {
         return $this->groups->toArray();
     }
 
+    /**
+     * Erase credentials
+     */
     public function eraseCredentials()
     {
     }
 
+    /**
+     * Is account non expired
+     *
+     * @return bool
+     */
     public function isAccountNonExpired()
     {
         return true;
     }
 
+    /**
+     * Is account non locked
+     *
+     * @return bool
+     */
     public function isAccountNonLocked()
     {
         return true;
     }
 
+    /**
+     * Is credentials non expired
+     *
+     * @return bool
+     */
     public function isCredentialsNonExpired()
     {
         return true;
     }
 
+    /**
+     * Is enabled
+     *
+     * @return mixed
+     */
     public function isEnabled()
     {
         return $this->isActive;
     }
 
-    // serialize and unserialize must be updated - see below
+    /**
+     * Serialize
+     *
+     * @return string
+     */
     public function serialize()
     {
         return serialize(array(
@@ -112,6 +227,11 @@ class UserEntity implements AdvancedUserInterface, \Serializable
         ));
     }
 
+    /**
+     * Unserialize
+     *
+     * @param string $serialized
+     */
     public function unserialize($serialized)
     {
         list($this->isActive) = unserialize($serialized);

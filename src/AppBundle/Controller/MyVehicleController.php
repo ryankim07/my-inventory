@@ -20,8 +20,9 @@ class MyVehicleController extends FOSRestController
 {
     /**
      * Get my vehicles
-     * 
+     *
      * @Rest\Get("/api/vehicles", name="get_all_vehicles")
+     * @return mixed|string
      */
     public function getListAction()
     {

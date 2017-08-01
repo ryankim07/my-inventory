@@ -6,10 +6,10 @@
  * Time: 10:28 AM
  */
 
-namespace AppBundle\Service\Home;
+namespace AppBundle\Service\Properties;
 
 
-class HomeRecord
+class Properties
 {
 
 }

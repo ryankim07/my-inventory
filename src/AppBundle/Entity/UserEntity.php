@@ -49,6 +49,15 @@ class UserEntity implements AdvancedUserInterface, \Serializable
 
     /**
      * @ORM\ManyToMany(targetEntity="GroupEntity", inversedBy="users")
+     * @ORM\JoinTable(
+     *  name="user_entity_group_entity",
+     *  joinColumns={
+     *      @ORM\JoinColumn(name="user_entity_id", referencedColumnName="id")
+     *  },
+     *  inverseJoinColumns={
+     *      @ORM\JoinColumn(name="group_entity_id", referencedColumnName="id")
+     *  }
+     * )
      */
     private $groups;
 
@@ -235,5 +244,44 @@ class UserEntity implements AdvancedUserInterface, \Serializable
     public function unserialize($serialized)
     {
         list($this->isActive) = unserialize($serialized);
+    }
+
+    /**
+     * Get groups
+     *
+     * @return ArrayCollection
+     */
+    public function getGroups()
+    {
+        return $this->groups;
+    }
+
+    /**
+     * Add group
+     *
+     * @param GroupEntity $group
+     */
+    public function addGroup(GroupEntity $group)
+    {
+        if (true === $this->groups->contains($group)) {
+            return;
+        }
+
+        $this->groups->add($group);
+        $group->addUser($this);
+    }
+
+    /**
+     * Remove group
+     *
+     * @param GroupEntity $group
+     */
+    public function removeGroup(GroupEntity $group)
+    {
+        if (false === $this->groups->contains($group)) {
+            return;
+        }
+        $this->groups->removeElement($group);
+        $group->removeUser($this);
     }
 }

@@ -4,18 +4,30 @@ parameters:
 #    parameter_name: value
 
 services:
+    User:
+        class: AppBundle\Service\Users\User
+        arguments:
+            - "@doctrine.orm.entity_manager"
+
+    Jwt_Token_Authenticator:
+        class: AppBundle\Security\JwtTokenAuthenticator
+        arguments: ["@lexik_jwt_authentication.encoder.default", "@doctrine.orm.entity_manager"]
+
+    Username_Password_Authenticator:
+        class: AppBundle\Security\UsernamePasswordAuthenticator
+        arguments: ["@security.password_encoder"]
+        public: false
+
     # Factories
     Sync_Factory:
         class: AppBundle\Service\Vehicles\Api\SyncFactory
-        arguments:
-            - "@doctrine.orm.entity_manager"
-            - "%vehicle_api_type%"
+        arguments: ["@doctrine.orm.vehicles_entity_manager", "%vehicle_api_type%"]
 
     # Services
     Sync_Abstract:
         class: AppBundle\Service\Vehicles\Api\SyncAbstract
         abstract: true
-        arguments: ["@doctrine.orm.entity_manager"]
+        arguments: ["@doctrine.orm.vehicles_entity_manager"]
         calls:
             - [syncApiVehiclesToDb, ['mfgs']]
 
@@ -30,13 +42,11 @@ services:
     Sync_Api:
       class: AppBundle\Service\Vehicles\Api\SyncInterface
       factory: ["@Sync_Factory", get]
-      arguments:
-          - "@doctrine.orm.entity_manager"
-          - "%vehicle_api_type%"
+      arguments: ["@doctrine.orm.vehicles_entity_manager", "%vehicle_api_type%"]
 
     Sync_Db:
       class: AppBundle\Service\Vehicles\Api\SyncDb
-      arguments: ["@doctrine.orm.entity_manager"]
+      arguments: ["@doctrine.orm.vehicles_entity_manager"]
 
     File_Uploader:
         class: AppBundle\Service\FileUploader
@@ -44,27 +54,8 @@ services:
 
     Assets:
         class: AppBundle\Service\Assets
-        arguments:
-            - "@doctrine.orm.entity_manager"
-            - "@File_Uploader"
+        arguments: ["@doctrine.orm.entity_manager", "@File_Uploader"]
 
     My_Vehicles:
         class: AppBundle\Service\Vehicles\MyVehicles
-        arguments:
-            - "@doctrine.orm.entity_manager"
-            - "@Sync_Db"
-            - "@File_Uploader"
-
-    User:
-        class: AppBundle\Service\Users\User
-        arguments:
-            - "@doctrine.orm.entity_manager"
-
-    Jwt_Token_Authenticator:
-        class: AppBundle\Security\JwtTokenAuthenticator
-        autowire: true
-
-    Username_Password_Authenticator:
-        class: AppBundle\Security\UsernamePasswordAuthenticator
-        arguments: ["@security.password_encoder"]
-        public: false
+        arguments: ["@doctrine.orm.vehicles_entity_manager", "@Sync_Db", "@File_Uploader"]

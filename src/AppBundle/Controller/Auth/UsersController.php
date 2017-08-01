@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Auth;
 
+use AppBundle\AppBundle;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +12,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Security("is_granted(['ROLE_ADMIN'])")
@@ -24,20 +26,37 @@ class UsersController extends FOSRestController
      * @param Request $request
      * @return View
      */
-    public function postAction(Request $request)
+    public function postAction(Request $request, UserInterface $user)
     {
         // Request param
         $data = json_decode(stripslashes($request->get('data')), true);
 
         // Call service to save
-        $service = $this->get('User');
-        $results = $service->save($data);
+        $authenticationService = $this->get('Username_Password_Authenticator');
+        $data['password'] = $authenticationService->encodePassword($user, $data['password']);
+        $userService = $this->get('User');
+        $results = $userService->save($data);
 
         // Send email
         $results['token'] = $this->get('lexik_jwt_authentication.encoder')->encode([
             'username' => $this->getUser()->getUsername(),
             'exp'      => time() + $this->container->getParameter('lexik_jwt_authentication.token_ttl')
         ]);
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Hello Email')
+            ->setFrom('admin@my-inventory.com')
+            ->setTo('rkim07@hotmail.com')
+            ->setBody(
+                $this->renderView(
+                // app/Resources/views/Emails/registration.html.twig
+                    'Emails/registration.html.twig',
+                    array('name' => 'Ryan Kim')
+                ),
+                'text/html'
+            );
+
+        $this->get('mailer')->send($message);
 
         return new View($results, Response::HTTP_OK);
     }

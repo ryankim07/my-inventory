@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Service\Home\Room;
+namespace AppBundle\Service\Properties\Room;
 
 class LivingRoom extends AbstractRoom
 {

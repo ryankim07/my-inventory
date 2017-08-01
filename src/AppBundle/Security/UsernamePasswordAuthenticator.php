@@ -15,6 +15,7 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 class UsernamePasswordAuthenticator extends AbstractGuardAuthenticator
 {
     private $passwordEncoder;
+    private $userInterface;
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -95,5 +96,12 @@ class UsernamePasswordAuthenticator extends AbstractGuardAuthenticator
     public function supportsRememberMe()
     {
         return false;
+    }
+
+    public function encodePassword(UserInterface $user, $plainPassword)
+    {
+        $password = $this->passwordEncoder->encodePassword($user, $plainPassword);
+
+        return $password;
     }
 }

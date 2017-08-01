@@ -90,4 +90,43 @@ class GroupEntity implements RoleInterface
     {
         return $this->role;
     }
+
+    /**
+     * Get groups
+     *
+     * @return ArrayCollection
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * Add user
+     *
+     * @param UserEntity $user
+     */
+    public function addUser(UserEntity $user)
+    {
+        if (true === $this->users->contains($user)) {
+            return;
+        }
+
+        $this->users->add($user);
+        $user->addGroup($this);
+    }
+
+    /**
+     * Remove user
+     *
+     * @param UserEntity $user
+     */
+    public function removeUser(UserEntity $user)
+    {
+        if (false === $this->users->contains($user)) {
+            return;
+        }
+        $this->users->removeElement($user);
+        $user->removeGroup($this);
+    }
 }

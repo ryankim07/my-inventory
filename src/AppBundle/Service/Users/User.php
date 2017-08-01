@@ -95,6 +95,7 @@ class User
             $response = null;
 
             $existingUser = $this->findByUsernameOrEmail($username, $email);
+            $existingGroup = $this->em->getRepository('AppBundle:GroupEntity')->findOneByUsername($username);
 
             if (is_null($existingUser)) {
                 // Save new user
@@ -125,13 +126,13 @@ class User
                 ];
             }
 
-            $existingGroup = $this->em->getRepository('AppBundle:GroupEntity')->findOneByUsername($username);
-
             if (is_null($existingGroup)) {
                 // Save new group for user
                 $newGroup = new GroupEntity();
                 $newGroup->setUsername($username);
                 $newGroup->setRole($role);
+
+                $newUser->addGroup($newGroup);
 
                 $this->em->persist($newGroup);
                 $this->em->flush();

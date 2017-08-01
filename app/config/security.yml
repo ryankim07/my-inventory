@@ -31,7 +31,7 @@ security:
             stateless: true
             guard:
                 authenticators:
-                    - 'Jwt_Token_Authenticator'
+                    - 'jwt_token_authenticator'
 
         main:
             pattern: ^/

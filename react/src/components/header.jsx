@@ -20,7 +20,7 @@ class Header extends React.Component
                     <div id="navbar" className="navbar-collapse collapse">
                         <ul className="nav navbar-nav navbar-left">
                             <li className="dropdown">
-                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Auto <span className="caret"/></a>
+                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Vehicles <span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
                                         <Link to="/vehicle/add" className="menu-link"><i className="fa fa-car menu-link-icon"/> Add</Link>
@@ -31,10 +31,21 @@ class Header extends React.Component
                                 </ul>
                             </li>
                             <li className="dropdown">
+                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Properties <span className="caret"/></a>
+                                <ul className="dropdown-menu" role="menu">
+                                    <li>
+                                        <Link to="/property/add" className="menu-link"><i className="fa fa-home menu-link-icon"/> Add</Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/properties/dashboard" className="menu-link"><i className="fa fa-list-alt menu-link-icon"/> All</Link>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li className="dropdown">
                                 <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Users <span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <Link to="/auth/signup" className="menu-link"><i className="fa fa-users menu-link-icon"/> Add</Link>
+                                        <Link to="/auth/signup" className="menu-link"><i className="fa fa-user menu-link-icon"/> Add</Link>
                                     </li>
                                     <li>
                                         <Link to="/auth/dashboard" className="menu-link"><i className="fa fa-list-alt menu-link-icon"/> All</Link>

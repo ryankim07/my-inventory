@@ -3,7 +3,7 @@
 namespace AppBundle\Service\Vehicles;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\MyVehicleEntity;
+use AppBundle\Entity\Vehicles\MyVehicleEntity;
 use AppBundle\Entity\AssetsEntity;
 use AppBundle\Service\Vehicles\Api\SyncDb;
 use AppBundle\Service\FileUploader;

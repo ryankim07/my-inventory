@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace AppBundle\Entity\Vehicles;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,14 +13,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 class MyVehicleEntity
 {
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", length=11)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", length=11)
      * @Assert\NotBlank()
      */
     private $mfgId;
@@ -32,7 +32,7 @@ class MyVehicleEntity
     private $mfg;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", length=11)
      * @Assert\NotBlank()
      */
     private $modelId;

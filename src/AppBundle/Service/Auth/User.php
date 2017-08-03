@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Service\Users;
+namespace AppBundle\Service\Auth;
 
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\UserEntity;

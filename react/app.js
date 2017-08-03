@@ -4,12 +4,18 @@ import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import AuthStore from './src/stores/auth-store';
 import Main from './src/components/main';
 import Home from './src/components/home';
-import VehicleDashboard from './src/components/vehicles/vehicle-dashboard';
-import VehicleAdd from './src/components/vehicles/vehicle-add';
-import VehiclesList from './src/components/vehicles/vehicles-list';
 import Login from './src/components/auth/login';
 import Logout from './src/components/auth/logout';
 import Signup from './src/components/auth/signup';
+import VehicleDashboard from './src/components/vehicles/vehicle-dashboard';
+import VehicleAdd from './src/components/vehicles/vehicle-add';
+import VehiclesList from './src/components/vehicles/vehicles-list';
+import PropertyDashboard from './src/components/properties/property-dashboard';
+import PropertyAdd from './src/components/properties/property-add';
+import PropertiesList from './src/components/properties/properties-list';
+import PropertyAddressDashboard from './src/components/properties/property-address-dashboard';
+import PropertyAddressAdd from './src/components/properties/property-address-add';
+import PropertiesAddressList from './src/components/properties/properties-address-list';
 
 function requireAuth(nextState, replace)
 {
@@ -34,6 +40,15 @@ ReactDOM.render(
                 <Route path="/vehicle/add" component={VehicleAdd} />
                 <Route path="/vehicles" component={VehiclesList} />
             </Route>
+			<Route path="/property/add" component={PropertyAdd} />
+			<Route path="/properties/dashboard" component={PropertyDashboard} >
+				<Route path="/property/add" component={PropertyAdd} />
+				<Route path="/properties" component={PropertiesList} />
+				<Route path="/properties/address-dashboard" component={PropertyAddressDashboard} >
+					<Route path="/property/address-add" component={PropertyAddressAdd} />
+					<Route path="/properties-address" component={PropertiesAddressList} />
+				</Route>
+			</Route>
         </Route>
     </Router>,
 

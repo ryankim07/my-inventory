@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Vehicles;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -10,32 +10,32 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use AppBundle\Entity\PropertyEntity;
+use AppBundle\Entity\VehicleEntity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Security("is_granted(['ROLE_USER','ROLE_ADMIN'])")
  */
-class PropertyController extends FOSRestController
+class MyVehicleController extends FOSRestController
 {
     /**
-     * Get properties
+     * Get my vehicles
      *
-     * @Rest\Get("/api/properties", name="get_all_properties")
+     * @Rest\Get("/api/vehicles", name="get_all_vehicles")
      * @return mixed|string
      */
     public function getListAction()
     {
-        $service = $this->get('Properties');
+        $service = $this->get('My_Vehicles');
         $results = $service->findAll();
 
         return $results;
     }
 
     /**
-     * Add new property
+     * Add my new vehicle
      *
-     * @Rest\Post("/api/property", name="new_property")
+     * @Rest\Post("/api/vehicle", name="new_vehicle")
      * @param Request $request
      * @return View
      */
@@ -46,22 +46,22 @@ class PropertyController extends FOSRestController
         $data['assets'] = $request->files->get('file');
 
         // Call service to save
-        $service = $this->get('Properties');
+        $service = $this->get('My_Vehicles');
         $results = $service->save($data);
 
         return new View($results, Response::HTTP_OK);
     }
 
     /**
-     * Delete property
+     * Delete vehicle
      *
-     * @Rest\Delete("/api/properties/{id}", name="delete_property")
+     * @Rest\Delete("/api/vehicles/{id}", name="delete_vehicle")
      * @param $id
      * @return View
      */
     public function deleteAction($id)
     {
-        $service = $this->get('Properties');
+        $service = $this->get('My_Vehicles');
         $results = $service->delete($id);
 
         return new View($results, Response::HTTP_OK);

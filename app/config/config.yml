@@ -23,14 +23,14 @@ framework:
     #serializer:      { enable_annotations: true }
     templating:
         engines: ['twig']
-    default_locale:  "%locale%"
+    default_locale: "%locale%"
     trusted_hosts:   ~
     trusted_proxies: ~
     session:
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
-        handler_id:  session.handler.native_file
-        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
-    fragments:       ~
+        handler_id: session.handler.native_file
+        save_path: "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+    fragments: ~
     http_method_override: true
     assets: ~
     php_errors:
@@ -38,7 +38,7 @@ framework:
 
 # Twig Configuration
 twig:
-    debug:            "%kernel.debug%"
+    debug: "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     cache: false
 
@@ -48,29 +48,29 @@ doctrine:
         default_connection: default
         connections:
             default:
-                driver:   pdo_mysql
-                host:     "%database_host%"
-                port:     "%database_port%"
-                dbname:   auth
-                user:     "%database_user%"
+                driver: pdo_mysql
+                host: "%database_host%"
+                port: "%database_port%"
+                dbname: auth
+                user: "%database_user%"
                 password: "%database_password%"
-                charset:  UTF8
+                charset: UTF8
             vehicles:
-                driver:   pdo_mysql
-                host:     "%database_host%"
-                port:     "%database_port%"
-                dbname:   vehicles
-                user:     "%database_user%"
+                driver: pdo_mysql
+                host: "%database_host%"
+                port: "%database_port%"
+                dbname: vehicles
+                user: "%database_user%"
                 password: "%database_password%"
-                charset:  UTF8
+                charset: UTF8
             houses:
-                driver:   pdo_mysql
-                host:     "%database_host%"
-                port:     "%database_port%"
-                dbname:   houses
-                user:     "%database_user%"
+                driver: pdo_mysql
+                host: "%database_host%"
+                port: "%database_port%"
+                dbname: houses
+                user: "%database_user%"
                 password: "%database_password%"
-                charset:  UTF8
+                charset: UTF8
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
@@ -102,8 +102,8 @@ doctrine_migrations:
 # Swiftmailer Configuration
 swiftmailer:
     transport: gmail
-    username:  ryankim07@gmail.com
-    password:  ryanKim2775
+    username: ryankim07@gmail.com
+    password: ryanKim2775
 
 # FOSRest Configuration
 fos_rest:
@@ -132,6 +132,6 @@ nelmio_cors:
 # Lexik JWT Authentication settings
 lexik_jwt_authentication:
     private_key_path: %kernel.root_dir%/../var/jwt/private.pem
-    public_key_path:  %kernel.root_dir%/../var/jwt/public.pem
-
-    token_ttl:        36000
+    public_key_path: %kernel.root_dir%/../var/jwt/public.pem
+    pass_phrase: %jwt_key_pass_phrase%
+    token_ttl: 36000

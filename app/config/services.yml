@@ -63,3 +63,7 @@ services:
     Properties:
         class: AppBundle\Service\Properties\Properties
         arguments: ["@doctrine.orm.houses_entity_manager", "@File_Uploader"]
+
+    Address:
+        class: AppBundle\Service\Properties\Address
+        arguments: ["@doctrine.orm.houses_entity_manager"]

@@ -42,7 +42,7 @@ class AddressController extends FOSRestController
     public function postAction(Request $request)
     {
         // Request param
-        $data           = json_decode(stripslashes($request->get('data')), true);
+        $data = json_decode(stripslashes($request->get('data')), true);
 
         // Call service to save
         $service = $this->get('Address');

@@ -104,15 +104,15 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 		);
 
 		_my_vehicles.splice(index, 1, {
-			color: vehicle.color.charAt(0).toUpperCase() + vehicle.color.slice(1),
 			id: vehicle.id,
 			mfg: vehicle.mfg,
 			mfg_id: vehicle.mfg_id,
-			model: vehicle.model,
 			model_id: vehicle.model_id,
-			plate: vehicle.plate,
-			vin: vehicle.vin,
+			model: vehicle.model,
 			year: vehicle.year,
+			color: vehicle.color.charAt(0).toUpperCase() + vehicle.color.slice(1),
+			vin: vehicle.vin,
+			plate: vehicle.plate,
 			assets: vehicle.assets
 		});
 

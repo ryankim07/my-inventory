@@ -104,7 +104,6 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		);
 
 		_properties.splice(index, 1, {
-			color: property.color.charAt(0).toUpperCase() + property.color.slice(1),
 			id: property.id,
 			built: property.built,
 			style: property.style,

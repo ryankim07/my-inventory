@@ -5,7 +5,7 @@ import Api from '../services/Api';
 let PropertiesAddressAction = {
     getAddresses: function() {
         Api
-            .get('http://mcs.dev/api/properties-addresses')
+            .get('http://mcs.dev/api/properties/addresses')
             .then(function (addresses) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.RECEIVE_PROPERTIES_ADDRESSES,
@@ -23,7 +23,7 @@ let PropertiesAddressAction = {
 
     addAddress: function(data) {
         Api
-            .post('http://mcs.dev/api/property-address', data)
+            .post('http://mcs.dev/api/property/address', data)
             .then(function (results) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.ADD_PROPERTY_ADDRESS,
@@ -41,7 +41,7 @@ let PropertiesAddressAction = {
 
 	updateAddress: function(data) {
 		Api
-			.post('http://mcs.dev/api/property', data)
+			.post('http://mcs.dev/api/property/address', data)
 			.then(function (results) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.UPDATE_PROPERTY_ADDRESS,
@@ -59,7 +59,7 @@ let PropertiesAddressAction = {
 
     removeAddress: function(id) {
         Api
-            .delete('http://mcs.dev/api/properties/' + id)
+            .delete('http://mcs.dev/api/properties/addresses' + id)
             .then(function (results) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.REMOVE_PROPERTY_ADDRESS,

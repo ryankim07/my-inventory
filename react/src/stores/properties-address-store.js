@@ -15,8 +15,8 @@ function setAllAddresses(addresses) {
     _addresses = addresses ;
 }
 
-function setAddress(property) {
-	_address = property ;
+function setAddress(address) {
+	_address = address ;
 }
 
 function flagNewProperty() {
@@ -100,16 +100,14 @@ let PropertiesAddressStore = assign({}, EventEmitter.prototype, {
 
 		_addresses.splice(index, 1, {
 			id: address.id,
-			built: address.built,
-			style: address.style,
-			beds: address.beds,
-			baths: address.baths,
-			floors: address.floors,
-			finished_area: address.finished_area,
-			unfinished_area: address.unfinished_area,
-			total_area: address.total_area,
-			parcel_number: address.parcel_number,
-			assets: address.assets
+			property_id: address.property_id,
+			street: address.street,
+			city: address.city,
+			state: address.state,
+			zip: address.zip,
+			county: address.county,
+			country: address.country,
+			subdivision: address.subdivision
 		});
 
 		openRightPanel(false);

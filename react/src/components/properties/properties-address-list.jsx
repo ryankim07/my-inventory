@@ -22,8 +22,8 @@ class PropertiesAddressList extends React.Component
             loader: true
         };
 
-        this._onChange = this._onChange.bind(this);
-        this.editAddress = this.editAddress().bind(this);
+        this._onChange     = this._onChange.bind(this);
+        this.editAddress   = this.editAddress().bind(this);
         this.removeAddress = this.removeAddress.bind(this);
     }
 

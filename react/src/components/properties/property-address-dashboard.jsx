@@ -89,8 +89,8 @@ class PropertyAddressDashboard extends React.Component
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-success" />}
-				<PropertyList mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} className="main-column" />
-				{ !this.state.showRightPanel ? null : <PropertyAdd closeRightPanel={this.closeRightPanel} />}
+				<PropertyAddressList mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} className="main-column" />
+				{ !this.state.showRightPanel ? null : <PropertyAddressAdd closeRightPanel={this.closeRightPanel} />}
 			</div>
 		)
 	}

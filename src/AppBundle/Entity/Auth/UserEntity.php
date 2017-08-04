@@ -6,7 +6,7 @@
  * Time: 4:10 PM
  */
 
-namespace AppBundle\Entity;
+namespace AppBundle\Entity\Auth;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -48,7 +48,7 @@ class UserEntity implements AdvancedUserInterface, \Serializable
     private $isActive;
 
     /**
-     * @ORM\ManyToMany(targetEntity="GroupEntity", inversedBy="users")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Auth\GroupEntity", inversedBy="users")
      * @ORM\JoinTable(
      *  name="user_entity_group_entity",
      *  joinColumns={
@@ -283,5 +283,15 @@ class UserEntity implements AdvancedUserInterface, \Serializable
         }
         $this->groups->removeElement($group);
         $group->removeUser($this);
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
     }
 }

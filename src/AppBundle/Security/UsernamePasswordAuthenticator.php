@@ -15,7 +15,6 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 class UsernamePasswordAuthenticator extends AbstractGuardAuthenticator
 {
     private $passwordEncoder;
-    private $userInterface;
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -59,11 +58,11 @@ class UsernamePasswordAuthenticator extends AbstractGuardAuthenticator
     /**
      * {@inheritdoc}
      */
-    public function checkCredentials($credentials, UserInterface $user)
+    public function checkCredentials($credentials, UserInterface $userInterface)
     {
         $plainPassword = $credentials['password'];
 
-        if (!$this->passwordEncoder->isPasswordValid($user, $plainPassword)) {
+        if (!$this->passwordEncoder->isPasswordValid($userInterface, $plainPassword)) {
             throw new AuthenticationException('Invalid credentials');
         }
 
@@ -98,9 +97,9 @@ class UsernamePasswordAuthenticator extends AbstractGuardAuthenticator
         return false;
     }
 
-    public function encodePassword(UserInterface $user, $plainPassword)
+    public function encodePassword(UserInterface $userInterface, $plainPassword)
     {
-        $password = $this->passwordEncoder->encodePassword($user, $plainPassword);
+        $password = $this->passwordEncoder->encodePassword($userInterface, $plainPassword);
 
         return $password;
     }

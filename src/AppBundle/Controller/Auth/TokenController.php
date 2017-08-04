@@ -27,8 +27,7 @@ class TokenController extends FOSRestController
 
         // Find username
         $user = $this->getDoctrine()
-            ->get
-            ->getRepository('AppBundle:UserEntity', 'default')
+            ->getRepository('AppBundle\Entity\Auth\UserEntity')
             ->findOneByUsername($request['username']);
 
         if (!$user) {

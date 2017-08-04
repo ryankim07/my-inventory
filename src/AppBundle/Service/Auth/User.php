@@ -4,7 +4,7 @@ namespace AppBundle\Service\Auth;
 
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\UserEntity;
-use AppBundle\Entity\groupEntity;
+use AppBundle\Entity\GroupEntity;
 
 class User
 {
@@ -19,7 +19,7 @@ class User
     public function __construct(EntityManager $entityManager)
     {
         $this->em   = $entityManager;
-        $this->repo = $this->em->getRepository('AppBundle:UserEntity');
+        $this->repo = $this->em->getRepository('AppBundle\Entity\Auth\UserEntity');
     }
 
     /**
@@ -95,7 +95,7 @@ class User
             $response = null;
 
             $existingUser = $this->findByUsernameOrEmail($username, $email);
-            $existingGroup = $this->em->getRepository('AppBundle:GroupEntity')->findOneByUsername($username);
+            $existingGroup = $this->em->getRepository('AppBundle\Entity\Auth\GroupEntity')->findOneByUsername($username);
 
             if (is_null($existingUser)) {
                 // Save new user

@@ -5,13 +5,13 @@ parameters:
 
 services:
     User:
-        class: AppBundle\Service\Users\User
+        class: AppBundle\Service\Auth\User
         arguments:
-            - "@doctrine.orm.entity_manager"
+            - "@doctrine.orm.default_entity_manager"
 
     Jwt_Token_Authenticator:
         class: AppBundle\Security\JwtTokenAuthenticator
-        arguments: ["@lexik_jwt_authentication.encoder.default", "@doctrine.orm.entity_manager"]
+        arguments: ["@lexik_jwt_authentication.encoder.default", "@doctrine.orm.default_entity_manager"]
 
     Username_Password_Authenticator:
         class: AppBundle\Security\UsernamePasswordAuthenticator
@@ -53,8 +53,8 @@ services:
         arguments: ["%assets_dir%"]
 
     Assets:
-        class: AppBundle\Service\Assets
-        arguments: ["@doctrine.orm.entity_manager", "@File_Uploader"]
+        class: AppBundle\Service\Vehicles\Assets
+        arguments: ["@doctrine.orm.vehicles_entity_manager", "@File_Uploader"]
 
     My_Vehicles:
         class: AppBundle\Service\Vehicles\MyVehicles

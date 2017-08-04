@@ -1,10 +1,10 @@
 <?php
 
-namespace AppBundle\Service;
+namespace AppBundle\Service\Vehicles;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\AssetsEntity;
-use AppBundle\Entity\MyVehicleEntity;
+use AppBundle\Entity\Vehicles\AssetsEntity;
+use AppBundle\Service\FileUploader;
 
 class Assets
 {
@@ -21,7 +21,7 @@ class Assets
     public function __construct(EntityManager $entityManager, FileUploader $fileUploader)
     {
         $this->em           = $entityManager;
-        $this->repo         = $this->em->getRepository('AppBundle:AssetsEntity');
+        $this->repo         = $this->em->getRepository('AppBundle\Entity\Vehicles\AssetsEntity');
         $this->fileUploader = $fileUploader;
     }
 

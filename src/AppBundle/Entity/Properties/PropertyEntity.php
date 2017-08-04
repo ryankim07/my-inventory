@@ -80,6 +80,20 @@ class PropertyEntity
     private $parcelNumber;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\PropertyAssetsEntity", mappedBy="properties")
+     * @ORM\OrderBy({"name" = "ASC"})
+     */
+    private $assets;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->assets = new ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer
@@ -303,5 +317,38 @@ class PropertyEntity
     public function getParcelNumber()
     {
         return $this->parcelNumber;
+    }
+
+    /**
+     * Add asset
+     *
+     * @param PropertyAssetsEntity $asset
+     * @return $this
+     */
+    public function addAsset(PropertyAssetsEntity $asset)
+    {
+        $this->assets[] = $asset;
+
+        return $this;
+    }
+
+    /**
+     * Remove asset
+     *
+     * @param PropertyAssetsEntity $asset
+     */
+    public function removeAsset(PropertyAssetsEntity $asset)
+    {
+        $this->assets->removeElement($asset);
+    }
+
+    /**
+     * Get assets
+     *
+     * @return ArrayCollection
+     */
+    public function getAssets()
+    {
+        return $this->assets;
     }
 }

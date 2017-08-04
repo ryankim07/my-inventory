@@ -72,7 +72,7 @@ class MyVehicleEntity
     private $plate;
 
     /**
-     * @ORM\OneToMany(targetEntity="AssetsEntity", mappedBy="myVehicles")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Vehicles\AssetsEntity", mappedBy="myVehicles")
      * @ORM\OrderBy({"name" = "ASC"})
      */
     private $assets;
@@ -291,8 +291,7 @@ class MyVehicleEntity
      * Add asset
      *
      * @param AssetsEntity $asset
-     *
-     * @return MyVehicleEntity
+     * @return $this
      */
     public function addAsset(AssetsEntity $asset)
     {
@@ -314,7 +313,7 @@ class MyVehicleEntity
     /**
      * Get assets
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection
      */
     public function getAssets()
     {

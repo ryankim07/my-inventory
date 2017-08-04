@@ -1,9 +1,11 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace AppBundle\Entity\Vehicles;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use AppBundle\Entity\Vehicles\MyVehicleEntity;
 
 /**
  * @ORM\Entity
@@ -36,7 +38,7 @@ class AssetsEntity
     public $path;
 
     /**
-     * @ORM\ManyToOne(targetEntity="MyVehicleEntity", inversedBy="assets")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vehicles\MyVehicleEntity", inversedBy="assets")
      * @ORM\JoinColumn(name="my_vehicle_id", referencedColumnName="id")
      */
     private $myVehicles;
@@ -123,9 +125,8 @@ class AssetsEntity
     /**
      * Set myVehicles
      *
-     * @param MyVehicleEntity $myVehicles
-     *
-     * @return AssetsEntity
+     * @param \AppBundle\Entity\Vehicles\MyVehicleEntity|null $myVehicles
+     * @return $this
      */
     public function setMyVehicles(MyVehicleEntity $myVehicles = null)
     {
@@ -137,7 +138,7 @@ class AssetsEntity
     /**
      * Get myVehicles
      *
-     * @return MyVehicleEntity
+     * @return mixed
      */
     public function getMyVehicles()
     {

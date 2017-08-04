@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: kimr234z
- * Date: 3/16/17
- * Time: 9:17 AM
- */
-
 namespace AppBundle\Service\Vehicles\Api;
 
 use Doctrine\ORM\EntityManager;
@@ -42,7 +35,7 @@ abstract class SyncAbstract implements SyncInterface
             foreach($this->mfgs as $mfg) {
                 $mfgId       = $mfg['mfg_id'];
                 $mfgName     = $mfg['mfg'];
-                $existingMfg = $this->em->getRepository('AppBundle:VehicleMfgsApiEntity')->findOneByMfgId($mfgId);
+                $existingMfg = $this->em->getRepository('AppBundle\Entity\Vehicles\VehicleMfgsApiEntity')->findOneByMfgId($mfgId);
 
                 // Insert
                 if (is_null($existingMfg)) {
@@ -62,7 +55,7 @@ abstract class SyncAbstract implements SyncInterface
                 foreach ($mfg['models'] as $model) {
                     $modelId       = $model['model_id'];
                     $modelName     = $model['model'];
-                    $existingModel = $this->em->getRepository('AppBundle:VehicleModelsApiEntity')->findOneBy(
+                    $existingModel = $this->em->getRepository('AppBundle\Entity\Vehicles\VehicleModelsApiEntity')->findOneBy(
                         array('modelId' => $modelId, 'model' => $modelName)
                     );
 

@@ -6,7 +6,7 @@
  * Time: 3:22 PM
  */
 
-namespace AppBundle\Entity;
+namespace AppBundle\Entity\Auth;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Role\RoleInterface;
@@ -36,9 +36,19 @@ class GroupEntity implements RoleInterface
     private $role;
 
     /**
-     * @ORM\ManyToMany(targetEntity="UserEntity", mappedBy="groups")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Auth\UserEntity", mappedBy="groups")
      */
     private $users;
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Constructor

@@ -57,7 +57,7 @@ class PropertyAdd extends React.Component
         if (nextState.newPropertyAdded || this.state.newPropertyAdded) {
 			PropertiesStore.unFlagNewProperty();
 			nextState.newPropertyAdded = false;
-			this.context.router.push('/properties/property-dashboard');
+			this.context.router.push('/property/address-add');
 			return false;
 		}
 
@@ -118,6 +118,7 @@ class PropertyAdd extends React.Component
             property: property,
 			isEditingMode: this.state.isEditingMode,
 			newPropertyAdded: this.state.newPropertyAdded,
+			loader: this.state.loader,
 			flashMessage: this.state.flashMessage
         });
     }
@@ -128,7 +129,6 @@ class PropertyAdd extends React.Component
 
         if (!this.state.isEditingMode) {
 			PropertiesAction.addProperty(this.state.property);
-			browserHistory.push();
 		} else {
 			PropertiesAction.updateProperty(this.state.property);
 

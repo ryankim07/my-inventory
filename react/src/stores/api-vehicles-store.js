@@ -27,11 +27,11 @@ let ApiVehiclesStore = assign({}, EventEmitter.prototype, {
         this.on('change', callback);
     },
 
-    /**
+	/**
      *
-     * @param callback
-     */
-    removeChangeListener: function(callback){
+	 * @param callback
+	 */
+	removeChangeListener: function(callback){
         this.removeListener('change', callback);
     }
 });

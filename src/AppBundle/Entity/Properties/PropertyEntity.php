@@ -57,13 +57,11 @@ class PropertyEntity
 
     /**
      * @ORM\Column(type="string", length=6)
-     * @Assert\NotBlank()
      */
     private $finishedArea;
 
     /**
      * @ORM\Column(type="string", length=6)
-     * @Assert\NotBlank()
      */
     private $unfinishedArea;
 

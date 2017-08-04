@@ -15,9 +15,21 @@ use AppBundle\Service\FileUploader;
 
 class Properties
 {
-    protected $em;
-    protected $repo;
-    protected $fileUploader;
+    private $em;
+    private $repo;
+    private $fileUploader;
+    private $built;
+    private $style;
+    private $beds;
+    private $baths;
+    private $floors;
+    private $finishedArea;
+    private $unfinishedArea;
+    private $totalArea;
+    private $parcelNumber;
+    private $assets;
+    private $entity;
+    private $existingProperty;
 
     /**
      * Constructor
@@ -33,7 +45,7 @@ class Properties
     }
 
     /**
-     * Get all my properties
+     * Get all properties
      *
      * @return mixed|string
      */
@@ -43,7 +55,7 @@ class Properties
     }
 
     /**
-     * Find my specific property
+     * Find specific property
      *
      * @param $id
      * @return mixed|null|object|string
@@ -61,7 +73,7 @@ class Properties
      */
     private function doSelect($id = null)
     {
-        $results = !is_null($id) ? $this->repo->find($id) : $this->repo->findBy([], ['built' => 'ASC']);
+        $results = !is_null($id) ? $this->repo->find($id) : $this->repo->findBy([], ['built' => 'DESC']);
 
         if (count($results) == 0) {
             return false;
@@ -86,80 +98,50 @@ class Properties
     }
 
     /**
-     * Save or update property
+     * Save
      *
-     * @param $property
+     * @param $data
      * @return array
      */
-    public function save($property)
+    public function save($data)
     {
-        if (count($property) == 0) {
-            return ['msg' => 'New property information empty.'];
+        if (count($data) == 0) {
+            return ['msg' => 'Property information empty.'];
         }
 
         try {
-            $id             = (int)$property['id'];
-            $built          = $property['built'];
-            $style          = $property['style'];
-            $beds           = $property['beds'];
-            $baths          = $property['baths'];
-            $floors         = $property['floors'];
-            $finishedArea   = $property['finished_area'];
-            $unfinishedArea = $property['unfinished_area'];
-            $totalArea      = $property['total_area'];
-            $parcelNumber   = $property['parcel_number'];
-            $assets         = $property['assets'];
+            $id                   = (int)$data['id'];
+            $this->built          = $data['built'];
+            $this->style          = $data['style'];
+            $this->beds           = $data['beds'];
+            $this->baths          = $data['baths'];
+            $this->floors         = $data['floors'];
+            $this->finishedArea   = $data['finished_area'];
+            $this->unfinishedArea = $data['unfinished_area'];
+            $this->totalArea      = $data['total_area'];
+            $this->parcelNumber   = $data['parcel_number'];
+            $this->assets         = $data['assets'];
 
-            $existingProperty = $this->find($id);
+            $this->existingProperty = $this->find($id);
 
-            if (!$existingProperty) {
-                // Save new property
-                $newProperty = new PropertyEntity();
-                $newProperty->setBuilt($built);
-                $newProperty->setStyle($style);
-                $newProperty->setBeds($beds);
-                $newProperty->setBaths($baths);
-                $newProperty->setFloors($floors);
-                $newProperty->setFinishedArea($finishedArea);
-                $newProperty->setUnfinishedArea($unfinishedArea);
-                $newProperty->setTotalArea($totalArea);
-                $newProperty->setParcelNumber($parcelNumber);
-
-                $this->em->persist($newProperty);
-                $this->em->flush();
-
-                // Upload file and save new asset
-                if (!is_null($assets)) {
-                    $this->saveImage($assets, $newProperty, "new");
-                }
-
-                return [
-                    'property' => $newProperty,
-                    'msg'      => 'Property successfully added.'
-                ];
-            } else {
-                // Update existing property
-                $existingProperty->setBuilt($built);
-                $existingProperty->setStyle($style);
-                $existingProperty->setBeds($beds);
-                $existingProperty->setBaths($baths);
-                $existingProperty->setFloors($floors);
-                $existingProperty->setFinishedArea($finishedArea);
-                $existingProperty->setUnfinishedArea($unfinishedArea);
-                $existingProperty->setTotalArea($totalArea);
-                $existingProperty->setParcelNumber($parcelNumber);
-
-                $this->em->flush();
-
-                if (!is_null($assets)) {
-                    $this->saveImage($assets, $existingProperty, "update");
-                }
-
-                return [
-                    'property' => $existingProperty,
-                    'msg'      => 'Property successfully updated.'
-                ];
+            if (!$this->existingProperty) {
+                $this->entity = $this->existingProperty;
             }
+
+            // Save or update property
+            $this->_saveProperty();
+
+            // Save or update image
+            if (!is_null($this->assets)) {
+                $this->_saveImage();
+            }
+
+            $msg = !$this->existingProperty ? 'added' : 'updated';
+
+            return [
+                'property' => $this->entity,
+                'msg'      => "Property successfully {$msg}."
+            ];
         } catch(\Exception $e) {
             return ['msg' => $e->getMessage()];
         }
@@ -174,12 +156,12 @@ class Properties
     public function delete($id)
     {
         if (!isset($id)) {
-            return ['msg' => 'Empty ID for property removal.'];
+            return ['msg' => 'Empty ID for deleting property.'];
         }
 
         try {
             $property = $this->repo->find($id);
-            $assets = $property->getAssets();
+            $assets   = $property->getAssets();
 
             foreach($assets as $asset) {
                 if ($asset->getPropertyId() == $id) {
@@ -204,37 +186,64 @@ class Properties
     }
 
     /**
-     * Save Image
+     * Save or update property
      *
-     * @param $assets
-     * @param $entity
-     * @param $mode
      * @return bool
      */
-    private function saveImage($assets, $entity, $mode)
+    private function _saveProperty()
+    {
+        if (!$this->existingProperty) {
+            $this->entity = new PropertyEntity();
+        }
+
+        $this->entity->setBuilt($this->built);
+        $this->entity->setStyle($this->style);
+        $this->entity->setBeds($this->beds);
+        $this->entity->setBaths($this->baths);
+        $this->entity->setFloors($this->floors);
+        $this->entity->setFinishedArea($this->finishedArea);
+        $this->entity->setUnfinishedArea($this->unfinishedArea);
+        $this->entity->setTotalArea($this->totalArea);
+        $this->entity->setParcelNumber($this->parcelNumber);
+
+        if (!$this->existingProperty) {
+            $this->em->persist($this->entity);
+        }
+
+        $this->em->flush();
+
+        return true;
+    }
+
+    /**
+     * Save or update image
+     *
+     * @return bool
+     */
+    private function _saveImage()
     {
         // Upload file
-        $assetFullPath = $this->fileUploader->upload($assets);
+        $assetFullPath = $this->fileUploader->upload($this->assets);
 
         $existingAsset = false;
         $assetEntity   = new PropertyAssetsEntity();
 
-        if ($mode == "new") {
-            $assetEntity->setProperties($entity);
+        if (!$this->existingProperty) {
+            $assetEntity->setProperties($this->entity);
 
         } else {
             // Insert or update existing path for updated image
-            $existingAsset = $this->em->getRepository('AppBundle\Entity\Properties\PropertyAssetsEntity')->findOneByPropertyId($entity->getId());
+            $existingAsset = $this->em->getRepository('AppBundle\Entity\Properties\PropertyEntity')->findOneByPropertyId($this->entity->getId());
 
             if (!$existingAsset) {
-                $assetEntity->setProperties($entity->getId());
+                $assetEntity->setProperties($this->entity->getId());
             } else {
                 // Remove existing upload
                 $this->fileUploader->removeUpload($existingAsset->getPath());
             }
         }
 
-        $assetEntity->setName($assets->getClientOriginalName());
+        $assetEntity->setName($this->assets->getClientOriginalName());
         $assetEntity->setPath($assetFullPath);
 
         if (!$existingAsset) {

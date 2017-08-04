@@ -10,10 +10,10 @@ use AppBundle\Service\FileUploader;
 
 class MyVehicles
 {
-    protected $em;
-    protected $repo;
-    protected $syncDb;
-    protected $fileUploader;
+    private $em;
+    private $repo;
+    private $syncDb;
+    private $fileUploader;
     private $modelInfo = [];
     private $mfgId ;
     private $modelId;
@@ -23,7 +23,7 @@ class MyVehicles
     private $plate;
     private $assets;
     private $mfg;
-    private $vehicle;
+    private $entity;
     private $existingVehicle;
 
     /**
@@ -137,7 +137,8 @@ class MyVehicles
             }
 
             if ($this->existingVehicle) {
-                $this->mfgId = $this->mfg->getId();
+                $this->mfgId  = $this->mfg->getId();
+                $this->entity = $this->existingVehicle;
             }
 
             // Save or update vehicle
@@ -151,7 +152,7 @@ class MyVehicles
             $msg = !$this->existingVehicle ? 'added' : 'updated';
 
             return [
-                'vehicle' => $this->vehicle,
+                'vehicle' => $this->entity,
                 'msg'     => "Vehicle successfully {$msg}."
             ];
         } catch(\Exception $e) {
@@ -168,7 +169,7 @@ class MyVehicles
     public function delete($id)
     {
         if (!isset($id)) {
-            return ['msg' => 'Empty ID for vehicle removal.'];
+            return ['msg' => 'Empty ID for deleting vehicle.'];
         }
 
         try {
@@ -205,20 +206,20 @@ class MyVehicles
     private function _saveVehicle()
     {
         if (!$this->existingVehicle) {
-            $this->vehicle = new MyVehicleEntity();
+            $this->entity = new MyVehicleEntity();
         }
 
-        $this->vehicle->setMfgId($this->mfgId);
-        $this->vehicle->setMfg($this->mfg->getMfg());
-        $this->vehicle->setModelId($this->modelInfo['model_id']);
-        $this->vehicle->setModel($this->modelInfo['model']);
-        $this->vehicle->setYear($this->year);
-        $this->vehicle->setColor($this->color);
-        $this->vehicle->setVin($this->vin);
-        $this->vehicle->setPlate($this->plate);
+        $this->entity->setMfgId($this->mfgId);
+        $this->entity->setMfg($this->mfg->getMfg());
+        $this->entity->setModelId($this->modelInfo['model_id']);
+        $this->entity->setModel($this->modelInfo['model']);
+        $this->entity->setYear($this->year);
+        $this->entity->setColor($this->color);
+        $this->entity->setVin($this->vin);
+        $this->entity->setPlate($this->plate);
 
         if (!$this->existingVehicle) {
-            $this->em->persist($this->vehicle);
+            $this->em->persist($this->entity);
         }
 
         $this->em->flush();
@@ -240,21 +241,21 @@ class MyVehicles
         $assetEntity   = new AssetsEntity();
 
         if (!$this->existingVehicle) {
-            $assetEntity->setMyVehicles($this->vehicle);
+            $assetEntity->setMyVehicles($this->entity);
 
         } else {
             // Insert or update existing path for updated image
-            $existingAsset = $this->em->getRepository('AppBundle\Entity\Vehicles\AssetsEntity')->findOneByMyVehicleId($this->vehicle->getId());
+            $existingAsset = $this->em->getRepository('AppBundle\Entity\Vehicles\AssetsEntity')->findOneByMyVehicleId($this->entity->getId());
 
             if (!$existingAsset) {
-                $assetEntity->setMyVehicles($this->vehicle->getId());
+                $assetEntity->setMyVehicles($this->entity->getId());
             } else {
                 // Remove existing upload
                 $this->fileUploader->removeUpload($existingAsset->getPath());
             }
         }
 
-        $assetEntity->setName($$this->assets->getClientOriginalName());
+        $assetEntity->setName($this->assets->getClientOriginalName());
         $assetEntity->setPath($assetFullPath);
 
         if (!$existingAsset) {

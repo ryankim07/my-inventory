@@ -107,6 +107,7 @@ class PropertyAddressAdd extends React.Component
             address: address,
 			isEditingMode: this.state.isEditingMode,
 			newAddressAdded: this.state.newAddressAdded,
+			loader: this.state.loader,
 			flashMessage: this.state.flashMessage
         });
     }

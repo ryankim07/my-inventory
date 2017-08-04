@@ -1,9 +1,9 @@
 import React from 'react';
-import PropertiesStore from '../../stores/properties-store';
-import PropertiesAction from '../../actions/properties-action';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
 import Loader from '../loader';
+import PropertiesStore from '../../stores/properties-store';
+import PropertiesAction from '../../actions/properties-action';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
 let mainDefaultDesktopColumnWidth = 'col-md-12';
@@ -17,7 +17,7 @@ class PropertiesList extends React.Component
         super(props);
 
         this.state = {
-            properties: [],
+			properties: [],
             property: {},
             loader: true
         };
@@ -41,7 +41,7 @@ class PropertiesList extends React.Component
 
     _onChange() {
         this.setState({
-            properties: PropertiesStore.getProperties(),
+			properties: PropertiesStore.getProperties(),
 			property: {},
             loader: false
         });
@@ -83,36 +83,12 @@ class PropertiesList extends React.Component
 		// If loading is complete
         if (!this.state.loader) {
 			propertiesHtml = this.state.properties.map((property) => {
-				let imageName = property.assets[0] === undefined ? property.assets.name : property.assets[0].name;
-				let imagePath = property.assets[0] === undefined ? property.assets.path : property.assets[0].path;
+				//let imageName = property.assets[0] === undefined ? property.assets.name : property.assets[0].name;
+				//let imagePath = property.assets[0] === undefined ? property.assets.path : property.assets[0].path;
 
 				return (
-                    <tr key={ property.id }>
-                        <td>{ property.built }</td>
-                        <td>{ property.style }</td>
-                        <td>{ property.beds }</td>
-                        <td>{ property.baths }</td>
-                        <td>{ property.finished_area }</td>
-                        <td>{ property.unfinished_area }</td>
-						<td>{ property.total_area }</td>
-						<td>{ property.parcel_number }</td>
-                        <td>
-                            <button onClick={this.removeProperty} data-id={property.id}>×</button>
-                            <button onClick={this.editProperty} data-id={property.id}
-									data-built={property.built}
-                                    data-style={property.style}
-                                    data-beds={property.beds}
-									data-baths={property.baths}
-                                    data-finished-area={property.finished_area}
-									data-unfinished-area={property.unfinished_area}
-									data-total-area={property.total_area}
-									data-parcel-number={property.parcel_number}
-                                    data-image-name={imageName}
-                                    data-image-path={imagePath}>edit
-                            </button>
-                        </td>
-                    </tr>
-                );
+					<h1>Test</h1>
+				);
 			});
         } else {
             propertiesHtml = <tr><td><Loader /></td></tr>;

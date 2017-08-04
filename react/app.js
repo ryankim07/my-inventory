@@ -44,10 +44,6 @@ ReactDOM.render(
 			<Route path="/properties/dashboard" component={PropertyDashboard} >
 				<Route path="/property/add" component={PropertyAdd} />
 				<Route path="/properties" component={PropertiesList} />
-				<Route path="/properties/address-dashboard" component={PropertyAddressDashboard} >
-					<Route path="/property/address-add" component={PropertyAddressAdd} />
-					<Route path="/properties-address" component={PropertiesAddressList} />
-				</Route>
 			</Route>
         </Route>
     </Router>,

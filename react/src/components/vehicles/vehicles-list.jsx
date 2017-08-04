@@ -1,9 +1,9 @@
 import React from 'react';
-import MyVehiclesStore from '../../stores/my-vehicles-store';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
-import VehiclesAction from '../../actions/vehicles-action';
 import Loader from '../loader';
+import MyVehiclesStore from '../../stores/my-vehicles-store';
+import VehiclesAction from '../../actions/vehicles-action';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
 let mainDefaultDesktopColumnWidth = 'col-md-12';

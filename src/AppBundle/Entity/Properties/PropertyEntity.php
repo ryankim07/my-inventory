@@ -41,19 +41,19 @@ class PropertyEntity
      * @ORM\Column(type="integer", length=2)
      * @Assert\NotBlank()
      */
+    private $floors;
+
+    /**
+     * @ORM\Column(type="integer", length=2)
+     * @Assert\NotBlank()
+     */
     private $beds;
 
     /**
-     * @ORM\Column(type="integer", length=2)
+     * @ORM\Column(type="string", length=3)
      * @Assert\NotBlank()
      */
     private $baths;
-
-    /**
-     * @ORM\Column(type="integer", length=2)
-     * @Assert\NotBlank()
-     */
-    private $floors;
 
     /**
      * @ORM\Column(type="string", length=6)
@@ -150,6 +150,30 @@ class PropertyEntity
     }
 
     /**
+     * Set floors
+     *
+     * @param integer $floors
+     *
+     * @return PropertyEntity
+     */
+    public function setFloors($floors)
+    {
+        $this->floors = $floors;
+
+        return $this;
+    }
+
+    /**
+     * Get floors
+     *
+     * @return integer
+     */
+    public function getFloors()
+    {
+        return $this->floors;
+    }
+
+    /**
      * Set beds
      *
      * @param integer $beds
@@ -195,30 +219,6 @@ class PropertyEntity
     public function getBaths()
     {
         return $this->baths;
-    }
-
-    /**
-     * Set floors
-     *
-     * @param integer $floors
-     *
-     * @return PropertyEntity
-     */
-    public function setFloors($floors)
-    {
-        $this->floors = $floors;
-
-        return $this;
-    }
-
-    /**
-     * Get floors
-     *
-     * @return integer
-     */
-    public function getFloors()
-    {
-        return $this->floors;
     }
 
     /**

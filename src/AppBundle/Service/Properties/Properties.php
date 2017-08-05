@@ -113,9 +113,9 @@ class Properties
             $id                   = (int)$data['id'];
             $this->built          = $data['built'];
             $this->style          = $data['style'];
-            $this->beds           = $data['beds'];
+            $this->floors         = (int)$data['floors'];
+            $this->beds           = (int)$data['beds'];
             $this->baths          = $data['baths'];
-            $this->floors         = $data['floors'];
             $this->finishedArea   = $data['finished_area'];
             $this->unfinishedArea = $data['unfinished_area'];
             $this->totalArea      = $data['total_area'];
@@ -198,9 +198,9 @@ class Properties
 
         $this->entity->setBuilt($this->built);
         $this->entity->setStyle($this->style);
+        $this->entity->setFloors($this->floors);
         $this->entity->setBeds($this->beds);
         $this->entity->setBaths($this->baths);
-        $this->entity->setFloors($this->floors);
         $this->entity->setFinishedArea($this->finishedArea);
         $this->entity->setUnfinishedArea($this->unfinishedArea);
         $this->entity->setTotalArea($this->totalArea);

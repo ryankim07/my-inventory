@@ -1,9 +1,9 @@
 import React from 'react';
+import _ from 'lodash';
 import PropertiesStore from '../../stores/properties-store';
 import PropertiesAction from '../../actions/properties-action';
-import Uploader from '../utils/uploader';
-import Loader from '../loader';
-import _ from 'lodash';
+import Uploader from '../helper/uploader';
+import { removeRougeChar } from "../helper/utils"
 
 class PropertyAdd extends React.Component
 {
@@ -26,7 +26,6 @@ class PropertyAdd extends React.Component
             },
 			isEditingMode: false,
             newPropertyAdded: false,
-            loader: true,
 			flashMessage: null
         };
 
@@ -34,7 +33,6 @@ class PropertyAdd extends React.Component
         this.handleFormChange = this.handleFormChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
 		this.setAssets = this.setAssets.bind(this);
-		this.removeRougeChar = this.removeRougeChar.bind(this);
     }
 
     componentWillMount() {
@@ -57,7 +55,10 @@ class PropertyAdd extends React.Component
         if (nextState.newPropertyAdded || this.state.newPropertyAdded) {
 			PropertiesStore.unFlagNewProperty();
 			nextState.newPropertyAdded = false;
-			this.context.router.push('/property/address-add');
+			this.context.router.push({
+				pathname: "/property/address-add",
+				state: {property: nextState.property}
+			});
 			return false;
 		}
 
@@ -69,7 +70,8 @@ class PropertyAdd extends React.Component
     	let addingNewProperty = PropertiesStore.isNewPropertyAdded();
 		let propertyToUpdate = PropertiesStore.getPropertyToUpdate();
 		let isEditingMode = this.state.isEditingMode;
-		let stateProperty = this.state.property;
+		let savedProperty = PropertiesStore.getSavedProperty();
+		let stateProperty = savedProperty !== '' ? savedProperty : this.state.property;
 		let flashMsg = PropertiesStore.getStoreFlashMessage();
 		let isAuthenticated = PropertiesStore.isAuthenticated();
 
@@ -87,7 +89,6 @@ class PropertyAdd extends React.Component
 		    property: stateProperty,
 			isEditingMode: isEditingMode,
 			newPropertyAdded: addingNewProperty,
-			loader: false,
 			flashMessage: flashMsg !== undefined ? flashMsg : null
 		});
     }
@@ -105,7 +106,7 @@ class PropertyAdd extends React.Component
                     alert('Please enter correct area.');
                 } else {
 					var num = chosenValue.toString().replace(/,/gi, "").split("").reverse().join("");
-					var replacement = this.removeRougeChar(num.replace(/(.{3})/g,"$1,").split("").reverse().join(""));
+					var replacement = removeRougeChar(num.replace(/(.{3})/g,"$1,").split("").reverse().join(""));
                     property[propertyName] = replacement;
                 }
             break;
@@ -118,7 +119,6 @@ class PropertyAdd extends React.Component
             property: property,
 			isEditingMode: this.state.isEditingMode,
 			newPropertyAdded: this.state.newPropertyAdded,
-			loader: this.state.loader,
 			flashMessage: this.state.flashMessage
         });
     }
@@ -141,15 +141,6 @@ class PropertyAdd extends React.Component
     setAssets(assets) {
 		let property = this.state.property;
 		property['assets'] = assets;
-	}
-
-
-	removeRougeChar(convertString) {
-		if (convertString.substring(0, 1) == ",") {
-			return convertString.substring(1, convertString.length)
-		}
-
-		return convertString;
 	}
 
 	render() {

@@ -2,7 +2,7 @@ import React from 'react';
 import ApiVehiclesStore from '../../stores/api-vehicles-store';
 import MyVehiclesStore from '../../stores/my-vehicles-store';
 import VehiclesAction from '../../actions/vehicles-action';
-import Uploader from '../utils/uploader';
+import Uploader from '../helper/uploader';
 import Loader from '../loader';
 import _ from 'lodash';
 

@@ -57,6 +57,7 @@ class PropertiesList extends React.Component
 				id: data.id,
 				built: data.built,
 				style: data.style,
+				floors: data.floors,
 				beds: data.beds,
 				baths: data.baths,
 				finished_area: data.finished_area,
@@ -83,11 +84,37 @@ class PropertiesList extends React.Component
 		// If loading is complete
         if (!this.state.loader) {
 			propertiesHtml = this.state.properties.map((property) => {
-				//let imageName = property.assets[0] === undefined ? property.assets.name : property.assets[0].name;
-				//let imagePath = property.assets[0] === undefined ? property.assets.path : property.assets[0].path;
+				let imageName = property.assets[0] === undefined ? property.assets.name : property.assets[0].name;
+				let imagePath = property.assets[0] === undefined ? property.assets.path : property.assets[0].path;
 
 				return (
-					<h1>Test</h1>
+					<tr key={ property.id }>
+						<td>{ property.built }</td>
+						<td>{ property.style }</td>
+						<td>{ property.floors }</td>
+						<td>{ property.beds }</td>
+						<td>{ property.baths }</td>
+						<td>{ property.finished_area }</td>
+						<td>{ property.unfinished_area }</td>
+						<td>{ property.total_area }</td>
+						<td>{ property.parcel_number }</td>
+						<td>
+							<button onClick={this.removeProperty} data-id={property.id}>×</button>
+							<button onClick={this.editProperty} data-id={property.id}
+									data-built={property.built}
+									data-style={property.style}
+									data-floors={property.floors}
+									data-beds={property.beds}
+									data-baths={property.baths}
+									data-finished-area={property.finished_area}
+									data-unfinished-area={property.unfinished_area}
+									data-total-area={property.total_area}
+									data-parcel-number={property.parcel_number}
+									data-image-name={imageName}
+									data-image-path={imagePath}>edit
+							</button>
+						</td>
+					</tr>
 				);
 			});
         } else {
@@ -112,9 +139,9 @@ class PropertiesList extends React.Component
                                 <tr>
                                     <th>Built</th>
                                     <th>Style</th>
+									<th>Floors</th>
                                     <th>Beds</th>
                                     <th>Baths</th>
-                                    <th>Floors</th>
                                     <th>Finished Area</th>
 									<th>Unfinished Area</th>
 									<th>Total Area</th>

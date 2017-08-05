@@ -6,6 +6,7 @@ import _ from 'lodash';
 
 let _properties = [];
 let _property = {};
+let _savedProperty = {};
 let _propertyAdded = false;
 let _assets;
 let _showPanel = false;
@@ -18,6 +19,10 @@ function setAllProperties(properties) {
 
 function setProperty(property) {
 	_property = property ;
+}
+
+function setSavedProperty(property) {
+	_savedProperty = property ;
 }
 
 function flagNewProperty() {
@@ -62,6 +67,10 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		return _properties;
 	},
 
+	getSavedProperty: function () {
+		return _savedProperty;
+	},
+
 	setProperties: function (properties) {
 		if (properties.msg) {
 			setStoreFlashMessage(properties.msg)
@@ -70,8 +79,9 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		}
 	},
 
-	addProperty: function (msg) {
-		setStoreFlashMessage(msg);
+	addProperty: function (results) {
+    	setSavedProperty(results.property);
+		setStoreFlashMessage(results.msg);
 		flagNewProperty();
 	},
 
@@ -107,9 +117,9 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 			id: property.id,
 			built: property.built,
 			style: property.style,
+			floors: property.floors,
 			beds: property.beds,
 			baths: property.baths,
-			floors: property.floors,
 			finished_area: property.finished_area,
 			unfinished_area: property.unfinished_area,
 			total_area: property.total_area,
@@ -166,7 +176,7 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
         break;
 
         case ActionConstants.ADD_PROPERTY:
-            PropertiesStore.addProperty(action.results.msg);
+            PropertiesStore.addProperty(action.results);
         break;
 
         case ActionConstants.EDIT_PROPERTY:

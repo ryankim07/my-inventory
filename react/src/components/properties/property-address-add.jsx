@@ -1,8 +1,8 @@
 import React from 'react';
+import _ from 'lodash';
 import PropertiesAddressStore from '../../stores/properties-address-store';
 import PropertiesAddressAction from '../../actions/properties-address-action';
-import Loader from '../loader';
-import _ from 'lodash';
+import { titleCase } from "../helper/utils"
 
 class PropertyAddressAdd extends React.Component
 {
@@ -23,7 +23,6 @@ class PropertyAddressAdd extends React.Component
             },
 			isEditingMode: false,
             newAddressAdded: false,
-            loader: true,
 			flashMessage: null
         };
 
@@ -33,6 +32,24 @@ class PropertyAddressAdd extends React.Component
     }
 
     componentWillMount() {
+		if (this.props.location.state.property) {
+			this.setState({
+				address: {
+					id: '',
+					property_id: this.props.location.state.property.id,
+					street: '',
+					city: '',
+					state: '',
+					zip: '',
+					county: '',
+					country: '',
+					subdivision: ''
+				},
+				isEditingMode: false,
+				newAddressAdded: false,
+				flashMessage: null
+			});
+		}
         PropertiesAddressStore.addChangeListener(this._onChange);
     }
 
@@ -46,7 +63,7 @@ class PropertyAddressAdd extends React.Component
         if (nextState.newAddressAdded || this.state.newAddressAdded) {
 			PropertiesAddressStore.unFlagNewAddress();
 			nextState.newAddressAdded = false;
-			this.context.router.push('/properties/property-address-dashboard');
+			this.context.router.push('/properties/dashboard');
 			return false;
 		}
 
@@ -56,11 +73,11 @@ class PropertyAddressAdd extends React.Component
     // Listen to changes in store, update it's own state
     _onChange() {
     	let addingNewAddress = PropertiesAddressStore.isNewAddressAdded();
-		let addressToUpdate = PropertiesAddressStore.getAddressToUpdate();
-		let isEditingMode = this.state.isEditingMode;
-		let stateAddress = this.state.address;
-		let flashMsg = PropertiesAddressStore.getStoreFlashMessage();
-		let isAuthenticated = PropertiesAddressStore.isAuthenticated();
+		let addressToUpdate  = PropertiesAddressStore.getAddressToUpdate();
+		let isEditingMode    = this.state.isEditingMode;
+		let stateAddress     = this.state.address;
+		let flashMsg         = PropertiesAddressStore.getStoreFlashMessage();
+		let isAuthenticated  = PropertiesAddressStore.isAuthenticated();
 
 		if (!isAuthenticated){
 			this.context.router.push("/auth/login");
@@ -76,27 +93,20 @@ class PropertyAddressAdd extends React.Component
 		    address: stateAddress,
 			isEditingMode: isEditingMode,
 			newAddressAdded: addingNewAddress,
-			loader: false,
 			flashMessage: flashMsg !== undefined ? flashMsg : null
 		});
     }
 
     // Handle input changes
     handleFormChange(propertyName, event) {
-        let address    = this.state.address;
+        let address     = this.state.address;
         let chosenValue = event.target.value;
 
         switch (propertyName) {
-            case 'finished_area':
-            case 'unfinished_area':
-            case 'total_area':
-                if (chosenValue === 0) {
-                    alert('Please enter correct area.');
-                } else {
-					var num = chosenValue.toString().replace(/,/gi, "").split("").reverse().join("");
-					var replacement = this.removeRougeChar(num.replace(/(.{3})/g,"$1,").split("").reverse().join(""));
-                    address[propertyName] = replacement;
-                }
+            case 'street':
+            case 'city':
+            case 'subdivision':
+                address[propertyName] = titleCase(chosenValue);
             break;
 
             default:
@@ -107,7 +117,6 @@ class PropertyAddressAdd extends React.Component
             address: address,
 			isEditingMode: this.state.isEditingMode,
 			newAddressAdded: this.state.newAddressAdded,
-			loader: this.state.loader,
 			flashMessage: this.state.flashMessage
         });
     }
@@ -117,10 +126,9 @@ class PropertyAddressAdd extends React.Component
         event.preventDefault();
 
         if (!this.state.isEditingMode) {
-			PropertiesAddressAction.addPropertyAddress(this.state.address);
-			browserHistory.push();
+			PropertiesAddressAction.addAddress(this.state.address);
 		} else {
-			PropertiesAddressAction.updatePropertyAddress(this.state.address);
+			PropertiesAddressAction.updateAddress(this.state.address);
 
         	// Close the panel
             this.props.closeRightPanel();
@@ -185,30 +193,28 @@ class PropertyAddressAdd extends React.Component
 					</div>
 				</div>
 			</div>
-			<div className="form-group required">
+			<div className="form-group">
 				<div className="col-xs-12 col-md-8">
 					<label className="control-label">County</label>
 					<div className="input-group">
 						<select ref="county"
 								onChange={this.handleFormChange.bind(this, 'county')}
 								value={this.state.address.county}
-								className="form-control input-sm"
-								required="required">
+								className="form-control input-sm">
 							<option value="">Select One</option>
-							<option value="OC">Orange County</option>
+							<option value="Orange County">Orange County</option>
 						</select>
 					</div>
 				</div>
 			</div>
-			<div className="form-group required">
+			<div className="form-group">
 				<div className="col-xs-12 col-md-8">
 					<label className="control-label">Country</label>
 					<div className="input-group">
 						<select ref="country"
 								onChange={this.handleFormChange.bind(this, 'country')}
 								value={this.state.address.country}
-								className="form-control input-sm"
-								required="required">
+								className="form-control input-sm">
 							<option value="">Select One</option>
 							<option value="US">United States</option>
 						</select>
@@ -231,7 +237,7 @@ class PropertyAddressAdd extends React.Component
 				<div className="col-xs-12 col-md-8">
 					<div className="input-group">
 						<input type="hidden" ref="id" value={this.state.address.id} />
-						<input type="hidden" ref="id" value={this.state.address.property_id} />
+						<input type="hidden" ref="property_id" value={this.state.address.property_id} />
 					</div>
 				</div>
 			</div>

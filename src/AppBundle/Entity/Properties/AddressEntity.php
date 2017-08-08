@@ -10,6 +10,7 @@ namespace AppBundle\Entity\Properties;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Entity\Properties\PropertyEntity;
 
 /**
  * @ORM\Entity
@@ -70,6 +71,12 @@ class AddressEntity
     private $subdivision;
 
     /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Properties\PropertyEntity", inversedBy="address")
+     * @ORM\JoinColumn(name="property_id", referencedColumnName="id")
+     */
+    private $property;
+
+    /**
      * Get ID
      *
      * @return integer
@@ -82,9 +89,8 @@ class AddressEntity
     /**
      * Set property ID
      *
-     * @param integer $propertyId
-     *
-     * @return AddressEntity
+     * @param $propertyId
+     * @return $this
      */
     public function setPropertyId($propertyId)
     {
@@ -106,9 +112,8 @@ class AddressEntity
     /**
      * Set street
      *
-     * @param string $street
-     *
-     * @return AddressEntity
+     * @param $street
+     * @return $this
      */
     public function setStreet($street)
     {
@@ -130,9 +135,8 @@ class AddressEntity
     /**
      * Set city
      *
-     * @param string $city
-     *
-     * @return AddressEntity
+     * @param $city
+     * @return $this
      */
     public function setCity($city)
     {
@@ -154,9 +158,8 @@ class AddressEntity
     /**
      * Set state
      *
-     * @param string $state
-     *
-     * @return AddressEntity
+     * @param $state
+     * @return $this
      */
     public function setState($state)
     {
@@ -178,9 +181,8 @@ class AddressEntity
     /**
      * Set zip
      *
-     * @param integer $zip
-     *
-     * @return AddressEntity
+     * @param $zip
+     * @return $this
      */
     public function setZip($zip)
     {
@@ -202,9 +204,8 @@ class AddressEntity
     /**
      * Set county
      *
-     * @param string $county
-     *
-     * @return AddressEntity
+     * @param $county
+     * @return $this
      */
     public function setCounty($county)
     {
@@ -226,9 +227,8 @@ class AddressEntity
     /**
      * Set country
      *
-     * @param string $country
-     *
-     * @return AddressEntity
+     * @param $country
+     * @return $this
      */
     public function setCountry($country)
     {
@@ -250,9 +250,8 @@ class AddressEntity
     /**
      * Set subdivision
      *
-     * @param string $subdivision
-     *
-     * @return AddressEntity
+     * @param $subdivision
+     * @return $this
      */
     public function setSubdivision($subdivision)
     {
@@ -269,5 +268,28 @@ class AddressEntity
     public function getSubdivision()
     {
         return $this->subdivision;
+    }
+
+    /**
+     * Set property
+     *
+     * @param PropertyEntity $property
+     * @return $this
+     */
+    public function setProperty(PropertyEntity $property)
+    {
+        $this->property = $property;
+
+        return $this;
+    }
+
+    /**
+     * Get property
+     *
+     * @return \AppBundle\Entity\Properties\PropertyEntity
+     */
+    public function getProperty()
+    {
+        return $this->property;
     }
 }

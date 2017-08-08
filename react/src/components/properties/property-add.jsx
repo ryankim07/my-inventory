@@ -29,10 +29,10 @@ class PropertyAdd extends React.Component
 			flashMessage: null
         };
 
-        this._onChange = this._onChange.bind(this);
+        this._onChange 		  = this._onChange.bind(this);
         this.handleFormChange = this.handleFormChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
-		this.setAssets = this.setAssets.bind(this);
+		this.setAssets 		  = this.setAssets.bind(this);
     }
 
     componentWillMount() {
@@ -55,10 +55,8 @@ class PropertyAdd extends React.Component
         if (nextState.newPropertyAdded || this.state.newPropertyAdded) {
 			PropertiesStore.unFlagNewProperty();
 			nextState.newPropertyAdded = false;
-			this.context.router.push({
-				pathname: "/property/address-add",
-				state: {property: nextState.property}
-			});
+			this.context.router.push('/properties/dashboard');
+
 			return false;
 		}
 

@@ -22,9 +22,10 @@ class PropertiesList extends React.Component
             loader: true
         };
 
-        this._onChange = this._onChange.bind(this);
-        this.editProperty = this.editProperty.bind(this);
-        this.removeProperty = this.removeProperty.bind(this);
+        this._onChange 			= this._onChange.bind(this);
+        this.editProperty 		= this.editProperty.bind(this);
+        this.removeProperty 	= this.removeProperty.bind(this);
+        this.handleOtherActions = this.handleOtherActions.bind(this);
     }
 
     componentWillMount() {
@@ -78,14 +79,29 @@ class PropertiesList extends React.Component
         PropertiesAction.removeProperty(id);
     }
 
+	handleOtherActions(e) {
+		let id     = e.target.dataset.id;
+		let action = e.target.dataset.action;
+
+		switch (action) {
+			case 'add-address':
+				this.context.router.push({
+					pathname: "/property/address-add",
+					state: {property_id: id}
+				});
+			break;
+		}
+	}
+
     render() {
         let propertiesHtml = '';
 
 		// If loading is complete
         if (!this.state.loader) {
 			propertiesHtml = this.state.properties.map((property) => {
-				let imageName = property.assets[0] === undefined ? property.assets.name : property.assets[0].name;
-				let imagePath = property.assets[0] === undefined ? property.assets.path : property.assets[0].path;
+				let imageName  = property.assets[0] === undefined ? property.assets.name : property.assets[0].name;
+				let imagePath  = property.assets[0] === undefined ? property.assets.path : property.assets[0].path;
+				let addressBtn = property.address === undefined ? <button onClick={this.handleOtherActions} data-id={property.id} data-action="add-address">Add Address</button> : null;
 
 				return (
 					<tr key={ property.id }>
@@ -100,7 +116,8 @@ class PropertiesList extends React.Component
 						<td>{ property.parcel_number }</td>
 						<td>
 							<button onClick={this.removeProperty} data-id={property.id}>×</button>
-							<button onClick={this.editProperty} data-id={property.id}
+							<button onClick={this.editProperty}
+									data-id={property.id}
 									data-built={property.built}
 									data-style={property.style}
 									data-floors={property.floors}
@@ -113,6 +130,11 @@ class PropertiesList extends React.Component
 									data-image-name={imageName}
 									data-image-path={imagePath}>edit
 							</button>
+							{ addressBtn }
+							<button onClick={this.handleOtherActions} data-id={property.id} data-action="add-property-features">Add Property Features</button>
+							<button onClick={this.handleOtherActions} data-id={property.id} data-action="add-exterior-features">Add Exterior Features</button>
+							<button onClick={this.handleOtherActions} data-id={property.id} data-action="add-interior-features">Add Interior Features</button>
+							<button onClick={this.handleOtherActions} data-id={property.id} data-action="add-rooms">Add Rooms</button>
 						</td>
 					</tr>
 				);
@@ -128,7 +150,7 @@ class PropertiesList extends React.Component
                         <div className="panel-heading">
                             <div className="row">
                                 <div className="col-xs-10 col-md-10">
-                                    <span>Vehicle Edit</span>
+                                    <span>Property Edit</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2"></div>
                             </div>
@@ -158,6 +180,10 @@ class PropertiesList extends React.Component
             </div>
         )
     }
+}
+
+PropertiesList.contextTypes = {
+	router: React.PropTypes.object.isRequired
 }
 
 export default PropertiesList;

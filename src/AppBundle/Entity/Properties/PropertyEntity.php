@@ -84,6 +84,11 @@ class PropertyEntity
     private $assets;
 
     /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Properties\AddressEntity", mappedBy="property", cascade={"persist"})
+     */
+    private $address;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -348,5 +353,28 @@ class PropertyEntity
     public function getAssets()
     {
         return $this->assets;
+    }
+
+    /**
+     * Set address
+     *
+     * @param \AppBundle\Entity\Properties\AddressEntity $address
+     *
+     * @return PropertyEntity
+     */
+    public function setAddress(AddressEntity $address)
+    {
+        $this->address = $address;
+        $address->setProperty($this);
+    }
+
+    /**
+     * Get address
+     *
+     * @return mixed
+     */
+    public function getAddress()
+    {
+        return $this->address;
     }
 }

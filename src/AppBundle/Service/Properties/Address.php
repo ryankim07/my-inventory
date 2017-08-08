@@ -171,6 +171,8 @@ class Address
             $this->entity = new AddressEntity();
         }
 
+        $property = $this->em->getRepository('AppBundle\Entity\Properties\PropertyEntity')->find($this->propertyId);
+
         $this->entity->setPropertyId($this->propertyId);
         $this->entity->setStreet($this->street);
         $this->entity->setCity($this->city);
@@ -180,8 +182,10 @@ class Address
         $this->entity->setCountry($this->country);
         $this->entity->setSubdivision($this->subdivision);
 
+        $property->setAddress($this->entity);
+
         if (!$this->existingAddress) {
-            $this->em->persist($this->entity);
+            $this->em->persist($property);
         }
 
         $this->em->flush();

@@ -64,6 +64,7 @@ class VehicleAdd extends React.Component
 			MyVehiclesStore.unFlagNewVehicle();
 			nextState.newVehicleAdded = false;
 			this.context.router.push('/vehicles/dashboard');
+
 			return false;
 		}
 

@@ -37,7 +37,8 @@ class FileUploader
     public function setFile(UploadedFile $file = null)
     {
         $this->file           = $file;
-        $this->hashedFileName = md5(uniqid()) . '.' . $this->file->guessExtension();
+        //$this->hashedFileName = md5(uniqid()) . '.' . $this->file->guessExtension();
+        $this->hashedFileName = $file->getClientOriginalName();
 
         // Check if we have an old image path
         if (isset($this->path)) {
@@ -165,6 +166,12 @@ class FileUploader
             mkdir($this->getUploadRootDir(), 0775, true);
         }
 
+        $existingFiles = scandir($this->getUploadRootDir());
+
+        if (in_array($this->hashedFileName, $existingFiles)) {
+            $this->removeUpload($this->hashedFileName);
+        }
+
         $this->file->move($this->getUploadRootDir(), $this->hashedFileName);
 
         return $this->getAssetFullPath();
@@ -193,7 +200,7 @@ class FileUploader
     public function removeUpload($file)
     {
         if (isset($file)) {
-            unlink($this->getRootDir() . $file);
+            unlink($this->getUploadRootDir() . DIRECTORY_SEPARATOR . $file);
         }
 
         return true;

@@ -32,11 +32,11 @@ class PropertyAddressAdd extends React.Component
     }
 
     componentWillMount() {
-		if (this.props.location.state.property) {
+		if (this.props.location.state.property_id) {
 			this.setState({
 				address: {
 					id: '',
-					property_id: this.props.location.state.property.id,
+					property_id: this.props.location.state.property_id,
 					street: '',
 					city: '',
 					state: '',

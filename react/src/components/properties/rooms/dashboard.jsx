@@ -1,7 +1,7 @@
 import React from 'react';
-import PropertyAddressList from './list';
-import PropertyAddressAdd from './add';
-import PropertiesAddressStore from '../../../stores/properties-address-store';
+import PropertiesRoomsList from './list';
+import PropertyRoomAdd from './add';
+import PropertyRoomsStore from '../../../stores/properties/rooms-store';
 import FlashMessage from '../../flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -9,7 +9,7 @@ let mainDefaultDesktopColumnWidth = 'col-md-12';
 let mainShrinkedMobileColumnWidth = 'col-xs-8';
 let mainShrinkedDesktopColumnWidth = 'col-md-8';
 
-class PropertyAddressDashboard extends React.Component
+class PropertyRoomsDashboard extends React.Component
 {
 	constructor(props) {
 		super(props);
@@ -29,12 +29,12 @@ class PropertyAddressDashboard extends React.Component
 	}
 
 	componentWillMount() {
-		PropertiesAddressStore.addChangeListener(this._onChange);
-		PropertiesAddressStore.unsetStoreFlashMessage();
+		PropertyRoomsStore.addChangeListener(this._onChange);
+		PropertyRoomsStore.unsetStoreFlashMessage();
 	}
 
 	componentWillUnmount() {
-		PropertiesAddressStore.removeChangeListener(this._onChange);
+		PropertyRoomsStore.removeChangeListener(this._onChange);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -51,9 +51,9 @@ class PropertyAddressDashboard extends React.Component
 	}
 
 	_onChange() {
-		let flashMsg 		= PropertiesAddressStore.getStoreFlashMessage();
-		let isAuthenticated = PropertiesAddressStore.isAuthenticated();
-		let openRightPanel 	= PropertiesAddressStore.openRightPanel();
+		let flashMsg 		= PropertyRoomsStore.getStoreFlashMessage();
+		let isAuthenticated = PropertyRoomsStore.isAuthenticated();
+		let openRightPanel 	= PropertyRoomsStore.openRightPanel();
 
 		if (!isAuthenticated){
 			this.context.router.push("/auth/login");
@@ -89,15 +89,15 @@ class PropertyAddressDashboard extends React.Component
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-success" />}
-				<PropertyAddressList mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} className="main-column" />
-				{ !this.state.showRightPanel ? null : <PropertyAddressAdd closeRightPanel={this.closeRightPanel} />}
+				<PropertiesRoomsList mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} className="main-column" />
+				{ !this.state.showRightPanel ? null : <PropertyRoomAdd closeRightPanel={this.closeRightPanel} />}
 			</div>
 		)
 	}
 }
 
-PropertyAddressDashboard.contextTypes = {
+PropertyRoomsDashboard.contextTypes = {
 	router: React.PropTypes.object.isRequired
 }
 
-export default PropertyAddressDashboard;
+export default PropertyRoomsDashboard;

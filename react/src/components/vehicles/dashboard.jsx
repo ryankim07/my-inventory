@@ -1,5 +1,5 @@
 import React from 'react';
-import VehicleList from './list';
+import VehiclesList from './list';
 import VehicleAdd from './add';
 import MyVehiclesStore from '../../stores/vehicles/store';
 import FlashMessage from '../flash-message';
@@ -89,7 +89,7 @@ class VehiclesDashboard extends React.Component
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-success" />}
-				<VehicleList mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} className="main-column" />
+				<VehiclesList mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} className="main-column" />
 				{ !this.state.showRightPanel ? null : <VehicleAdd closeRightPanel={this.closeRightPanel} />}
 			</div>
 		)

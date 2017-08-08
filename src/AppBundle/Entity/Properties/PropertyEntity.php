@@ -89,11 +89,18 @@ class PropertyEntity
     private $address;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\RoomsEntity", mappedBy="properties")
+     * @ORM\OrderBy({"name" = "ASC"})
+     */
+    private $rooms;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->assets = new ArrayCollection();
+        $this->rooms = new ArrayCollection();
     }
 
     /**
@@ -376,5 +383,39 @@ class PropertyEntity
     public function getAddress()
     {
         return $this->address;
+    }
+
+    /**
+     * Add room
+     *
+     * @param \AppBundle\Entity\Properties\RoomsEntity $room
+     *
+     * @return PropertyEntity
+     */
+    public function addRoom(RoomsEntity $room)
+    {
+        $this->rooms[] = $room;
+
+        return $this;
+    }
+
+    /**
+     * Remove room
+     *
+     * @param \AppBundle\Entity\Properties\RoomsEntity $room
+     */
+    public function removeRoom(RoomsEntity $room)
+    {
+        $this->rooms->removeElement($room);
+    }
+
+    /**
+     * Get rooms
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRooms()
+    {
+        return $this->rooms;
     }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
-import PropertiesRoomStore from '../../../stores/properties-room-store';
-import PropertiesRoomAction from '../../../actions/properties-room-action';
+import PropertyRoomsStore from '../../../stores/properties/rooms-store';
+import PropertyRoomsAction from '../../../actions/properties-rooms-action';
 import { titleCase } from "../../helper/utils"
 
 class PropertyRoomAdd extends React.Component
@@ -42,18 +42,18 @@ class PropertyRoomAdd extends React.Component
 				flashMessage: null
 			});
 		}
-        PropertiesRoomStore.addChangeListener(this._onChange);
+        PropertyRoomsStore.addChangeListener(this._onChange);
     }
 
     componentWillUnmount() {
-		PropertiesRoomStore.removeChangeListener(this._onChange);
-		PropertiesRoomStore.unsetRoomToUpdate();
+		PropertyRoomsStore.removeChangeListener(this._onChange);
+		PropertyRoomsStore.unsetRoomToUpdate();
 	}
 
     shouldComponentUpdate(nextProps, nextState) {
 		// Only redirect to list if new room is being added
         if (nextState.newRoomAdded || this.state.newRoomAdded) {
-			PropertiesRoomStore.unFlagNewRoom();
+			PropertyRoomsStore.unFlagNewRoom();
 			nextState.newRoomAdded = false;
 			this.context.router.push('/properties/dashboard');
 			return false;
@@ -64,12 +64,12 @@ class PropertyRoomAdd extends React.Component
 
     // Listen to changes in store, update it's own state
     _onChange() {
-    	let addingNewRoom   = PropertiesRoomStore.isnewRoomAdded();
-		let roomToUpdate    = PropertiesRoomStore.getRoomToUpdate();
+    	let addingNewRoom   = PropertyRoomsStore.isnewRoomAdded();
+		let roomToUpdate    = PropertyRoomsStore.getRoomToUpdate();
 		let isEditingMode   = this.state.isEditingMode;
 		let stateRoom       = this.state.room;
-		let flashMsg        = PropertiesRoomStore.getStoreFlashMessage();
-		let isAuthenticated = PropertiesRoomStore.isAuthenticated();
+		let flashMsg        = PropertyRoomsStore.getStoreFlashMessage();
+		let isAuthenticated = PropertyRoomsStore.isAuthenticated();
 
 		if (!isAuthenticated){
 			this.context.router.push("/auth/login");
@@ -118,9 +118,9 @@ class PropertyRoomAdd extends React.Component
         event.preventDefault();
 
         if (!this.state.isEditingMode) {
-			PropertiesRoomAction.addRoom(this.state.room);
+			PropertyRoomsAction.addRoom(this.state.room);
 		} else {
-			PropertiesRoomAction.updateRoom(this.state.room);
+			PropertyRoomsAction.updateRoom(this.state.room);
 
         	// Close the panel
             this.props.closeRightPanel();
@@ -132,32 +132,40 @@ class PropertyRoomAdd extends React.Component
         let bedroomOptions = [];
         let bathroomOptions = [];
 
-		// Years options
-		bedroomOptions.push(<option key="bedroom-0" value="master bedroom">Master Bedroom</option>);
-		for (let i = 1; i <= 10; i++) {
-			bedroomOptions.push(<option key={'bedroom-' + i} value=bedroom_{i}>Bedroom { i }</option>);
+		for (let i = 0; i <= 10; i++) {
+			if (i == 0) {
+				bedroomOptions.push(<option key="be-0" value="master bedroom">Master Bedroom</option>);
+				continue;
+			}
+
+			bedroomOptions.push(<option key={'bedroom ' + i} value={'bedroom ' + i}>Bedroom { i }</option>);
 		}
 
 		allRooms.push(bedroomOptions);
 
-		bathroomOptions.push(<option key="bathroom-0" value="master bathroom">Master Bathroom</option>);
-		for (let j = 1; j <= 10; j++) {
-			bedroomOptions.push(<option key={'bathroom-' + j} value=bathroom_{j}>Bathroom { j }</option>);
+		for (let j = 0; j <= 10; j++) {
+			if (j == 0) {
+				bathroomOptions.push(<option key="master bathroom" value="master bathroom">Master Bathroom</option>);
+				continue;
+			}
+
+			bathroomOptions.push(<option key={'bathroom ' + j} value={'bathroom ' + j}>Bathroom { j }</option>);
 		}
 
-		allRooms.push(bathroomOptions);
-		allRooms.push(<option value="powder">Powder</option>);
-		allRooms.push(<option value="living">Living</option>);
-		allRooms.push(<option value="family">Family</option>);
-		allRooms.push(<option value="laundry">Laundry</option>);
-		allRooms.push(<option value="kitchen">Kitchen</option>);
-		allRooms.push(<option value="dining">Dining</option>);
-		allRooms.push(<option value="home office">Study</option>);
-		allRooms.push(<option value="bonus">Bonus</option>);
-		allRooms.push(<option value="study">Study</option>);
-		allRooms.push(<option value="game">Game</option>);
-		allRooms.push(<option value="sun">Sun</option>);
-		allRooms.push(<option value="mud">Mud Room</option>);
+		allRooms.push(bathroomOptions)
+
+		allRooms.push(<option key="powder" value="powder">Powder</option>);
+		allRooms.push(<option key="living" value="living">Living</option>);
+		allRooms.push(<option key="family" value="family">Family</option>);
+		allRooms.push(<option key="laundry" value="laundry">Laundry</option>);
+		allRooms.push(<option key="kitchen" value="kitchen">Kitchen</option>);
+		allRooms.push(<option key="dining" value="dining">Dining</option>);
+		allRooms.push(<option key="home office" value="home office">Study</option>);
+		allRooms.push(<option key="bonus" value="bonus">Bonus</option>);
+		allRooms.push(<option key="study" value="study">Study</option>);
+		allRooms.push(<option key="game" value="game">Game</option>);
+		allRooms.push(<option key="sun" value="sun">Sun</option>);
+		allRooms.push(<option key="mud" value="mud">Mud Room</option>);
 
 		let roomForm = <form onSubmit={this.handleFormSubmit}>
 			<div className="form-group required">
@@ -175,7 +183,7 @@ class PropertyRoomAdd extends React.Component
 					</div>
 				</div>
 			</div>
-			<div className="form-group required">
+			<div className="form-group">
 				<div className="col-xs-12 col-md-8">
 					<label className="control-label">Total Area</label>
 					<div className="input-group">
@@ -183,8 +191,7 @@ class PropertyRoomAdd extends React.Component
 							   ref="total_area"
 							   onChange={this.handleFormChange.bind(this, 'total_area')}
 							   value={this.state.room.total_area}
-							   className="form-control input-sm"
-							   required="required"/>
+							   className="form-control input-sm"/>
 					</div>
 				</div>
 			</div>

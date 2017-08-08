@@ -1,7 +1,7 @@
 import React from 'react';
-import PropertiesList from './properties-list';
-import PropertyAdd from './property-add';
-import PropertiesStore from '../../stores/properties-store';
+import PropertiesList from './list';
+import PropertyAdd from './add';
+import PropertiesStore from '../../stores/properties/store';
 import FlashMessage from '../flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';

@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from './header';
 import Footer from './footer';
-import AuthStore from '../stores/auth-store';
+import AuthStore from '../stores/auth/store';
 
 class Main extends React.Component
 {

@@ -2,7 +2,7 @@ import React from 'react';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
 import Loader from '../loader';
-import PropertiesStore from '../../stores/properties-store';
+import PropertiesStore from '../../stores/properties/store';
 import PropertiesAction from '../../actions/properties-action';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -86,7 +86,14 @@ class PropertiesList extends React.Component
 		switch (action) {
 			case 'add-address':
 				this.context.router.push({
-					pathname: "/property/address-add",
+					pathname: "/property/address/add",
+					state: {property_id: id}
+				});
+			break;
+
+			case 'add-rooms':
+				this.context.router.push({
+					pathname: "/property/rooms/add",
 					state: {property_id: id}
 				});
 			break;

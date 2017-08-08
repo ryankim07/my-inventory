@@ -1,8 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
-import PropertiesAddressStore from '../../stores/properties-address-store';
-import PropertiesAddressAction from '../../actions/properties-address-action';
-import { titleCase } from "../helper/utils"
+import PropertiesAddressStore from '../../../stores/properties/address-store';
+import PropertiesAddressAction from '../../../actions/properties-address-action';
+import { titleCase } from "../../helper/utils"
 
 class PropertyAddressAdd extends React.Component
 {

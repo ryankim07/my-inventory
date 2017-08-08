@@ -1,8 +1,8 @@
 import React from 'react';
-import PropertyAddressList from './properties-address-list';
-import PropertyAddressAdd from './property-address-add';
-import PropertiesAddressStore from '../../stores/properties-address-store';
-import FlashMessage from '../flash-message';
+import PropertyAddressList from './list';
+import PropertyAddressAdd from './add';
+import PropertiesAddressStore from '../../../stores/properties/address-store';
+import FlashMessage from '../../flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
 let mainDefaultDesktopColumnWidth = 'col-md-12';

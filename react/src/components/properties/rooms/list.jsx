@@ -1,9 +1,9 @@
 import React from 'react';
-import PropertiesAddressStore from '../../stores/properties-address-store';
-import PropertiesAddressAction from '../../actions/properties-address-action';
-import AppDispatcher from '../../dispatcher/app-dispatcher';
-import ActionConstants from '../../constants/action-constants';
-import Loader from '../loader';
+import PropertiesAddressStore from '../../../stores/properties-address-store';
+import PropertiesAddressAction from '../../../actions/properties-address-action';
+import AppDispatcher from '../../../dispatcher/app-dispatcher';
+import ActionConstants from '../../../constants/action-constants';
+import Loader from '../../loader';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
 let mainDefaultDesktopColumnWidth = 'col-md-12';

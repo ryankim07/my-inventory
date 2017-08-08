@@ -1,7 +1,7 @@
 import {EventEmitter} from 'events';
 import assign from 'object-assign';
-import Dispatcher from '../dispatcher/app-dispatcher';
-import ActionConstants from '../constants/action-constants';
+import Dispatcher from '../../dispatcher/app-dispatcher';
+import ActionConstants from '../../constants/action-constants';
 import _ from 'lodash';
 
 let _addresses = [];
@@ -114,7 +114,7 @@ let PropertiesAddressStore = assign({}, EventEmitter.prototype, {
 		setStoreFlashMessage(data.msg);
 	},
 
-	removeProperty: function(address) {
+	removeAddress: function(address) {
 		let addresses = _addresses;
 
 		_.remove(addresses, (myAddress) => {

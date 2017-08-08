@@ -1,21 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
-import AuthStore from './src/stores/auth-store';
+import AuthStore from './src/stores/auth/store';
 import Main from './src/components/main';
 import Home from './src/components/home';
 import Login from './src/components/auth/login';
 import Logout from './src/components/auth/logout';
 import Signup from './src/components/auth/signup';
-import VehicleDashboard from './src/components/vehicles/vehicle-dashboard';
-import VehicleAdd from './src/components/vehicles/vehicle-add';
-import VehiclesList from './src/components/vehicles/vehicles-list';
-import PropertyDashboard from './src/components/properties/property-dashboard';
-import PropertyAdd from './src/components/properties/property-add';
-import PropertiesList from './src/components/properties/properties-list';
-import PropertyAddressDashboard from './src/components/properties/property-address-dashboard';
-import PropertyAddressAdd from './src/components/properties/property-address-add';
-import PropertiesAddressList from './src/components/properties/properties-address-list';
+import VehicleDashboard from './src/components/vehicles/dashboard';
+import VehicleAdd from './src/components/vehicles/add';
+import VehiclesList from './src/components/vehicles/list';
+import PropertyDashboard from './src/components/properties/dashboard';
+import PropertyAdd from './src/components/properties/add';
+import PropertiesList from './src/components/properties/list';
+import PropertyAddressDashboard from './src/components/properties/address/dashboard';
+import PropertyAddressAdd from './src/components/properties/address/add';
+import PropertiesAddressList from './src/components/properties/address/list';
 
 function requireAuth(nextState, replace)
 {

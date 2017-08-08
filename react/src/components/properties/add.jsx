@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import PropertiesStore from '../../stores/properties-store';
+import PropertiesStore from '../../stores/properties/store';
 import PropertiesAction from '../../actions/properties-action';
 import Uploader from '../helper/uploader';
 import { removeRougeChar } from "../helper/utils"

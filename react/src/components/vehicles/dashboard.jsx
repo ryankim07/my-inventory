@@ -1,7 +1,7 @@
 import React from 'react';
-import VehicleList from './vehicles-list';
-import VehicleAdd from './vehicle-add';
-import MyVehiclesStore from '../../stores/my-vehicles-store';
+import VehicleList from './list';
+import VehicleAdd from './add';
+import MyVehiclesStore from '../../stores/vehicles/store';
 import FlashMessage from '../flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';

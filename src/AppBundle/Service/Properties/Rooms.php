@@ -19,6 +19,8 @@ class Rooms
     private $name;
     private $totalArea;
     private $description;
+    private $entity;
+    private $existingRoom;
 
     /**
      * Constructor
@@ -32,7 +34,7 @@ class Rooms
     }
 
     /**
-     * Get all properties
+     * Get all rooms
      *
      * @return mixed|string
      */
@@ -42,7 +44,7 @@ class Rooms
     }
 
     /**
-     * Find specific property
+     * Find specific room
      *
      * @param $id
      * @return mixed|null|object|string
@@ -93,7 +95,7 @@ class Rooms
     public function save($data)
     {
         if (count($data) == 0) {
-            return ['msg' => 'Property information empty.'];
+            return ['msg' => 'Room information empty.'];
         }
 
         try {
@@ -109,8 +111,8 @@ class Rooms
                 $this->entity = $this->existingRoom;
             }
 
-            // Save or update address
-            $this->_saveAddress();
+            // Save or update room
+            $this->_saveRoom();
 
             $msg = !$this->existingRoom ? 'added' : 'updated';
 
@@ -124,7 +126,7 @@ class Rooms
     }
 
     /**
-     * Delete address
+     * Delete room
      *
      * @param $id
      * @return array
@@ -132,7 +134,7 @@ class Rooms
     public function delete($id)
     {
         if (!isset($id)) {
-            return ['msg' => 'Empty ID for deleting address.'];
+            return ['msg' => 'Empty ID for deleting room.'];
         }
 
         try {
@@ -151,11 +153,11 @@ class Rooms
     }
 
     /**
-     * Save or update address
+     * Save or update room
      *
      * @return bool
      */
-    private function _saveAddress()
+    private function _saveRoom()
     {
         if (!$this->existingRoom) {
             $this->entity = new RoomsEntity();
@@ -168,7 +170,7 @@ class Rooms
         $this->entity->setTotalArea($this->totalArea);
         $this->entity->setDescription($this->description);
 
-        $property->setRoom($this->entity);
+        $property->addRoom($this->entity);
 
         if (!$this->existingRoom) {
             $this->em->persist($property);

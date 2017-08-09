@@ -3,7 +3,7 @@ import _ from 'lodash';
 import PropertiesStore from '../../stores/properties/store';
 import PropertiesAction from '../../actions/properties-action';
 import Uploader from '../helper/uploader';
-import { removeRougeChar } from "../helper/utils"
+import { numberFormat } from "../helper/utils"
 
 class PropertyAdd extends React.Component
 {
@@ -103,9 +103,7 @@ class PropertyAdd extends React.Component
                 if (chosenValue === 0) {
                     alert('Please enter correct area.');
                 } else {
-					var num = chosenValue.toString().replace(/,/gi, "").split("").reverse().join("");
-					var replacement = removeRougeChar(num.replace(/(.{3})/g,"$1,").split("").reverse().join(""));
-                    property[propertyName] = replacement;
+					property[propertyName] = numberFormat(chosenValue);
                 }
             break;
 

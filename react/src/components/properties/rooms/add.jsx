@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import PropertyRoomsStore from '../../../stores/properties/rooms-store';
 import PropertyRoomsAction from '../../../actions/properties-rooms-action';
-import { titleCase } from "../../helper/utils"
+import { numberFormat } from "../../helper/utils"
 
 class PropertyRoomAdd extends React.Component
 {
@@ -42,6 +42,7 @@ class PropertyRoomAdd extends React.Component
 				flashMessage: null
 			});
 		}
+
         PropertyRoomsStore.addChangeListener(this._onChange);
     }
 
@@ -64,7 +65,7 @@ class PropertyRoomAdd extends React.Component
 
     // Listen to changes in store, update it's own state
     _onChange() {
-    	let addingNewRoom   = PropertyRoomsStore.isnewRoomAdded();
+    	let addingNewRoom   = PropertyRoomsStore.isNewRoomAdded();
 		let roomToUpdate    = PropertyRoomsStore.getRoomToUpdate();
 		let isEditingMode   = this.state.isEditingMode;
 		let stateRoom       = this.state.room;
@@ -91,19 +92,21 @@ class PropertyRoomAdd extends React.Component
 
     // Handle input changes
     handleFormChange(propertyName, event) {
-        let room     = this.state.room;
+        let room        = this.state.room;
         let chosenValue = event.target.value;
 
-        switch (propertyName) {
-            case 'street':
-            case 'city':
-            case 'subdivision':
-                room[propertyName] = titleCase(chosenValue);
-            break;
+		switch (propertyName) {
+			case 'total_area':
+				if (chosenValue === 0) {
+					alert('Please enter correct total area.');
+				} else {
+					room[propertyName] = numberFormat(chosenValue);
+				}
+				break;
 
-            default:
-                room[propertyName] = chosenValue;
-        }
+			default:
+				room[propertyName] = chosenValue;
+		}
 
         this.setState({
             room: room,

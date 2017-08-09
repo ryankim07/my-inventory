@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import PropertiesAddressStore from '../../../stores/properties/address-store';
 import PropertiesAddressAction from '../../../actions/properties-address-action';
-import { titleCase } from "../../helper/utils"
+import { upperFirstLetter } from "../../helper/utils"
 
 class PropertyAddressAdd extends React.Component
 {
@@ -50,6 +50,7 @@ class PropertyAddressAdd extends React.Component
 				flashMessage: null
 			});
 		}
+
         PropertiesAddressStore.addChangeListener(this._onChange);
     }
 
@@ -106,7 +107,7 @@ class PropertyAddressAdd extends React.Component
             case 'street':
             case 'city':
             case 'subdivision':
-                address[propertyName] = titleCase(chosenValue);
+                address[propertyName] = upperFirstLetter(chosenValue);
             break;
 
             default:

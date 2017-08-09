@@ -89,7 +89,7 @@ class PropertyEntity
     private $address;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\RoomsEntity", mappedBy="properties")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\RoomsEntity", mappedBy="properties", cascade={"persist"})
      * @ORM\OrderBy({"name" = "ASC"})
      */
     private $rooms;
@@ -395,8 +395,7 @@ class PropertyEntity
     public function addRoom(RoomsEntity $room)
     {
         $this->rooms[] = $room;
-
-        return $this;
+        $room->setProperties($this);
     }
 
     /**

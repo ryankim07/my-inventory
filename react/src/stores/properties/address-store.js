@@ -172,7 +172,7 @@ PropertiesAddressStore.dispatchToken = Dispatcher.register(function(payload) {
         break;
 
         case ActionConstants.REMOVE_PROPERTY_ADDRESS:
-            PropertiesAddressStore.removeProperty(action.results);
+            PropertiesAddressStore.removeAddress(action.results);
         break;
 
 		case ActionConstants.RECEIVE_ERROR:

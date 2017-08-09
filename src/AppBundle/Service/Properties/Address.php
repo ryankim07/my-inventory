@@ -38,7 +38,7 @@ class Address
     }
 
     /**
-     * Get all properties
+     * Get all addresses
      *
      * @return mixed|string
      */
@@ -48,7 +48,7 @@ class Address
     }
 
     /**
-     * Find specific property
+     * Find specific address
      *
      * @param $id
      * @return mixed|null|object|string
@@ -99,7 +99,7 @@ class Address
     public function save($data)
     {
         if (count($data) == 0) {
-            return ['msg' => 'Property information empty.'];
+            return ['msg' => 'Address information empty.'];
         }
 
         try {

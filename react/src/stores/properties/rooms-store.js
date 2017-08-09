@@ -15,7 +15,7 @@ function setAllRooms(rooms) {
     _rooms = rooms ;
 }
 
-function setAddress(room) {
+function setRoom(room) {
 	_room = room ;
 }
 
@@ -72,7 +72,7 @@ let PropertiesRoomsStore = assign({}, EventEmitter.prototype, {
 
 	editRoom: function (room) {
 		setStoreFlashMessage('');
-		setAddress(room);
+		setRoom(room);
 	},
 
 	getRoomToUpdate: function () {
@@ -151,24 +151,24 @@ PropertiesRoomsStore.dispatchToken = Dispatcher.register(function(payload) {
 
     switch(action.actionType) {
         case ActionConstants.RECEIVE_PROPERTIES_ROOMS:
-			PropertiesRoomsStore.setAddresses(action.rooms);
+			PropertiesRoomsStore.setRooms(action.rooms);
         break;
 
         case ActionConstants.ADD_PROPERTY_ROOM:
-            PropertiesRoomsStore.addAddress(action.results.msg);
+            PropertiesRoomsStore.addRoom(action.results.msg);
         break;
 
         case ActionConstants.EDIT_PROPERTY_ROOM:
-			PropertiesRoomsStore.editAddress(action.room, action.showRightPanel);
+			PropertiesRoomsStore.editRoom(action.room, action.showRightPanel);
 			openRightPanel(true);
         break;
 
         case ActionConstants.UPDATE_PROPERTY_ROOM:
-            PropertiesRoomsStore.updateAddress(action.results);
+            PropertiesRoomsStore.updateRoom(action.results);
         break;
 
         case ActionConstants.REMOVE_PROPERTY_ROOM:
-            PropertiesRoomsStore.removeProperty(action.results);
+            PropertiesRoomsStore.removeRoom(action.results);
         break;
 
 		case ActionConstants.RECEIVE_ERROR:

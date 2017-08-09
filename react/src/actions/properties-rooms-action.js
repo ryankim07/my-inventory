@@ -59,7 +59,7 @@ let PropertiesRoomsAction = {
 
     removeRoom: function(id) {
         Api
-            .delete('http://mcs.dev/api/properties/rooms' + id)
+            .delete('http://mcs.dev/api/properties/rooms/' + id)
             .then(function (results) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.REMOVE_PROPERTY_ROOM,
@@ -73,7 +73,25 @@ let PropertiesRoomsAction = {
 					msg: resp.msg
                 });
             });
-    }
+    },
+
+	getNonAddedRooms: function(id) {
+		Api
+			.get('http://mcs.dev/api/properties/non-added-rooms/property/' + id)
+			.then(function(rooms) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.RECEIVE_NON_ADDED_ROOMS,
+					rooms: rooms
+				});
+			})
+			.catch(function(resp) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.RECEIVE_ERROR,
+					status: resp.status,
+					msg: resp.msg
+				});
+			});
+	},
 };
 
 export default PropertiesRoomsAction;

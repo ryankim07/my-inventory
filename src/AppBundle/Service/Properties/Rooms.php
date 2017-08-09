@@ -54,6 +54,11 @@ class Rooms
         return $this->doSelect($id);
     }
 
+    public function findByPropertyId($id)
+    {
+        return $this->repo->findByPropertyId($id);
+    }
+
     /**
      * Query and add dependencies
      *

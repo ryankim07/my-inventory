@@ -3,6 +3,7 @@ import _ from 'lodash';
 import PropertyRoomsStore from '../../../stores/properties/rooms-store';
 import PropertyRoomsAction from '../../../actions/properties-rooms-action';
 import { numberFormat } from "../../helper/utils"
+import Loader from '../../loader';
 
 class PropertyRoomAdd extends React.Component
 {
@@ -17,8 +18,10 @@ class PropertyRoomAdd extends React.Component
                 total_area: '',
 				description: ''
             },
+			nonAddedRooms: [],
 			isEditingMode: false,
             newRoomAdded: false,
+			loader: true,
 			flashMessage: null
         };
 
@@ -37,6 +40,7 @@ class PropertyRoomAdd extends React.Component
 					total_area: '',
 					description: ''
 				},
+				nonAddedRooms: null,
 				isEditingMode: false,
 				newRoomAdded: false,
 				flashMessage: null
@@ -45,6 +49,10 @@ class PropertyRoomAdd extends React.Component
 
         PropertyRoomsStore.addChangeListener(this._onChange);
     }
+
+	componentDidMount() {
+		PropertyRoomsAction.getNonAddedRooms(this.state.room.property_id);
+	}
 
     componentWillUnmount() {
 		PropertyRoomsStore.removeChangeListener(this._onChange);
@@ -84,8 +92,10 @@ class PropertyRoomAdd extends React.Component
 
 		this.setState({
 		    room: stateRoom,
+			nonAddedRooms: PropertyRoomsStore.getNonAddedRooms(),
 			isEditingMode: isEditingMode,
 			newRoomAdded: addingNewRoom,
+			loader: false,
 			flashMessage: flashMsg !== undefined ? flashMsg : null
 		});
     }
@@ -110,8 +120,10 @@ class PropertyRoomAdd extends React.Component
 
         this.setState({
             room: room,
+			nonAddedRooms: this.state.nonAddedRooms,
 			isEditingMode: this.state.isEditingMode,
 			newRoomAdded: this.state.newRoomAdded,
+			loader: this.state.loader,
 			flashMessage: this.state.flashMessage
         });
     }
@@ -131,100 +143,76 @@ class PropertyRoomAdd extends React.Component
     }
 
 	render() {
-    	let allRooms = [];
-        let bedroomOptions = [];
-        let bathroomOptions = [];
+		let roomForm = '';
 
-		for (let i = 0; i <= 10; i++) {
-			if (i == 0) {
-				bedroomOptions.push(<option key="be-0" value="master bedroom">Master Bedroom</option>);
-				continue;
-			}
+		// If loading is complete
+		if (!this.state.loader) {
+			let roomsOptions = [];
+			console.log(this.state.nonAddedRooms);
+			roomsOptions = this.state.nonAddedRooms.map((rooms, roomIndex) => {
+				return (
+					<option key={roomIndex} value={rooms.value}>{ rooms.title }</option>
+				);
+			});
 
-			bedroomOptions.push(<option key={'bedroom ' + i} value={'bedroom ' + i}>Bedroom { i }</option>);
+			roomForm = <form onSubmit={this.handleFormSubmit}>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Room Name</label>
+						<div className="input-group">
+							<select ref="state"
+									onChange={this.handleFormChange.bind(this, 'name')}
+									value={this.state.room.name}
+									className="form-control input-sm"
+									required="required">
+								<option value="">Select One</option>
+								{ roomsOptions }
+							</select>
+						</div>
+					</div>
+				</div>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Total Area</label>
+						<div className="input-group">
+							<input type="text"
+								   ref="total_area"
+								   onChange={this.handleFormChange.bind(this, 'total_area')}
+								   value={this.state.room.total_area}
+								   className="form-control input-sm"/>
+						</div>
+					</div>
+				</div>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Description</label>
+						<div className="input-group">
+							<textarea ref="county"
+									rows="5"
+									className="form-control">
+							</textarea>
+						</div>
+					</div>
+				</div>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<div className="input-group">
+							<input type="hidden" ref="id" value={this.state.room.id} />
+							<input type="hidden" ref="property_id" value={this.state.room.property_id} />
+						</div>
+					</div>
+				</div>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-12">
+						<div className="clearfix">
+							<input type="submit" value="Submit" className="btn"/>
+						</div>
+					</div>
+				</div>
+			</form>
+		} else {
+			roomForm = <Loader />;
 		}
-
-		allRooms.push(bedroomOptions);
-
-		for (let j = 0; j <= 10; j++) {
-			if (j == 0) {
-				bathroomOptions.push(<option key="master bathroom" value="master bathroom">Master Bathroom</option>);
-				continue;
-			}
-
-			bathroomOptions.push(<option key={'bathroom ' + j} value={'bathroom ' + j}>Bathroom { j }</option>);
-		}
-
-		allRooms.push(bathroomOptions)
-
-		allRooms.push(<option key="powder" value="powder">Powder</option>);
-		allRooms.push(<option key="living" value="living">Living</option>);
-		allRooms.push(<option key="family" value="family">Family</option>);
-		allRooms.push(<option key="laundry" value="laundry">Laundry</option>);
-		allRooms.push(<option key="kitchen" value="kitchen">Kitchen</option>);
-		allRooms.push(<option key="dining" value="dining">Dining</option>);
-		allRooms.push(<option key="home office" value="home office">Study</option>);
-		allRooms.push(<option key="bonus" value="bonus">Bonus</option>);
-		allRooms.push(<option key="study" value="study">Study</option>);
-		allRooms.push(<option key="game" value="game">Game</option>);
-		allRooms.push(<option key="sun" value="sun">Sun</option>);
-		allRooms.push(<option key="mud" value="mud">Mud Room</option>);
-
-		let roomForm = <form onSubmit={this.handleFormSubmit}>
-			<div className="form-group required">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Room Name</label>
-					<div className="input-group">
-						<select ref="state"
-								onChange={this.handleFormChange.bind(this, 'name')}
-								value={this.state.room.name}
-								className="form-control input-sm"
-								required="required">
-							<option value="">Select One</option>
-							{ allRooms }
-						</select>
-					</div>
-				</div>
-			</div>
-			<div className="form-group">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Total Area</label>
-					<div className="input-group">
-						<input type="text"
-							   ref="total_area"
-							   onChange={this.handleFormChange.bind(this, 'total_area')}
-							   value={this.state.room.total_area}
-							   className="form-control input-sm"/>
-					</div>
-				</div>
-			</div>
-			<div className="form-group">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Description</label>
-					<div className="input-group">
-						<textarea ref="county"
-								rows="5"
-								className="form-control">
-						</textarea>
-					</div>
-				</div>
-			</div>
-			<div className="form-group">
-				<div className="col-xs-12 col-md-8">
-					<div className="input-group">
-						<input type="hidden" ref="id" value={this.state.room.id} />
-						<input type="hidden" ref="property_id" value={this.state.room.property_id} />
-					</div>
-				</div>
-			</div>
-			<div className="form-group">
-				<div className="col-xs-12 col-md-12">
-					<div className="clearfix">
-						<input type="submit" value="Submit" className="btn"/>
-					</div>
-				</div>
-			</div>
-		</form>
 
         return (
             <div className="col-xs-4 col-md-4" id="room-add">

@@ -62,7 +62,7 @@ services:
 
     Properties:
         class: AppBundle\Service\Properties\Properties
-        arguments: ["@doctrine.orm.houses_entity_manager", "@File_Uploader"]
+        arguments: ["@doctrine.orm.houses_entity_manager", "@File_Uploader", "@Configured_Rooms"]
 
     Address:
         class: AppBundle\Service\Properties\Address
@@ -71,3 +71,6 @@ services:
     Rooms:
         class: AppBundle\Service\Properties\Rooms
         arguments: ["@doctrine.orm.houses_entity_manager"]
+
+    Configured_Rooms:
+        class: AppBundle\Service\Configuration\Properties\Rooms

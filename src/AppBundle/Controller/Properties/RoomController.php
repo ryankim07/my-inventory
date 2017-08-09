@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 class RoomController extends FOSRestController
 {
     /**
-     * Get addresses
+     * Get rooms
      *
      * @Rest\Get("/api/properties/rooms", name="get_all_rooms")
      * @return mixed|string
@@ -33,7 +33,40 @@ class RoomController extends FOSRestController
     }
 
     /**
-     * Add new address
+     * Get all the rooms by property ID
+     *
+     * @Rest\Get("/api/properties/non-added-rooms/property/{id}", name="get_non_added_rooms")
+     * @param $id
+     * @return array
+     */
+    public function getNonAddedRoomsAction($id)
+    {
+        $service       = $this->get('Rooms');
+        $allRooms      = $service->findByPropertyId($id);
+        $existingRooms = [];
+
+        foreach($allRooms as $room) {
+            $existingRooms[] = $room->getName();
+        }
+
+        $configRoomsService = $this->get('Configured_Rooms');
+        $configRooms        = $configRoomsService->getRoomsList();
+
+        $roomsDiff = array_diff($configRooms, $existingRooms);
+
+        $diff = [];
+        foreach($roomsDiff as $index => $value) {
+            $diff[] = [
+                'value' => $value,
+                'title' => ucwords($value)
+            ];
+        }
+
+        return $diff;
+    }
+
+    /**
+     * Add new room
      *
      * @Rest\Post("/api/property/room", name="new_room")
      * @param Request $request
@@ -52,9 +85,9 @@ class RoomController extends FOSRestController
     }
 
     /**
-     * Delete address
+     * Delete room
      *
-     * @Rest\Delete("/api/properties/rooms{id}", name="delete_address")
+     * @Rest\Delete("/api/properties/rooms/{id}", name="delete_address")
      * @param $id
      * @return View
      */

@@ -1,10 +1,10 @@
 import React from 'react';
+import _ from 'lodash';
 import ApiVehiclesStore from '../../stores/vehicles/api-store';
 import MyVehiclesStore from '../../stores/vehicles/store';
 import VehiclesAction from '../../actions/vehicles-action';
 import Uploader from '../helper/uploader';
 import Loader from '../loader';
-import _ from 'lodash';
 
 class VehicleAdd extends React.Component
 {

@@ -82,31 +82,37 @@ class VehiclesList extends React.Component
 
 		// If loading is complete
         if (!this.state.loader) {
-			vehiclesHtml = this.state.vehicles.map((vehicle) => {
-				let imageName = vehicle.assets[0] === undefined ? vehicle.assets.name : vehicle.assets[0].name;
-				let imagePath = vehicle.assets[0] === undefined ? vehicle.assets.path : vehicle.assets[0].path;
+        	let vehicles = this.state.vehicles;
 
-				return (
-                    <tr key={ vehicle.id }>
-                        <td>{ vehicle.mfg }</td>
-                        <td>{ vehicle.model }</td>
-                        <td>{ vehicle.year }</td>
-                        <td>{ vehicle.color }</td>
-                        <td>{ vehicle.vin }</td>
-                        <td>{ vehicle.plate }</td>
-                        <td>
-                            <button onClick={this.removeMyVehicle} data-id={vehicle.id}>×</button>
-                            <button onClick={this.editMyVehicle} data-id={vehicle.id} data-mfg={vehicle.mfg}
-                                    data-mfg-id={vehicle.mfg_id}
-                                    data-model={vehicle.model} data-model-id={vehicle.model_id}
-                                    data-year={vehicle.year} data-color={vehicle.color}
-                                    data-vin={vehicle.vin} data-plate={vehicle.plate} data-image-name={imageName}
-                                    data-image-path={imagePath}>edit
-                            </button>
-                        </td>
-                    </tr>
-                );
-			});
+        	if (!vehicles) {
+				vehiclesHtml = <tr><td>There are no saved vehicle.</td></tr>;
+			} else {
+				vehiclesHtml = vehicles.map((vehicle) => {
+					let imageName = vehicle.assets[0] === undefined ? vehicle.assets.name : vehicle.assets[0].name;
+					let imagePath = vehicle.assets[0] === undefined ? vehicle.assets.path : vehicle.assets[0].path;
+
+					return (
+						<tr key={vehicle.id}>
+							<td>{vehicle.mfg}</td>
+							<td>{vehicle.model}</td>
+							<td>{vehicle.year}</td>
+							<td>{vehicle.color}</td>
+							<td>{vehicle.vin}</td>
+							<td>{vehicle.plate}</td>
+							<td>
+								<button onClick={this.removeMyVehicle} data-id={vehicle.id}>×</button>
+								<button onClick={this.editMyVehicle} data-id={vehicle.id} data-mfg={vehicle.mfg}
+										data-mfg-id={vehicle.mfg_id}
+										data-model={vehicle.model} data-model-id={vehicle.model_id}
+										data-year={vehicle.year} data-color={vehicle.color}
+										data-vin={vehicle.vin} data-plate={vehicle.plate} data-image-name={imageName}
+										data-image-path={imagePath}>edit
+								</button>
+							</td>
+						</tr>
+					);
+				});
+			}
         } else {
             vehiclesHtml = <tr><td><Loader /></td></tr>;
         }
@@ -118,7 +124,7 @@ class VehiclesList extends React.Component
                         <div className="panel-heading">
                             <div className="row">
                                 <div className="col-xs-10 col-md-10">
-                                    <span>Vehicle Edit</span>
+                                    <span>Vehicle List</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2"></div>
                             </div>

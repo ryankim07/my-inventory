@@ -59,7 +59,7 @@ let PropertiesAddressAction = {
 
     removeAddress: function(id) {
         Api
-            .delete('http://mcs.dev/api/properties/addresses' + id)
+            .delete('http://mcs.dev/api/properties/addresses/' + id)
             .then(function (results) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.REMOVE_PROPERTY_ADDRESS,

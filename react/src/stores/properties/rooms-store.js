@@ -5,6 +5,7 @@ import ActionConstants from '../../constants/action-constants';
 import _ from 'lodash';
 
 let _rooms = [];
+let _nonAddedRooms = [];
 let _room = {};
 let _roomAdded = false;
 let _showPanel = false;
@@ -39,6 +40,10 @@ function removeToken() {
 	localStorage.removeItem('id_token');
 }
 
+function setNonAddedRooms(rooms) {
+	_nonAddedRooms = rooms ;
+}
+
 let PropertiesRoomsStore = assign({}, EventEmitter.prototype, {
     // Emit Change event
     emitChange: function(){
@@ -55,6 +60,10 @@ let PropertiesRoomsStore = assign({}, EventEmitter.prototype, {
 
 	getRoom: function () {
 		return _rooms;
+	},
+
+	getNonAddedRooms: function () {
+    	return _nonAddedRooms;
 	},
 
 	setRoom: function (rooms) {
@@ -153,6 +162,10 @@ PropertiesRoomsStore.dispatchToken = Dispatcher.register(function(payload) {
         case ActionConstants.RECEIVE_PROPERTIES_ROOMS:
 			PropertiesRoomsStore.setRooms(action.rooms);
         break;
+
+		case ActionConstants.RECEIVE_NON_ADDED_ROOMS:
+			setNonAddedRooms(action.rooms);
+		break;
 
         case ActionConstants.ADD_PROPERTY_ROOM:
             PropertiesRoomsStore.addRoom(action.results.msg);

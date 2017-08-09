@@ -37,7 +37,8 @@ class Properties
      * @param EntityManager $entityManager
      * @param FileUploader $fileUploader
      */
-    public function __construct(EntityManager $entityManager, FileUploader $fileUploader)
+    public function __construct(EntityManager $entityManager,
+                                FileUploader $fileUploader)
     {
         $this->em           = $entityManager;
         $this->repo         = $this->em->getRepository('AppBundle\Entity\Properties\PropertyEntity');
@@ -79,9 +80,7 @@ class Properties
             return false;
         }
 
-        if (!is_null($id)) {
-            $results = $this->addDependencies($results);
-        }
+        $results = $this->addDependencies($results);
 
         return $results;
     }

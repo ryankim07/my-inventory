@@ -67,3 +67,7 @@ services:
     Address:
         class: AppBundle\Service\Properties\Address
         arguments: ["@doctrine.orm.houses_entity_manager"]
+
+    Rooms:
+        class: AppBundle\Service\Properties\Rooms
+        arguments: ["@doctrine.orm.houses_entity_manager"]

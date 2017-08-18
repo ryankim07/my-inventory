@@ -1,5 +1,5 @@
 import React from 'react';
-import PropertiesList from './list';
+import PropertyView from './view';
 import PropertyAdd from './add';
 import PropertiesStore from '../../stores/properties/store';
 import FlashMessage from '../flash-message';
@@ -15,6 +15,7 @@ class PropertyDashboard extends React.Component
 		super(props);
 
 		this.state = {
+			propertyId: this.props.location.state.property_id,
 			columnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
@@ -23,7 +24,7 @@ class PropertyDashboard extends React.Component
 			flashMessage: null
 		};
 
-		this._onChange = this._onChange.bind(this);
+		this._onChange 		 = this._onChange.bind(this);
 		this.setFlashMessage = this.setFlashMessage.bind(this);
 		this.closeRightPanel = this.closeRightPanel.bind(this);
 	}
@@ -51,9 +52,9 @@ class PropertyDashboard extends React.Component
 	}
 
 	_onChange() {
-		let flashMsg = PropertiesStore.getStoreFlashMessage();
+		let flashMsg 		= PropertiesStore.getStoreFlashMessage();
 		let isAuthenticated = PropertiesStore.isAuthenticated();
-		let openRightPanel = PropertiesStore.openRightPanel();
+		let openRightPanel 	= PropertiesStore.openRightPanel();
 
 		if (!isAuthenticated){
 			this.context.router.push("/auth/login");
@@ -89,8 +90,7 @@ class PropertyDashboard extends React.Component
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-success" />}
-				<PropertiesList mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} className="main-column" />
-				{ !this.state.showRightPanel ? null : <PropertyAdd closeRightPanel={this.closeRightPanel} />}
+				<PropertyView mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} className="main-column" propertyId={this.state.propertyId} />
 			</div>
 		)
 	}

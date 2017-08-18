@@ -89,7 +89,7 @@ class PropertyRoomsDashboard extends React.Component
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-success" />}
-				<PropertiesRoomsList mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} propertyId={this.props.location.state.property_id} className="main-column" />
+				<PropertiesRoomsList mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} className="main-column" />
 				{ !this.state.showRightPanel ? null : <PropertyRoomAdd closeRightPanel={this.closeRightPanel} />}
 			</div>
 		)

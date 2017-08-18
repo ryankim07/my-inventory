@@ -3,23 +3,42 @@ import ActionConstants from '../constants/action-constants';
 import Api from '../services/Api';
 
 let PropertiesRoomsAction = {
-    getRooms: function() {
-        Api
-            .get('http://mcs.dev/api/properties/rooms')
-            .then(function (rooms) {
-                AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.RECEIVE_PROPERTIES_ROOMS,
+
+	getPropertyRooms: function(id) {
+		Api
+			.get('http://mcs.dev/api/properties/property-rooms/' + id)
+			.then(function(rooms) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.RECEIVE_PROPERTY_ROOMS,
 					rooms: rooms
-                });
-            })
-            .catch(function(resp) {
-                AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.RECEIVE_ERROR,
-                    status: resp.status,
+				});
+			})
+			.catch(function(resp) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.RECEIVE_ERROR,
+					status: resp.status,
 					msg: resp.msg
-                });
-            });
-    },
+				});
+			});
+	},
+
+	getNonAddedRooms: function(id) {
+		Api
+			.get('http://mcs.dev/api/properties/non-added-rooms/property/' + id)
+			.then(function(rooms) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.RECEIVE_NON_ADDED_ROOMS,
+					rooms: rooms
+				});
+			})
+			.catch(function(resp) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.RECEIVE_ERROR,
+					status: resp.status,
+					msg: resp.msg
+				});
+			});
+	},
 
     addRoom: function(data) {
         Api
@@ -73,25 +92,7 @@ let PropertiesRoomsAction = {
 					msg: resp.msg
                 });
             });
-    },
-
-	getNonAddedRooms: function(id) {
-		Api
-			.get('http://mcs.dev/api/properties/non-added-rooms/property/' + id)
-			.then(function(rooms) {
-				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.RECEIVE_NON_ADDED_ROOMS,
-					rooms: rooms
-				});
-			})
-			.catch(function(resp) {
-				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.RECEIVE_ERROR,
-					status: resp.status,
-					msg: resp.msg
-				});
-			});
-	},
+    }
 };
 
 export default PropertiesRoomsAction;

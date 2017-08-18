@@ -1,15 +1,7 @@
 import React from 'react';
 import PropertiesAddressStore from '../../../stores/properties/address-store';
 import PropertiesAddressAction from '../../../actions/properties-address-action';
-import AppDispatcher from '../../../dispatcher/app-dispatcher';
-import ActionConstants from '../../../constants/action-constants';
 import Loader from '../../loader';
-
-let mainDefaultMobileColumnWidth = 'col-xs-12';
-let mainDefaultDesktopColumnWidth = 'col-md-12';
-let mainShrinkedMobileColumnWidth = 'col-xs-8';
-let mainShrinkedDesktopColumnWidth = 'col-md-8';
-let mainClassName = 'main-column';
 
 class PropertiesAddressList extends React.Component
 {
@@ -23,8 +15,8 @@ class PropertiesAddressList extends React.Component
         };
 
         this._onChange     = this._onChange.bind(this);
-        this.editAddress   = this.editAddress().bind(this);
-        this.removeAddress = this.removeAddress.bind(this);
+		this.removeAddress = this.removeAddress.bind(this);
+        this.viewProperty  = this.viewProperty.bind(this);
     }
 
     componentWillMount() {
@@ -41,36 +33,24 @@ class PropertiesAddressList extends React.Component
 
     _onChange() {
         this.setState({
-            addresses: PropertiesAddressStore.getAddress(),
+            addresses: PropertiesAddressStore.getAddresses(),
 			address: {},
             loader: false
         });
     }
 
-    editAddress(e) {
-        // Set panel width
-        let data = e.target.dataset;
+	removeAddress(e) {
+		PropertiesAddressAction.removeAddress(e.target.dataset.propertyId);
+	}
 
-		AppDispatcher.handleViewAction({
-			actionType: ActionConstants.EDIT_PROPERTY_ADDRESS,
-			address: {
-				id: data.id,
-				property_id: data.property_id,
-				street: data.street,
-				city: data.city,
-				state: data.state,
-				zip: data.zip,
-				county: data.county,
-				country: data.country,
-				subdivision: data.subdivision
-			},
-			openRightPanel: true
+	viewProperty(e) {
+        let propertyId = e.target.dataset.propertyId;
+
+		// Forward to view route by passing ID
+        this.context.router.push({
+			pathname: "/properties/dashboard",
+			state: {property_id: propertyId}
 		});
-    }
-
-    removeAddress(e) {
-        let id = e.target.dataset.id;
-        PropertiesAddressAction.removeAddress(id);
     }
 
     render() {
@@ -78,34 +58,20 @@ class PropertiesAddressList extends React.Component
 
 		// If loading is complete
         if (!this.state.loader) {
-			addressesHtml = this.state.properties.map((property) => {
-				let imageName = property.assets[0] === undefined ? property.assets.name : property.assets[0].name;
-				let imagePath = property.assets[0] === undefined ? property.assets.path : property.assets[0].path;
+			addressesHtml = this.state.addresses.map((address) => {
 
 				return (
-                    <tr key={ property.id }>
-                        <td>{ property.built }</td>
-                        <td>{ property.style }</td>
-                        <td>{ property.beds }</td>
-                        <td>{ property.baths }</td>
-                        <td>{ property.finished_area }</td>
-                        <td>{ property.unfinished_area }</td>
-						<td>{ property.total_area }</td>
-						<td>{ property.parcel_number }</td>
+                    <tr key={ address.id }>
+                        <td>{ address.street }</td>
+                        <td>{ address.city }</td>
+                        <td>{ address.state }</td>
+                        <td>{ address.zip }</td>
+                        <td>{ address.county }</td>
+                        <td>{ address.country }</td>
+						<td>{ address.subdivision }</td>
                         <td>
-                            <button onClick={this.removeAddress} data-id={property.id}>×</button>
-                            <button onClick={this.editAddress} data-id={property.id}
-									data-built={property.built}
-                                    data-style={property.style}
-                                    data-beds={property.beds}
-									data-baths={property.baths}
-                                    data-finished-area={property.finished_area}
-									data-unfinished-area={property.unfinished_area}
-									data-total-area={property.total_area}
-									data-parcel-number={property.parcel_number}
-                                    data-image-name={imageName}
-                                    data-image-path={imagePath}>edit
-                            </button>
+                            <button onClick={this.removeAddress}><i data-property-id={address.property_id} className="fa fa-trash"></i></button>
+							<button onClick={this.viewProperty}><i data-property-id={address.property_id} className="fa fa-search"></i></button>
                         </td>
                     </tr>
                 );
@@ -115,13 +81,13 @@ class PropertiesAddressList extends React.Component
         }
 
         return (
-            <div className={[this.props.mobileWidth, this.props.desktopWidth, this.props.className].join(' ')} id="addresses-main">
+            <div id="addresses-main">
                 <div className="row">
                     <div className="panel panel-info">
                         <div className="panel-heading">
                             <div className="row">
                                 <div className="col-xs-10 col-md-10">
-                                    <span>Property Address List</span>
+                                    <span>Properties</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2"></div>
                             </div>
@@ -130,7 +96,6 @@ class PropertiesAddressList extends React.Component
                             <table className="table">
                                 <thead>
                                 <tr>
-                                    <th>Property ID</th>
                                     <th>Street</th>
                                     <th>City</th>
                                     <th>State</th>
@@ -150,6 +115,10 @@ class PropertiesAddressList extends React.Component
             </div>
         )
     }
+}
+
+PropertiesAddressList.contextTypes = {
+	router: React.PropTypes.object.isRequired
 }
 
 export default PropertiesAddressList;

@@ -114,8 +114,7 @@ class PropertiesList extends React.Component
 					let imageName = property.assets[0] === undefined ? property.assets.name : property.assets[0].name;
 					let imagePath = property.assets[0] === undefined ? property.assets.path : property.assets[0].path;
 					let addressBtn = property.address === undefined ?
-						<button onClick={this.handleOtherActions} data-id={property.id} data-action="add-address">Add
-							Address</button> : null;
+						<button onClick={this.handleOtherActions} data-id={property.id} data-action="add-address"><i class="fa fa-plus-square"></i> Address</button> : null;
 
 					return (
 						<tr key={property.id}>
@@ -145,17 +144,17 @@ class PropertiesList extends React.Component
 										data-image-path={imagePath}>edit
 								</button>
 								{addressBtn}
-								<button onClick={this.handleOtherActions} data-id={property.id}
-										data-action="add-property-features">Add Property Features
+								<button onClick={this.handleOtherActions} data-id={property.id} data-action="add-property-features">
+									<i className="fa fa-plus-square"></i> Property Features
 								</button>
-								<button onClick={this.handleOtherActions} data-id={property.id}
-										data-action="add-exterior-features">Add Exterior Features
+								<button onClick={this.handleOtherActions} data-id={property.id} data-action="add-exterior-features">
+									<i className="fa fa-plus-square"></i> Exterior Features
 								</button>
-								<button onClick={this.handleOtherActions} data-id={property.id}
-										data-action="add-interior-features">Add Interior Features
+								<button onClick={this.handleOtherActions} data-id={property.id} data-action="add-interior-features">
+									<i className="fa fa-plus-square"></i> Interior Features
 								</button>
 								<button onClick={this.handleOtherActions} data-id={property.id} data-action="add-rooms">
-									Add Rooms
+									<i className="fa fa-plus-square"></i> Rooms
 								</button>
 							</td>
 						</tr>
@@ -193,9 +192,9 @@ class PropertiesList extends React.Component
 									<th>Parcel Number</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                { propertiesHtml }
-                                </tbody>
+								<tbody>
+                                	{ propertiesHtml }
+								</tbody>
                             </table>
                         </div>
                     </div>

@@ -3,6 +3,25 @@ import ActionConstants from '../constants/action-constants';
 import Api from '../services/Api';
 
 let PropertiesAction = {
+
+	getProperty: function(id) {
+		Api
+			.get('http://mcs.dev/api/properties/' + id)
+			.then(function (results) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.GET_PROPERTY,
+					results: results
+				});
+			})
+			.catch(function(resp) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.GET_PROPERTY,
+					status: resp.status,
+					msg: resp.msg
+				});
+			});
+	},
+
     getProperties: function() {
         Api
             .get('http://mcs.dev/api/properties')

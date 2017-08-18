@@ -64,7 +64,12 @@ class PropertyRoomAdd extends React.Component
         if (nextState.newRoomAdded || this.state.newRoomAdded) {
 			PropertyRoomsStore.unFlagNewRoom();
 			nextState.newRoomAdded = false;
-			this.context.router.push('/properties/dashboard');
+
+			this.context.router.push({
+				pathname: "/properties/rooms/dashboard",
+				state: {property_id: this.state.room.property_id}
+			});
+
 			return false;
 		}
 
@@ -148,7 +153,7 @@ class PropertyRoomAdd extends React.Component
 		// If loading is complete
 		if (!this.state.loader) {
 			let roomsOptions = [];
-			console.log(this.state.nonAddedRooms);
+
 			roomsOptions = this.state.nonAddedRooms.map((rooms, roomIndex) => {
 				return (
 					<option key={roomIndex} value={rooms.value}>{ rooms.title }</option>
@@ -160,7 +165,7 @@ class PropertyRoomAdd extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Room Name</label>
 						<div className="input-group">
-							<select ref="state"
+							<select ref="name"
 									onChange={this.handleFormChange.bind(this, 'name')}
 									value={this.state.room.name}
 									className="form-control input-sm"
@@ -187,7 +192,7 @@ class PropertyRoomAdd extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Description</label>
 						<div className="input-group">
-							<textarea ref="county"
+							<textarea ref="description"
 									rows="5"
 									className="form-control">
 							</textarea>
@@ -221,7 +226,7 @@ class PropertyRoomAdd extends React.Component
                         <div className="panel-heading">
                             <div className="row">
                                 <div className="col-xs-10 col-md-10">
-                                    <span>room</span>
+                                    <span>Add Room</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2">
                                     { this.state.isEditingMode ? <button onClick={this.props.closeRightPanel} className="close close-viewer" value="Close"><span>&times;</span></button> : ''}

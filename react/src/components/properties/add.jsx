@@ -55,7 +55,12 @@ class PropertyAdd extends React.Component
         if (nextState.newPropertyAdded || this.state.newPropertyAdded) {
 			PropertiesStore.unFlagNewProperty();
 			nextState.newPropertyAdded = false;
-			this.context.router.push('/properties/dashboard');
+			//this.context.router.push('/property/address/add');
+
+			this.context.router.push({
+				pathname: "/property/address/add",
+				state: {property_id: nextState.property.id}
+			});
 
 			return false;
 		}
@@ -316,7 +321,7 @@ class PropertyAdd extends React.Component
 			<div className="form-group">
 				<div className="col-xs-12 col-md-12">
 					<div className="clearfix">
-						<input type="submit" value="Submit" className="btn"/>
+						<input type="submit" value="Add Address" className="btn"/>
 					</div>
 				</div>
 			</div>

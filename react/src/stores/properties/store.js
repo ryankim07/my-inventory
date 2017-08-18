@@ -67,6 +67,10 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		return _properties;
 	},
 
+	getProperty: function () {
+		return _property;
+	},
+
 	getSavedProperty: function () {
 		return _savedProperty;
 	},
@@ -76,6 +80,14 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 			setStoreFlashMessage(properties.msg)
 		} else {
 			setAllProperties(properties)
+		}
+	},
+
+	setProperty: function (property) {
+		if (property.msg) {
+			setStoreFlashMessage(property.msg)
+		} else {
+			setProperty(property)
 		}
 	},
 
@@ -191,6 +203,10 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
         case ActionConstants.REMOVE_PROPERTY:
             PropertiesStore.removeProperty(action.results);
         break;
+
+		case ActionConstants.GET_PROPERTY:
+			PropertiesStore.setProperty(action.results);
+		break;
 
 		case ActionConstants.SET_ASSETS:
 			setAssets(action.file);

@@ -22,8 +22,8 @@ class VehiclesList extends React.Component
             loader: true
         };
 
-        this._onChange = this._onChange.bind(this);
-        this.editMyVehicle = this.editMyVehicle.bind(this);
+        this._onChange 		 = this._onChange.bind(this);
+        this.editMyVehicle   = this.editMyVehicle.bind(this);
         this.removeMyVehicle = this.removeMyVehicle.bind(this);
     }
 

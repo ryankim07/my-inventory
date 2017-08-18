@@ -29,6 +29,29 @@ class RoomController extends FOSRestController
         $service = $this->get('Rooms');
         $results = $service->findAll();
 
+        if ($results === null) {
+            return new View("Rooms not found", Response::HTTP_NOT_FOUND);
+        }
+
+        return $results;
+    }
+
+    /**
+     * Get all the rooms by property ID
+     *
+     * @Rest\Get("/api/properties/property-rooms/{id}", name="get_property_rooms")
+     * @param $id
+     * @return array
+     */
+    public function getPropertyRoomsAction($id)
+    {
+        $service = $this->get('Rooms');
+        $results = $service->findByPropertyId($id);
+
+        if ($results === null) {
+            return new View("Rooms not found", Response::HTTP_NOT_FOUND);
+        }
+
         return $results;
     }
 
@@ -87,7 +110,7 @@ class RoomController extends FOSRestController
     /**
      * Delete room
      *
-     * @Rest\Delete("/api/properties/rooms/{id}", name="delete_address")
+     * @Rest\Delete("/api/properties/rooms/{id}", name="delete_room")
      * @param $id
      * @return View
      */

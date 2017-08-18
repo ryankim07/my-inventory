@@ -1,6 +1,6 @@
 import React from 'react';
 import PropertyRoomsStore from '../../../stores/properties/rooms-store';
-import PropertyRoomsAction from '../../../actions/properties-rooms-action';
+import ProperyRoomsAction from '../../../actions/properties-rooms-action';
 import AppDispatcher from '../../../dispatcher/app-dispatcher';
 import ActionConstants from '../../../constants/action-constants';
 import Loader from '../../loader';
@@ -22,9 +22,8 @@ class PropertiesRoomsList extends React.Component
             loader: true
         };
 
-        this._onChange  = this._onChange.bind(this);
-		this.addRoom    = this.addRoom.bind(this);
-        this.editRoom   = this.editRoom.bind(this);
+        this._onChange     = this._onChange.bind(this);
+        this.editRoom   = this.editRoom().bind(this);
         this.removeRoom = this.removeRoom.bind(this);
     }
 
@@ -32,31 +31,21 @@ class PropertiesRoomsList extends React.Component
         PropertyRoomsStore.addChangeListener(this._onChange);
     }
 
-	componentDidMount() {
-		PropertyRoomsAction.getPropertyRooms(this.props.propertyId);
-	}
+    componentDidMount() {
+		ProperyRoomsAction.getAddresses();
+    }
 
     componentWillUnmount() {
         PropertyRoomsStore.removeChangeListener(this._onChange);
     }
 
     _onChange() {
-        let rooms = PropertyRoomsStore.getRooms();
-
         this.setState({
-            rooms: rooms,
+            rooms: PropertyRoomsStore.getRoom(),
 			room: {},
             loader: false
         });
     }
-
-	addRoom(e) {
-		// Forward to view route by passing ID
-		this.context.router.push({
-			pathname: "/property/rooms/add",
-			state: {property_id: this.props.propertyId}
-		});
-	}
 
     editRoom(e) {
         // Set panel width
@@ -76,7 +65,8 @@ class PropertiesRoomsList extends React.Component
     }
 
     removeRoom(e) {
-        ProperyRoomsAction.removeRoom(e.target.dataset.id);
+        let id = e.target.dataset.id;
+        ProperyRoomsAction.removeRoom(id);
     }
 
     render() {
@@ -84,23 +74,20 @@ class PropertiesRoomsList extends React.Component
 
 		// If loading is complete
         if (!this.state.loader) {
-			roomsHtml = this.state.rooms.map((room) => {
+			roomsHtml = this.state.properties.map((room) => {
 
 				return (
                     <tr key={ room.id }>
                         <td>{ room.name }</td>
                         <td>{ room.total_area }</td>
-                        <td>{ room.description }</td>
+                        <td>{ room.description }</td>>
                         <td>
-							<button onClick={this.removeRoom}><i data-id={room.id} className="fa fa-trash"></i></button>
-							<button onClick={this.viewProperty}>
-								<i className="fa fa-search"
-								   data-id={room.id}
-								   data-name={room.name}
-								   data-total-area={room.total_area}
-								   data-description={room.description}>View Details
-								</i>
-							</button>
+                            <button onClick={this.removeRoom} data-id={room.id}>×</button>
+                            <button onClick={this.editRoom} data-id={room.id}
+									data-name={room.name}
+                                    data-total-area={room.total_area}
+									data-description={room.description}>edit
+                            </button>
                         </td>
                     </tr>
                 );
@@ -118,17 +105,14 @@ class PropertiesRoomsList extends React.Component
                                 <div className="col-xs-10 col-md-10">
                                     <span>Properties Rooms List</span>
                                 </div>
-                                <div className="col-xs-2 col-md-2">
-									<button onClick={this.addRoom}>
-										<i className="fa fa-plus">Add Room Details</i>
-									</button>
-								</div>
+                                <div className="col-xs-2 col-md-2"></div>
                             </div>
                         </div>
                         <div className="panel-body">
                             <table className="table">
                                 <thead>
                                 <tr>
+                                    <th>Property ID</th>
                                     <th>Name</th>
                                     <th>Total Area</th>
                                     <th>Description</th>
@@ -144,10 +128,6 @@ class PropertiesRoomsList extends React.Component
             </div>
         )
     }
-}
-
-PropertiesRoomsList.contextTypes = {
-	router: React.PropTypes.object.isRequired
 }
 
 export default PropertiesRoomsList;

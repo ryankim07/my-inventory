@@ -31,10 +31,10 @@ class VehicleAdd extends React.Component
 			flashMessage: null
         };
 
-        this._onChange = this._onChange.bind(this);
+        this._onChange 		  = this._onChange.bind(this);
         this.handleFormChange = this.handleFormChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
-		this.setAssets = this.setAssets.bind(this);
+		this.setAssets 		  = this.setAssets.bind(this);
     }
 
     componentWillMount() {

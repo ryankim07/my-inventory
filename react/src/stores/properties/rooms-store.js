@@ -12,7 +12,7 @@ let _showPanel = false;
 let _errStatus;
 let _storeMsg;
 
-function setAllRooms(rooms) {
+function setRooms(rooms) {
     _rooms = rooms ;
 }
 
@@ -58,22 +58,6 @@ let PropertiesRoomsStore = assign({}, EventEmitter.prototype, {
         this.removeListener('change', callback);
 	},
 
-	getRoom: function () {
-		return _rooms;
-	},
-
-	getNonAddedRooms: function () {
-    	return _nonAddedRooms;
-	},
-
-	setRoom: function (rooms) {
-		if (rooms.msg) {
-			setStoreFlashMessage(rooms.msg)
-		} else {
-			setAllRooms(rooms)
-		}
-	},
-
 	addRoom: function (msg) {
 		setStoreFlashMessage(msg);
 		flagNewRoom();
@@ -82,6 +66,22 @@ let PropertiesRoomsStore = assign({}, EventEmitter.prototype, {
 	editRoom: function (room) {
 		setStoreFlashMessage('');
 		setRoom(room);
+	},
+
+	getRooms: function () {
+		return _rooms;
+	},
+
+	setRooms: function (rooms) {
+		if (rooms.msg) {
+			setStoreFlashMessage(rooms.msg)
+		} else {
+			setRooms(rooms)
+		}
+	},
+
+	getNonAddedRooms: function () {
+		return _nonAddedRooms;
 	},
 
 	getRoomToUpdate: function () {
@@ -159,11 +159,11 @@ PropertiesRoomsStore.dispatchToken = Dispatcher.register(function(payload) {
     let action = payload.action;
 
     switch(action.actionType) {
-        case ActionConstants.RECEIVE_PROPERTIES_ROOMS:
-			PropertiesRoomsStore.setRooms(action.rooms);
-        break;
+		case ActionConstants.RECEIVE_PROPERTY_ROOMS:
+			setRooms(action.rooms);
+		break;
 
-		case ActionConstants.RECEIVE_NON_ADDED_ROOMS:
+        case ActionConstants.RECEIVE_NON_ADDED_ROOMS:
 			setNonAddedRooms(action.rooms);
 		break;
 

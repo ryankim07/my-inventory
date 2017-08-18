@@ -19,6 +19,25 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 class PropertyController extends FOSRestController
 {
     /**
+     * Get property by ID
+     *
+     * @Rest\Get("/api/properties/{id}", name="get_property")
+     * @param $id
+     * @return View
+     */
+    public function getAction($id)
+    {
+        $service = $this->get('Properties');
+        $results = $service->find($id);
+
+        if ($results === null) {
+            return new View("Property not found", Response::HTTP_NOT_FOUND);
+        }
+
+        return $results;
+    }
+
+    /**
      * Get properties
      *
      * @Rest\Get("/api/properties", name="get_all_properties")
@@ -28,6 +47,10 @@ class PropertyController extends FOSRestController
     {
         $service = $this->get('Properties');
         $results = $service->findAll();
+
+        if ($results === null) {
+            return new View("Properties not found", Response::HTTP_NOT_FOUND);
+        }
 
         return $results;
     }

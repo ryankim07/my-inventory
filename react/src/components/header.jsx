@@ -37,7 +37,7 @@ class Header extends React.Component
                                         <Link to="/property/add" className="menu-link"><i className="fa fa-home menu-link-icon"/> Add</Link>
                                     </li>
                                     <li>
-                                        <Link to="/properties/dashboard" className="menu-link"><i className="fa fa-list-alt menu-link-icon"/> All</Link>
+                                        <Link to="/properties/addresses" className="menu-link"><i className="fa fa-list-alt menu-link-icon"/> All</Link>
                                     </li>
                                 </ul>
                             </li>

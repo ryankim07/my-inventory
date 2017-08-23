@@ -18,12 +18,9 @@ class PropertyRoomAdd extends React.Component
                 name: '',
                 total_area: '',
 				description: '',
-				walls: [{
-					name: '',
-					paint_id: ''
-				}]
+				walls: []
             },
-			allWalls: [],
+			disableAddWallsBtn: false,
 			nonAddedRooms: [],
 			isEditingMode: false,
             newRoomAdded: false,
@@ -89,7 +86,6 @@ class PropertyRoomAdd extends React.Component
 
 		this.setState({
 		    room: stateRoom,
-			allWalls: this.state.allWalls,
 			nonAddedRooms: PropertyRoomsStore.getNonAddedRooms(),
 			isEditingMode: isEditingMode,
 			newRoomAdded: addingNewRoom,
@@ -121,19 +117,6 @@ class PropertyRoomAdd extends React.Component
         });
     }
 
-    handleWallChange(walls) {
-    	this.setState({
-			room: {
-				id: this.state.room.id,
-				property_id: this.state.room.property_id,
-				name: this.state.room.name,
-				total_area: this.state.room.total_area,
-				description: this.state.room.description,
-				walls: walls
-			}
-		});
-	}
-
     // Submit
     handleFormSubmit(event) {
         event.preventDefault();
@@ -148,20 +131,46 @@ class PropertyRoomAdd extends React.Component
         }
     }
 
+	handleWallChange(walls) {
+    	let disableBtn = this.state.disableAddWallsBtn;
+
+    	walls.map((wall, index) => {
+    		disableBtn = wall.name === "all" ? true : false;
+		});
+
+		this.setState({
+			room: {
+				id: this.state.room.id,
+				property_id: this.state.room.property_id,
+				name: this.state.room.name,
+				total_area: this.state.room.total_area,
+				description: this.state.room.description,
+				walls: walls
+			},
+			disableAddWallsBtn: disableBtn
+		});
+	}
+
     addWalls(event) {
 		event.preventDefault();
 
-		let newWall = this.state.allWalls;
-		newWall.push(PropertyRoomWalls);
+		let roomWalls = this.state.room.walls;
+		let newWall = {
+			name: '',
+			paint_id: ''
+		};
+
+		roomWalls.push(newWall);
 
 		this.setState({
-			room: this.state.room,
-			allWalls: newWall,
-			nonAddedRooms: this.state.nonAddedRooms,
-			isEditingMode: this.state.isEditingMode,
-			newRoomAdded: this.state.newRoomAdded,
-			loader: false,
-			flashMessage: this.state.flashMessage
+			room: {
+				id: this.state.room.id,
+				property_id: this.state.room.property_id,
+				name: this.state.room.name,
+				total_area: this.state.room.total_area,
+				description: this.state.room.description,
+				walls: roomWalls
+			}
 		});
 	}
 
@@ -172,9 +181,9 @@ class PropertyRoomAdd extends React.Component
 		// If loading is complete
 		if (!this.state.loader) {
 
-			addWallsSection = this.state.allWalls.map((wall, index) => {
+			addWallsSection = this.state.room.walls.map((wall, index) => {
 				return (
-					<PropertyRoomWalls key={index} index={index} walls={this.state.room.walls} onChange={this.handleWallChange} />
+					<PropertyRoomWalls key={index} index={index} allWalls={this.state.room.walls} wall={wall} onChange={this.handleWallChange} />
 				);
 			});
 
@@ -215,7 +224,7 @@ class PropertyRoomAdd extends React.Component
 
 				<div className="walls">
 					{ addWallsSection }
-					<button onClick={this.addWalls}>Add Walls</button>
+					{this.state.disableAddWallsBtn === false ? <button onClick={this.addWalls}><i className="fa fa-plus"></i> Walls</button> : ''}
 				</div>
 
 				<div className="form-group">

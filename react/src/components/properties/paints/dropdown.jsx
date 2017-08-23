@@ -47,11 +47,12 @@ class PropertyPaintsDropdown extends React.Component
 		});
 
         return (
-			<div className="input-group">
+			<div className="input-group required">
 				<select ref={refName}
 						onChange={this.handleFormChange.bind(this, refName)}
-						value=""
-						className="form-control input-sm">
+						value={this.props.paints.paint_id}
+						className="form-control input-sm"
+						required="required">
 					<option value="">Select One</option>
 					{ paintsOptions }
 				</select>

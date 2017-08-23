@@ -2,8 +2,9 @@ import React from 'react';
 import _ from 'lodash';
 import PropertyRoomsStore from '../../../stores/properties/rooms-store';
 import PropertyRoomsAction from '../../../actions/properties-rooms-action';
-import { numberFormat } from "../../helper/utils"
+import PropertyRoomWalls from '../../../components/properties/rooms/walls';
 import Loader from '../../loader';
+import { numberFormat, upperFirstLetter } from "../../helper/utils"
 
 class PropertyRoomAdd extends React.Component
 {
@@ -13,11 +14,16 @@ class PropertyRoomAdd extends React.Component
         this.state = {
             room: {
                 id: '',
-                property_id: '',
+                property_id: this.props.location.state.property_id,
                 name: '',
                 total_area: '',
-				description: ''
+				description: '',
+				walls: [{
+					name: '',
+					paint_id: ''
+				}]
             },
+			allWalls: [],
 			nonAddedRooms: [],
 			isEditingMode: false,
             newRoomAdded: false,
@@ -25,29 +31,15 @@ class PropertyRoomAdd extends React.Component
 			flashMessage: null
         };
 
-        this._onChange = this._onChange.bind(this);
+        this._onChange 	      = this._onChange.bind(this);
         this.handleFormChange = this.handleFormChange.bind(this);
+		this.handleWallChange = this.handleWallChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
+		this.addWalls         = this.addWalls.bind(this);
     }
 
     componentWillMount() {
-		if (this.props.location.state.property_id) {
-			this.setState({
-				room: {
-					id: '',
-					property_id: this.props.location.state.property_id,
-					name: '',
-					total_area: '',
-					description: ''
-				},
-				nonAddedRooms: null,
-				isEditingMode: false,
-				newRoomAdded: false,
-				flashMessage: null
-			});
-		}
-
-        PropertyRoomsStore.addChangeListener(this._onChange);
+		PropertyRoomsStore.addChangeListener(this._onChange);
     }
 
 	componentDidMount() {
@@ -97,6 +89,7 @@ class PropertyRoomAdd extends React.Component
 
 		this.setState({
 		    room: stateRoom,
+			allWalls: this.state.allWalls,
 			nonAddedRooms: PropertyRoomsStore.getNonAddedRooms(),
 			isEditingMode: isEditingMode,
 			newRoomAdded: addingNewRoom,
@@ -117,21 +110,29 @@ class PropertyRoomAdd extends React.Component
 				} else {
 					room[propertyName] = numberFormat(chosenValue);
 				}
-				break;
+			break;
 
 			default:
 				room[propertyName] = chosenValue;
 		}
 
         this.setState({
-            room: room,
-			nonAddedRooms: this.state.nonAddedRooms,
-			isEditingMode: this.state.isEditingMode,
-			newRoomAdded: this.state.newRoomAdded,
-			loader: this.state.loader,
-			flashMessage: this.state.flashMessage
+            room: room
         });
     }
+
+    handleWallChange(walls) {
+    	this.setState({
+			room: {
+				id: this.state.room.id,
+				property_id: this.state.room.property_id,
+				name: this.state.room.name,
+				total_area: this.state.room.total_area,
+				description: this.state.room.description,
+				walls: walls
+			}
+		});
+	}
 
     // Submit
     handleFormSubmit(event) {
@@ -147,14 +148,37 @@ class PropertyRoomAdd extends React.Component
         }
     }
 
+    addWalls(event) {
+		event.preventDefault();
+
+		let newWall = this.state.allWalls;
+		newWall.push(PropertyRoomWalls);
+
+		this.setState({
+			room: this.state.room,
+			allWalls: newWall,
+			nonAddedRooms: this.state.nonAddedRooms,
+			isEditingMode: this.state.isEditingMode,
+			newRoomAdded: this.state.newRoomAdded,
+			loader: false,
+			flashMessage: this.state.flashMessage
+		});
+	}
+
 	render() {
 		let roomForm = '';
+		let addWallsSection = '';
 
 		// If loading is complete
 		if (!this.state.loader) {
-			let roomsOptions = [];
 
-			roomsOptions = this.state.nonAddedRooms.map((rooms, roomIndex) => {
+			addWallsSection = this.state.allWalls.map((wall, index) => {
+				return (
+					<PropertyRoomWalls key={index} index={index} walls={this.state.room.walls} onChange={this.handleWallChange} />
+				);
+			});
+
+			let roomsOptions = this.state.nonAddedRooms.map((rooms, roomIndex) => {
 				return (
 					<option key={roomIndex} value={rooms.value}>{ rooms.title }</option>
 				);
@@ -188,6 +212,12 @@ class PropertyRoomAdd extends React.Component
 						</div>
 					</div>
 				</div>
+
+				<div className="walls">
+					{ addWallsSection }
+					<button onClick={this.addWalls}>Add Walls</button>
+				</div>
+
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Description</label>

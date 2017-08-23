@@ -33,9 +33,9 @@ class UsersController extends FOSRestController
 
         // Call service to save
         $authenticationService = $this->get('Username_Password_Authenticator');
-        $data['password'] = $authenticationService->encodePassword($user, $data['password']);
-        $userService = $this->get('User');
-        $results = $userService->save($data);
+        $data['password']      = $authenticationService->encodePassword($user, $data['password']);
+        $userService           = $this->get('User');
+        $results               = $userService->save($data);
 
         // Send email
         $results['token'] = $this->get('lexik_jwt_authentication.encoder')->encode([

@@ -44,12 +44,10 @@ class PropertiesAddressList extends React.Component
 	}
 
 	viewProperty(e) {
-        let propertyId = e.target.dataset.propertyId;
-
-		// Forward to view route by passing ID
+        // Forward to view route by passing ID
         this.context.router.push({
 			pathname: "/properties/dashboard",
-			state: {property_id: propertyId}
+			state: {property_id: e.target.dataset.propertyId}
 		});
     }
 

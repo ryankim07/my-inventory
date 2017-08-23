@@ -26,12 +26,12 @@ class GroupEntity implements RoleInterface
     private $id;
 
     /**
-     * @ORM\Column(name="username", type="string", length=30)
+     * @ORM\Column(type="string", length=30)
      */
     private $username;
 
     /**
-     * @ORM\Column(name="role", type="string", length=20, unique=true)
+     * @ORM\Column(type="string", length=20, unique=true)
      */
     private $role;
 

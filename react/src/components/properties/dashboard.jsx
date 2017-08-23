@@ -15,13 +15,10 @@ class PropertyDashboard extends React.Component
 		super(props);
 
 		this.state = {
-			propertyId: this.props.location.state.property_id,
-			columnCss: {
-				'mobileWidth': mainDefaultMobileColumnWidth,
-				'desktopWidth': mainDefaultDesktopColumnWidth
-			},
-			showRightPanel: false,
-			flashMessage: null
+			propertyId: '',
+			columnCss: {},
+			showRightPanel: '',
+			flashMessage: ''
 		};
 
 		this._onChange 		 = this._onChange.bind(this);
@@ -30,6 +27,16 @@ class PropertyDashboard extends React.Component
 	}
 
 	componentWillMount() {
+		this.setState({
+			propertyId: this.props.location.state.property_id,
+			columnCss: {
+				'mobileWidth': mainDefaultMobileColumnWidth,
+				'desktopWidth': mainDefaultDesktopColumnWidth
+			},
+			showRightPanel: false,
+			flashMessage: null
+		});
+
 		PropertiesStore.addChangeListener(this._onChange);
 		PropertiesStore.unsetStoreFlashMessage();
 	}
@@ -62,6 +69,7 @@ class PropertyDashboard extends React.Component
 		}
 
 		this.setState({
+			propertyId: this.state.propertyId,
 			columnCss: {
 				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
 				'desktopWidth': openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth

@@ -94,7 +94,7 @@ class User
             $role     = $user['role'];
             $response = null;
 
-            $existingUser = $this->findByUsernameOrEmail($username, $email);
+            $existingUser  = $this->findByUsernameOrEmail($username, $email);
             $existingGroup = $this->em->getRepository('AppBundle\Entity\Auth\GroupEntity')->findOneByUsername($username);
 
             if (is_null($existingUser)) {
@@ -113,7 +113,7 @@ class User
                     'msg'  => 'User successfully added.'
                 ];
             } else {
-                // Update existing my vehicle
+                // Update existing user
                 $existingUser->setUsername($username);
                 $existingUser->setPassword($password);
                 $existingUser->setEmail($email);
@@ -142,7 +142,7 @@ class User
                     'msg'   => "User's group successfully added."
                 ];
             } else {
-                // Update existing my vehicle
+                // Update existing group
                 $existingGroup->setUsername($username);
                 $existingUser->setEmail($email);
 

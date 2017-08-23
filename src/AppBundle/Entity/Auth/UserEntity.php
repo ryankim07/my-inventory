@@ -50,12 +50,12 @@ class UserEntity implements AdvancedUserInterface, \Serializable
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Auth\GroupEntity", inversedBy="users")
      * @ORM\JoinTable(
-     *  name="user_entity_group_entity",
+     *  name="user_group",
      *  joinColumns={
-     *      @ORM\JoinColumn(name="user_entity_id", referencedColumnName="id")
+     *      @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      *  },
      *  inverseJoinColumns={
-     *      @ORM\JoinColumn(name="group_entity_id", referencedColumnName="id")
+     *      @ORM\JoinColumn(name="group_id", referencedColumnName="id")
      *  }
      * )
      */

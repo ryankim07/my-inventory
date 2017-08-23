@@ -10,6 +10,7 @@ namespace AppBundle\Entity\Properties;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -38,13 +39,13 @@ class RoomsEntity
 
     /**
      * @ORM\Column(type="string", length=6)
-     * @Assert\NotBlank()
+     * @Assert\Blank()
      */
     private $totalArea;
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\NotBlank()
+     * @Assert\Blank()
      */
     private $description;
 
@@ -53,6 +54,20 @@ class RoomsEntity
      * @ORM\JoinColumn(name="property_id", referencedColumnName="id")
      */
     private $properties;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\RoomsWallsEntity", mappedBy="rooms", cascade={"persist"})
+     * @ORM\OrderBy({"name" = "ASC"})
+     */
+    private $walls;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->paints = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -182,5 +197,40 @@ class RoomsEntity
     public function getProperties()
     {
         return $this->properties;
+    }
+
+    /**
+     * Add wall
+     *
+     * @param \AppBundle\Entity\Properties\RoomsWallsEntity $wall
+     *
+     * @return RoomsEntity
+     */
+    public function addWall(RoomsWallsEntity $wall)
+    {
+        $this->walls[] = $wall;
+        $wall->setRooms($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove wall
+     *
+     * @param \AppBundle\Entity\Properties\RoomsWallsEntity $wall
+     */
+    public function removeWall(RoomsWallsEntity $wall)
+    {
+        $this->walls->removeElement($wall);
+    }
+
+    /**
+     * Get walls
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getWalls()
+    {
+        return $this->walls;
     }
 }

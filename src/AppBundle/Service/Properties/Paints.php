@@ -9,18 +9,21 @@
 namespace AppBundle\Service\Properties;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\Properties\RoomsEntity;
+use AppBundle\Entity\Properties\PaintsEntity;
 
-class Rooms
+class Paints
 {
     private $em;
     private $repo;
-    private $propertyId;
+    private $vendorId;
     private $name;
-    private $totalArea;
-    private $description;
+    private $number;
+    private $color;
+    private $hex;
+    private $rgb;
+    private $notes;
     private $entity;
-    private $existingRoom;
+    private $existingPaint;
 
     /**
      * Constructor
@@ -30,7 +33,7 @@ class Rooms
     public function __construct(EntityManager $entityManager)
     {
         $this->em   = $entityManager;
-        $this->repo = $this->em->getRepository('AppBundle\Entity\Properties\RoomsEntity');
+        $this->repo = $this->em->getRepository('AppBundle\Entity\Properties\PaintsEntity');
     }
 
     /**
@@ -54,9 +57,9 @@ class Rooms
         return $this->doSelect($id);
     }
 
-    public function findByPropertyId($id)
+    public function findByVendorId($id)
     {
-        return $this->repo->findByPropertyId($id);
+        return $this->repo->findByVendorId($id);
     }
 
     /**
@@ -104,26 +107,29 @@ class Rooms
         }
 
         try {
-            $id                = (int)$data['id'];
-            $this->propertyId  = (int)$data['property_id'];
-            $this->name        = $data["name"];
-            $this->totalArea   = $data["total_area"];
-            $this->description = $data["description"];
+            $id             = (int)$data['id'];
+            $this->vendorId = (int)$data['vendor_id'];
+            $this->name     = $data["name"];
+            $this->number   = $data["total_area"];
+            $this->color    = $data["description"];
+            $this->hex      = $data["hex"];
+            $this->rgb      =  $data["rgb"];
+            $this->notes    = $data["notes"];
 
-            $this->existingRoom = $this->find($id);
+            $this->existingPaint = $this->find($id);
 
-            if (!$this->existingRoom) {
-                $this->entity = $this->existingRoom;
+            if (!$this->existingPaint) {
+                $this->entity = $this->existingPaint;
             }
 
             // Save or update room
-            $this->_saveRoom();
+            $this->_savePaint();
 
-            $msg = !$this->existingRoom ? 'added' : 'updated';
+            $msg = !$this->existingPaint ? 'added' : 'updated';
 
             return [
                 'property' => $this->entity,
-                'msg'      => "Room successfully {$msg}."
+                'msg'      => "Paint color successfully {$msg}."
             ];
         } catch(\Exception $e) {
             return ['msg' => $e->getMessage()];
@@ -139,17 +145,17 @@ class Rooms
     public function delete($id)
     {
         if (!isset($id)) {
-            return ['msg' => 'Empty ID for deleting room.'];
+            return ['msg' => 'Empty ID for deleting paint.'];
         }
 
         try {
-            $room = $this->repo->find($id);
+            $paint = $this->repo->find($id);
 
-            $this->em->remove($room);
+            $this->em->remove($paint);
             $this->em->flush();
 
             return [
-                'msg' => 'Room successfully deleted.',
+                'msg' => 'Paint color successfully deleted.',
                 'id'  => $id
             ];
         } catch(\Exception $e) {
@@ -158,14 +164,14 @@ class Rooms
     }
 
     /**
-     * Save or update room
+     * Save or update paint
      *
      * @return bool
      */
-    private function _saveRoom()
+    private function _savePaint()
     {
-        if (!$this->existingRoom) {
-            $this->entity = new RoomsEntity();
+        if (!$this->existingPaint) {
+            $this->entity = new PaintsEntity();
         }
 
         $property = $this->em->getRepository('AppBundle\Entity\Properties\PropertyEntity')->find($this->propertyId);
@@ -177,7 +183,7 @@ class Rooms
 
         $property->addRoom($this->entity);
 
-        if (!$this->existingRoom) {
+        if (!$this->existingPaint) {
             $this->em->persist($property);
         }
 

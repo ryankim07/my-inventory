@@ -72,5 +72,9 @@ services:
         class: AppBundle\Service\Properties\Rooms
         arguments: ["@doctrine.orm.houses_entity_manager"]
 
+    Paints:
+        class: AppBundle\Service\Properties\Paints
+        arguments: ["@doctrine.orm.houses_entity_manager"]
+
     Configured_Rooms:
         class: AppBundle\Service\Configuration\Properties\Rooms

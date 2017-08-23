@@ -55,6 +55,7 @@ class VehicleAdd extends React.Component
     shouldComponentUpdate(nextProps, nextState) {
     	// Check here and don't render component again if it's an image upload action
 		let emptyObj = _.every(_.values(nextState.vehicle), function(v) {return !v;});
+
 		if (nextState.vehicle.assets !== '' && emptyObj) {
 			return false;
 		}

@@ -10,6 +10,7 @@ namespace AppBundle\Service\Properties;
 
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Properties\PropertyEntity;
+use AppBundle\Entity\Properties\AddressEntity;
 use AppBundle\Entity\Properties\PropertyAssetsEntity;
 use AppBundle\Service\FileUploader;
 
@@ -27,6 +28,7 @@ class Properties
     private $unfinishedArea;
     private $totalArea;
     private $parcelNumber;
+    private $address;
     private $assets;
     private $entity;
     private $existingProperty;
@@ -119,6 +121,7 @@ class Properties
             $this->unfinishedArea = $data['unfinished_area'];
             $this->totalArea      = $data['total_area'];
             $this->parcelNumber   = $data['parcel_number'];
+            $this->address        = $data['address'];
             $this->assets         = $data['assets'];
 
             $this->existingProperty = $this->find($id);
@@ -204,6 +207,19 @@ class Properties
         $this->entity->setUnfinishedArea($this->unfinishedArea);
         $this->entity->setTotalArea($this->totalArea);
         $this->entity->setParcelNumber($this->parcelNumber);
+
+        $addressEntity = new AddressEntity();
+
+        $addressEntity->setPropertyId($this->entity->getId());
+        $addressEntity->setStreet($this->address['street']);
+        $addressEntity->setCity($this->address['city']);
+        $addressEntity->setState($this->address['state']);
+        $addressEntity->setZip($this->address['zip']);
+        $addressEntity->setCounty($this->address['county']);
+        $addressEntity->setCountry($this->address['country']);
+        $addressEntity->setSubdivision($this->address['subdivision']);
+
+        $this->entity->addAddress($addressEntity);
 
         if (!$this->existingProperty) {
             $this->em->persist($this->entity);

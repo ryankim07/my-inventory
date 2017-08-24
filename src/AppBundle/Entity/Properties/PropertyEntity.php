@@ -369,10 +369,10 @@ class PropertyEntity
      *
      * @return PropertyEntity
      */
-    public function setAddress(AddressEntity $address)
+    public function addAddress(AddressEntity $address)
     {
         $this->address = $address;
-        $address->setProperty($this);
+        $address->addProperty($this);
     }
 
     /**
@@ -395,7 +395,7 @@ class PropertyEntity
     public function addRoom(RoomsEntity $room)
     {
         $this->rooms[] = $room;
-        $room->setProperty($this);
+        $room->addProperty($this);
 
         return $this;
     }

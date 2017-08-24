@@ -182,7 +182,7 @@ class RoomsEntity
      *
      * @return RoomsEntity
      */
-    public function setProperty(PropertyEntity $property = null)
+    public function addProperty(PropertyEntity $property = null)
     {
         $this->property = $property;
 

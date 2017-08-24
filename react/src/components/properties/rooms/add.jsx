@@ -131,12 +131,20 @@ class PropertyRoomAdd extends React.Component
         }
     }
 
+    // Handle appropriate action whenever wall fields are changed
 	handleWallChange(walls) {
-    	let disableBtn = this.state.disableAddWallsBtn;
+    	let totalWalls = walls.length;
+    	let filledFields = 0;
 
     	walls.map((wall, index) => {
-    		disableBtn = wall.name === "all" ? true : false;
+    		if (wall.name === "all" || index === 4) {
+				filledFields = 0;
+			} else if (wall.name !== "" && wall.paint_id !== "") {
+				filledFields++;
+			}
 		});
+
+    	let disableBtn = filledFields === totalWalls ? false : true;
 
 		this.setState({
 			room: {
@@ -151,11 +159,12 @@ class PropertyRoomAdd extends React.Component
 		});
 	}
 
+	// Add new wall div
     addWalls(event) {
 		event.preventDefault();
 
 		let roomWalls = this.state.room.walls;
-		let newWall = {
+		let newWall   = {
 			name: '',
 			paint_id: ''
 		};
@@ -170,7 +179,8 @@ class PropertyRoomAdd extends React.Component
 				total_area: this.state.room.total_area,
 				description: this.state.room.description,
 				walls: roomWalls
-			}
+			},
+			disableAddWallsBtn: true
 		});
 	}
 
@@ -180,10 +190,9 @@ class PropertyRoomAdd extends React.Component
 
 		// If loading is complete
 		if (!this.state.loader) {
-
 			addWallsSection = this.state.room.walls.map((wall, index) => {
 				return (
-					<PropertyRoomWalls key={index} index={index} allWalls={this.state.room.walls} wall={wall} onChange={this.handleWallChange} />
+					<PropertyRoomWalls key={index} index={index} roomWalls={this.state.room.walls} wall={wall} onChange={this.handleWallChange} />
 				);
 			});
 

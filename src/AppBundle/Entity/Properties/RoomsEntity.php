@@ -53,7 +53,7 @@ class RoomsEntity
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Properties\PropertyEntity", inversedBy="rooms")
      * @ORM\JoinColumn(name="property_id", referencedColumnName="id")
      */
-    private $properties;
+    private $property;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\RoomsWallsEntity", mappedBy="rooms", cascade={"persist"})
@@ -66,7 +66,7 @@ class RoomsEntity
      */
     public function __construct()
     {
-        $this->paints = new ArrayCollection();
+        $this->walls = new ArrayCollection();
     }
 
     /**
@@ -176,27 +176,27 @@ class RoomsEntity
     }
 
     /**
-     * Set properties
+     * Set property
      *
-     * @param \AppBundle\Entity\Properties\PropertyEntity $properties
+     * @param \AppBundle\Entity\Properties\PropertyEntity $property
      *
      * @return RoomsEntity
      */
-    public function setProperties(PropertyEntity $properties = null)
+    public function setProperty(PropertyEntity $property = null)
     {
-        $this->properties = $properties;
+        $this->property = $property;
 
         return $this;
     }
 
     /**
-     * Get properties
+     * Get property
      *
      * @return \AppBundle\Entity\Properties\PropertyEntity
      */
-    public function getProperties()
+    public function getProperty()
     {
-        return $this->properties;
+        return $this->property;
     }
 
     /**

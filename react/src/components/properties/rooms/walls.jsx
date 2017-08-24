@@ -13,7 +13,7 @@ class PropertyRoomWalls extends React.Component
 		let id    		= propertyName.match(/\d/);
 		let property 	= propertyName.split(/_(.*)/);
 		let chosenValue = event.target.value;
-		let walls 		= this.props.allWalls;
+		let walls 		= this.props.roomWalls;
 
 		switch (property[0]) {
 			case 'wall':
@@ -29,7 +29,7 @@ class PropertyRoomWalls extends React.Component
 	}
 
 	removeWall(index, event) {
-		let walls = this.props.allWalls;
+		let walls = this.props.roomWalls;
 
 		walls.splice(index, 1);
 
@@ -38,8 +38,8 @@ class PropertyRoomWalls extends React.Component
 
     render() {
 		let index			 = this.props.index;
-		let refName 		 = 'wall_' + index;
 		let wallSides		 = ["left", "right", "front", "back", "ceiling", "all"];
+		let refName 		 = 'wall_' + index;
 		let wallSidesOptions = [];
 
 		for (let i = 0, len = wallSides.length; i < len; i++) {

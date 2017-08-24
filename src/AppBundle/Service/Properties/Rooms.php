@@ -10,6 +10,7 @@ namespace AppBundle\Service\Properties;
 
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Properties\RoomsEntity;
+use AppBundle\Entity\Properties\RoomsWallsEntity;
 
 class Rooms
 {
@@ -19,6 +20,7 @@ class Rooms
     private $name;
     private $totalArea;
     private $description;
+    private $walls;
     private $entity;
     private $existingRoom;
 
@@ -109,6 +111,7 @@ class Rooms
             $this->name        = $data["name"];
             $this->totalArea   = $data["total_area"];
             $this->description = $data["description"];
+            $this->walls       = $data["walls"];
 
             $this->existingRoom = $this->find($id);
 
@@ -176,6 +179,16 @@ class Rooms
         $this->entity->setDescription($this->description);
 
         $property->addRoom($this->entity);
+
+        foreach($this->walls as $wall) {
+            $wallsEntity = new RoomsWallsEntity();
+
+            $wallsEntity->setRoomId($this->entity->getId());
+            $wallsEntity->setPaintId((int) $wall['paint_id']);
+            $wallsEntity->setName($wall['name']);
+
+            $this->entity->addWall($wallsEntity);
+        }
 
         if (!$this->existingRoom) {
             $this->em->persist($property);

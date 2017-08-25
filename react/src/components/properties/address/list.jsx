@@ -40,14 +40,21 @@ class PropertiesAddressList extends React.Component
     }
 
 	removeAddress(e) {
-		PropertiesAddressAction.removeAddress(e.target.dataset.propertyId);
+		e.preventDefault();
+
+		let propertyId = e.target.dataset.propertyId;
+		PropertiesAddressAction.removeAddress(propertyId);
 	}
 
 	viewProperty(e) {
+        e.preventDefault();
+
         // Forward to view route by passing ID
+		let propertyId = e.target.dataset.propertyId;
+
         this.context.router.push({
 			pathname: "/properties/dashboard",
-			state: {property_id: e.target.dataset.propertyId}
+			state: {property_id: propertyId}
 		});
     }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropertyPaintsDropdown from '../../../components/properties/paints/dropdown';
+import { upperFirstLetter } from "../../helper/utils"
 
 class PropertyRoomWalls extends React.Component
 {
@@ -29,8 +30,9 @@ class PropertyRoomWalls extends React.Component
 	}
 
 	removeWall(index, event) {
-		let walls = this.props.roomWalls;
+		event.preventDefault();
 
+		let walls = this.props.roomWalls;
 		walls.splice(index, 1);
 
 		this.props.onChange(walls);
@@ -47,7 +49,7 @@ class PropertyRoomWalls extends React.Component
 				continue;
 			}
 
-			wallSidesOptions.push(<option key={wallSides[i]} value={wallSides[i]}>{ wallSides[i].charAt(0).toUpperCase() + wallSides[i].slice(1)}</option>);
+			wallSidesOptions.push(<option key={wallSides[i]} value={wallSides[i]}>{upperFirstLetter(wallSides[i])}</option>);
 		}
 
         return (

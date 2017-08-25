@@ -1,5 +1,5 @@
 import React from 'react';
-import PropertiesRoomsList from './list';
+import PropertyRoomsList from './list';
 import PropertyRoomAdd from './add';
 import PropertyRoomsStore from '../../../stores/properties/rooms-store';
 import FlashMessage from '../../flash-message';
@@ -15,6 +15,7 @@ class PropertyRoomsDashboard extends React.Component
 		super(props);
 
 		this.state = {
+			property_id: this.props.location.state.property_id,
 			columnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
@@ -80,8 +81,7 @@ class PropertyRoomsDashboard extends React.Component
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
 			},
-			showRightPanel: false,
-			flashMessage: this.state.flashMessage
+			showRightPanel: false
 		});
 	}
 
@@ -89,8 +89,12 @@ class PropertyRoomsDashboard extends React.Component
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-success" />}
-				<PropertiesRoomsList mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} propertyId={this.props.location.state.property_id} className="main-column" />
-				{ !this.state.showRightPanel ? null : <PropertyRoomAdd closeRightPanel={this.closeRightPanel} />}
+				<PropertyRoomsList
+					mobileWidth={this.state.columnCss.mobileWidth}
+					desktopWidth={this.state.columnCss.desktopWidth}
+					propertyId={this.state.property_id}
+					className="main-column" />
+				{ !this.state.showRightPanel ? null : <PropertyRoomAdd propertyId={this.state.property_id} closeRightPanel={this.closeRightPanel} />}
 			</div>
 		)
 	}

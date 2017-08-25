@@ -13,12 +13,11 @@ import VehiclesList from './src/components/vehicles/list';
 import PropertyDashboard from './src/components/properties/dashboard';
 import PropertyAdd from './src/components/properties/add';
 import PropertyView from './src/components/properties/view';
-import PropertiesList from './src/components/properties/list';
 import PropertyAddressAdd from './src/components/properties/address/add';
 import PropertiesAddressList from './src/components/properties/address/list';
 import PropertyRoomsDashboard from './src/components/properties/rooms/dashboard';
 import PropertyRoomAdd from "./src/components/properties/rooms/add";
-import PropertiesRoomsList from './src/components/properties/rooms/list';
+import PropertyRoomsList from './src/components/properties/rooms/list';
 
 function requireAuth(nextState, replace)
 {
@@ -38,22 +37,24 @@ ReactDOM.render(
             <IndexRoute component={Home} />
             <Route path="/" component={Home} />
 			<Route path="/auth/signup" component={Signup}/>
-            <Route path="/vehicle/add" component={VehicleAdd} />
 
+            <Route path="/vehicle/add" component={VehicleAdd} />
             <Route path="/vehicles/dashboard" component={VehicleDashboard} >
                 <Route path="/vehicle/add" component={VehicleAdd} />
                 <Route path="/vehicles" component={VehiclesList} />
             </Route>
-			<Route path="/property/rooms/add" component={PropertyRoomAdd} />
+
 			<Route path="/properties/addresses" component={PropertiesAddressList} />
 			<Route path="/property/address/add" component={PropertyAddressAdd} />
 			<Route path="/property/add" component={PropertyAdd} />
 			<Route path="/properties/dashboard" component={PropertyDashboard} >
 				<Route path="/property/view" component={PropertyView} />
 			</Route>
+
+			<Route path="/property/rooms/add" component={PropertyRoomAdd} />
 			<Route path="/properties/rooms/dashboard" component={PropertyRoomsDashboard} >
 				<Route path="/property/rooms/add" component={PropertyRoomAdd} />
-				<Route path="/properties/rooms" component={PropertiesRoomsList} />
+				<Route path="/properties/rooms" component={PropertyRoomsList} />
 			</Route>
         </Route>
     </Router>,

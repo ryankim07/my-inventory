@@ -5,12 +5,6 @@ import Loader from '../loader';
 import MyVehiclesStore from '../../stores/vehicles/store';
 import VehiclesAction from '../../actions/vehicles-action';
 
-let mainDefaultMobileColumnWidth = 'col-xs-12';
-let mainDefaultDesktopColumnWidth = 'col-md-12';
-let mainShrinkedMobileColumnWidth = 'col-xs-8';
-let mainShrinkedDesktopColumnWidth = 'col-md-8';
-let mainClassName = 'main-column';
-
 class VehiclesList extends React.Component
 {
     constructor(props) {
@@ -67,8 +61,7 @@ class VehiclesList extends React.Component
 					name: data.imageName,
 					path: data.imagePath
 				}
-			},
-			openRightPanel: true
+			}
 		});
     }
 

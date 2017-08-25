@@ -11,7 +11,7 @@ let mainShrinkedMobileColumnWidth = 'col-xs-8';
 let mainShrinkedDesktopColumnWidth = 'col-md-8';
 let mainClassName = 'main-column';
 
-class PropertiesRoomsList extends React.Component
+class PropertyRoomsList extends React.Component
 {
     constructor(props) {
         super(props);
@@ -130,4 +130,4 @@ class PropertiesRoomsList extends React.Component
     }
 }
 
-export default PropertiesRoomsList;
+export default PropertyRoomsList;

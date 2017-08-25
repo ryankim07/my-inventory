@@ -4,7 +4,7 @@ import PropertyRoomsStore from '../../../stores/properties/rooms-store';
 import PropertyRoomsAction from '../../../actions/properties-rooms-action';
 import PropertyRoomWalls from '../../../components/properties/rooms/walls';
 import Loader from '../../loader';
-import { numberFormat, upperFirstLetter } from "../../helper/utils"
+import { numberFormat } from "../../helper/utils"
 
 class PropertyRoomAdd extends React.Component
 {
@@ -14,7 +14,7 @@ class PropertyRoomAdd extends React.Component
         this.state = {
             room: {
                 id: '',
-                property_id: this.props.location.state.property_id,
+                property_id: this.props.propertyId,
                 name: '',
                 total_area: '',
 				description: '',
@@ -23,7 +23,7 @@ class PropertyRoomAdd extends React.Component
 			disableAddWallsBtn: false,
 			nonAddedRooms: [],
 			isEditingMode: false,
-            newRoomAdded: false,
+			newRoomAdded: false,
 			loader: true,
 			flashMessage: null
         };
@@ -53,10 +53,11 @@ class PropertyRoomAdd extends React.Component
         if (nextState.newRoomAdded || this.state.newRoomAdded) {
 			PropertyRoomsStore.unFlagNewRoom();
 			nextState.newRoomAdded = false;
-
 			this.context.router.push({
 				pathname: "/properties/rooms/dashboard",
-				state: {property_id: this.state.room.property_id}
+				state: {
+					property_id: this.state.room.property_id
+				}
 			});
 
 			return false;
@@ -90,7 +91,8 @@ class PropertyRoomAdd extends React.Component
 			isEditingMode: isEditingMode,
 			newRoomAdded: addingNewRoom,
 			loader: false,
-			flashMessage: flashMsg !== undefined ? flashMsg : null
+			flashMessage: flashMsg !== undefined ? flashMsg : null,
+			disableAddWallsBtn: this.state.disableAddWallsBtn
 		});
     }
 
@@ -232,7 +234,7 @@ class PropertyRoomAdd extends React.Component
 				</div>
 
 				<div className="walls">
-					{ addWallsSection }
+
 					{this.state.disableAddWallsBtn === false ? <button onClick={this.addWalls}><i className="fa fa-plus"></i> Walls</button> : ''}
 				</div>
 

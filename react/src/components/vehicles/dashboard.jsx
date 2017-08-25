@@ -23,7 +23,7 @@ class VehiclesDashboard extends React.Component
 			flashMessage: null
 		};
 
-		this._onChange = this._onChange.bind(this);
+		this._onChange 		 = this._onChange.bind(this);
 		this.setFlashMessage = this.setFlashMessage.bind(this);
 		this.closeRightPanel = this.closeRightPanel.bind(this);
 	}
@@ -51,9 +51,9 @@ class VehiclesDashboard extends React.Component
 	}
 
 	_onChange() {
-		let flashMsg = MyVehiclesStore.getStoreFlashMessage();
+		let flashMsg 		= MyVehiclesStore.getStoreFlashMessage();
 		let isAuthenticated = MyVehiclesStore.isAuthenticated();
-		let openRightPanel = MyVehiclesStore.openRightPanel();
+		let openRightPanel  = MyVehiclesStore.openRightPanel();
 
 		if (!isAuthenticated){
 			this.context.router.push("/auth/login");

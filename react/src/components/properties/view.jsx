@@ -1,6 +1,7 @@
 import React from 'react';
+import AppDispatcher from '../../dispatcher/app-dispatcher';
+import ActionConstants from '../../constants/action-constants';
 import PropertiesStore from '../../stores/properties/store';
-import PropertiesRoomsStore from '../../stores/properties/rooms-store';
 import PropertiesAction from '../../actions/properties-action';
 import Loader from '../loader';
 
@@ -11,16 +12,11 @@ class PropertyView extends React.Component
 
         this.state = {
             property: {},
-			//isEditingMode: false,
-			//flashMessage: null,
 			loader: true
         };
 
-        this._onChange 		    = this._onChange.bind(this);
-        this.handleFormChange   = this.handleFormChange.bind(this);
-        this.handleFormSubmit   = this.handleFormSubmit.bind(this);
-		this.handleOtherActions = this.handleOtherActions.bind(this);
-		this.setAssets 		    = this.setAssets.bind(this);
+        this._onChange 		  = this._onChange.bind(this);
+        this.handleActions    = this.handleActions.bind(this);
     }
 
     componentWillMount() {
@@ -33,119 +29,42 @@ class PropertyView extends React.Component
 
     componentWillUnmount() {
 		PropertiesStore.removeChangeListener(this._onChange);
-		//PropertiesStore.unsetPropertyToUpdate();
 	}
-
-    shouldComponentUpdate(nextProps, nextState) {
-    	// Check here and don't render component again if it's an image upload action
-		/*let emptyObj = _.every(_.values(nextState.property), function(v) {return !v;});
-		if (nextState.property.assets !== '' && emptyObj) {
-			return false;
-		}
-
-		// Only redirect to list if new property is being added
-        if (nextState.newPropertyAdded || this.state.newPropertyAdded) {
-			PropertiesStore.unFlagNewProperty();
-			nextState.newPropertyAdded = false;
-			//this.context.router.push('/property/address/add');
-
-			this.context.router.push({
-				pathname: "/property/address/add",
-				state: {property_id: nextState.property.id}
-			});
-
-			return false;
-		}*/
-
-		return true;
-    }
 
     // Listen to changes in store, update it's own state
     _onChange() {
     	let property = PropertiesStore.getProperty();
-		PropertiesRoomsStore.setRooms(property.rooms);
-		//let flashMsg = PropertiesStore.getStoreFlashMessage();
-		let isAuthenticated = PropertiesStore.isAuthenticated();
-
-		if (!isAuthenticated){
-			this.context.router.push("/auth/login");
-			return false;
-		}
-
-		/*if (!_.every(_.values(propertyToUpdate), function(v) {return !v;})) {
-			stateProperty = propertyToUpdate;
-			isEditingMode = true;
-		}*/
 
 		this.setState({
 		    property: property,
-			/*isEditingMode: isEditingMode,
-			newPropertyAdded: addingNewProperty,*/
-			//flashMessage: flashMsg !== undefined ? flashMsg : null,
 			loader: false
 		});
     }
 
     // Handle other actions
-	handleOtherActions(e) {
+	handleActions(e) {
     	let action = e.target.dataset.action;
 
 		switch (action) {
 			case 'view-rooms':
 				this.context.router.push({
 					pathname: "/properties/rooms/dashboard",
-					state: {property_id: this.state.property.id}
+					state: {
+						property_id: this.state.property.id
+					}
 				});
 			break;
+			/*case 'view-rooms':
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.GET_PROPERTY_ROOMS,
+					property: {
+						id: this.state.property.id,
+						rooms: this.state.property.rooms
+					},
+					rightPanelType: 'rooms-list'
+				});
+			break;*/
 		}
-	}
-
-    // Handle input changes
-    handleFormChange(propertyName, event) {
-        /*let property    = this.state.property;
-        let chosenValue = event.target.value;
-
-        switch (propertyName) {
-            case 'finished_area':
-            case 'unfinished_area':
-            case 'total_area':
-                if (chosenValue === 0) {
-                    alert('Please enter correct area.');
-                } else {
-					property[propertyName] = numberFormat(chosenValue);
-                }
-            break;
-
-            default:
-                property[propertyName] = chosenValue;
-        }
-
-        this.setState({
-            property: property,
-			isEditingMode: this.state.isEditingMode,
-			newPropertyAdded: this.state.newPropertyAdded,
-			flashMessage: this.state.flashMessage
-        });*/
-    }
-
-    // Submit
-    handleFormSubmit(event) {
-        event.preventDefault();
-
-        /*if (!this.state.isEditingMode) {
-			PropertiesAction.addProperty(this.state.property);
-		} else {
-			PropertiesAction.updateProperty(this.state.property);
-
-        	// Close the panel
-            this.props.closeRightPanel();
-        }*/
-    }
-
-    // Set assets
-    setAssets(assets) {
-		let property = this.state.property;
-		property['assets'] = assets;
 	}
 
 	render() {
@@ -153,21 +72,21 @@ class PropertyView extends React.Component
 
 		// If loading is complete
 		if (!this.state.loader) {
-			let property   = this.state.property;
-			let address    = property.address;
+			let property = this.state.property;
+			let address  = property.address;
 
 			let propertyFeaturesBtn = property.property_features === undefined ?
-				<button onClick={this.handleOtherActions} data-action="add-property-features">
+				<button onClick={this.handleActions} data-action="add-property-features">
 					Add Property Features
 				</button> : null;
 
 			let exteriorFeaturesBtn = property.exterior_features === undefined ?
-				<button onClick={this.handleOtherActions} data-action="add-exterior-features">
+				<button onClick={this.handleActions} data-action="add-exterior-features">
 					Add Exterior Features
 				</button> : null;
 
 			let interiorFeaturesBtn = property.interior_features === undefined ?
-				<button onClick={this.handleOtherActions} data-action="add-interior-features">
+				<button onClick={this.handleActions} data-action="add-interior-features">
 					Add Interior Features
 				</button> : null;
 
@@ -214,7 +133,7 @@ class PropertyView extends React.Component
 					<div>
 						<h4>Property Details</h4>
 						<div>
-							<button onClick={this.handleOtherActions} data-action="view-rooms">View Rooms</button>
+							<button onClick={this.handleActions} data-action="view-rooms">View Rooms</button>
 						</div>
 						<ul>
 							<li>
@@ -261,7 +180,7 @@ class PropertyView extends React.Component
 		}
 
         return (
-            <div className="col-xs-12 col-md-12" id="property-view">
+            <div className={[this.props.mobileWidth, this.props.desktopWidth, this.props.className].join(' ')} id="property-view">
                 <div className="row">
                     <div className="panel panel-info">
                         <div className="panel-heading">

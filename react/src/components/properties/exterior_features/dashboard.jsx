@@ -1,5 +1,5 @@
 import React from 'react';
-import PropertiesRoomsList from './list';
+import PropertyRoomsList from './list';
 import PropertyRoomAdd from './add';
 import PropertyRoomsStore from '../../../stores/properties/rooms-store';
 import FlashMessage from '../../flash-message';
@@ -89,7 +89,7 @@ class PropertyRoomsDashboard extends React.Component
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-success" />}
-				<PropertiesRoomsList mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} className="main-column" />
+				<PropertyRoomsList mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} className="main-column" />
 				{ !this.state.showRightPanel ? null : <PropertyRoomAdd closeRightPanel={this.closeRightPanel} />}
 			</div>
 		)

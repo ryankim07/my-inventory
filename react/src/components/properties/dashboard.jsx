@@ -1,7 +1,7 @@
 import React from 'react';
 import PropertyView from './view';
-import PropertyAdd from './add';
 import PropertiesStore from '../../stores/properties/store';
+import PropertyRoomsList from '../../components/properties/rooms/list';
 import FlashMessage from '../flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -15,10 +15,13 @@ class PropertyDashboard extends React.Component
 		super(props);
 
 		this.state = {
-			propertyId: '',
-			columnCss: {},
-			showRightPanel: '',
-			flashMessage: ''
+			propertyId: this.props.location.state.property_id,
+			columnCss: {
+				'mobileWidth': mainDefaultMobileColumnWidth,
+				'desktopWidth': mainDefaultDesktopColumnWidth
+			},
+			showRightPanel: false,
+			flashMessage: null
 		};
 
 		this._onChange 		 = this._onChange.bind(this);
@@ -27,16 +30,6 @@ class PropertyDashboard extends React.Component
 	}
 
 	componentWillMount() {
-		this.setState({
-			propertyId: this.props.location.state.property_id,
-			columnCss: {
-				'mobileWidth': mainDefaultMobileColumnWidth,
-				'desktopWidth': mainDefaultDesktopColumnWidth
-			},
-			showRightPanel: false,
-			flashMessage: null
-		});
-
 		PropertiesStore.addChangeListener(this._onChange);
 		PropertiesStore.unsetStoreFlashMessage();
 	}
@@ -69,7 +62,6 @@ class PropertyDashboard extends React.Component
 		}
 
 		this.setState({
-			propertyId: this.state.propertyId,
 			columnCss: {
 				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
 				'desktopWidth': openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
@@ -89,16 +81,28 @@ class PropertyDashboard extends React.Component
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
 			},
-			showRightPanel: false,
-			flashMessage: this.state.flashMessage
+			showRightPanel: false
 		});
 	}
 
 	render() {
+		let panelToShow;
+
+		switch (this.state.showRightPanel) {
+			case 'add-room':
+				panelToShow = <PropertyRoomAdd closeRightPanel={this.closeRightPanel} />;
+			break
+
+			case 'rooms-list':
+				panelToShow = <PropertyRoomsList closeRightPanel={this.closeRightPanel} />;
+			break;
+		}
+
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-success" />}
 				<PropertyView mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} className="main-column" propertyId={this.state.propertyId} />
+				{ !this.state.showRightPanel ? null : panelToShow}
 			</div>
 		)
 	}

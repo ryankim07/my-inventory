@@ -78,6 +78,7 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 	editMyVehicle: function (vehicle) {
 		setStoreFlashMessage('');
 		setMyVehicle(vehicle);
+		openRightPanel(true);
 	},
 
 	getVehicleToUpdate: function () {
@@ -169,8 +170,7 @@ MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
         break;
 
         case ActionConstants.EDIT_MY_VEHICLE:
-			MyVehiclesStore.editMyVehicle(action.vehicle, action.showRightPanel);
-			openRightPanel(true);
+			MyVehiclesStore.editMyVehicle(action.vehicle);
         break;
 
         case ActionConstants.UPDATE_MY_VEHICLE:

@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import PropertiesStore from '../../stores/properties/store';
 import PropertiesAction from '../../actions/properties-action';
+import PropertyAddressAdd from '../../components/properties/address/add';
 import Uploader from '../helper/uploader';
 import { numberFormat } from "../helper/utils"
 
@@ -22,7 +23,18 @@ class PropertyAdd extends React.Component
                 floors: '',
                 built: '',
 				parcel_number: '',
-				assets: []
+				assets: [],
+				address: {
+					id: '',
+					property_id: '',
+					street: '',
+					city: '',
+					state: '',
+					zip: '',
+					county: '',
+					country: '',
+					subdivision: ''
+				}
             },
 			isEditingMode: false,
             newPropertyAdded: false,
@@ -32,6 +44,7 @@ class PropertyAdd extends React.Component
         this._onChange 		  = this._onChange.bind(this);
         this.handleFormChange = this.handleFormChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
+        this.handleAddressChange = this.handleAddressChange.bind(this);
 		this.setAssets 		  = this.setAssets.bind(this);
     }
 
@@ -55,12 +68,7 @@ class PropertyAdd extends React.Component
         if (nextState.newPropertyAdded || this.state.newPropertyAdded) {
 			PropertiesStore.unFlagNewProperty();
 			nextState.newPropertyAdded = false;
-			//this.context.router.push('/property/address/add');
-
-			this.context.router.push({
-				pathname: "/property/address/add",
-				state: {property_id: nextState.property.id}
-			});
+			this.context.router.push('/properties/addresses');
 
 			return false;
 		}
@@ -117,10 +125,7 @@ class PropertyAdd extends React.Component
         }
 
         this.setState({
-            property: property,
-			isEditingMode: this.state.isEditingMode,
-			newPropertyAdded: this.state.newPropertyAdded,
-			flashMessage: this.state.flashMessage
+            property: property
         });
     }
 
@@ -137,6 +142,26 @@ class PropertyAdd extends React.Component
             this.props.closeRightPanel();
         }
     }
+
+	// Handle appropriate action whenever address fields are changed
+	handleAddressChange(address) {
+		this.setState({
+			property: {
+				id: this.state.property.id,
+				style: this.state.property.style,
+				beds: this.state.property.beds,
+				baths: this.state.property.baths,
+				finished_area: this.state.property.finished_area,
+				unfinished_area: this.state.property.unfinished_area,
+				total_area: this.state.property.total_area,
+				floors: this.state.property.floors,
+				built: this.state.property.built,
+				parcel_number: this.state.property.parcel_number,
+				assets: this.state.property.assets,
+				address: address
+			}
+		});
+	}
 
     // Set assets
     setAssets(assets) {
@@ -173,159 +198,173 @@ class PropertyAdd extends React.Component
 			floorsOptions.push(<option key={'f-' + x} value={x}>{ x }</option>)
 		}
 
-		let propertyForm = <form onSubmit={this.handleFormSubmit}>
-			<div className="form-group">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Image</label>
-					<div className="input-group">
-						<Uploader setAssets={this.setAssets} isEditingMode={this.state.isEditingMode} assets={this.state.property.assets} />
+		let propertyForm =
+			<form onSubmit={this.handleFormSubmit}>
+				<div>
+					<hr/>
+					<p>General Information</p>
+					<hr/>
+				</div>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Image</label>
+						<div className="input-group">
+							<Uploader setAssets={this.setAssets} isEditingMode={this.state.isEditingMode} assets={this.state.property.assets} />
+						</div>
 					</div>
 				</div>
-			</div>
-			<div className="form-group required">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Built</label>
-					<div className="input-group">
-						<select ref="built"
-								onChange={this.handleFormChange.bind(this, 'built')}
-								value={this.state.property.built}
-								className="form-control input-sm"
-								required="required">
-							<option value="">Select One</option>
-							{ builtOptions }
-						</select>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Built</label>
+						<div className="input-group">
+							<select ref="built"
+									onChange={this.handleFormChange.bind(this, 'built')}
+									value={this.state.property.built}
+									className="form-control input-sm"
+									required="required">
+								<option value="">Select One</option>
+								{ builtOptions }
+							</select>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div className="form-group required">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Style</label>
-					<div className="input-group">
-						<select ref="style"
-								onChange={this.handleFormChange.bind(this, 'style')}
-								value={this.state.property.style}
-								className="form-control input-sm"
-								required="required">
-							<option value="">Select One</option>
-							<option value="apartment">Apartment</option>
-							<option value="attached-condo">Attached Condo</option>
-							<option value="detached-condo">Detached Condo</option>
-							<option value="townhouse">Townhouse</option>
-							<option value="single-family">Single Family</option>
-						</select>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Style</label>
+						<div className="input-group">
+							<select ref="style"
+									onChange={this.handleFormChange.bind(this, 'style')}
+									value={this.state.property.style}
+									className="form-control input-sm"
+									required="required">
+								<option value="">Select One</option>
+								<option value="apartment">Apartment</option>
+								<option value="attached-condo">Attached Condo</option>
+								<option value="detached-condo">Detached Condo</option>
+								<option value="townhouse">Townhouse</option>
+								<option value="single-family">Single Family</option>
+							</select>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div className="form-group required">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Floors</label>
-					<div className="input-group">
-						<select ref="baths"
-								onChange={this.handleFormChange.bind(this, 'floors')}
-								value={this.state.property.floors}
-								className="form-control input-sm"
-								required="required">
-							<option value="">Select One</option>
-							{ floorsOptions }
-						</select>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Floors</label>
+						<div className="input-group">
+							<select ref="baths"
+									onChange={this.handleFormChange.bind(this, 'floors')}
+									value={this.state.property.floors}
+									className="form-control input-sm"
+									required="required">
+								<option value="">Select One</option>
+								{ floorsOptions }
+							</select>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div className="form-group required">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Beds</label>
-					<div className="input-group">
-						<select ref="beds"
-								onChange={this.handleFormChange.bind(this, 'beds')}
-								value={this.state.property.beds}
-								className="form-control input-sm"
-								required="required">
-							<option value="">Select One</option>
-							{ bedsOptions }
-						</select>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Beds</label>
+						<div className="input-group">
+							<select ref="beds"
+									onChange={this.handleFormChange.bind(this, 'beds')}
+									value={this.state.property.beds}
+									className="form-control input-sm"
+									required="required">
+								<option value="">Select One</option>
+								{ bedsOptions }
+							</select>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div className="form-group required">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Baths</label>
-					<div className="input-group">
-						<select ref="baths"
-								onChange={this.handleFormChange.bind(this, 'baths')}
-								value={this.state.property.baths}
-								className="form-control input-sm"
-								required="required">
-							<option value="">Select One</option>
-							{ bathsOptions }
-						</select>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Baths</label>
+						<div className="input-group">
+							<select ref="baths"
+									onChange={this.handleFormChange.bind(this, 'baths')}
+									value={this.state.property.baths}
+									className="form-control input-sm"
+									required="required">
+								<option value="">Select One</option>
+								{ bathsOptions }
+							</select>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div className="form-group">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Finished Area</label>
-					<div className="input-group">
-						<input type="text"
-							   ref="finished_area"
-							   onChange={this.handleFormChange.bind(this, 'finished_area')}
-							   value={this.state.property.finished_area}
-							   className="form-control input-sm"/>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Finished Area</label>
+						<div className="input-group">
+							<input type="text"
+								   ref="finished_area"
+								   onChange={this.handleFormChange.bind(this, 'finished_area')}
+								   value={this.state.property.finished_area}
+								   className="form-control input-sm"/>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div className="form-group">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Unfinished Area</label>
-					<div className="input-group">
-						<input type="text"
-							   ref="unfinished_area"
-							   onChange={this.handleFormChange.bind(this, 'unfinished_area')}
-							   value={this.state.property.unfinished_area}
-							   className="form-control input-sm"/>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Unfinished Area</label>
+						<div className="input-group">
+							<input type="text"
+								   ref="unfinished_area"
+								   onChange={this.handleFormChange.bind(this, 'unfinished_area')}
+								   value={this.state.property.unfinished_area}
+								   className="form-control input-sm"/>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div className="form-group required">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Total Area</label>
-					<div className="input-group">
-						<input type="text"
-							   ref="total_area"
-							   onChange={this.handleFormChange.bind(this, 'total_area')}
-							   value={this.state.property.total_area}
-							   className="form-control input-sm"
-							   required="required"/>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Total Area</label>
+						<div className="input-group">
+							<input type="text"
+								   ref="total_area"
+								   onChange={this.handleFormChange.bind(this, 'total_area')}
+								   value={this.state.property.total_area}
+								   className="form-control input-sm"
+								   required="required"/>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div className="form-group required">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Parcel Number</label>
-					<div className="input-group">
-						<input type="text"
-							   ref="total_area"
-							   onChange={this.handleFormChange.bind(this, 'parcel_number')}
-							   value={this.state.property.parcel_number}
-							   className="form-control input-sm"
-							   required="required"/>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Parcel Number</label>
+						<div className="input-group">
+							<input type="text"
+								   ref="total_area"
+								   onChange={this.handleFormChange.bind(this, 'parcel_number')}
+								   value={this.state.property.parcel_number}
+								   className="form-control input-sm"
+								   required="required"/>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div className="form-group">
-				<div className="col-xs-12 col-md-8">
-					<div className="input-group">
-						<input type="hidden" ref="id" value={this.state.property.id} />
+				<div>
+					<hr/>
+					<p>Address Information</p>
+					<hr/>
+				</div>
+
+				<PropertyAddressAdd address={this.state.property.address} onChange={this.handleAddressChange} />
+
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<div className="input-group">
+							<input type="hidden" ref="id" value={this.state.property.id} />
+						</div>
 					</div>
 				</div>
-			</div>
-			<div className="form-group">
-				<div className="col-xs-12 col-md-12">
-					<div className="clearfix">
-						<input type="submit" value="Add Address" className="btn"/>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-12">
+						<div className="clearfix">
+							<input type="submit" value="Add Property" className="btn"/>
+						</div>
 					</div>
 				</div>
-			</div>
-		</form>
+			</form>
 
         return (
             <div className="col-xs-4 col-md-4" id="property-add">

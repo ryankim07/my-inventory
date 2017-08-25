@@ -11,7 +11,11 @@ export function upperFirstLetter(str) {
 			.toLowerCase()
 			.split(' ')
 			.map(function (word) {
-				return word[0].toUpperCase() + word.substr(1);
+				if (word[0] === undefined) {
+					return word;
+				} else {
+					return word[0].toUpperCase() + word.substr(1);
+				}
 			})
 			.join(' ');
 	}

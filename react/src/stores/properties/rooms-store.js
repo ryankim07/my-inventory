@@ -144,6 +144,10 @@ let PropertiesRoomsStore = assign({}, EventEmitter.prototype, {
     	return _showPanel;
 	},
 
+	closeRightPanel: function() {
+		openRightPanel(false);
+	},
+
 	getStoreFlashMessage: function() {
 		return _storeMsg;
 	},
@@ -183,6 +187,10 @@ PropertiesRoomsStore.dispatchToken = Dispatcher.register(function(payload) {
         case ActionConstants.REMOVE_PROPERTY_ROOM:
             PropertiesRoomsStore.removeRoom(action.results);
         break;
+
+		case ActionConstants.ADD_NEW_PROPERTY_ROOM:
+			openRightPanel(true);
+		break;
 
 		case ActionConstants.RECEIVE_ERROR:
 			setStoreFlashMessage(action.msg);

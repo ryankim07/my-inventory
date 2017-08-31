@@ -1,7 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
 import PropertyRoomsStore from '../../../stores/properties/rooms-store';
-import PropertyRoomsAction from '../../../actions/properties-rooms-action';
 import PropertyRoomWalls from '../../../components/properties/rooms/walls';
 import Loader from '../../loader';
 import { numberFormat } from "../../helper/utils"
@@ -10,23 +9,6 @@ class PropertyRoomAdd extends React.Component
 {
     constructor(props) {
         super(props);
-
-        this.state = {
-            room: {
-                id: '',
-                property_id: this.props.propertyId,
-                name: '',
-                total_area: '',
-				description: '',
-				walls: []
-            },
-			disableAddWallsBtn: false,
-			nonAddedRooms: [],
-			isEditingMode: false,
-			newRoomAdded: false,
-			loader: true,
-			flashMessage: null
-        };
 
         this._onChange 	      = this._onChange.bind(this);
         this.handleFormChange = this.handleFormChange.bind(this);
@@ -39,10 +21,6 @@ class PropertyRoomAdd extends React.Component
 		PropertyRoomsStore.addChangeListener(this._onChange);
     }
 
-	componentDidMount() {
-		PropertyRoomsAction.getNonAddedRooms(this.state.room.property_id);
-	}
-
     componentWillUnmount() {
 		PropertyRoomsStore.removeChangeListener(this._onChange);
 		PropertyRoomsStore.unsetRoomToUpdate();
@@ -50,7 +28,7 @@ class PropertyRoomAdd extends React.Component
 
     shouldComponentUpdate(nextProps, nextState) {
 		// Only redirect to list if new room is being added
-        if (nextState.newRoomAdded || this.state.newRoomAdded) {
+        /*if (nextState.newRoomAdded || this.state.newRoomAdded) {
 			PropertyRoomsStore.unFlagNewRoom();
 			nextState.newRoomAdded = false;
 			this.context.router.push({
@@ -61,14 +39,14 @@ class PropertyRoomAdd extends React.Component
 			});
 
 			return false;
-		}
+		}*/
 
 		return true;
     }
 
     // Listen to changes in store, update it's own state
     _onChange() {
-    	let addingNewRoom   = PropertyRoomsStore.isNewRoomAdded();
+    	/*let addingNewRoom   = PropertyRoomsStore.isNewRoomAdded();
 		let roomToUpdate    = PropertyRoomsStore.getRoomToUpdate();
 		let isEditingMode   = this.state.isEditingMode;
 		let stateRoom       = this.state.room;
@@ -87,19 +65,32 @@ class PropertyRoomAdd extends React.Component
 
 		this.setState({
 		    room: stateRoom,
-			nonAddedRooms: PropertyRoomsStore.getNonAddedRooms(),
 			isEditingMode: isEditingMode,
 			newRoomAdded: addingNewRoom,
 			loader: false,
 			flashMessage: flashMsg !== undefined ? flashMsg : null,
 			disableAddWallsBtn: this.state.disableAddWallsBtn
-		});
+		});*/
     }
 
-    // Handle input changes
-    handleFormChange(propertyName, event) {
-        let room        = this.state.room;
-        let chosenValue = event.target.value;
+	// Submit
+	handleFormSubmit(event) {
+		event.preventDefault();
+
+		if (!this.state.isEditingMode) {
+			PropertyRoomsAction.addRoom(this.state.room);
+		} else {
+			PropertyRoomsAction.updateRoom(this.state.room);
+
+			// Close the panel
+			this.props.closeRightPanel();
+		}
+	}
+
+	// Handle input changes
+	handleFormChange(propertyName, event) {
+		let room        = this.props.room;
+		let chosenValue = event.target.value;
 
 		switch (propertyName) {
 			case 'total_area':
@@ -108,166 +99,128 @@ class PropertyRoomAdd extends React.Component
 				} else {
 					room[propertyName] = numberFormat(chosenValue);
 				}
-			break;
+				break;
 
 			default:
 				room[propertyName] = chosenValue;
 		}
 
-        this.setState({
-            room: room
-        });
-    }
-
-    // Submit
-    handleFormSubmit(event) {
-        event.preventDefault();
-
-        if (!this.state.isEditingMode) {
-			PropertyRoomsAction.addRoom(this.state.room);
-		} else {
-			PropertyRoomsAction.updateRoom(this.state.room);
-
-        	// Close the panel
-            this.props.closeRightPanel();
-        }
-    }
+		this.props.handleFormChange(room);
+	}
 
     // Handle appropriate action whenever wall fields are changed
 	handleWallChange(walls) {
-    	let totalWalls = walls.length;
-    	let filledFields = 0;
+		let totalWalls = walls.length;
+		let filledFields = 0;
 
-    	walls.map((wall, index) => {
-    		if (wall.name === "all" || index === 4) {
+		walls.map((wall, index) => {
+			if (wall.name === "all" || index === 4) {
 				filledFields = 0;
 			} else if (wall.name !== "" && wall.paint_id !== "") {
 				filledFields++;
 			}
 		});
 
-    	let disableBtn = filledFields === totalWalls ? false : true;
+		let disableBtn = !!filledFields === totalWalls;
 
-		this.setState({
-			room: {
-				id: this.state.room.id,
-				property_id: this.state.room.property_id,
-				name: this.state.room.name,
-				total_area: this.state.room.total_area,
-				description: this.state.room.description,
-				walls: walls
-			},
-			disableAddWallsBtn: disableBtn
-		});
+		this.props.handleWallChange(walls, disableBtn);
 	}
 
 	// Add new wall div
     addWalls(event) {
-		event.preventDefault();
-
-		let roomWalls = this.state.room.walls;
+    	event.preventDefault();
+		let walls = this.props.room.walls;
 		let newWall   = {
 			name: '',
 			paint_id: ''
 		};
 
-		roomWalls.push(newWall);
+		walls.push(newWall);
 
-		this.setState({
-			room: {
-				id: this.state.room.id,
-				property_id: this.state.room.property_id,
-				name: this.state.room.name,
-				total_area: this.state.room.total_area,
-				description: this.state.room.description,
-				walls: roomWalls
-			},
-			disableAddWallsBtn: true
-		});
+		this.props.handleWallChange(walls,  true);
 	}
 
 	render() {
-		let roomForm = '';
-		let addWallsSection = '';
+    	const disableAddWallsBtn = this.props.disableAddWallsBtn;
 
-		// If loading is complete
-		if (!this.state.loader) {
-			addWallsSection = this.state.room.walls.map((wall, index) => {
-				return (
-					<PropertyRoomWalls key={index} index={index} roomWalls={this.state.room.walls} wall={wall} onChange={this.handleWallChange} />
-				);
-			});
+		let addWallsSection = this.props.room.walls.map((wall, index) => {
+			return (
+				<PropertyRoomWalls
+					key={index} index={index}
+					walls={this.props.room.walls}
+					handleWallChange={this.handleWallChange}
+					paints={this.props.paints}
+				/>
+			);
+		});
 
-			let roomsOptions = this.state.nonAddedRooms.map((rooms, roomIndex) => {
-				return (
-					<option key={roomIndex} value={rooms.value}>{ rooms.title }</option>
-				);
-			});
+		let roomsOptions = this.props.nonAddedRooms.map((rooms, roomIndex) => {
+			return (
+				<option key={roomIndex} value={rooms.value}>{ rooms.title }</option>
+			);
+		});
 
-			roomForm = <form onSubmit={this.handleFormSubmit}>
-				<div className="form-group required">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Room Name</label>
-						<div className="input-group">
-							<select ref="name"
-									onChange={this.handleFormChange.bind(this, 'name')}
-									value={this.state.room.name}
-									className="form-control input-sm"
-									required="required">
-								<option value="">Select One</option>
-								{ roomsOptions }
-							</select>
-						</div>
+		let roomForm = <form onSubmit={this.handleFormSubmit}>
+			<div className="form-group required">
+				<div className="col-xs-12 col-md-8">
+					<label className="control-label">Room Name</label>
+					<div className="input-group">
+						<select ref="name"
+								onChange={this.handleFormChange.bind(this, 'name')}
+								value={this.props.room.name}
+								className="form-control input-sm"
+								required="required">
+							<option value="">Select One</option>
+							{ roomsOptions }
+						</select>
 					</div>
 				</div>
-				<div className="form-group">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Total Area</label>
-						<div className="input-group">
-							<input type="text"
-								   ref="total_area"
-								   onChange={this.handleFormChange.bind(this, 'total_area')}
-								   value={this.state.room.total_area}
-								   className="form-control input-sm"/>
-						</div>
+			</div>
+			<div className="form-group">
+				<div className="col-xs-12 col-md-8">
+					<label className="control-label">Total Area</label>
+					<div className="input-group">
+						<input type="text"
+							   ref="total_area"
+							   onChange={this.handleFormChange.bind(this, 'total_area')}
+							   value={this.props.room.total_area}
+							   className="form-control input-sm"/>
 					</div>
 				</div>
+			</div>
 
-				<div className="walls">
+			<div className="walls">
+				{ addWallsSection }
+				{ disableAddWallsBtn === false ? <button onClick={this.addWalls}><i className="fa fa-plus"></i> Walls</button> : '' }
+			</div>
 
-					{this.state.disableAddWallsBtn === false ? <button onClick={this.addWalls}><i className="fa fa-plus"></i> Walls</button> : ''}
-				</div>
-
-				<div className="form-group">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Description</label>
-						<div className="input-group">
+			<div className="form-group">
+				<div className="col-xs-12 col-md-8">
+					<label className="control-label">Description</label>
+					<div className="input-group">
 							<textarea ref="description"
-									rows="5"
-									className="form-control">
+									  rows="5"
+									  className="form-control">
 							</textarea>
-						</div>
 					</div>
 				</div>
-				<div className="form-group">
-					<div className="col-xs-12 col-md-8">
-						<div className="input-group">
-							<input type="hidden" ref="id" value={this.state.room.id} />
-							<input type="hidden" ref="property_id" value={this.state.room.property_id} />
-						</div>
+			</div>
+			<div className="form-group">
+				<div className="col-xs-12 col-md-8">
+					<div className="input-group">
+						<input type="hidden" ref="id" value={this.props.room.id} />
+						<input type="hidden" ref="property_id" value={this.props.room.property_id} />
 					</div>
 				</div>
-				<div className="form-group">
-					<div className="col-xs-12 col-md-12">
-						<div className="clearfix">
-							<input type="submit" value="Submit" className="btn"/>
-						</div>
+			</div>
+			<div className="form-group">
+				<div className="col-xs-12 col-md-12">
+					<div className="clearfix">
+						<input type="submit" value="Submit" className="btn"/>
 					</div>
 				</div>
-			</form>
-		} else {
-			roomForm = <Loader />;
-		}
+			</div>
+		</form>
 
         return (
             <div className="col-xs-4 col-md-4" id="room-add">
@@ -279,7 +232,7 @@ class PropertyRoomAdd extends React.Component
                                     <span>Add Room</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2">
-                                    { this.state.isEditingMode ? <button onClick={this.props.closeRightPanel} className="close close-viewer" value="Close"><span>&times;</span></button> : ''}
+                                    <button onClick={this.props.closeRightPanel} className="close close-viewer" value="Close"><span>&times;</span></button>
                                 </div>
                             </div>
                         </div>

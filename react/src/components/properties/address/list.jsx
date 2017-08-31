@@ -76,7 +76,7 @@ class PropertiesAddressList extends React.Component
 						<td>{ address.subdivision }</td>
                         <td>
                             <button onClick={this.removeAddress}><i data-property-id={address.property_id} className="fa fa-trash"></i></button>
-							<button onClick={this.viewProperty}><i data-property-id={address.property_id} className="fa fa-search"></i></button>
+							<button onClick={this.viewProperty} data-property-id={address.property_id}><i data-property-id={address.property_id} className="fa fa-search"></i></button>
                         </td>
                     </tr>
                 );

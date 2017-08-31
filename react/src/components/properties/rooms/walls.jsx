@@ -1,6 +1,5 @@
 import React from 'react';
 import PropertyPaintsDropdown from '../../../components/properties/paints/dropdown';
-import { upperFirstLetter } from "../../helper/utils"
 
 class PropertyRoomWalls extends React.Component
 {
@@ -8,34 +7,32 @@ class PropertyRoomWalls extends React.Component
 		super(props);
 
 		this.handleFormChange = this.handleFormChange.bind(this);
+		this.removeWall = this.removeWall.bind(this);
 	}
+
 	// Handle form changes
 	handleFormChange(propertyName, event) {
 		let id    		= propertyName.match(/\d/);
 		let property 	= propertyName.split(/_(.*)/);
 		let chosenValue = event.target.value;
-		let walls 		= this.props.roomWalls;
+		let walls 		= this.props.walls;
 
 		switch (property[0]) {
 			case 'wall':
 				walls[id].name = chosenValue;
 			break;
-
-			case 'paint':
-				walls[id].paint_id = chosenValue;
-			break;
 		}
 
-		this.props.onChange(walls);
+		this.props.handleWallChange(walls);
 	}
 
 	removeWall(index, event) {
 		event.preventDefault();
 
-		let walls = this.props.roomWalls;
+		let walls = this.props.walls;
 		walls.splice(index, 1);
 
-		this.props.onChange(walls);
+		this.props.handleWallChange(walls);
 	}
 
     render() {
@@ -49,7 +46,7 @@ class PropertyRoomWalls extends React.Component
 				continue;
 			}
 
-			wallSidesOptions.push(<option key={wallSides[i]} value={wallSides[i]}>{upperFirstLetter(wallSides[i])}</option>);
+			wallSidesOptions.push(<option key={wallSides[i]} value={wallSides[i]}>{ wallSides[i].charAt(0).toUpperCase() + wallSides[i].slice(1)}</option>);
 		}
 
         return (
@@ -61,7 +58,7 @@ class PropertyRoomWalls extends React.Component
                         <div className="input-group">
                             <select ref={refName}
 									onChange={this.handleFormChange.bind(this, refName)}
-									value={this.props.wall.name}
+									value={this.props.walls.name}
 									className="form-control input-sm"
 									required="required">
 								<option value="">Select One</option>
@@ -73,7 +70,11 @@ class PropertyRoomWalls extends React.Component
                 <div className="form-group">
                     <div className="col-xs-12 col-md-8">
                         <label className="control-label">Paint Color</label>
-						<PropertyPaintsDropdown index={index} onChange={this.handleFormChange} paints={this.props.wall} />
+						<PropertyPaintsDropdown
+							index={index}
+							handleWallChange={this.props.handleWallChange}
+							walls={this.props.walls}
+							paints={this.props.paints}/>
                     </div>
                 </div>
             </div>

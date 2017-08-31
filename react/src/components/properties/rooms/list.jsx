@@ -1,5 +1,4 @@
 import React from 'react';
-import PropertiesRoomsAction from '../../../actions/properties-rooms-action';
 import PropertyRoomsStore from '../../../stores/properties/rooms-store';
 import AppDispatcher from '../../../dispatcher/app-dispatcher';
 import ActionConstants from '../../../constants/action-constants';
@@ -12,93 +11,43 @@ class PropertyRoomsList extends React.Component
 
         this.state = {
         	propertyId: this.props.propertyId,
-            rooms: [],
             room: {},
 			loader: true,
 			flashMessage: null
         };
-
-        this._onChange     = this._onChange.bind(this);
-		this.handleActions = this.handleActions.bind(this);
     }
 
-	componentDidMount() {
-		PropertiesRoomsAction.getPropertyRooms(this.state.propertyId);
+    handleAdd() {
+		AppDispatcher.handleViewAction({
+			actionType: ActionConstants.ADD_NEW_PROPERTY_ROOM
+		});
 	}
 
-    componentWillMount() {
-        PropertyRoomsStore.addChangeListener(this._onChange);
-    }
+	handleEdit(data) {
+		AppDispatcher.handleViewAction({
+			actionType: ActionConstants.EDIT_PROPERTY_ROOM,
+			room: data,
+			openRightPanel: true
+		});
+	}
 
-    componentWillUnmount() {
-        PropertyRoomsStore.removeChangeListener(this._onChange);
-    }
-
-    _onChange() {
-        let rooms 	 = PropertyRoomsStore.getRooms();
-		let flashMsg = PropertyRoomsStore.getStoreFlashMessage();
-
-        this.setState({
-			rooms: rooms,
-			loader: false,
-			flashMessage: flashMsg !== undefined ? flashMsg : null
-        });
-    }
-
-    handleActions(e) {
-    	e.preventDefault();
-
-		let data   = e.target.dataset;
-		let action = data.action;
-
-		switch (action) {
-			case 'add':
-				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.ADD_NEW_PROPERTY_ROOM
-				});
-			break;
-
-			case 'edit':
-				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.EDIT_PROPERTY_ROOM,
-					room: {
-						id: data.id,
-						property_id: data.property_id,
-						name: data.name,
-						total_area: data.total_area,
-						description: data.description
-					},
-					openRightPanel: true
-				});
-			break;
-
-			case 'remove':
-				ProperyRoomsAction.removeRoom(e.target.dataset.id);
-			break;
-		}
+	handleRemove(data) {
+		ProperyRoomsAction.removeRoom(data.id);
 	}
 
     render() {
         let roomsHtml = '';
 
-		if (!this.state.loader) {
-			roomsHtml = this.state.rooms.map((room) => {
+		if (!this.props.loader) {
+			roomsHtml = this.props.rooms.map((room) => {
 				return (
 					<tr key={ room.id }>
 						<td>{ room.name }</td>
 						<td>{ room.total_area }</td>
 						<td>{ room.description }</td>
 						<td>
-							<button onClick={this.handleActions}><i data-action="remove" data-id={room.id} className="fa fa-trash"></i></button>
-							<button onClick={this.handleActions}>
-								<i className="fa fa-pencil"
-								   data-action="edit"
-								   data-id={room.id}
-								   data-name={room.name}
-								   data-total-area={room.total_area}
-								   data-description={room.description}>View Details
-								</i>
-							</button>
+							<button onClick={this.handleRemove.bind(this, room.id)}><i className="fa fa-trash"></i></button>
+							<button onClick={this.handleEdit.bind(this, room)}><i className="fa fa-pencil"></i></button>
 						</td>
 					</tr>
 				);
@@ -117,7 +66,7 @@ class PropertyRoomsList extends React.Component
                                     <span>Properties Rooms List</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2">
-									<button onClick={this.handleActions}><i data-action="add" className="fa fa-plus">Add Room</i></button>
+									<button onClick={this.handleAdd.bind(this)}><i className="fa fa-plus">Add Room</i></button>
 								</div>
                             </div>
                         </div>

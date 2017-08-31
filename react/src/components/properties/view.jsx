@@ -1,8 +1,4 @@
 import React from 'react';
-import AppDispatcher from '../../dispatcher/app-dispatcher';
-import ActionConstants from '../../constants/action-constants';
-import PropertiesStore from '../../stores/properties/store';
-import PropertiesAction from '../../actions/properties-action';
 import Loader from '../loader';
 
 class PropertyView extends React.Component
@@ -10,35 +6,7 @@ class PropertyView extends React.Component
     constructor(props) {
         super(props);
 
-        this.state = {
-            property: {},
-			loader: true
-        };
-
-        this._onChange 		  = this._onChange.bind(this);
-        this.handleActions    = this.handleActions.bind(this);
-    }
-
-    componentWillMount() {
-        PropertiesStore.addChangeListener(this._onChange);
-    }
-
-	componentDidMount() {
-		PropertiesAction.getProperty(this.props.propertyId);
-	}
-
-    componentWillUnmount() {
-		PropertiesStore.removeChangeListener(this._onChange);
-	}
-
-    // Listen to changes in store, update it's own state
-    _onChange() {
-    	let property = PropertiesStore.getProperty();
-
-		this.setState({
-		    property: property,
-			loader: false
-		});
+        this.handleActions = this.handleActions.bind(this);
     }
 
     // Handle other actions
@@ -50,7 +18,7 @@ class PropertyView extends React.Component
 				this.context.router.push({
 					pathname: "/properties/rooms/dashboard",
 					state: {
-						property_id: this.state.property.id
+						property_id: this.props.property.id
 					}
 				});
 			break;
@@ -71,8 +39,8 @@ class PropertyView extends React.Component
 		let propertyHtml = '';
 
 		// If loading is complete
-		if (!this.state.loader) {
-			let property = this.state.property;
+		if (!this.props.loader) {
+			let property = this.props.property;
 			let address  = property.address;
 
 			let propertyFeaturesBtn = property.property_features === undefined ?

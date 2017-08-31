@@ -1,7 +1,7 @@
 import React from 'react';
+import PropertiesAction from '../../actions/properties-action';
 import PropertyView from './view';
 import PropertiesStore from '../../stores/properties/store';
-import PropertyRoomsList from '../../components/properties/rooms/list';
 import FlashMessage from '../flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -15,13 +15,15 @@ class PropertyDashboard extends React.Component
 		super(props);
 
 		this.state = {
+			property: {},
 			propertyId: this.props.location.state.property_id,
 			columnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
 			},
 			showRightPanel: false,
-			flashMessage: null
+			flashMessage: null,
+			loader: true
 		};
 
 		this._onChange 		 = this._onChange.bind(this);
@@ -32,6 +34,10 @@ class PropertyDashboard extends React.Component
 	componentWillMount() {
 		PropertiesStore.addChangeListener(this._onChange);
 		PropertiesStore.unsetStoreFlashMessage();
+	}
+
+	componentDidMount() {
+		PropertiesAction.getProperty(this.state.propertyId);
 	}
 
 	componentWillUnmount() {
@@ -52,6 +58,7 @@ class PropertyDashboard extends React.Component
 	}
 
 	_onChange() {
+		let property 		= PropertiesStore.getProperty();
 		let flashMsg 		= PropertiesStore.getStoreFlashMessage();
 		let isAuthenticated = PropertiesStore.isAuthenticated();
 		let openRightPanel 	= PropertiesStore.openRightPanel();
@@ -62,12 +69,14 @@ class PropertyDashboard extends React.Component
 		}
 
 		this.setState({
+			property: property,
 			columnCss: {
 				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
 				'desktopWidth': openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
 			},
 			showRightPanel: !!openRightPanel,
-			flashMessage: flashMsg !== undefined ? flashMsg : null
+			flashMessage: flashMsg !== undefined ? flashMsg : null,
+			loader: false
 		});
 	}
 
@@ -88,7 +97,7 @@ class PropertyDashboard extends React.Component
 	render() {
 		let panelToShow;
 
-		switch (this.state.showRightPanel) {
+		/*switch (this.state.showRightPanel) {
 			case 'add-room':
 				panelToShow = <PropertyRoomAdd closeRightPanel={this.closeRightPanel} />;
 			break
@@ -96,13 +105,12 @@ class PropertyDashboard extends React.Component
 			case 'rooms-list':
 				panelToShow = <PropertyRoomsList closeRightPanel={this.closeRightPanel} />;
 			break;
-		}
+		}*/
 
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-success" />}
-				<PropertyView mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} className="main-column" propertyId={this.state.propertyId} />
-				{ !this.state.showRightPanel ? null : panelToShow}
+				<PropertyView mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} className="main-column" loader={this.state.loader} property={this.state.property} />
 			</div>
 		)
 	}

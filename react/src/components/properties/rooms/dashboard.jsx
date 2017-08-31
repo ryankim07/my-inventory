@@ -2,6 +2,9 @@ import React from 'react';
 import PropertyRoomsList from './list';
 import PropertyRoomAdd from './add';
 import PropertyRoomsStore from '../../../stores/properties/rooms-store';
+import PropertiesRoomsAction from '../../../actions/properties-rooms-action';
+import PropertyPaintsStore from '../../../stores/properties/paints-store';
+import PropertiesPaintsAction from "../../../actions/properties-paints-action";
 import FlashMessage from '../../flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -16,22 +19,43 @@ class PropertyRoomsDashboard extends React.Component
 
 		this.state = {
 			property_id: this.props.location.state.property_id,
+			room: {
+				id: '',
+				property_id: this.props.location.state.property_id,
+				name: '',
+				total_area: '',
+				description: '',
+				walls: []
+			},
+			rooms: [],
+			paints: [],
+			nonAddedRooms: [],
 			columnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
 			},
+			disableAddWallsBtn: false,
 			showRightPanel: false,
-			flashMessage: null
+			flashMessage: null,
+			loader: true
 		};
 
-		this._onChange 		 = this._onChange.bind(this);
-		this.setFlashMessage = this.setFlashMessage.bind(this);
-		this.closeRightPanel = this.closeRightPanel.bind(this);
+		this._onChange 		  = this._onChange.bind(this);
+		this.setFlashMessage  = this.setFlashMessage.bind(this);
+		this.closeRightPanel  = this.closeRightPanel.bind(this);
+		this.handleFormChange = this.handleFormChange.bind(this);
+		this.handleWallChange = this.handleWallChange.bind(this);
 	}
 
 	componentWillMount() {
 		PropertyRoomsStore.addChangeListener(this._onChange);
 		PropertyRoomsStore.unsetStoreFlashMessage();
+	}
+
+	componentDidMount() {
+		PropertiesRoomsAction.getPropertyRooms(this.state.property_id);
+		PropertiesRoomsAction.getNonAddedRooms(this.state.property_id);
+		PropertiesPaintsAction.getPropertyPaints();
 	}
 
 	componentWillUnmount() {
@@ -52,9 +76,12 @@ class PropertyRoomsDashboard extends React.Component
 	}
 
 	_onChange() {
+		let rooms 	 		= PropertyRoomsStore.getRooms();
+		let nonAddedRooms	= PropertyRoomsStore.getNonAddedRooms();
 		let flashMsg 		= PropertyRoomsStore.getStoreFlashMessage();
 		let isAuthenticated = PropertyRoomsStore.isAuthenticated();
 		let openRightPanel 	= PropertyRoomsStore.openRightPanel();
+		let paints			= PropertyPaintsStore.getPropertyPaints();
 
 		if (!isAuthenticated){
 			this.context.router.push("/auth/login");
@@ -62,12 +89,16 @@ class PropertyRoomsDashboard extends React.Component
 		}
 
 		this.setState({
+			rooms: rooms,
+			paints: paints,
+			nonAddedRooms: nonAddedRooms,
 			columnCss: {
 				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
 				'desktopWidth': openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
 			},
 			showRightPanel: !!openRightPanel,
-			flashMessage: flashMsg !== undefined ? flashMsg : null
+			flashMessage: flashMsg !== undefined ? flashMsg : null,
+			loader: false
 		});
 	}
 
@@ -85,6 +116,27 @@ class PropertyRoomsDashboard extends React.Component
 		});
 	}
 
+	handleFormChange(room) {
+		this.setState({
+			room: room
+		});
+	}
+
+	// Handle appropriate action whenever wall fields are changed
+	handleWallChange(walls, disableBtn) {
+		this.setState({
+			room: {
+				id: this.state.room.id,
+				property_id: this.state.room.property_id,
+				name: this.state.room.name,
+				total_area: this.state.room.total_area,
+				description: this.state.room.description,
+				walls: walls
+			},
+			disableAddWallsBtn: disableBtn
+		});
+	}
+
 	render() {
 		return (
 			<div className="row">
@@ -92,9 +144,20 @@ class PropertyRoomsDashboard extends React.Component
 				<PropertyRoomsList
 					mobileWidth={this.state.columnCss.mobileWidth}
 					desktopWidth={this.state.columnCss.desktopWidth}
-					propertyId={this.state.property_id}
+					loader={this.state.loader}
+					rooms={this.state.rooms}
 					className="main-column" />
-				{ !this.state.showRightPanel ? null : <PropertyRoomAdd propertyId={this.state.property_id} closeRightPanel={this.closeRightPanel} />}
+				{
+					this.state.showRightPanel ? <PropertyRoomAdd
+						room={this.state.room}
+						paints={this.state.paints}
+						disableAddWallsBtn={this.state.disableAddWallsBtn}
+						nonAddedRooms={this.state.nonAddedRooms}
+						handleFormChange={this.handleFormChange}
+						handleWallChange={this.handleWallChange}
+						closeRightPanel={this.closeRightPanel}
+					/> : null
+				}
 			</div>
 		)
 	}

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropertyPaintsDropdown from '../../../components/properties/paints/dropdown';
+import { upperFirstLetter } from "../../helper/utils"
 
 class PropertyRoomWalls extends React.Component
 {
@@ -7,7 +8,7 @@ class PropertyRoomWalls extends React.Component
 		super(props);
 
 		this.handleFormChange = this.handleFormChange.bind(this);
-		this.removeWall = this.removeWall.bind(this);
+		this.removeWall       = this.removeWall.bind(this);
 	}
 
 	// Handle form changes
@@ -15,7 +16,7 @@ class PropertyRoomWalls extends React.Component
 		let id    		= propertyName.match(/\d/);
 		let property 	= propertyName.split(/_(.*)/);
 		let chosenValue = event.target.value;
-		let walls 		= this.props.walls;
+		let walls 		= this.props.allWalls;
 
 		switch (property[0]) {
 			case 'wall':
@@ -23,16 +24,16 @@ class PropertyRoomWalls extends React.Component
 			break;
 		}
 
-		this.props.handleWallChange(walls);
+		this.props.wallChange(walls);
 	}
 
 	removeWall(index, event) {
 		event.preventDefault();
 
-		let walls = this.props.walls;
+		let walls = this.props.allWalls;
 		walls.splice(index, 1);
 
-		this.props.handleWallChange(walls);
+		this.props.wallChange(walls);
 	}
 
     render() {
@@ -46,7 +47,7 @@ class PropertyRoomWalls extends React.Component
 				continue;
 			}
 
-			wallSidesOptions.push(<option key={wallSides[i]} value={wallSides[i]}>{ wallSides[i].charAt(0).toUpperCase() + wallSides[i].slice(1)}</option>);
+			wallSidesOptions.push(<option key={wallSides[i]} value={wallSides[i]}>{ upperFirstLetter(wallSides[i])}</option>);
 		}
 
         return (
@@ -58,7 +59,7 @@ class PropertyRoomWalls extends React.Component
                         <div className="input-group">
                             <select ref={refName}
 									onChange={this.handleFormChange.bind(this, refName)}
-									value={this.props.walls.name}
+									value={this.props.wall.name}
 									className="form-control input-sm"
 									required="required">
 								<option value="">Select One</option>
@@ -72,8 +73,9 @@ class PropertyRoomWalls extends React.Component
                         <label className="control-label">Paint Color</label>
 						<PropertyPaintsDropdown
 							index={index}
-							handleWallChange={this.props.handleWallChange}
-							walls={this.props.walls}
+							wallChange={this.props.wallChange}
+							allWalls={this.props.allWalls}
+							wall={this.props.wall}
 							paints={this.props.paints}/>
                     </div>
                 </div>

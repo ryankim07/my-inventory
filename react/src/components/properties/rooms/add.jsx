@@ -1,8 +1,6 @@
 import React from 'react';
-import _ from 'lodash';
-import PropertyRoomsStore from '../../../stores/properties/rooms-store';
+import PropertiesRoomsAction from '../../../actions/properties-rooms-action';
 import PropertyRoomWalls from '../../../components/properties/rooms/walls';
-import Loader from '../../loader';
 import { numberFormat } from "../../helper/utils"
 
 class PropertyRoomAdd extends React.Component
@@ -10,86 +8,29 @@ class PropertyRoomAdd extends React.Component
     constructor(props) {
         super(props);
 
-        this._onChange 	      = this._onChange.bind(this);
+		this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.handleFormChange = this.handleFormChange.bind(this);
 		this.handleWallChange = this.handleWallChange.bind(this);
-        this.handleFormSubmit = this.handleFormSubmit.bind(this);
 		this.addWalls         = this.addWalls.bind(this);
-    }
-
-    componentWillMount() {
-		PropertyRoomsStore.addChangeListener(this._onChange);
-    }
-
-    componentWillUnmount() {
-		PropertyRoomsStore.removeChangeListener(this._onChange);
-		PropertyRoomsStore.unsetRoomToUpdate();
-	}
-
-    shouldComponentUpdate(nextProps, nextState) {
-		// Only redirect to list if new room is being added
-        /*if (nextState.newRoomAdded || this.state.newRoomAdded) {
-			PropertyRoomsStore.unFlagNewRoom();
-			nextState.newRoomAdded = false;
-			this.context.router.push({
-				pathname: "/properties/rooms/dashboard",
-				state: {
-					property_id: this.state.room.property_id
-				}
-			});
-
-			return false;
-		}*/
-
-		return true;
-    }
-
-    // Listen to changes in store, update it's own state
-    _onChange() {
-    	/*let addingNewRoom   = PropertyRoomsStore.isNewRoomAdded();
-		let roomToUpdate    = PropertyRoomsStore.getRoomToUpdate();
-		let isEditingMode   = this.state.isEditingMode;
-		let stateRoom       = this.state.room;
-		let flashMsg        = PropertyRoomsStore.getStoreFlashMessage();
-		let isAuthenticated = PropertyRoomsStore.isAuthenticated();
-
-		if (!isAuthenticated){
-			this.context.router.push("/auth/login");
-			return false;
-		}
-
-		if (!_.every(_.values(roomToUpdate), function(v) {return !v;})) {
-			stateRoom = roomToUpdate;
-			isEditingMode = true;
-		}
-
-		this.setState({
-		    room: stateRoom,
-			isEditingMode: isEditingMode,
-			newRoomAdded: addingNewRoom,
-			loader: false,
-			flashMessage: flashMsg !== undefined ? flashMsg : null,
-			disableAddWallsBtn: this.state.disableAddWallsBtn
-		});*/
     }
 
 	// Submit
 	handleFormSubmit(event) {
 		event.preventDefault();
 
-		if (!this.state.isEditingMode) {
-			PropertyRoomsAction.addRoom(this.state.room);
+		if (!this.props.state.isEditingMode) {
+			PropertiesRoomsAction.addRoom(this.props.state.room);
 		} else {
-			PropertyRoomsAction.updateRoom(this.state.room);
+			PropertiesRoomsAction.updateRoom(this.props.state.room);
 
 			// Close the panel
-			this.props.closeRightPanel();
+			this.closeRightPanel();
 		}
 	}
 
 	// Handle input changes
 	handleFormChange(propertyName, event) {
-		let room        = this.props.room;
+		let room        = this.props.state.room;
 		let chosenValue = event.target.value;
 
 		switch (propertyName) {
@@ -105,7 +46,7 @@ class PropertyRoomAdd extends React.Component
 				room[propertyName] = chosenValue;
 		}
 
-		this.props.handleFormChange(room);
+		this.props.formChange(room);
 	}
 
     // Handle appropriate action whenever wall fields are changed
@@ -121,15 +62,15 @@ class PropertyRoomAdd extends React.Component
 			}
 		});
 
-		let disableBtn = !!filledFields === totalWalls;
+		let disableBtn = filledFields === totalWalls ? false : true;
 
-		this.props.handleWallChange(walls, disableBtn);
+		this.props.wallChange(walls, disableBtn);
 	}
 
 	// Add new wall div
     addWalls(event) {
     	event.preventDefault();
-		let walls = this.props.room.walls;
+		let walls = this.props.state.room.walls;
 		let newWall   = {
 			name: '',
 			paint_id: ''
@@ -137,24 +78,25 @@ class PropertyRoomAdd extends React.Component
 
 		walls.push(newWall);
 
-		this.props.handleWallChange(walls,  true);
+		this.props.wallChange(walls,  true);
 	}
 
 	render() {
-    	const disableAddWallsBtn = this.props.disableAddWallsBtn;
+    	let disableAddWallsBtn = this.props.state.disableAddWallsBtn;
 
-		let addWallsSection = this.props.room.walls.map((wall, index) => {
+		let addWallsSection = this.props.state.room.walls.map((wall, index) => {
 			return (
 				<PropertyRoomWalls
 					key={index} index={index}
-					walls={this.props.room.walls}
-					handleWallChange={this.handleWallChange}
-					paints={this.props.paints}
+					allWalls={this.props.state.room.walls}
+					wall={wall}
+					wallChange={this.handleWallChange}
+					paints={this.props.state.paints}
 				/>
 			);
 		});
 
-		let roomsOptions = this.props.nonAddedRooms.map((rooms, roomIndex) => {
+		let roomsOptions = this.props.state.nonAddedRooms.map((rooms, roomIndex) => {
 			return (
 				<option key={roomIndex} value={rooms.value}>{ rooms.title }</option>
 			);
@@ -167,7 +109,7 @@ class PropertyRoomAdd extends React.Component
 					<div className="input-group">
 						<select ref="name"
 								onChange={this.handleFormChange.bind(this, 'name')}
-								value={this.props.room.name}
+								value={this.props.state.room.name}
 								className="form-control input-sm"
 								required="required">
 							<option value="">Select One</option>
@@ -183,7 +125,7 @@ class PropertyRoomAdd extends React.Component
 						<input type="text"
 							   ref="total_area"
 							   onChange={this.handleFormChange.bind(this, 'total_area')}
-							   value={this.props.room.total_area}
+							   value={this.props.state.room.total_area}
 							   className="form-control input-sm"/>
 					</div>
 				</div>
@@ -208,8 +150,8 @@ class PropertyRoomAdd extends React.Component
 			<div className="form-group">
 				<div className="col-xs-12 col-md-8">
 					<div className="input-group">
-						<input type="hidden" ref="id" value={this.props.room.id} />
-						<input type="hidden" ref="property_id" value={this.props.room.property_id} />
+						<input type="hidden" ref="id" value={this.props.state.room.id} />
+						<input type="hidden" ref="property_id" value={this.props.state.property_id} />
 					</div>
 				</div>
 			</div>

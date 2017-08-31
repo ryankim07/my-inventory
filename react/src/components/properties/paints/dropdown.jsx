@@ -13,7 +13,7 @@ class PropertyPaintsDropdown extends React.Component
 		let id    		= propertyName.match(/\d/);
 		let property 	= propertyName.split(/_(.*)/);
 		let chosenValue = event.target.value;
-		let walls 		= this.props.walls;
+		let walls 		= this.props.allWalls;
 
 		switch (property[0]) {
 			case 'paint':
@@ -21,7 +21,7 @@ class PropertyPaintsDropdown extends React.Component
 				break;
 		}
 
-		this.props.handleWallChange(walls);
+		this.props.wallChange(walls);
 	}
 
     render() {
@@ -36,7 +36,7 @@ class PropertyPaintsDropdown extends React.Component
 			<div className="input-group required">
 				<select ref={refName}
 						onChange={this.handleFormChange.bind(this, refName)}
-						value={this.props.walls.paint_id}
+						value={this.props.wall.paint_id}
 						className="form-control input-sm"
 						required="required">
 					<option value="">Select One</option>

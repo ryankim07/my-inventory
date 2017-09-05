@@ -23,9 +23,6 @@ class Header extends React.Component
                                 <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Vehicles <span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <Link to="/vehicle/add" className="menu-link"><i className="fa fa-car menu-link-icon"/> Add</Link>
-                                    </li>
-                                    <li>
                                         <Link to="/vehicles/dashboard" className="menu-link"><i className="fa fa-list-alt menu-link-icon"/> All</Link>
                                     </li>
                                 </ul>

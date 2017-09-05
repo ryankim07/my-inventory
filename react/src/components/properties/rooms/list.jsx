@@ -1,5 +1,4 @@
 import React from 'react';
-import PropertyRoomsStore from '../../../stores/properties/rooms-store';
 import AppDispatcher from '../../../dispatcher/app-dispatcher';
 import ActionConstants from '../../../constants/action-constants';
 import Loader from '../../loader';
@@ -8,13 +7,6 @@ class PropertyRoomsList extends React.Component
 {
     constructor(props) {
         super(props);
-
-        this.state = {
-        	propertyId: this.props.propertyId,
-            room: {},
-			loader: true,
-			flashMessage: null
-        };
     }
 
     handleAdd() {
@@ -57,7 +49,7 @@ class PropertyRoomsList extends React.Component
 		}
 
         return (
-            <div className="col-xs-4 col-md-4" id="rooms-main">
+            <div className={[this.props.mobileWidth, this.props.desktopWidth, this.props.className].join(' ')} id="rooms-main">
                 <div className="row">
                     <div className="panel panel-info">
                         <div className="panel-heading">

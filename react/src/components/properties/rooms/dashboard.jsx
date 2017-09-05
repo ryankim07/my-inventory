@@ -97,20 +97,31 @@ class PropertyRoomsDashboard extends React.Component
 	}
 
 	_onChange() {
-		let isEditingMode   = this.state.isEditingMode;
-		let stateRoom       = this.state.room;
 		let rooms 	 		= PropertyRoomsStore.getRooms();
 		let paints			= PropertyPaintsStore.getPropertyPaints();
 		let nonAddedRooms	= PropertyRoomsStore.getNonAddedRooms();
-		let addingNewRoom   = PropertyRoomsStore.isNewRoomAdded();
+		let isNewRoomAdded  = PropertyRoomsStore.isNewRoomAdded();
 		let roomToUpdate    = PropertyRoomsStore.getRoomToUpdate();
 		let flashMsg 		= PropertyRoomsStore.getStoreFlashMessage();
 		let isAuthenticated = PropertyRoomsStore.isAuthenticated();
 		let openRightPanel 	= PropertyRoomsStore.openRightPanel();
+		let isEditingMode   = this.state.isEditingMode;
+		let stateRoom       = this.state.room;
 
 		if (!isAuthenticated){
 			this.context.router.push("/auth/login");
 			return false;
+		}
+
+		if (isNewRoomAdded) {
+			stateRoom = {
+				id: '',
+				property_id: this.state.room.property_id,
+				name: '',
+				total_area: '',
+				description: '',
+				walls: []
+			};
 		}
 
 		if (!_.every(_.values(roomToUpdate), function(v) {return !v;})) {
@@ -124,7 +135,8 @@ class PropertyRoomsDashboard extends React.Component
 			paints: paints,
 			nonAddedRooms: nonAddedRooms,
 			isEditingMode: isEditingMode,
-			newRoomAdded: addingNewRoom,
+			newRoomAdded: isNewRoomAdded,
+			disableAddWallsBtn: false,
 			showRightPanel: !!openRightPanel,
 			flashMessage: flashMsg !== undefined ? flashMsg : null,
 			loader: false,

@@ -20,6 +20,10 @@ function setRoom(room) {
 	_room = room ;
 }
 
+function setNewRoom(room) {
+	_rooms.push(room);
+}
+
 function flagNewRoom() {
     _roomAdded = true;
 }
@@ -58,9 +62,18 @@ let PropertiesRoomsStore = assign({}, EventEmitter.prototype, {
         this.removeListener('change', callback);
 	},
 
-	addRoom: function (msg) {
-		setStoreFlashMessage(msg);
+	addRoom: function (results) {
+    	let room = results.room;
+
+    	setNewRoom(room);
+
+		_.remove(_nonAddedRooms, (addedRoom) => {
+			return room.name === addedRoom.value;
+		});
+
+		openRightPanel(false);
 		flagNewRoom();
+		setStoreFlashMessage(results.msg);
 	},
 
 	editRoom: function (room) {
@@ -126,8 +139,7 @@ let PropertiesRoomsStore = assign({}, EventEmitter.prototype, {
 			return room.id == myRoom.id;
 		});
 
-		_rooms = rooms;
-
+		setRooms(rooms);
 		openRightPanel(false);
 		setStoreFlashMessage(room.msg);
 	},
@@ -172,7 +184,7 @@ PropertiesRoomsStore.dispatchToken = Dispatcher.register(function(payload) {
 		break;
 
         case ActionConstants.ADD_PROPERTY_ROOM:
-            PropertiesRoomsStore.addRoom(action.results.msg);
+            PropertiesRoomsStore.addRoom(action.results);
         break;
 
         case ActionConstants.EDIT_PROPERTY_ROOM:

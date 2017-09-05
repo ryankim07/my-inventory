@@ -16,8 +16,12 @@ function setAllMyVehicles(vehicles) {
     _my_vehicles = vehicles ;
 }
 
-function setMyVehicle(vehicle) {
-	_my_vehicle = vehicle ;
+function setMyVehicle(vehicles) {
+	_my_vehicle = vehicles ;
+}
+
+function setNewMyVehicle(vehicle) {
+	_my_vehicles.push(vehicle);
 }
 
 function flagNewVehicle() {
@@ -70,9 +74,13 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 		}
 	},
 
-	addMyVehicle: function (msg) {
-		setStoreFlashMessage(msg);
-		flagNewVehicle();
+	addMyVehicle: function (results) {
+		let vehicle = results.vehicle;
+
+		setNewMyVehicle(vehicle);
+		openRightPanel(false);
+		flagNewRoom();
+		setStoreFlashMessage(results.msg);
 	},
 
 	editMyVehicle: function (vehicle) {
@@ -166,7 +174,7 @@ MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
         break;
 
         case ActionConstants.ADD_MY_VEHICLE:
-            MyVehiclesStore.addMyVehicle(action.results.msg);
+            MyVehiclesStore.addMyVehicle(action.results);
         break;
 
         case ActionConstants.EDIT_MY_VEHICLE:
@@ -184,6 +192,10 @@ MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
 		case ActionConstants.SET_ASSETS:
 			setAssets(action.file);
         break;
+
+		case ActionConstants.SHOW_VEHICLE_PANEL:
+			openRightPanel(true);
+		break;
 
 		case ActionConstants.RECEIVE_ERROR:
 			setStoreFlashMessage(action.msg);

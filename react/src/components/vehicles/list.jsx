@@ -1,43 +1,21 @@
 import React from 'react';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
-import Loader from '../loader';
-import MyVehiclesStore from '../../stores/vehicles/store';
 import VehiclesAction from '../../actions/vehicles-action';
+import Loader from '../loader';
 
 class VehiclesList extends React.Component
 {
     constructor(props) {
         super(props);
 
-        this.state = {
-            vehicles: [],
-            vehicle: {},
-            loader: true
-        };
-
-        this._onChange 		 = this._onChange.bind(this);
         this.editMyVehicle   = this.editMyVehicle.bind(this);
         this.removeMyVehicle = this.removeMyVehicle.bind(this);
     }
 
-    componentWillMount() {
-        MyVehiclesStore.addChangeListener(this._onChange);
-    }
-
-    componentDidMount() {
-        VehiclesAction.getMyVehicles();
-    }
-
-    componentWillUnmount() {
-        MyVehiclesStore.removeChangeListener(this._onChange);
-    }
-
-    _onChange() {
-        this.setState({
-            vehicles: MyVehiclesStore.getMyVehicles(),
-			vehicle: {},
-            loader: false
+	handleAdd() {
+		AppDispatcher.handleViewAction({
+			actionType: ActionConstants.SHOW_VEHICLE_PANEL
         });
     }
 
@@ -74,8 +52,8 @@ class VehiclesList extends React.Component
         let vehiclesHtml = '';
 
 		// If loading is complete
-        if (!this.state.loader) {
-        	let vehicles = this.state.vehicles;
+        if (!this.props.state.loader) {
+        	let vehicles = this.props.state.vehicles;
 
         	if (!vehicles) {
 				vehiclesHtml = <tr><td>There are no saved vehicle.</td></tr>;
@@ -119,7 +97,9 @@ class VehiclesList extends React.Component
                                 <div className="col-xs-10 col-md-10">
                                     <span>Vehicle List</span>
                                 </div>
-                                <div className="col-xs-2 col-md-2"></div>
+                                <div className="col-xs-2 col-md-2">
+									<button onClick={this.handleAdd.bind(this)}><i className="fa fa-plus">Add Vehicle</i></button>
+								</div>
                             </div>
                         </div>
                         <div className="panel-body">

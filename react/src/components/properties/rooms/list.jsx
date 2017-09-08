@@ -1,6 +1,7 @@
 import React from 'react';
 import AppDispatcher from '../../../dispatcher/app-dispatcher';
 import ActionConstants from '../../../constants/action-constants';
+import PropertiesRoomsAction from '../../../actions/properties-rooms-action';
 import Loader from '../../loader';
 
 class PropertyRoomsList extends React.Component
@@ -23,8 +24,8 @@ class PropertyRoomsList extends React.Component
 		});
 	}
 
-	handleRemove(data) {
-		ProperyRoomsAction.removeRoom(data.id);
+	handleRemove(id) {
+		PropertiesRoomsAction.removeRoom(id);
 	}
 
     render() {

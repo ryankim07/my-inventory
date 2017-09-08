@@ -18,6 +18,7 @@ import PropertiesAddressList from './src/components/properties/address/list';
 import PropertyRoomsDashboard from './src/components/properties/rooms/dashboard';
 import PropertyRoomAdd from "./src/components/properties/rooms/add";
 import PropertyRoomsList from './src/components/properties/rooms/list';
+import PropertyExteriorFeaturesAdd from './src/components/properties/exterior_features/add';
 
 function requireAuth(nextState, replace)
 {
@@ -38,17 +39,16 @@ ReactDOM.render(
             <Route path="/" component={Home} />
 			<Route path="/auth/signup" component={Signup}/>
 
-            <Route path="/vehicle/add" component={VehicleAdd} />
             <Route path="/vehicles/dashboard" component={VehicleDashboard} >
                 <Route path="/vehicle/add" component={VehicleAdd} />
                 <Route path="/vehicles" component={VehiclesList} />
             </Route>
 
 			<Route path="/properties/addresses" component={PropertiesAddressList} />
-			<Route path="/property/address/add" component={PropertyAddressAdd} />
 			<Route path="/property/add" component={PropertyAdd} />
 			<Route path="/properties/dashboard" component={PropertyDashboard} >
 				<Route path="/property/view" component={PropertyView} />
+				<Route path="/property/exterior-features/add" component={PropertyExteriorFeaturesAdd} />
 			</Route>
 
 			<Route path="/property/rooms/add" component={PropertyRoomAdd} />

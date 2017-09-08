@@ -14,9 +14,7 @@ class PropertiesAddressList extends React.Component
             loader: true
         };
 
-        this._onChange     = this._onChange.bind(this);
-		this.removeAddress = this.removeAddress.bind(this);
-        this.viewProperty  = this.viewProperty.bind(this);
+        this._onChange = this._onChange.bind(this);
     }
 
     componentWillMount() {
@@ -39,19 +37,11 @@ class PropertiesAddressList extends React.Component
         });
     }
 
-	removeAddress(e) {
-		e.preventDefault();
-
-		let propertyId = e.target.dataset.propertyId;
-		PropertiesAddressAction.removeAddress(propertyId);
+	removeAddress(id) {
+		PropertiesAddressAction.removeAddress(id);
 	}
 
-	viewProperty(e) {
-        e.preventDefault();
-
-        // Forward to view route by passing ID
-		let propertyId = e.target.dataset.propertyId;
-
+	viewProperty(propertyId) {
         this.context.router.push({
 			pathname: "/properties/dashboard",
 			state: {property_id: propertyId}
@@ -75,8 +65,8 @@ class PropertiesAddressList extends React.Component
                         <td>{ address.country }</td>
 						<td>{ address.subdivision }</td>
                         <td>
-                            <button onClick={this.removeAddress}><i data-property-id={address.property_id} className="fa fa-trash"></i></button>
-							<button onClick={this.viewProperty} data-property-id={address.property_id}><i data-property-id={address.property_id} className="fa fa-search"></i></button>
+                            <button onClick={this.removeAddress.bind(this, address.id)}><i className="fa fa-trash"></i></button>
+							<button onClick={this.viewProperty.bind(this, address.property_id)}><i className="fa fa-search"></i></button>
                         </td>
                     </tr>
                 );

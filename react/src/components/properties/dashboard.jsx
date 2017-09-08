@@ -1,7 +1,7 @@
 import React from 'react';
 import PropertiesAction from '../../actions/properties-action';
-import PropertyView from './view';
 import PropertiesStore from '../../stores/properties/store';
+import PropertyView from './view';
 import FlashMessage from '../flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -95,22 +95,16 @@ class PropertyDashboard extends React.Component
 	}
 
 	render() {
-		let panelToShow;
-
-		/*switch (this.state.showRightPanel) {
-			case 'add-room':
-				panelToShow = <PropertyRoomAdd closeRightPanel={this.closeRightPanel} />;
-			break
-
-			case 'rooms-list':
-				panelToShow = <PropertyRoomsList closeRightPanel={this.closeRightPanel} />;
-			break;
-		}*/
-
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-success" />}
-				<PropertyView mobileWidth={this.state.columnCss.mobileWidth} desktopWidth={this.state.columnCss.desktopWidth} className="main-column" loader={this.state.loader} property={this.state.property} />
+				<PropertyView
+					mobileWidth={this.state.columnCss.mobileWidth}
+					desktopWidth={this.state.columnCss.desktopWidth}
+					className="main-column"
+					property={this.state.property}
+					loader={this.state.loader}
+				/>
 			</div>
 		)
 	}

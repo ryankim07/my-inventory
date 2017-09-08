@@ -31,9 +31,6 @@ class Header extends React.Component
                                 <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Properties <span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <Link to="/property/add" className="menu-link"><i className="fa fa-home menu-link-icon"/> Add</Link>
-                                    </li>
-                                    <li>
                                         <Link to="/properties/addresses" className="menu-link"><i className="fa fa-list-alt menu-link-icon"/> All</Link>
                                     </li>
                                 </ul>

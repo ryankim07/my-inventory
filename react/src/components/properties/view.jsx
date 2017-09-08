@@ -11,28 +11,26 @@ class PropertyView extends React.Component
 
     // Handle other actions
 	handleActions(e) {
-    	let action = e.target.dataset.action;
+    	let action 	   = e.target.dataset.action;
+    	let propertyId = this.props.property.id;
+    	let pathName   = null;
 
 		switch (action) {
 			case 'view-rooms':
-				this.context.router.push({
-					pathname: "/properties/rooms/dashboard",
-					state: {
-						property_id: this.props.property.id
-					}
-				});
+				pathName = "/properties/rooms/dashboard";
 			break;
-			/*case 'view-rooms':
-				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.GET_PROPERTY_ROOMS,
-					property: {
-						id: this.state.property.id,
-						rooms: this.state.property.rooms
-					},
-					rightPanelType: 'rooms-list'
-				});
-			break;*/
+
+			case 'add-exterior-features':
+				pathName = "/properties/exterior-features/add";
+			break;
 		}
+
+		this.context.router.push({
+			pathname: pathName,
+			state: {
+				property_id: propertyId
+			}
+		});
 	}
 
 	render() {

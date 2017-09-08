@@ -1,7 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
-import PropertyExteriorFeaturesStore from '../../../stores/properties/exterior-features-store';
-import PropertyExteriorFeaturesAction from '../../../actions/properties-exterior-features-action';
 
 class PropertyExteriorFeaturesAdd extends React.Component
 {
@@ -11,7 +8,7 @@ class PropertyExteriorFeaturesAdd extends React.Component
         this.state = {
             features: {
                 id: '',
-                property_id: '',
+                property_id: this.props.location.state.property_id,
                 exterior: '',
                 foundation: '',
 				others: ''
@@ -26,28 +23,8 @@ class PropertyExteriorFeaturesAdd extends React.Component
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
 
-    componentWillMount() {
-		if (this.props.location.state.property_id) {
-			this.setState({
-				features: {
-					id: '',
-					property_id: this.props.location.state.property_id,
-					exterior: '',
-					foundation: '',
-					others: ''
-				},
-				nonAddedFeatures: null,
-				isEditingMode: false,
-				newFeaturesAdded: false,
-				flashMessage: null
-			});
-		}
-
-        PropertyExteriorFeaturesStore.addChangeListener(this._onChange);
-    }
-
 	componentDidMount() {
-		PropertyExteriorFeaturesAction.getNonAddedFeatures(this.state.features.property_id);
+		//PropertyExteriorFeaturesAction.getNonAddedFeatures(this.state.features.property_id);
 	}
 
     componentWillUnmount() {
@@ -69,7 +46,7 @@ class PropertyExteriorFeaturesAdd extends React.Component
 
     // Listen to changes in store, update it's own state
     _onChange() {
-    	let addingNewFeatures   = PropertyExteriorFeaturesStore.isNewFeaturesAdded();
+    	/*let addingNewFeatures   = PropertyExteriorFeaturesStore.isNewFeaturesAdded();
 		let featuresToUpdate    = PropertyExteriorFeaturesStore.getFeaturesToUpdate();
 		let isEditingMode   = this.state.isEditingMode;
 		let stateFeatures       = this.state.features;
@@ -92,7 +69,7 @@ class PropertyExteriorFeaturesAdd extends React.Component
 			isEditingMode: isEditingMode,
 			newFeaturesAdded: addingNewFeatures,
 			flashMessage: flashMsg !== undefined ? flashMsg : null
-		});
+		});*/
     }
 
     // Submit

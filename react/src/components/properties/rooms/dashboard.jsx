@@ -48,6 +48,8 @@ class PropertyRoomsDashboard extends React.Component
 		this.closeRightPanel  = this.closeRightPanel.bind(this);
 		this.handleFormChange = this.handleFormChange.bind(this);
 		this.handleWallChange = this.handleWallChange.bind(this);
+		this.setFlashMessage  = this.setFlashMessage.bind(this);
+		this.closeRightPanel  = this.closeRightPanel.bind(this);
 	}
 
 	componentWillMount() {
@@ -197,10 +199,9 @@ class PropertyRoomsDashboard extends React.Component
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-success" />}
 				<PropertyRoomsList
+					state={ this.state }
 					mobileWidth={this.state.columnCss.mobileWidth}
 					desktopWidth={this.state.columnCss.desktopWidth}
-					loader={this.state.loader}
-					rooms={this.state.rooms}
 					className="main-column" />
 				{
 					this.state.showRightPanel ? <PropertyRoomAdd

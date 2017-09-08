@@ -31,8 +31,8 @@ class PropertyRoomsList extends React.Component
     render() {
         let roomsHtml = '';
 
-		if (!this.props.loader) {
-			roomsHtml = this.props.rooms.map((room) => {
+		if (!this.props.state.loader) {
+			roomsHtml = this.props.state.rooms.map((room) => {
 				return (
 					<tr key={ room.id }>
 						<td>{ room.name }</td>

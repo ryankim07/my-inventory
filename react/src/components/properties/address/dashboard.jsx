@@ -1,6 +1,6 @@
 import React from 'react';
-import _ from 'lodash';
 import PropertiesStore from '../../../stores/properties/store';
+import PropertiesAddressStore from '../../../stores/properties/address-store';
 import PropertiesAddressAction from '../../../actions/properties-address-action';
 import PropertyAddressList from './list';
 import PropertyAdd from './add';
@@ -53,10 +53,12 @@ class PropertyAddressDashboard extends React.Component
 			},
 		};
 
-		this._onChange 		  = this._onChange.bind(this);
-		this.handleFormChange = this.handleFormChange.bind(this);
-		this.setFlashMessage  = this.setFlashMessage.bind(this);
-		this.closeRightPanel  = this.closeRightPanel.bind(this);
+		this._onChange 		  	 = this._onChange.bind(this);
+		this.handleFormChange 	 = this.handleFormChange.bind(this);
+		this.handleAddressChange = this.handleAddressChange.bind(this);
+		this.setAssets        	 = this.setAssets.bind(this);
+		this.setFlashMessage  	 = this.setFlashMessage.bind(this);
+		this.closeRightPanel  	 = this.closeRightPanel.bind(this);
 	}
 
 	componentWillMount() {
@@ -132,7 +134,8 @@ class PropertyAddressDashboard extends React.Component
 			isEditingMode: isEditingMode,
 			newPropertyAdded: addingNewProperty,
 			flashMessage: flashMsg !== undefined ? flashMsg : null,
-			showRightPanel: !!openRightPanel,loader: false,
+			showRightPanel: !!openRightPanel,
+			loader: false,
 			columnCss: {
 				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
 				'desktopWidth': openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
@@ -187,7 +190,7 @@ class PropertyAddressDashboard extends React.Component
 	render() {
 		return (
 			<div className="row">
-				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success" />}
+				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success" /> }
 				<PropertyAddressList
 					state={ this.state }
 					mobileWidth={ this.state.columnCss.mobileWidth }

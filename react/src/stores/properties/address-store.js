@@ -175,6 +175,10 @@ PropertiesAddressStore.dispatchToken = Dispatcher.register(function(payload) {
             PropertiesAddressStore.removeAddress(action.results);
         break;
 
+		case ActionConstants.SHOW_PROPERTY_ADDRESS_PANEL:
+			openRightPanel(true);
+			break;
+
 		case ActionConstants.RECEIVE_ERROR:
 			setStoreFlashMessage(action.msg);
 			setErrorStatus(action.status);

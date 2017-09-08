@@ -14,20 +14,6 @@ class PropertyRoomAdd extends React.Component
 		this.addWalls         = this.addWalls.bind(this);
     }
 
-	// Submit
-	handleFormSubmit(event) {
-		event.preventDefault();
-
-		if (!this.props.state.isEditingMode) {
-			PropertiesRoomsAction.addRoom(this.props.state.room);
-		} else {
-			PropertiesRoomsAction.updateRoom(this.props.state.room);
-
-			// Close the panel
-			this.closeRightPanel();
-		}
-	}
-
 	// Handle input changes
 	handleFormChange(propertyName, event) {
 		let room        = this.props.state.room;
@@ -47,6 +33,20 @@ class PropertyRoomAdd extends React.Component
 		}
 
 		this.props.formChange(room);
+	}
+
+	// Submit
+	handleFormSubmit(event) {
+		event.preventDefault();
+
+		if (!this.props.state.isEditingMode) {
+			PropertiesRoomsAction.addRoom(this.props.state.room);
+		} else {
+			PropertiesRoomsAction.updateRoom(this.props.state.room);
+
+			// Close the panel
+			this.closeRightPanel();
+		}
 	}
 
     // Handle appropriate action whenever wall fields are changed
@@ -87,29 +87,29 @@ class PropertyRoomAdd extends React.Component
 		let addWallsSection = this.props.state.room.walls.map((wall, index) => {
 			return (
 				<PropertyRoomWalls
-					key={index} index={index}
-					allWalls={this.props.state.room.walls}
-					wall={wall}
-					wallChange={this.handleWallChange}
-					paints={this.props.state.paints}
+					key={ index } index={ index }
+					allWalls={ this.props.state.room.walls }
+					wall={ wall }
+					wallChange={ this.handleWallChange }
+					paints={ this.props.state.paints }
 				/>
 			);
 		});
 
 		let roomsOptions = this.props.state.nonAddedRooms.map((rooms, roomIndex) => {
 			return (
-				<option key={roomIndex} value={rooms.value}>{ rooms.title }</option>
+				<option key={ roomIndex } value={ rooms.value }>{ rooms.title }</option>
 			);
 		});
 
-		let roomForm = <form onSubmit={this.handleFormSubmit}>
+		let roomForm = <form onSubmit={ this.handleFormSubmit }>
 			<div className="form-group required">
 				<div className="col-xs-12 col-md-8">
 					<label className="control-label">Room Name</label>
 					<div className="input-group">
 						<select ref="name"
-								onChange={this.handleFormChange.bind(this, 'name')}
-								value={this.props.state.room.name}
+								onChange={ this.handleFormChange.bind(this, 'name') }
+								value={ this.props.state.room.name }
 								className="form-control input-sm"
 								required="required">
 							<option value="">Select One</option>
@@ -124,8 +124,8 @@ class PropertyRoomAdd extends React.Component
 					<div className="input-group">
 						<input type="text"
 							   ref="total_area"
-							   onChange={this.handleFormChange.bind(this, 'total_area')}
-							   value={this.props.state.room.total_area}
+							   onChange={ this.handleFormChange.bind(this, 'total_area') }
+							   value={ this.props.state.room.total_area }
 							   className="form-control input-sm"/>
 					</div>
 				</div>
@@ -133,7 +133,7 @@ class PropertyRoomAdd extends React.Component
 
 			<div className="walls">
 				{ addWallsSection }
-				{ disableAddWallsBtn === false ? <button onClick={this.addWalls}><i className="fa fa-plus"></i> Walls</button> : '' }
+				{ disableAddWallsBtn === false ? <button onClick={ this.addWalls }><i className="fa fa-plus"></i> Walls</button> : '' }
 			</div>
 
 			<div className="form-group">
@@ -150,8 +150,8 @@ class PropertyRoomAdd extends React.Component
 			<div className="form-group">
 				<div className="col-xs-12 col-md-8">
 					<div className="input-group">
-						<input type="hidden" ref="id" value={this.props.state.room.id} />
-						<input type="hidden" ref="property_id" value={this.props.state.property_id} />
+						<input type="hidden" ref="id" value={ this.props.state.room.id } />
+						<input type="hidden" ref="property_id" value={ this.props.state.property_id } />
 					</div>
 				</div>
 			</div>
@@ -174,7 +174,7 @@ class PropertyRoomAdd extends React.Component
                                     <span>Add Room</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2">
-                                    <button onClick={this.props.closeRightPanel} className="close close-viewer" value="Close"><span>&times;</span></button>
+                                    <button onClick={ this.props.closeRightPanel } className="close close-viewer" value="Close"><span>&times;</span></button>
                                 </div>
                             </div>
                         </div>

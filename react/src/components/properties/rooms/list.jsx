@@ -39,8 +39,8 @@ class PropertyRoomsList extends React.Component
 						<td>{ room.total_area }</td>
 						<td>{ room.description }</td>
 						<td>
-							<button onClick={this.handleRemove.bind(this, room.id)}><i className="fa fa-trash"></i></button>
-							<button onClick={this.handleEdit.bind(this, room)}><i className="fa fa-pencil"></i></button>
+							<button onClick={ this.handleRemove.bind(this, room.id) }><i className="fa fa-trash"></i></button>
+							<button onClick={ this.handleEdit.bind(this, room) }><i className="fa fa-pencil"></i></button>
 						</td>
 					</tr>
 				);

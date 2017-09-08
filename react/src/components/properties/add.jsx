@@ -1,6 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
-import PropertiesStore from '../../stores/properties/store';
 import PropertiesAction from '../../actions/properties-action';
 import PropertyAddressAdd from '../../components/properties/address/add';
 import Uploader from '../helper/uploader';
@@ -11,102 +9,15 @@ class PropertyAdd extends React.Component
     constructor(props) {
         super(props);
 
-        this.state = {
-            property: {
-                id: '',
-                style: '',
-                beds: '',
-                baths: '',
-                finished_area: '',
-				unfinished_area: '',
-                total_area: '',
-                floors: '',
-                built: '',
-				parcel_number: '',
-				assets: [],
-				address: {
-					id: '',
-					property_id: '',
-					street: '',
-					city: '',
-					state: '',
-					zip: '',
-					county: '',
-					country: '',
-					subdivision: ''
-				}
-            },
-			isEditingMode: false,
-            newPropertyAdded: false,
-			flashMessage: null
-        };
-
-        this._onChange 		  = this._onChange.bind(this);
-        this.handleFormChange = this.handleFormChange.bind(this);
-        this.handleFormSubmit = this.handleFormSubmit.bind(this);
+        this.handleFormChange    = this.handleFormChange.bind(this);
+        this.handleFormSubmit    = this.handleFormSubmit.bind(this);
         this.handleAddressChange = this.handleAddressChange.bind(this);
-		this.setAssets 		  = this.setAssets.bind(this);
-    }
-
-    componentWillMount() {
-        PropertiesStore.addChangeListener(this._onChange);
-    }
-
-    componentWillUnmount() {
-		PropertiesStore.removeChangeListener(this._onChange);
-		PropertiesStore.unsetPropertyToUpdate();
-	}
-
-    shouldComponentUpdate(nextProps, nextState) {
-    	// Check here and don't render component again if it's an image upload action
-		let emptyObj = _.every(_.values(nextState.property), function(v) {return !v;});
-		if (nextState.property.assets !== '' && emptyObj) {
-			return false;
-		}
-
-		// Only redirect to list if new property is being added
-        if (nextState.newPropertyAdded || this.state.newPropertyAdded) {
-			PropertiesStore.unFlagNewProperty();
-			nextState.newPropertyAdded = false;
-			this.context.router.push('/properties/addresses');
-
-			return false;
-		}
-
-		return true;
-    }
-
-    // Listen to changes in store, update it's own state
-    _onChange() {
-    	let addingNewProperty = PropertiesStore.isNewPropertyAdded();
-		let propertyToUpdate = PropertiesStore.getPropertyToUpdate();
-		let isEditingMode = this.state.isEditingMode;
-		let savedProperty = PropertiesStore.getSavedProperty();
-		let stateProperty = savedProperty !== '' ? savedProperty : this.state.property;
-		let flashMsg = PropertiesStore.getStoreFlashMessage();
-		let isAuthenticated = PropertiesStore.isAuthenticated();
-
-		if (!isAuthenticated){
-			this.context.router.push("/auth/login");
-			return false;
-		}
-
-		if (!_.every(_.values(propertyToUpdate), function(v) {return !v;})) {
-			stateProperty = propertyToUpdate;
-			isEditingMode = true;
-		}
-
-		this.setState({
-		    property: stateProperty,
-			isEditingMode: isEditingMode,
-			newPropertyAdded: addingNewProperty,
-			flashMessage: flashMsg !== undefined ? flashMsg : null
-		});
+		this.setAssets 		     = this.setAssets.bind(this);
     }
 
     // Handle input changes
     handleFormChange(propertyName, event) {
-        let property    = this.state.property;
+        let property    = this.props.state.property;
         let chosenValue = event.target.value;
 
         switch (propertyName) {
@@ -124,9 +35,7 @@ class PropertyAdd extends React.Component
                 property[propertyName] = chosenValue;
         }
 
-        this.setState({
-            property: property
-        });
+        this.props.handleFormChange(property);
     }
 
     // Submit
@@ -145,28 +54,12 @@ class PropertyAdd extends React.Component
 
 	// Handle appropriate action whenever address fields are changed
 	handleAddressChange(address) {
-		this.setState({
-			property: {
-				id: this.state.property.id,
-				style: this.state.property.style,
-				beds: this.state.property.beds,
-				baths: this.state.property.baths,
-				finished_area: this.state.property.finished_area,
-				unfinished_area: this.state.property.unfinished_area,
-				total_area: this.state.property.total_area,
-				floors: this.state.property.floors,
-				built: this.state.property.built,
-				parcel_number: this.state.property.parcel_number,
-				assets: this.state.property.assets,
-				address: address
-			}
-		});
+		this.props.handleAddressChange(address);
 	}
 
     // Set assets
     setAssets(assets) {
-		let property = this.state.property;
-		property['assets'] = assets;
+		this.props.setAssets(assets)
 	}
 
 	render() {
@@ -209,7 +102,7 @@ class PropertyAdd extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Image</label>
 						<div className="input-group">
-							<Uploader setAssets={this.setAssets} isEditingMode={this.state.isEditingMode} assets={this.state.property.assets} />
+							<Uploader setAssets={this.setAssets} isEditingMode={ this.props.state.isEditingMode } assets={ this.props.state.property.assets } />
 						</div>
 					</div>
 				</div>
@@ -218,8 +111,8 @@ class PropertyAdd extends React.Component
 						<label className="control-label">Built</label>
 						<div className="input-group">
 							<select ref="built"
-									onChange={this.handleFormChange.bind(this, 'built')}
-									value={this.state.property.built}
+									onChange={ this.handleFormChange.bind(this, 'built') }
+									value={ this.props.state.property.built }
 									className="form-control input-sm"
 									required="required">
 								<option value="">Select One</option>
@@ -233,8 +126,8 @@ class PropertyAdd extends React.Component
 						<label className="control-label">Style</label>
 						<div className="input-group">
 							<select ref="style"
-									onChange={this.handleFormChange.bind(this, 'style')}
-									value={this.state.property.style}
+									onChange={ this.handleFormChange.bind(this, 'style')}
+									value={ this.props.state.property.style}
 									className="form-control input-sm"
 									required="required">
 								<option value="">Select One</option>
@@ -252,8 +145,8 @@ class PropertyAdd extends React.Component
 						<label className="control-label">Floors</label>
 						<div className="input-group">
 							<select ref="baths"
-									onChange={this.handleFormChange.bind(this, 'floors')}
-									value={this.state.property.floors}
+									onChange={ this.handleFormChange.bind(this, 'floors')}
+									value={ this.props.state.property.floors}
 									className="form-control input-sm"
 									required="required">
 								<option value="">Select One</option>
@@ -267,8 +160,8 @@ class PropertyAdd extends React.Component
 						<label className="control-label">Beds</label>
 						<div className="input-group">
 							<select ref="beds"
-									onChange={this.handleFormChange.bind(this, 'beds')}
-									value={this.state.property.beds}
+									onChange={ this.handleFormChange.bind(this, 'beds') }
+									value={ this.props.state.property.beds }
 									className="form-control input-sm"
 									required="required">
 								<option value="">Select One</option>
@@ -282,8 +175,8 @@ class PropertyAdd extends React.Component
 						<label className="control-label">Baths</label>
 						<div className="input-group">
 							<select ref="baths"
-									onChange={this.handleFormChange.bind(this, 'baths')}
-									value={this.state.property.baths}
+									onChange={ this.handleFormChange.bind(this, 'baths') }
+									value={ this.props.state.property.baths }
 									className="form-control input-sm"
 									required="required">
 								<option value="">Select One</option>
@@ -298,8 +191,8 @@ class PropertyAdd extends React.Component
 						<div className="input-group">
 							<input type="text"
 								   ref="finished_area"
-								   onChange={this.handleFormChange.bind(this, 'finished_area')}
-								   value={this.state.property.finished_area}
+								   onChange={ this.handleFormChange.bind(this, 'finished_area') }
+								   value={ this.props.state.property.finished_area }
 								   className="form-control input-sm"/>
 						</div>
 					</div>
@@ -310,8 +203,8 @@ class PropertyAdd extends React.Component
 						<div className="input-group">
 							<input type="text"
 								   ref="unfinished_area"
-								   onChange={this.handleFormChange.bind(this, 'unfinished_area')}
-								   value={this.state.property.unfinished_area}
+								   onChange={ this.handleFormChange.bind(this, 'unfinished_area') }
+								   value={ this.props.state.property.unfinished_area }
 								   className="form-control input-sm"/>
 						</div>
 					</div>
@@ -322,8 +215,8 @@ class PropertyAdd extends React.Component
 						<div className="input-group">
 							<input type="text"
 								   ref="total_area"
-								   onChange={this.handleFormChange.bind(this, 'total_area')}
-								   value={this.state.property.total_area}
+								   onChange={ this.handleFormChange.bind(this, 'total_area') }
+								   value={ this.props.state.property.total_area }
 								   className="form-control input-sm"
 								   required="required"/>
 						</div>
@@ -335,8 +228,8 @@ class PropertyAdd extends React.Component
 						<div className="input-group">
 							<input type="text"
 								   ref="total_area"
-								   onChange={this.handleFormChange.bind(this, 'parcel_number')}
-								   value={this.state.property.parcel_number}
+								   onChange={ this.handleFormChange.bind(this, 'parcel_number') }
+								   value={ this.props.state.property.parcel_number }
 								   className="form-control input-sm"
 								   required="required"/>
 						</div>
@@ -348,12 +241,15 @@ class PropertyAdd extends React.Component
 					<hr/>
 				</div>
 
-				<PropertyAddressAdd address={this.state.property.address} onChange={this.handleAddressChange} />
+				<PropertyAddressAdd
+					address={ this.props.state.property.address }
+					onChange={ this.handleAddressChange }
+				/>
 
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input type="hidden" ref="id" value={this.state.property.id} />
+							<input type="hidden" ref="id" value={ this.props.state.property.id } />
 						</div>
 					</div>
 				</div>
@@ -376,7 +272,7 @@ class PropertyAdd extends React.Component
                                     <span>Property</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2">
-                                    { this.state.isEditingMode ? <button onClick={this.props.closeRightPanel} className="close close-viewer" value="Close"><span>&times;</span></button> : ''}
+                                    { this.props.state.isEditingMode ? <button onClick={ this.props.closeRightPanel } className="close close-viewer" value="Close"><span>&times;</span></button> : '' }
                                 </div>
                             </div>
                         </div>

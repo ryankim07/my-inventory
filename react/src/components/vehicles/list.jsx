@@ -8,9 +8,6 @@ class VehiclesList extends React.Component
 {
     constructor(props) {
         super(props);
-
-        this.editMyVehicle   = this.editMyVehicle.bind(this);
-        this.removeMyVehicle = this.removeMyVehicle.bind(this);
     }
 
 	handleAdd() {
@@ -19,32 +16,23 @@ class VehiclesList extends React.Component
         });
     }
 
-    editMyVehicle(e) {
+    editMyVehicle(data) {
         // Set panel width
-        let data = e.target.dataset;
+		/*let imageName = data.assets[0] === undefined ? data.assets.name : data.assets[0].name;
+		let imagePath = data.assets[0] === undefined ? data.assets.path : data.assets[0].path;
+
+		data['assets']: {
+			name: data.imageName,
+				path: data.imagePath
+		}*/
 
 		AppDispatcher.handleViewAction({
 			actionType: ActionConstants.EDIT_MY_VEHICLE,
-			vehicle: {
-				id: data.id,
-				mfg_id: data.mfgId,
-				mfg: data.mfg,
-				model_id: data.modelId,
-				model: data.model,
-				year: data.year,
-				color: data.color.toLowerCase(),
-				vin: data.vin,
-				plate: data.plate,
-				assets: {
-					name: data.imageName,
-					path: data.imagePath
-				}
-			}
+			vehicle: data
 		});
     }
 
-    removeMyVehicle(e) {
-        let id = e.target.dataset.id;
+    removeMyVehicle(id) {
         VehiclesAction.removeMyVehicle(id);
     }
 
@@ -59,26 +47,19 @@ class VehiclesList extends React.Component
 				vehiclesHtml = <tr><td>There are no saved vehicle.</td></tr>;
 			} else {
 				vehiclesHtml = vehicles.map((vehicle) => {
-					let imageName = vehicle.assets[0] === undefined ? vehicle.assets.name : vehicle.assets[0].name;
-					let imagePath = vehicle.assets[0] === undefined ? vehicle.assets.path : vehicle.assets[0].path;
+
 
 					return (
-						<tr key={vehicle.id}>
-							<td>{vehicle.mfg}</td>
-							<td>{vehicle.model}</td>
-							<td>{vehicle.year}</td>
-							<td>{vehicle.color}</td>
-							<td>{vehicle.vin}</td>
-							<td>{vehicle.plate}</td>
+						<tr key={ vehicle.id }>
+							<td>{ vehicle.mfg }</td>
+							<td>{ vehicle.model }</td>
+							<td>{ vehicle.year }</td>
+							<td>{ vehicle.color }</td>
+							<td>{ vehicle.vin }</td>
+							<td>{ vehicle.plate }</td>
 							<td>
-								<button onClick={this.removeMyVehicle} data-id={vehicle.id}>×</button>
-								<button onClick={this.editMyVehicle} data-id={vehicle.id} data-mfg={vehicle.mfg}
-										data-mfg-id={vehicle.mfg_id}
-										data-model={vehicle.model} data-model-id={vehicle.model_id}
-										data-year={vehicle.year} data-color={vehicle.color}
-										data-vin={vehicle.vin} data-plate={vehicle.plate} data-image-name={imageName}
-										data-image-path={imagePath}>edit
-								</button>
+								<button onClick={ this.removeMyVehicle.bind(this.vehicle.id) }><i className="fa fa-trash"></i></button>
+								<button onClick={ this.editMyVehicle.bind(this, vehicle) }><i className="fa fa-pencil"></i></button>
 							</td>
 						</tr>
 					);
@@ -89,7 +70,7 @@ class VehiclesList extends React.Component
         }
 
         return (
-            <div className={[this.props.mobileWidth, this.props.desktopWidth, this.props.className].join(' ')} id="vehicles-main">
+            <div className={ [this.props.mobileWidth, this.props.desktopWidth, this.props.className].join(' ') } id="vehicles-main">
                 <div className="row">
                     <div className="panel panel-info">
                         <div className="panel-heading">
@@ -98,7 +79,7 @@ class VehiclesList extends React.Component
                                     <span>Vehicle List</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2">
-									<button onClick={this.handleAdd.bind(this)}><i className="fa fa-plus">Add Vehicle</i></button>
+									<button onClick={ this.handleAdd.bind(this) }><i className="fa fa-plus">Add Vehicle</i></button>
 								</div>
                             </div>
                         </div>

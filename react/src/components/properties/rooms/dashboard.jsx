@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import PropertyRoomsList from './list';
 import PropertyRoomAdd from './add';
 import PropertyRoomsStore from '../../../stores/properties/rooms-store';

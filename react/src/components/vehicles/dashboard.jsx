@@ -3,8 +3,8 @@ import _ from 'lodash';
 import VehiclesAction from '../../actions/vehicles-action';
 import ApiVehiclesStore from '../../stores/vehicles/api-store';
 import MyVehiclesStore from '../../stores/vehicles/store';
-import VehiclesList from './list';
 import VehicleAdd from './add';
+import VehiclesList from './list';
 import FlashMessage from '../flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -43,10 +43,10 @@ class VehiclesDashboard extends React.Component
 			}
 		};
 
-		this._onChange 		 = this._onChange.bind(this);
+		this._onChange 		  = this._onChange.bind(this);
 		this.handleFormChange = this.handleFormChange.bind(this);
-		this.setFlashMessage = this.setFlashMessage.bind(this);
-		this.closeRightPanel = this.closeRightPanel.bind(this);
+		this.setFlashMessage  = this.setFlashMessage.bind(this);
+		this.closeRightPanel  = this.closeRightPanel.bind(this);
 	}
 
 	componentWillMount() {
@@ -153,21 +153,21 @@ class VehiclesDashboard extends React.Component
 	render() {
 		return (
 			<div className="row">
-				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-success" />}
+				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success" />}
 				<VehiclesList
-					state={this.state}
-					onChange={this._onChange}
-					mobileWidth={this.state.columnCss.mobileWidth}
-					desktopWidth={this.state.columnCss.desktopWidth}
+					state={ this.state }
+					mobileWidth={ this.state.columnCss.mobileWidth }
+					desktopWidth={ this.state.columnCss.desktopWidth }
 					className="main-column"
 				/>
-				{ this.state.showRightPanel ?
-					<VehicleAdd
-						state={this.state}
-						handleFormChange={this.handleFormChange}
-						closeRightPanel={this.closeRightPanel}
-						onChange={this._onChange}
-					/> : null }
+				{
+					this.state.showRightPanel ?
+						<VehicleAdd
+							state={ this.state }
+							handleFormChange={ this.handleFormChange }
+							closeRightPanel={ this.closeRightPanel }
+						/> : null
+				}
 			</div>
 		)
 	}

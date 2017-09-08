@@ -13,6 +13,7 @@ import VehiclesList from './src/components/vehicles/list';
 import PropertyDashboard from './src/components/properties/dashboard';
 import PropertyAdd from './src/components/properties/add';
 import PropertyView from './src/components/properties/view';
+import PropertyAddressDashboard from './src/components/properties/address/dashboard';
 import PropertyAddressAdd from './src/components/properties/address/add';
 import PropertiesAddressList from './src/components/properties/address/list';
 import PropertyRoomsDashboard from './src/components/properties/rooms/dashboard';
@@ -44,14 +45,16 @@ ReactDOM.render(
                 <Route path="/vehicles" component={VehiclesList} />
             </Route>
 
-			<Route path="/properties/addresses" component={PropertiesAddressList} />
-			<Route path="/property/add" component={PropertyAdd} />
 			<Route path="/properties/dashboard" component={PropertyDashboard} >
 				<Route path="/property/view" component={PropertyView} />
 				<Route path="/property/exterior-features/add" component={PropertyExteriorFeaturesAdd} />
 			</Route>
 
-			<Route path="/property/rooms/add" component={PropertyRoomAdd} />
+			<Route path="/properties/address/dashboard" component={PropertyAddressDashboard} >
+				<Route path="/property/address/add" component={PropertyAddressAdd} />
+				<Route path="/properties/addresses" component={PropertiesAddressList} />
+			</Route>
+
 			<Route path="/properties/rooms/dashboard" component={PropertyRoomsDashboard} >
 				<Route path="/property/rooms/add" component={PropertyRoomAdd} />
 				<Route path="/properties/rooms" component={PropertyRoomsList} />

@@ -106,7 +106,7 @@ class VehicleAdd extends React.Component
                                         <div className="input-group">
                                             <select ref="year"
 													onChange={this.handleFormChange.bind(this, 'year')}
-								value={this.props.state.vehicle.year}
+													value={this.props.state.vehicle.year}
 													className="form-control input-sm"
                                                     required="required">
                                                 <option value="">Select One</option>
@@ -121,7 +121,7 @@ class VehicleAdd extends React.Component
                                         <div className="input-group">
                                             <select ref="mfg_id"
 													onChange={this.handleFormChange.bind(this, 'mfg_id')}
-								value={this.props.state.vehicle.mfg_id}
+													value={this.props.state.vehicle.mfg_id}
 													className="form-control input-sm"
                                                     required="required">
                                                 <option value="">Select One</option>
@@ -136,7 +136,7 @@ class VehicleAdd extends React.Component
                                         <div className="input-group">
                                             <select ref="model_id"
 													onChange={this.handleFormChange.bind(this, 'model_id')}
-								value={this.props.state.vehicle.model_id}
+													value={this.props.state.vehicle.model_id}
 													className="form-control input-sm"
                                                     required="required">
                                                 <option value="">Select One</option>
@@ -151,7 +151,7 @@ class VehicleAdd extends React.Component
                                         <div className="input-group">
                                             <select ref="color"
 													onChange={this.handleFormChange.bind(this, 'color')}
-								value={this.props.state.vehicle.color}
+													value={this.props.state.vehicle.color}
 													className="form-control input-sm"
                                                     required="required">
                                                 <option value="">Select One</option>
@@ -172,7 +172,7 @@ class VehicleAdd extends React.Component
                                             <input type="text"
 												   ref="vin"
 												   onChange={this.handleFormChange.bind(this, 'vin')}
-							   value={this.props.state.vehicle.vin}
+							   						value={this.props.state.vehicle.vin}
 												   className="form-control input-sm"
                                                    required="required"/>
                                         </div>
@@ -185,7 +185,7 @@ class VehicleAdd extends React.Component
                                             <input type="text"
 												   ref="plate"
 												   onChange={this.handleFormChange.bind(this, 'plate')}
-							   value={this.props.state.vehicle.plate}
+							   						value={this.props.state.vehicle.plate}
 												   className="form-control input-sm"
                                                    required="required"/>
                                         </div>
@@ -194,9 +194,9 @@ class VehicleAdd extends React.Component
                                 <div className="form-group">
                                     <div className="col-xs-12 col-md-8">
                                         <div className="input-group">
-						<input type="hidden" ref="id" value={this.props.state.vehicle.id} />
-						<input type="hidden" ref="mfg" value={this.props.state.vehicle.mfg} />
-						<input type="hidden" ref="model" value={this.props.state.vehicle.model} />
+											<input type="hidden" ref="id" value={this.props.state.vehicle.id} />
+											<input type="hidden" ref="mfg" value={this.props.state.vehicle.mfg} />
+											<input type="hidden" ref="model" value={this.props.state.vehicle.model} />
                                         </div>
                                     </div>
                                 </div>
@@ -231,10 +231,6 @@ class VehicleAdd extends React.Component
             </div>
         );
     }
-}
-
-VehicleAdd.contextTypes = {
-	router: React.PropTypes.object.isRequired
 }
 
 export default VehicleAdd;

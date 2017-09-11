@@ -55,7 +55,7 @@ class PropertyRoomWalls extends React.Component
                 <div className="form-group required">
                     <div className="col-xs-12 col-md-8">
                         <label className="control-label">Wall Name</label>
-						<button onClick={ this.removeWall.bind(this, index) }><i className="fa fa-trash"></i></button>
+						<button onClick={ this.removeWall.bind(this, index) }><i className="fa fa-trash" aria-hidden="true" /></button>
                         <div className="input-group">
                             <select ref={ refName }
 									onChange={ this.handleFormChange.bind(this, refName) }

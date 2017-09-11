@@ -51,23 +51,18 @@ class PropertiesList extends React.Component
 			let properties = this.props.state.properties;
 
 			if (!properties) {
-				propertiesHtml = <tr><td>There are no saved property.</td></tr>;
+				propertiesHtml = <div><h3>There are no saved property.</h3></div>;
 			} else {
-				propertiesHtml += properties.map((property) => {
-					let address = property.address;
-
-					return (
-						<PropertyAddressList
-							address={ address }
-							handleEdit={ this.handleEdit }
-							handleRemove={ this.handleRemove }
-							handleView={ this.handleView }
-						/>
-					);
-				});
+				propertiesHtml =
+					<PropertyAddressList
+						properties={ properties }
+						handleEdit={ this.handleEdit }
+						handleRemove={ this.handleRemove }
+						handleView={ this.handleView }
+					/>;
 			}
         } else {
-            propertiesHtml = <tr><td><Loader /></td></tr>;
+            propertiesHtml = <Loader />;
         }
 
         return (
@@ -80,27 +75,12 @@ class PropertiesList extends React.Component
                                     <span>Properties List</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2">
-									<button onClick={ this.handleAdd.bind(this) }><i className="fa fa-plus">Add Property</i></button>
+									<button onClick={ this.handleAdd.bind(this) }><i className="fa fa-plus" aria-hidden="true" /></button>
 								</div>
                             </div>
                         </div>
                         <div className="panel-body">
-							<table className="table">
-								<thead>
-								<tr>
-									<th>Street</th>
-									<th>City</th>
-									<th>State</th>
-									<th>Zip</th>
-									<th>County</th>
-									<th>Country</th>
-									<th>Subdivision</th>
-								</tr>
-								</thead>
-								<tbody>
-									{ propertiesHtml }
-								</tbody>
-							</table>
+							{ propertiesHtml }
                         </div>
                     </div>
                 </div>

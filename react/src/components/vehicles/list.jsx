@@ -47,8 +47,6 @@ class VehiclesList extends React.Component
 				vehiclesHtml = <tr><td>There are no saved vehicle.</td></tr>;
 			} else {
 				vehiclesHtml = vehicles.map((vehicle) => {
-
-
 					return (
 						<tr key={ vehicle.id }>
 							<td>{ vehicle.mfg }</td>
@@ -58,8 +56,8 @@ class VehiclesList extends React.Component
 							<td>{ vehicle.vin }</td>
 							<td>{ vehicle.plate }</td>
 							<td>
-								<button onClick={ this.removeMyVehicle.bind(this.vehicle.id) }><i className="fa fa-trash"></i></button>
-								<button onClick={ this.editMyVehicle.bind(this, vehicle) }><i className="fa fa-pencil"></i></button>
+								<button onClick={ this.removeMyVehicle.bind(this.vehicle.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
+								<button onClick={ this.editMyVehicle.bind(this, vehicle) }><i className="fa fa-pencil" aria-hidden="true" /></button>
 							</td>
 						</tr>
 					);
@@ -79,7 +77,7 @@ class VehiclesList extends React.Component
                                     <span>Vehicle List</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2">
-									<button onClick={ this.handleAdd.bind(this) }><i className="fa fa-plus">Add Vehicle</i></button>
+									<button onClick={ this.handleAdd.bind(this) }><i className="fa fa-plus" aria-hidden="true" /></button>
 								</div>
                             </div>
                         </div>
@@ -97,7 +95,7 @@ class VehiclesList extends React.Component
                                 </tr>
                                 </thead>
                                 <tbody>
-                                { vehiclesHtml }
+                                	{ vehiclesHtml }
                                 </tbody>
                             </table>
                         </div>

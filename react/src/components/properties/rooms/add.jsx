@@ -133,7 +133,7 @@ class PropertyRoomAdd extends React.Component
 
 			<div className="walls">
 				{ addWallsSection }
-				{ disableAddWallsBtn === false ? <button onClick={ this.addWalls }><i className="fa fa-plus"></i> Walls</button> : '' }
+				{ disableAddWallsBtn === false ? <button onClick={ this.addWalls }><i className="fa fa-plus" aria-hidden="true" /></button> : '' }
 			</div>
 
 			<div className="form-group">

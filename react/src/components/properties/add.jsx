@@ -278,7 +278,7 @@ class PropertyAdd extends React.Component
                                     <span>Property</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2">
-                                    { this.props.state.isEditingMode ? <button onClick={ this.props.closeRightPanel } className="close close-viewer" value="Close"><span>&times;</span></button> : '' }
+                                    <button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true" /></button>
                                 </div>
                             </div>
                         </div>

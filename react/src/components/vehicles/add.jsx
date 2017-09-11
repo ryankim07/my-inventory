@@ -91,123 +91,124 @@ class VehicleAdd extends React.Component
 				yearsOptions.push(<option key={'y-' + i} value={i}>{ i }</option>)
 			}
 
-		let vehicleForm = <form onSubmit={this.handleFormSubmit}>
-								<div className="form-group">
-									<div className="col-xs-12 col-md-8">
-										<label className="control-label">Image</label>
-										<div className="input-group">
-						<Uploader setAssets={this.setAssets} isEditingMode={this.props.state.isEditingMode} assets={this.props.state.vehicle.assets} />
-										</div>
-									</div>
-								</div>
-                                <div className="form-group required">
-                                    <div className="col-xs-12 col-md-8">
-                                        <label className="control-label">Year</label>
-                                        <div className="input-group">
-                                            <select ref="year"
-													onChange={this.handleFormChange.bind(this, 'year')}
-													value={this.props.state.vehicle.year}
-													className="form-control input-sm"
-                                                    required="required">
-                                                <option value="">Select One</option>
-                                                { yearsOptions }
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="form-group required">
-                                    <div className="col-xs-12 col-md-8">
-                                        <label className="control-label">Manufacturer</label>
-                                        <div className="input-group">
-                                            <select ref="mfg_id"
-													onChange={this.handleFormChange.bind(this, 'mfg_id')}
-													value={this.props.state.vehicle.mfg_id}
-													className="form-control input-sm"
-                                                    required="required">
-                                                <option value="">Select One</option>
-                                                { apiMfgsOptions }
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="form-group required">
-                                    <div className="col-xs-12 col-md-8">
-                                        <label className="control-label">Model</label>
-                                        <div className="input-group">
-                                            <select ref="model_id"
-													onChange={this.handleFormChange.bind(this, 'model_id')}
-													value={this.props.state.vehicle.model_id}
-													className="form-control input-sm"
-                                                    required="required">
-                                                <option value="">Select One</option>
-                                                { apiModelsOptions }
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="form-group required">
-                                    <div className="col-xs-12 col-md-8">
-                                        <label className="control-label">Color</label>
-                                        <div className="input-group">
-                                            <select ref="color"
-													onChange={this.handleFormChange.bind(this, 'color')}
-													value={this.props.state.vehicle.color}
-													className="form-control input-sm"
-                                                    required="required">
-                                                <option value="">Select One</option>
-                                                <option value="white">White</option>
-                                                <option value="black">Black</option>
-                                                <option value="silver">Silver</option>
-                                                <option value="red">Red</option>
-                                                <option value="yellow">Yellow</option>
-                                                <option value="orange">Orange</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="form-group required">
-                                    <div className="col-xs-12 col-md-8">
-                                        <label className="control-label">VIN</label>
-                                        <div className="input-group">
-                                            <input type="text"
-												   ref="vin"
-												   onChange={this.handleFormChange.bind(this, 'vin')}
-							   						value={this.props.state.vehicle.vin}
-												   className="form-control input-sm"
-                                                   required="required"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="form-group required">
-                                    <div className="col-xs-12 col-md-8">
-                                        <label className="control-label">Plate</label>
-                                        <div className="input-group">
-                                            <input type="text"
-												   ref="plate"
-												   onChange={this.handleFormChange.bind(this, 'plate')}
-							   						value={this.props.state.vehicle.plate}
-												   className="form-control input-sm"
-                                                   required="required"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="form-group">
-                                    <div className="col-xs-12 col-md-8">
-                                        <div className="input-group">
-											<input type="hidden" ref="id" value={this.props.state.vehicle.id} />
-											<input type="hidden" ref="mfg" value={this.props.state.vehicle.mfg} />
-											<input type="hidden" ref="model" value={this.props.state.vehicle.model} />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="form-group">
-                                    <div className="col-xs-12 col-md-12">
-                                        <div className="clearfix">
-                                            <input type="submit" value="Submit" className="btn"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+		let vehicleForm =
+			<form onSubmit={this.handleFormSubmit}>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Image</label>
+						<div className="input-group">
+							<Uploader setAssets={this.setAssets} isEditingMode={this.props.state.isEditingMode} assets={this.props.state.vehicle.assets} />
+						</div>
+					</div>
+				</div>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Year</label>
+						<div className="input-group">
+							<select ref="year"
+									onChange={this.handleFormChange.bind(this, 'year')}
+									value={this.props.state.vehicle.year}
+									className="form-control input-sm"
+									required="required">
+								<option value="">Select One</option>
+								{ yearsOptions }
+							</select>
+						</div>
+					</div>
+				</div>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Manufacturer</label>
+						<div className="input-group">
+							<select ref="mfg_id"
+									onChange={this.handleFormChange.bind(this, 'mfg_id')}
+									value={this.props.state.vehicle.mfg_id}
+									className="form-control input-sm"
+									required="required">
+								<option value="">Select One</option>
+								{ apiMfgsOptions }
+							</select>
+						</div>
+					</div>
+				</div>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Model</label>
+						<div className="input-group">
+							<select ref="model_id"
+									onChange={this.handleFormChange.bind(this, 'model_id')}
+									value={this.props.state.vehicle.model_id}
+									className="form-control input-sm"
+									required="required">
+								<option value="">Select One</option>
+								{ apiModelsOptions }
+							</select>
+						</div>
+					</div>
+				</div>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Color</label>
+						<div className="input-group">
+							<select ref="color"
+									onChange={this.handleFormChange.bind(this, 'color')}
+									value={this.props.state.vehicle.color}
+									className="form-control input-sm"
+									required="required">
+								<option value="">Select One</option>
+								<option value="white">White</option>
+								<option value="black">Black</option>
+								<option value="silver">Silver</option>
+								<option value="red">Red</option>
+								<option value="yellow">Yellow</option>
+								<option value="orange">Orange</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">VIN</label>
+						<div className="input-group">
+							<input type="text"
+								   ref="vin"
+								   onChange={this.handleFormChange.bind(this, 'vin')}
+								   value={this.props.state.vehicle.vin}
+								   className="form-control input-sm"
+								   required="required"/>
+						</div>
+					</div>
+				</div>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Plate</label>
+						<div className="input-group">
+							<input type="text"
+								   ref="plate"
+								   onChange={this.handleFormChange.bind(this, 'plate')}
+								   value={this.props.state.vehicle.plate}
+								   className="form-control input-sm"
+								   required="required"/>
+						</div>
+					</div>
+				</div>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<div className="input-group">
+							<input type="hidden" ref="id" value={this.props.state.vehicle.id} />
+							<input type="hidden" ref="mfg" value={this.props.state.vehicle.mfg} />
+							<input type="hidden" ref="model" value={this.props.state.vehicle.model} />
+						</div>
+					</div>
+				</div>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-12">
+						<div className="clearfix">
+							<input type="submit" value="Submit" className="btn"/>
+						</div>
+					</div>
+				</div>
+			</form>
 
         return (
             <div className="col-xs-4 col-md-4" id="vehicle-add">
@@ -219,7 +220,7 @@ class VehicleAdd extends React.Component
                                     <span>Vehicle</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2">
-                                    { this.props.state.isEditingMode ? <button onClick={this.props.closeRightPanel} className="close close-viewer" value="Close"><span>&times;</span></button> : ''}
+                                    <button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true" /></button>
                                 </div>
                             </div>
                         </div>

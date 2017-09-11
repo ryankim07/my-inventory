@@ -1,18 +1,15 @@
 import React from 'react';
-import PropertiesAddressAction from '../../../actions/properties-address-action';
 import { upperFirstLetter } from "../../helper/utils"
 
 class PropertyAddressAdd extends React.Component
 {
     constructor(props) {
         super(props);
-
-		this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
 
     // Handle input changes
     handleFormChange(propertyName, event) {
-        let address     = this.props.state.address;
+        let address     = this.props.address;
         let chosenValue = event.target.value;
 
         switch (propertyName) {
@@ -26,22 +23,8 @@ class PropertyAddressAdd extends React.Component
                 address[propertyName] = chosenValue;
         }
 
-        this.props.handleFormChange(address);
+        this.props.handleAddressChange(address);
     }
-
-	// Submit
-	handleFormSubmit(event) {
-		event.preventDefault();
-
-		if (!this.props.state.isEditingMode) {
-			PropertiesAddressAction.addMyVehicle(this.props.state.vehicle);
-		} else {
-			PropertiesAddressAction.updateMyVehicle(this.props.state.vehicle);
-		}
-
-		// Close the panel
-		this.props.closeRightPanel();
-	}
 
 	render() {
         return (
@@ -53,7 +36,7 @@ class PropertyAddressAdd extends React.Component
 							<input type="text"
 								   ref="street"
 								   onChange={ this.handleFormChange.bind(this, 'street') }
-								   value={ this.props.state.address.street }
+								   value={ this.props.address.street }
 								   className="form-control input-sm"
 								   required="required"/>
 						</div>
@@ -66,7 +49,7 @@ class PropertyAddressAdd extends React.Component
 							<input type="text"
 								   ref="city"
 								   onChange={ this.handleFormChange.bind(this, 'city') }
-								   value={ this.props.state.address.city }
+								   value={ this.props.address.city }
 								   className="form-control input-sm"
 								   required="required"/>
 						</div>
@@ -78,7 +61,7 @@ class PropertyAddressAdd extends React.Component
 						<div className="input-group">
 							<select ref="state"
 									onChange={ this.handleFormChange.bind(this, 'state') }
-									value={ this.props.state.address.built }
+									value={ this.props.address.built }
 									className="form-control input-sm"
 									required="required">
 								<option value="">Select One</option>
@@ -94,7 +77,7 @@ class PropertyAddressAdd extends React.Component
 							<input type="text"
 								   ref="zip"
 								   onChange={ this.handleFormChange.bind(this, 'zip') }
-								   value={ this.props.state.address.zip }
+								   value={ this.props.address.zip }
 								   className="form-control input-sm"
 								   required="required"/>
 						</div>
@@ -106,7 +89,7 @@ class PropertyAddressAdd extends React.Component
 						<div className="input-group">
 							<select ref="county"
 									onChange={ this.handleFormChange.bind(this, 'county') }
-									value={ this.props.state.address.county }
+									value={ this.props.address.county }
 									className="form-control input-sm">
 								<option value="">Select One</option>
 								<option value="Orange County">Orange County</option>
@@ -120,7 +103,7 @@ class PropertyAddressAdd extends React.Component
 						<div className="input-group">
 							<select ref="country"
 									onChange={ this.handleFormChange.bind(this, 'country') }
-									value={ this.props.state.address.country }
+									value={ this.props.address.country }
 									className="form-control input-sm">
 								<option value="">Select One</option>
 								<option value="US">United States</option>
@@ -135,7 +118,7 @@ class PropertyAddressAdd extends React.Component
 							<input type="text"
 								   ref="subdivision"
 								   onChange={ this.handleFormChange.bind(this, 'subdivision') }
-								   value={ this.props.state.address.subdivision }
+								   value={ this.props.address.subdivision }
 								   className="form-control input-sm"/>
 						</div>
 					</div>
@@ -143,7 +126,7 @@ class PropertyAddressAdd extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input type="hidden" ref="id" value={ this.props.state.address.id } />
+							<input type="hidden" ref="id" value={ this.props.address.id } />
 						</div>
 					</div>
 				</div>

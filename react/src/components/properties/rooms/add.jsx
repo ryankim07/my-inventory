@@ -1,6 +1,6 @@
 import React from 'react';
 import PropertiesRoomsAction from '../../../actions/properties-rooms-action';
-import PropertyRoomWalls from '../../../components/properties/rooms/walls';
+import PropertyRoomWalls from '../rooms/walls';
 import { numberFormat } from "../../helper/utils"
 
 class PropertyRoomAdd extends React.Component

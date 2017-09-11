@@ -12,6 +12,7 @@ import VehicleAdd from './src/components/vehicles/add';
 import VehiclesList from './src/components/vehicles/list';
 import PropertyDashboard from './src/components/properties/dashboard';
 import PropertyAdd from './src/components/properties/add';
+import PropertiesList from './src/components/properties/list';
 import PropertyView from './src/components/properties/view';
 import PropertyAddressDashboard from './src/components/properties/address/dashboard';
 import PropertyAddressAdd from './src/components/properties/address/add';
@@ -33,31 +34,33 @@ function requireAuth(nextState, replace)
 
 ReactDOM.render(
     <Router history={hashHistory}>
-        <Route path="/auth/login" component={Login}/>
-		<Route path="/auth/logout" component={Logout}/>
-        <Route component={Main} onEnter={requireAuth}>
-            <IndexRoute component={Home} />
-            <Route path="/" component={Home} />
-			<Route path="/auth/signup" component={Signup}/>
+        <Route path="/auth/login" component={ Login } />
+		<Route path="/auth/logout" component={ Logout } />
+        <Route component={ Main} onEnter={ requireAuth }>
+            <IndexRoute component={ Home } />
+            <Route path="/" component={ Home } />
+			<Route path="/auth/signup" component={ Signup } />
 
-            <Route path="/vehicles/dashboard" component={VehicleDashboard} >
-                <Route path="/vehicle/add" component={VehicleAdd} />
-                <Route path="/vehicles" component={VehiclesList} />
+            <Route path="/vehicles/dashboard" component={ VehicleDashboard } >
+                <Route path="/vehicle/add" component={ VehicleAdd } />
+                <Route path="/vehicles" component={ VehiclesList } />
             </Route>
 
-			<Route path="/properties/dashboard" component={PropertyDashboard} >
-				<Route path="/property/view" component={PropertyView} />
-				<Route path="/property/exterior-features/add" component={PropertyExteriorFeaturesAdd} />
+			<Route path="/properties/add" component={ PropertyAdd } />
+			<Route path="/properties/dashboard" component={ PropertyDashboard } >
+				<Route path="/properties" component={ PropertiesList } />
+				<Route path="/property/view" component={ PropertyView } />
+				<Route path="/property/exterior-features/add" component={ PropertyExteriorFeaturesAdd } />
 			</Route>
 
-			<Route path="/properties/address/dashboard" component={PropertyAddressDashboard} >
-				<Route path="/property/address/add" component={PropertyAddressAdd} />
-				<Route path="/properties/addresses" component={PropertiesAddressList} />
+			<Route path="/properties/address/dashboard" component={ PropertyAddressDashboard } >
+				<Route path="/property/address/add" component={ PropertyAddressAdd } />
+				<Route path="/properties/addresses" component={ PropertiesAddressList } />
 			</Route>
 
-			<Route path="/properties/rooms/dashboard" component={PropertyRoomsDashboard} >
-				<Route path="/property/rooms/add" component={PropertyRoomAdd} />
-				<Route path="/properties/rooms" component={PropertyRoomsList} />
+			<Route path="/properties/rooms/dashboard" component={ PropertyRoomsDashboard } >
+				<Route path="/property/rooms/add" component={ PropertyRoomAdd } />
+				<Route path="/properties/rooms" component={ PropertyRoomsList } />
 			</Route>
         </Route>
     </Router>,

@@ -79,7 +79,7 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 
 		setNewMyVehicle(vehicle);
 		openRightPanel(false);
-		flagNewRoom();
+		flagNewVehicle();
 		setStoreFlashMessage(results.msg);
 	},
 
@@ -142,6 +142,10 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 		setStoreFlashMessage(vehicle.msg);
 	},
 
+	setAssets: function(assets) {
+		setAssets(assets)
+	},
+
 	isAuthenticated: function() {
 		if (localStorage.getItem('id_token') === null) {
 			return false;
@@ -154,12 +158,28 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
     	return _showPanel;
 	},
 
+	setRightPanel: function(show) {
+		openRightPanel(show)
+	},
+
 	getStoreFlashMessage: function() {
 		return _storeMsg;
 	},
 
+	setStoreFlashMessage: function (msg) {
+		setStoreFlashMessage()
+	},
+
 	unsetStoreFlashMessage: function() {
 		_storeMsg = '';
+	},
+
+	setErrorStatus: function(status) {
+		setErrorStatus(status);
+	},
+
+	removeToken: function () {
+		removeToken();
 	}
 });
 
@@ -190,17 +210,17 @@ MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
         break;
 
 		case ActionConstants.SET_ASSETS:
-			setAssets(action.file);
+			MyVehiclesStore.setAssets(action.file);
         break;
 
 		case ActionConstants.SHOW_VEHICLE_PANEL:
-			openRightPanel(true);
+			MyVehiclesStore.setRightPanel(true);
 		break;
 
 		case ActionConstants.RECEIVE_ERROR:
-			setStoreFlashMessage(action.msg);
-			setErrorStatus(action.status);
-			removeToken();
+			MyVehiclesStore.setStoreFlashMessage(action.msg);
+			MyVehiclesStore.setErrorStatus(action.status);
+			MyVehiclesStore.removeToken();
 		break;
 
         default:

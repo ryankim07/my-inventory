@@ -92,9 +92,12 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 	},
 
 	addProperty: function (results) {
-    	setSavedProperty(results.property);
-		setStoreFlashMessage(results.msg);
+    	let property = results.property;
+
+		setSavedProperty(property);
+		openRightPanel(false);
 		flagNewProperty();
+		setStoreFlashMessage(results.msg);
 	},
 
 	editProperty: function (property) {
@@ -156,6 +159,10 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		setStoreFlashMessage(property.msg);
 	},
 
+	setAssets: function(assets) {
+		setAssets(assets)
+	},
+
 	isAuthenticated: function() {
 		if (localStorage.getItem('id_token') === null) {
 			return false;
@@ -168,12 +175,28 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
     	return _showPanel;
 	},
 
+	setRightPanel: function(show) {
+		openRightPanel(show)
+	},
+
 	getStoreFlashMessage: function() {
 		return _storeMsg;
 	},
 
+	setStoreFlashMessage: function (msg) {
+		setStoreFlashMessage()
+	},
+
 	unsetStoreFlashMessage: function() {
 		_storeMsg = '';
+	},
+
+	setErrorStatus: function(status) {
+    	setErrorStatus(status);
+	},
+
+	removeToken: function () {
+		removeToken();
 	}
 });
 
@@ -193,7 +216,7 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
 
         case ActionConstants.EDIT_PROPERTY:
 			PropertiesStore.editProperty(action.property, action.showRightPanel);
-			openRightPanel(true);
+			PropertiesStore.setRightPanel(true);
         break;
 
         case ActionConstants.UPDATE_PROPERTY:
@@ -209,13 +232,17 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
 		break;
 
 		case ActionConstants.SET_ASSETS:
-			setAssets(action.file);
+			PropertiesStore.setAssets(action.file);
         break;
 
+		case ActionConstants.SHOW_PROPERTY_PANEL:
+			PropertiesStore.setRightPanel(true);
+		break;
+
 		case ActionConstants.RECEIVE_ERROR:
-			setStoreFlashMessage(action.msg);
-			setErrorStatus(action.status);
-			removeToken();
+			PropertiesStore.setStoreFlashMessage(action.msg);
+			PropertiesStore.setErrorStatus(action.status);
+			PropertiesStore.removeToken();
 		break;
 
         default:

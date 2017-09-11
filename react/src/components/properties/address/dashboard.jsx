@@ -102,7 +102,7 @@ class PropertyAddressDashboard extends React.Component
 		if (nextState.newPropertyAdded || this.state.newPropertyAdded) {
 			PropertiesStore.unFlagNewProperty();
 			nextState.newPropertyAdded = false;
-			this.context.router.push('/properties/addresses');
+			this.context.router.push("/properties/addresses");
 
 			return false;
 		}

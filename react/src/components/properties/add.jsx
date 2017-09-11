@@ -1,6 +1,6 @@
 import React from 'react';
 import PropertiesAction from '../../actions/properties-action';
-import PropertyAddressAdd from '../../components/properties/address/add';
+import PropertyAddressAdd from './address/add';
 import Uploader from '../helper/uploader';
 import { numberFormat } from "../helper/utils"
 
@@ -12,7 +12,7 @@ class PropertyAdd extends React.Component
         this.handleFormChange    = this.handleFormChange.bind(this);
         this.handleFormSubmit    = this.handleFormSubmit.bind(this);
         this.handleAddressChange = this.handleAddressChange.bind(this);
-		this.setAssets 		     = this.setAssets.bind(this);
+		this.handleAssets 		 = this.handleAssets.bind(this);
     }
 
     // Handle input changes
@@ -38,29 +38,35 @@ class PropertyAdd extends React.Component
         this.props.handleFormChange(property);
     }
 
+	// Handle appropriate action whenever address fields are changed
+	handleAddressChange(address) {
+		let property        = this.props.state.property;
+		property['address'] = address;
+
+		this.props.handleFormChange(property);
+	}
+
+	// Handle assets
+	handleAssets(assets) {
+		let property       = this.props.state.property;
+		property['assets'] = assets;
+
+		this.props.handleFormChange(property);
+	}
+
     // Submit
     handleFormSubmit(event) {
         event.preventDefault();
 
-        if (!this.state.isEditingMode) {
-			PropertiesAction.addProperty(this.state.property);
+        if (!this.props.state.isEditingMode) {
+			PropertiesAction.addProperty(this.props.state.property);
 		} else {
-			PropertiesAction.updateProperty(this.state.property);
+			PropertiesAction.updateProperty(this.props.state.property);
 
         	// Close the panel
             this.props.closeRightPanel();
         }
     }
-
-	// Handle appropriate action whenever address fields are changed
-	handleAddressChange(address) {
-		this.props.handleAddressChange(address);
-	}
-
-    // Set assets
-    setAssets(assets) {
-		this.props.setAssets(assets)
-	}
 
 	render() {
         let builtOptions = [];
@@ -102,7 +108,7 @@ class PropertyAdd extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Image</label>
 						<div className="input-group">
-							<Uploader setAssets={this.setAssets} isEditingMode={ this.props.state.isEditingMode } assets={ this.props.state.property.assets } />
+							<Uploader handleAssets={this.handleAssets} isEditingMode={ this.props.state.isEditingMode } assets={ this.props.state.property.assets } />
 						</div>
 					</div>
 				</div>
@@ -243,7 +249,7 @@ class PropertyAdd extends React.Component
 
 				<PropertyAddressAdd
 					address={ this.props.state.property.address }
-					onChange={ this.handleAddressChange }
+					handleAddressChange={ this.handleAddressChange }
 				/>
 
 				<div className="form-group">

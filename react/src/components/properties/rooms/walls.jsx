@@ -1,5 +1,5 @@
 import React from 'react';
-import PropertyPaintsDropdown from '../../../components/properties/paints/dropdown';
+import PropertyPaintsDropdown from '../paints/dropdown';
 import { upperFirstLetter } from "../../helper/utils"
 
 class PropertyRoomWalls extends React.Component
@@ -47,7 +47,7 @@ class PropertyRoomWalls extends React.Component
 				continue;
 			}
 
-			wallSidesOptions.push(<option key={wallSides[i]} value={wallSides[i]}>{ upperFirstLetter(wallSides[i])}</option>);
+			wallSidesOptions.push(<option key={ wallSides[i] } value={ wallSides[i] }>{ upperFirstLetter(wallSides[i]) }</option>);
 		}
 
         return (
@@ -55,15 +55,15 @@ class PropertyRoomWalls extends React.Component
                 <div className="form-group required">
                     <div className="col-xs-12 col-md-8">
                         <label className="control-label">Wall Name</label>
-						<button onClick={this.removeWall.bind(this, index)}><i className="fa fa-trash"></i></button>
+						<button onClick={ this.removeWall.bind(this, index) }><i className="fa fa-trash"></i></button>
                         <div className="input-group">
-                            <select ref={refName}
-									onChange={this.handleFormChange.bind(this, refName)}
-									value={this.props.wall.name}
+                            <select ref={ refName }
+									onChange={ this.handleFormChange.bind(this, refName) }
+									value={ this.props.wall.name }
 									className="form-control input-sm"
 									required="required">
 								<option value="">Select One</option>
-								{wallSidesOptions}
+								{ wallSidesOptions }
 							</select>
                         </div>
                     </div>
@@ -72,11 +72,12 @@ class PropertyRoomWalls extends React.Component
                     <div className="col-xs-12 col-md-8">
                         <label className="control-label">Paint Color</label>
 						<PropertyPaintsDropdown
-							index={index}
-							wallChange={this.props.wallChange}
-							allWalls={this.props.allWalls}
-							wall={this.props.wall}
-							paints={this.props.paints}/>
+							index={ index }
+							wallChange={ this.props.wallChange }
+							allWalls={ this.props.allWalls }
+							wall={ this.props.wall}
+							paints={ this.props.paints }
+						/>
                     </div>
                 </div>
             </div>

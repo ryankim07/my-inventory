@@ -16,7 +16,7 @@ class Uploader extends React.Component
 	}
 
 	componentWillMount() {
-		if (this.props.setAssets) {
+		if (this.props.handleAssets) {
 			this.setState({
 				assets: this.props.assets,
 				reUpload: false
@@ -32,8 +32,8 @@ class Uploader extends React.Component
 
 	// When dragging and dropping
 	onDrop(acceptedFiles) {
-		if (this.props.setAssets) {
-			this.props.setAssets(acceptedFiles[0]);
+		if (this.props.handleAssets) {
+			this.props.handleAssets(acceptedFiles[0]);
 		} else {
 			VehiclesAction.setAssets(acceptedFiles[0]);
 		}

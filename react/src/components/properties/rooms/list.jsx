@@ -39,14 +39,14 @@ class PropertyRoomsList extends React.Component
 			} else {
 				roomsHtml = rooms.map((room) => {
 					return (
-						<tr key={room.id}>
-							<td>{room.name}</td>
-							<td>{room.total_area}</td>
-							<td>{room.description}</td>
+						<tr key={ room.id }>
+							<td>{ room.name }</td>
+							<td>{ room.total_area }</td>
+							<td>{ room.description }</td>
 							<td>
-								<button onClick={this.handleRemove.bind(this, room.id)}><i className="fa fa-trash"></i>
+								<button onClick={ this.handleRemove.bind(this, room.id) }><i className="fa fa-trash"></i>
 								</button>
-								<button onClick={this.handleEdit.bind(this, room)}><i className="fa fa-pencil"></i>
+								<button onClick={ this.handleEdit.bind(this, room) }><i className="fa fa-pencil"></i>
 								</button>
 							</td>
 						</tr>
@@ -58,7 +58,7 @@ class PropertyRoomsList extends React.Component
 		}
 
         return (
-            <div className={[this.props.mobileWidth, this.props.desktopWidth, this.props.className].join(' ')} id="rooms-main">
+            <div className={ [this.props.mobileWidth, this.props.desktopWidth, this.props.className].join(' ') } id="rooms-main">
                 <div className="row">
                     <div className="panel panel-info">
                         <div className="panel-heading">
@@ -67,7 +67,7 @@ class PropertyRoomsList extends React.Component
                                     <span>Properties Rooms List</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2">
-									<button onClick={this.handleAdd.bind(this)}><i className="fa fa-plus">Add Room</i></button>
+									<button onClick={ this.handleAdd.bind(this) }><i className="fa fa-plus">Add Room</i></button>
 								</div>
                             </div>
                         </div>

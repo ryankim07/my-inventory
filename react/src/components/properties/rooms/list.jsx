@@ -32,19 +32,27 @@ class PropertyRoomsList extends React.Component
         let roomsHtml = '';
 
 		if (!this.props.state.loader) {
-			roomsHtml = this.props.state.rooms.map((room) => {
-				return (
-					<tr key={ room.id }>
-						<td>{ room.name }</td>
-						<td>{ room.total_area }</td>
-						<td>{ room.description }</td>
-						<td>
-							<button onClick={ this.handleRemove.bind(this, room.id) }><i className="fa fa-trash"></i></button>
-							<button onClick={ this.handleEdit.bind(this, room) }><i className="fa fa-pencil"></i></button>
-						</td>
-					</tr>
-				);
-			});
+			let rooms = this.props.state.rooms;
+
+			if (!rooms) {
+				roomsHtml = <tr><td>There are no saved rooms.</td></tr>;
+			} else {
+				roomsHtml = rooms.map((room) => {
+					return (
+						<tr key={room.id}>
+							<td>{room.name}</td>
+							<td>{room.total_area}</td>
+							<td>{room.description}</td>
+							<td>
+								<button onClick={this.handleRemove.bind(this, room.id)}><i className="fa fa-trash"></i>
+								</button>
+								<button onClick={this.handleEdit.bind(this, room)}><i className="fa fa-pencil"></i>
+								</button>
+							</td>
+						</tr>
+					);
+				});
+			}
 		} else {
 			roomsHtml = <tr><td><Loader /></td></tr>;
 		}

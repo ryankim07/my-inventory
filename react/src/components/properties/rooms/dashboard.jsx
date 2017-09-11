@@ -150,6 +150,27 @@ class PropertyRoomsDashboard extends React.Component
 		});
 	}
 
+	handleFormChange(room) {
+		this.setState({
+			room: room
+		});
+	}
+
+	// Handle appropriate action whenever wall fields are changed
+	handleWallChange(walls, disableBtn) {
+		this.setState({
+			room: {
+				id: this.state.room.id,
+				property_id: this.state.room.property_id,
+				name: this.state.room.name,
+				total_area: this.state.room.total_area,
+				description: this.state.room.description,
+				walls: walls
+			},
+			disableAddWallsBtn: disableBtn
+		});
+	}
+
 	setFlashMessage($msg) {
 		this.setState({flashMessage: $msg})
 	}
@@ -171,27 +192,6 @@ class PropertyRoomsDashboard extends React.Component
 		});
 
 		return false;
-	}
-
-	handleFormChange(room) {
-		this.setState({
-			room: room
-		});
-	}
-
-	// Handle appropriate action whenever wall fields are changed
-	handleWallChange(walls, disableBtn) {
-		this.setState({
-			room: {
-				id: this.state.room.id,
-				property_id: this.state.room.property_id,
-				name: this.state.room.name,
-				total_area: this.state.room.total_area,
-				description: this.state.room.description,
-				walls: walls
-			},
-			disableAddWallsBtn: disableBtn
-		});
 	}
 
 	render() {

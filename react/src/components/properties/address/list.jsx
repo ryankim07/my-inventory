@@ -53,7 +53,7 @@ class PropertiesAddressList extends React.Component
 			if (!addresses) {
 				addressesHtml = <tr><td>There are no saved addresses.</td></tr>;
 			} else {
-				addressesHtml = this.state.addresses.map((address) => {
+				addressesHtml = addresses.map((address) => {
 
 					return (
                         <tr key={ address.id }>

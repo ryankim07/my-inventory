@@ -63,6 +63,7 @@ class PropertyAddressDashboard extends React.Component
 
 	componentWillMount() {
 		PropertiesStore.addChangeListener(this._onChange);
+		PropertiesAddressStore.addChangeListener(this._onChange);
 		PropertiesStore.unsetStoreFlashMessage();
 	}
 
@@ -72,6 +73,7 @@ class PropertyAddressDashboard extends React.Component
 
 	componentWillUnmount() {
 		PropertiesStore.removeChangeListener(this._onChange);
+		PropertiesAddressStore.removeChangeListener(this._onChange);
 		PropertiesStore.unsetPropertyToUpdate();
 	}
 
@@ -91,6 +93,7 @@ class PropertyAddressDashboard extends React.Component
 	shouldComponentUpdate(nextProps, nextState) {
 		// Check here and don't render component again if it's an image upload action
 		let emptyObj = _.every(_.values(nextState.property), function(v) {return !v;});
+
 		if (nextState.property.assets !== '' && emptyObj) {
 			return false;
 		}
@@ -111,12 +114,13 @@ class PropertyAddressDashboard extends React.Component
 		let addresses 		  = PropertiesAddressStore.getAddresses();
 		let addingNewProperty = PropertiesStore.isNewPropertyAdded();
 		let propertyToUpdate  = PropertiesStore.getPropertyToUpdate();
+		//@TODO
 		let savedProperty 	  = PropertiesStore.getSavedProperty();
 		let flashMsg 		  = PropertiesStore.getStoreFlashMessage();
 		let isAuthenticated   = PropertiesStore.isAuthenticated();
 		let openRightPanel 	  = PropertiesStore.openRightPanel();
 		let isEditingMode 	  = this.state.isEditingMode;
-		let stateProperty 	  = savedProperty !== '' ? savedProperty : this.state.property;
+		let stateProperty 	  = this.state.property;
 
 		if (!isAuthenticated){
 			this.context.router.push("/auth/login");

@@ -125,8 +125,14 @@ class Rooms
             $msg = !$this->existingRoom ? 'added' : 'updated';
 
             return [
-                'property' => $this->entity,
-                'msg'      => "Room successfully {$msg}."
+                'room' => [
+                    'id'          => $this->entity->getId(),
+                    'property_id' => $this->entity->getPropertyId(),
+                    'name'        => $this->entity->getName(),
+                    'total_area'  => $this->entity->getTotalArea(),
+                    'description' => $this->entity->getDescription()
+                ],
+                'msg'   => "Room successfully {$msg}."
             ];
         } catch(\Exception $e) {
             return ['msg' => $e->getMessage()];

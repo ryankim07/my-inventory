@@ -45,6 +45,7 @@ class PropertyDashboard extends React.Component
 			isEditingMode: false,
 			newPropertyAdded: false,
 			loader: true,
+			mainPanel: null,
 			showRightPanel: false,
 			flashMessage: null,
 			columnCss: {
@@ -66,7 +67,6 @@ class PropertyDashboard extends React.Component
 
 	componentDidMount() {
 		PropertiesAction.getProperties();
-		//PropertiesAction.getProperty(this.state.propertyId);
 	}
 
 	componentWillUnmount() {
@@ -116,9 +116,9 @@ class PropertyDashboard extends React.Component
 		let savedProperty 	  = PropertiesStore.getSavedProperty();
 		let flashMsg 		  = PropertiesStore.getStoreFlashMessage();
 		let isAuthenticated   = PropertiesStore.isAuthenticated();
+		let mainPanel		  = PropertiesStore.getMainPanel();
 		let openRightPanel 	  = PropertiesStore.openRightPanel();
 		let isEditingMode 	  = this.state.isEditingMode;
-		let stateProperty 	  = this.state.property;
 
 		if (!isAuthenticated){
 			this.context.router.push("/auth/login");
@@ -126,10 +126,11 @@ class PropertyDashboard extends React.Component
 		}
 
 		this.setState({
-			property: stateProperty,
+			property: !Object.keys(property).length ? this.state.property : property,
 			properties: properties,
 			isEditingMode: isEditingMode,
 			newPropertyAdded: addingNewProperty,
+			mainPanel: mainPanel === undefined ? null : mainPanel,
 			showRightPanel: !!openRightPanel,
 			flashMessage: flashMsg !== undefined ? flashMsg : null,
 			loader: false,
@@ -166,21 +167,24 @@ class PropertyDashboard extends React.Component
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-success" />}
-				<PropertiesList
-					state={ this.state }
-					mobileWidth={ this.state.columnCss.mobileWidth }
-					desktopWidth={ this.state.columnCss.desktopWidth }
-					className="main-column" />
-				{/*{
-					this.state.showRightPanel ?
-					<PropertyView
-						mobileWidth={this.state.columnCss.mobileWidth}
-						desktopWidth={this.state.columnCss.desktopWidth}
-						className="main-column"
-						property={this.state.property}
-						loader={this.state.loader}
-					/> : null
-				}*/}
+
+				{
+					this.state.mainPanel === null ?
+						<PropertiesList
+							state={ this.state }
+							mobileWidth={ this.state.columnCss.mobileWidth }
+							desktopWidth={ this.state.columnCss.desktopWidth }
+							className="main-column"
+						/> :
+						<PropertyView
+							mobileWidth={this.state.columnCss.mobileWidth}
+							desktopWidth={this.state.columnCss.desktopWidth}
+							className="main-column"
+							property={this.state.property}
+							loader={this.state.loader}
+						/>
+				}
+
 				{
 					this.state.showRightPanel ?
 						<PropertyAdd

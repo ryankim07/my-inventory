@@ -213,7 +213,7 @@ MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
 			MyVehiclesStore.setAssets(action.file);
         break;
 
-		case ActionConstants.SHOW_VEHICLE_PANEL:
+		case ActionConstants.SHOW_VEHICLE_ADD_PANEL:
 			MyVehiclesStore.setRightPanel(true);
 		break;
 

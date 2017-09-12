@@ -7,9 +7,10 @@ import _ from 'lodash';
 let _properties = [];
 let _property = {};
 let _savedProperty = {};
-let _propertyAdded = false;
 let _assets;
-let _showPanel = false;
+let _mainPanel;
+let _propertyAdded = false;
+let _showRightPanel = false;
 let _errStatus;
 let _storeMsg;
 
@@ -33,8 +34,12 @@ function setAssets(assets) {
     _assets = assets;
 }
 
+function setMainPanel(name) {
+	_mainPanel = name;
+}
+
 function openRightPanel(show) {
-	_showPanel = show;
+	_showRightPanel = show;
 }
 
 function setStoreFlashMessage(msg) {
@@ -51,28 +56,20 @@ function removeToken() {
 
 let PropertiesStore = assign({}, EventEmitter.prototype, {
     // Emit Change event
-    emitChange: function(){
+    emitChange: function() {
         this.emit('change');
     },
 
-    addChangeListener: function(callback){
+    addChangeListener: function(callback) {
         this.on('change', callback);
     },
 
-    removeChangeListener: function(callback){
+    removeChangeListener: function(callback) {
         this.removeListener('change', callback);
 	},
 
 	getProperties: function () {
 		return _properties;
-	},
-
-	getProperty: function () {
-		return _property;
-	},
-
-	getSavedProperty: function () {
-		return _savedProperty;
 	},
 
 	setProperties: function (properties) {
@@ -83,12 +80,20 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		}
 	},
 
+	getProperty: function () {
+		return _property;
+	},
+
 	setProperty: function (property) {
 		if (property.msg) {
 			setStoreFlashMessage(property.msg)
 		} else {
 			setProperty(property)
 		}
+	},
+
+	getSavedProperty: function () {
+		return _savedProperty;
 	},
 
 	addProperty: function (results) {
@@ -171,8 +176,16 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		return true;
 	},
 
+	setMainPanel: function(name) {
+    	setMainPanel(name);
+	},
+
+	getMainPanel: function() {
+		return _mainPanel;
+	},
+
 	openRightPanel: function() {
-    	return _showPanel;
+    	return _showRightPanel;
 	},
 
 	setRightPanel: function(show) {
@@ -215,7 +228,7 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
         break;
 
         case ActionConstants.EDIT_PROPERTY:
-			PropertiesStore.editProperty(action.property, action.showRightPanel);
+			PropertiesStore.editProperty(action.property);
 			PropertiesStore.setRightPanel(true);
         break;
 
@@ -235,8 +248,13 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
 			PropertiesStore.setAssets(action.file);
         break;
 
-		case ActionConstants.SHOW_PROPERTY_PANEL:
+		case ActionConstants.SHOW_PROPERTY_ADD_PANEL:
 			PropertiesStore.setRightPanel(true);
+		break;
+
+		case ActionConstants.SHOW_PROPERTY_VIEW_PANEL:
+			PropertiesStore.setMainPanel(action.name);
+			PropertiesStore.setProperty(action.data);
 		break;
 
 		case ActionConstants.RECEIVE_ERROR:

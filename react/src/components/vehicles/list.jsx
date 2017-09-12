@@ -12,7 +12,7 @@ class VehiclesList extends React.Component
 
 	handleAdd() {
 		AppDispatcher.handleViewAction({
-			actionType: ActionConstants.SHOW_VEHICLE_PANEL
+			actionType: ActionConstants.SHOW_VEHICLE_ADD_PANEL
         });
     }
 

@@ -21,7 +21,7 @@ class PropertiesList extends React.Component
 
 	handleAdd() {
 		AppDispatcher.handleViewAction({
-			actionType: ActionConstants.SHOW_PROPERTY_PANEL
+			actionType: ActionConstants.SHOW_PROPERTY_ADD_PANEL
 		});
 	}
 
@@ -36,11 +36,16 @@ class PropertiesList extends React.Component
 		PropertiesAction.removeAddress(id);
 	}
 
-	handleView(propertyId) {
-		this.context.router.push({
+	handleView(property) {
+		AppDispatcher.handleViewAction({
+			actionType: ActionConstants.SHOW_PROPERTY_VIEW_PANEL,
+			name: "view",
+			data: property
+		});
+		/*this.context.router.push({
 			pathname: "/properties/dashboard",
 			state: {property_id: propertyId}
-		});
+		});*/
 	}
 
     render() {

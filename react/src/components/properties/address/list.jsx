@@ -28,8 +28,8 @@ class PropertiesAddressList extends React.Component
 		});*/
 	}
 
-	handleView(propertyId) {
-		this.props.handleView(propertyId);
+	handleView(property) {
+		this.props.handleView(property);
 	}
 
     render() {
@@ -49,7 +49,7 @@ class PropertiesAddressList extends React.Component
 					<td>
 						<button onClick={ this.handleRemove.bind(this, address.property_id) }><i className="fa fa-trash" aria-hidden="true" /></button>
 						<button onClick={ this.handleEdit.bind(this, address) }><i className="fa fa-pencil" aria-hidden="true" /></button>
-						<button onClick={ this.handleEdit.bind(this, address.property_id) }><i className="fa fa-search" aria-hidden="true" /></button>
+						<button onClick={ this.handleView.bind(this, property) }><i className="fa fa-search" aria-hidden="true" /></button>
 					</td>
 				</tr>
 			);

@@ -255,6 +255,7 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
 		case ActionConstants.SHOW_PROPERTY_VIEW_PANEL:
 			PropertiesStore.setMainPanel(action.name);
 			PropertiesStore.setProperty(action.data);
+			PropertiesStore.setRightPanel(false);
 		break;
 
 		case ActionConstants.RECEIVE_ERROR:

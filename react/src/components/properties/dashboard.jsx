@@ -73,6 +73,7 @@ class PropertyDashboard extends React.Component
 		PropertiesStore.removeChangeListener(this._onChange);
 	}
 
+	// When component from same route are unmounting and need to remount
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.location.action !== 'POP') {
 			this.setState({
@@ -81,6 +82,7 @@ class PropertyDashboard extends React.Component
 					'desktopWidth': mainDefaultDesktopColumnWidth
 				},
 				showRightPanel: false,
+				mainPanel: null,
 				flashMessage: null
 			});
 		}
@@ -177,11 +179,11 @@ class PropertyDashboard extends React.Component
 							className="main-column"
 						/> :
 						<PropertyView
-							mobileWidth={this.state.columnCss.mobileWidth}
-							desktopWidth={this.state.columnCss.desktopWidth}
+							mobileWidth={ this.state.columnCss.mobileWidth }
+							desktopWidth={ this.state.columnCss.desktopWidth }
 							className="main-column"
-							property={this.state.property}
-							loader={this.state.loader}
+							property={ this.state.property }
+							loader={ this.state.loader }
 						/>
 				}
 

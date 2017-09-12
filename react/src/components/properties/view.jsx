@@ -1,5 +1,4 @@
 import React from 'react';
-import Loader from '../loader';
 
 class PropertyView extends React.Component
 {

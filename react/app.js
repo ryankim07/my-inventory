@@ -14,9 +14,6 @@ import PropertyDashboard from './src/components/properties/dashboard';
 import PropertyAdd from './src/components/properties/add';
 import PropertiesList from './src/components/properties/list';
 import PropertyView from './src/components/properties/view';
-/*import PropertyAddressDashboard from './src/components/properties/address/dashboard';
-import PropertyAddressAdd from './src/components/properties/address/add';
-import PropertiesAddressList from './src/components/properties/address/list';*/
 import PropertyRoomsDashboard from './src/components/properties/rooms/dashboard';
 import PropertyRoomAdd from "./src/components/properties/rooms/add";
 import PropertyRoomsList from './src/components/properties/rooms/list';
@@ -52,11 +49,6 @@ ReactDOM.render(
 				<Route path="/properties/view" component={ PropertyView } />
 				<Route path="/property/exterior-features/add" component={ PropertyExteriorFeaturesAdd } />
 			</Route>
-
-			{/*<Route path="/properties/address/dashboard" component={ PropertyAddressDashboard } >
-				<Route path="/property/address/add" component={ PropertyAddressAdd } />
-				<Route path="/properties/addresses" component={ PropertiesAddressList } />
-			</Route>*/}
 
 			<Route path="/properties/rooms/dashboard" component={ PropertyRoomsDashboard } >
 				<Route path="/property/rooms/add" component={ PropertyRoomAdd } />

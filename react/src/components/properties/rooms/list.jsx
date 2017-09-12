@@ -3,6 +3,7 @@ import AppDispatcher from '../../../dispatcher/app-dispatcher';
 import ActionConstants from '../../../constants/action-constants';
 import PropertiesRoomsAction from '../../../actions/properties-rooms-action';
 import Loader from '../../loader';
+import Previous from '../../previous';
 
 class PropertyRoomsList extends React.Component
 {
@@ -68,6 +69,7 @@ class PropertyRoomsList extends React.Component
                                 </div>
                                 <div className="col-xs-2 col-md-2">
 									<button onClick={ this.handleAdd.bind(this) }><i className="fa fa-plus" aria-hidden="true" /></button>
+									<Previous route="/properties/view"/>
 								</div>
                             </div>
                         </div>

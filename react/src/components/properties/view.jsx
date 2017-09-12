@@ -1,4 +1,5 @@
 import React from 'react';
+import Previous from '../previous';
 
 class PropertyView extends React.Component
 {
@@ -143,9 +144,12 @@ class PropertyView extends React.Component
                     <div className="panel panel-info">
                         <div className="panel-heading">
                             <div className="row">
-                                <div className="col-xs-12 col-md-12">
+                                <div className="col-xs-10 col-md-10">
                                     <span>Property Information</span>
                                 </div>
+								<div className="col-xs-2 col-md-2">
+									<Previous route="/properties/dashboard"/>
+								</div>
                             </div>
                         </div>
                         <div className="panel-body">

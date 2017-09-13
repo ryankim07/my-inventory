@@ -75,7 +75,7 @@ class PropertyDashboard extends React.Component
 
 	// When component from same route are unmounting and need to remount
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.location.action !== 'POP') {
+		if (nextProps.location.action !== 'POP' || nextProps.location.action !== 'PUSH') {
 			this.setState({
 				columnCss: {
 					'mobileWidth': mainDefaultMobileColumnWidth,
@@ -110,8 +110,8 @@ class PropertyDashboard extends React.Component
 
 	// State changes
 	_onChange() {
+		let property   		  = PropertiesStore.getProperty();
 		let properties		  = PropertiesStore.getProperties();
-		let property 		  = PropertiesStore.getProperty();
 		let addingNewProperty = PropertiesStore.isNewPropertyAdded();
 		let propertyToUpdate  = PropertiesStore.getPropertyToUpdate();
 		//@TODO
@@ -128,7 +128,7 @@ class PropertyDashboard extends React.Component
 		}
 
 		this.setState({
-			property: !Object.keys(property).length ? this.state.property : property,
+			property: property,
 			properties: properties,
 			isEditingMode: isEditingMode,
 			newPropertyAdded: addingNewProperty,
@@ -145,7 +145,9 @@ class PropertyDashboard extends React.Component
 
 	// Handle form changes
 	handleFormChange(property) {
-		this.setState({property: property});
+		this.setState({
+			property: property
+		});
 	}
 
 	// Set flash message
@@ -160,6 +162,7 @@ class PropertyDashboard extends React.Component
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
 			},
+			mainPanel: null,
 			showRightPanel: false
 		});
 	}

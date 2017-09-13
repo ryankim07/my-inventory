@@ -1,5 +1,5 @@
 import React from 'react';
-import Previous from '../previous';
+import Previous from '../helper/previous';
 
 class PropertyView extends React.Component
 {
@@ -148,7 +148,7 @@ class PropertyView extends React.Component
                                     <span>Property Information</span>
                                 </div>
 								<div className="col-xs-2 col-md-2">
-									<Previous route="/properties/dashboard"/>
+									<Previous route="/properties"/>
 								</div>
                             </div>
                         </div>

@@ -2,8 +2,8 @@ import React from 'react';
 import AppDispatcher from '../../../dispatcher/app-dispatcher';
 import ActionConstants from '../../../constants/action-constants';
 import PropertiesRoomsAction from '../../../actions/properties-rooms-action';
-import Loader from '../../loader';
-import Previous from '../../previous';
+import Loader from '../../helper/loader';
+import Previous from '../../helper/previous';
 
 class PropertyRoomsList extends React.Component
 {

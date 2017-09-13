@@ -76,29 +76,29 @@ class PropertyAdd extends React.Component
 
 		// Built options
 		for (let i = 1970; i <= 2050; i++) {
-			builtOptions.push(<option key={'y-' + i} value={i}>{ i }</option>)
+			builtOptions.push(<option key={ 'y-' + i } value={ i }>{ i }</option>)
 		}
 
 		// Bed options
 		for (let j = 0; j <= 15; j++) {
-			bedsOptions.push(<option key={'be-' + j} value={j}>{ j }</option>)
+			bedsOptions.push(<option key={ 'be-' + j } value={ j }>{ j }</option>)
 		}
 
 		// Bath options
 		let half = 0;
 		for (let k = 1; k <= 10; k++) {
 			half = k + 0.5;
-			bathsOptions.push(<option key={'ba-' + k} value={k}>{ k }</option>)
-			bathsOptions.push(<option key={'ba-' + half} value={half}>{ half }</option>)
+			bathsOptions.push(<option key={ 'ba-' + k } value={ k }>{ k }</option>)
+			bathsOptions.push(<option key={ 'ba-' + half } value={ half }>{ half }</option>)
 		}
 
 		// Floor options
 		for (let x = 0; x <= 10; x++) {
-			floorsOptions.push(<option key={'f-' + x} value={x}>{ x }</option>)
+			floorsOptions.push(<option key={ 'f-' + x } value={ x }>{ x }</option>)
 		}
 
 		let propertyForm =
-			<form onSubmit={this.handleFormSubmit}>
+			<form onSubmit={ this.handleFormSubmit }>
 				<div>
 					<hr/>
 					<p>General Information</p>
@@ -108,7 +108,11 @@ class PropertyAdd extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Image</label>
 						<div className="input-group">
-							<Uploader handleAssets={this.handleAssets} isEditingMode={ this.props.state.isEditingMode } assets={ this.props.state.property.assets } />
+							<Uploader
+								handleAssets={ this.handleAssets }
+								isEditingMode={ this.props.state.isEditingMode }
+								assets={ this.props.state.property.assets }
+							/>
 						</div>
 					</div>
 				</div>
@@ -132,8 +136,8 @@ class PropertyAdd extends React.Component
 						<label className="control-label">Style</label>
 						<div className="input-group">
 							<select ref="style"
-									onChange={ this.handleFormChange.bind(this, 'style')}
-									value={ this.props.state.property.style}
+									onChange={ this.handleFormChange.bind(this, 'style') }
+									value={ this.props.state.property.style }
 									className="form-control input-sm"
 									required="required">
 								<option value="">Select One</option>
@@ -151,8 +155,8 @@ class PropertyAdd extends React.Component
 						<label className="control-label">Floors</label>
 						<div className="input-group">
 							<select ref="baths"
-									onChange={ this.handleFormChange.bind(this, 'floors')}
-									value={ this.props.state.property.floors}
+									onChange={ this.handleFormChange.bind(this, 'floors') }
+									value={ this.props.state.property.floors }
 									className="form-control input-sm"
 									required="required">
 								<option value="">Select One</option>

@@ -53,7 +53,7 @@ class Uploader extends React.Component
 		} else {
 			assetPreview = this.state.assets.map((file, id) => {
 				return (
-					<img key={id} src={file.preview} />
+					<img key={id} src={file.path} />
 				);
 			});
 		}

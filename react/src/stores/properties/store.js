@@ -114,8 +114,31 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		return _property;
 	},
 
-	unsetPropertyToUpdate: function () {
-		return _property = {};
+	clearPropertyObj: function () {
+		return _property = {
+			id: '',
+			style: '',
+			beds: '',
+			baths: '',
+			finished_area: '',
+			unfinished_area: '',
+			total_area: '',
+			floors: '',
+			built: '',
+			parcel_number: '',
+			assets: [],
+			address: {
+				id: '',
+				property_id: '',
+				street: '',
+				city: '',
+				state: '',
+				zip: '',
+				county: '',
+				country: '',
+				subdivision: ''
+			}
+		};
 	},
 
 	isNewPropertyAdded: function () {
@@ -221,6 +244,7 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
     switch(action.actionType) {
         case ActionConstants.RECEIVE_PROPERTIES:
 			PropertiesStore.setProperties(action.properties);
+			PropertiesStore.clearPropertyObj();
         break;
 
         case ActionConstants.ADD_PROPERTY:
@@ -228,7 +252,7 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
         break;
 
         case ActionConstants.EDIT_PROPERTY:
-			PropertiesStore.editProperty(action.property);
+			PropertiesStore.editProperty(action.data);
 			PropertiesStore.setRightPanel(true);
         break;
 
@@ -249,6 +273,8 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
         break;
 
 		case ActionConstants.SHOW_PROPERTY_ADD_PANEL:
+			PropertiesStore.setMainPanel(action.name);
+			PropertiesStore.clearPropertyObj();
 			PropertiesStore.setRightPanel(true);
 		break;
 

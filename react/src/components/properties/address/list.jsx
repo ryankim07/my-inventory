@@ -12,7 +12,7 @@ class PropertiesAddressList extends React.Component
 	}
 
 	handleEdit(data) {
-		this.props.editProperty(data);
+		this.props.handleEdit(data);
 		// Set panel width
 		/*let imageName = data.assets[0] === undefined ? data.assets.name : data.assets[0].name;
 		let imagePath = data.assets[0] === undefined ? data.assets.path : data.assets[0].path;
@@ -48,7 +48,7 @@ class PropertiesAddressList extends React.Component
 					<td>{ address.subdivision }</td>
 					<td>
 						<button onClick={ this.handleRemove.bind(this, address.property_id) }><i className="fa fa-trash" aria-hidden="true" /></button>
-						<button onClick={ this.handleEdit.bind(this, address) }><i className="fa fa-pencil" aria-hidden="true" /></button>
+						<button onClick={ this.handleEdit.bind(this, property) }><i className="fa fa-pencil" aria-hidden="true" /></button>
 						<button onClick={ this.handleView.bind(this, property) }><i className="fa fa-search" aria-hidden="true" /></button>
 					</td>
 				</tr>

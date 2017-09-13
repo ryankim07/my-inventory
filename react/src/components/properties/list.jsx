@@ -3,7 +3,7 @@ import AppDispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
 import PropertiesAction from '../../actions/properties-action';
 import PropertyAddressList from './address/list';
-import Loader from '../loader';
+import Loader from '../helper/loader';
 
 class PropertiesList extends React.Component
 {
@@ -21,14 +21,15 @@ class PropertiesList extends React.Component
 
 	handleAdd() {
 		AppDispatcher.handleViewAction({
-			actionType: ActionConstants.SHOW_PROPERTY_ADD_PANEL
+			actionType: ActionConstants.SHOW_PROPERTY_ADD_PANEL,
+			name: null
 		});
 	}
 
 	handleEdit(data) {
 		AppDispatcher.handleViewAction({
 			actionType: ActionConstants.EDIT_PROPERTY,
-			property: data
+			data: data
 		});
 	}
 

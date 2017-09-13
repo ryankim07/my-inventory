@@ -2,7 +2,7 @@ import React from 'react';
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
 import VehiclesAction from '../../actions/vehicles-action';
-import Loader from '../loader';
+import Loader from '../helper/loader';
 
 class VehiclesList extends React.Component
 {

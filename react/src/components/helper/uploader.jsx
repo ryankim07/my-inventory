@@ -6,61 +6,34 @@ class Uploader extends React.Component
 {
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			assets: [],
-			reUpload: false
-		}
-
-		this.onDrop = this.onDrop.bind(this);
 	}
 
-	componentWillMount() {
-		if (this.props.handleAssets) {
-			this.setState({
-				assets: this.props.assets,
-				reUpload: false
-			});
-		}
-	}
-
-	componentWillReceiveProps(nextProps) {
+	/*componentWillReceiveProps(nextProps) {
 		if (this.state.assets.path !== nextProps.assets.path) {
 			this.state.assets = nextProps.assets;
 		}
-	}
+	}*/
 
 	// When dragging and dropping
 	onDrop(acceptedFiles) {
-		if (this.props.handleAssets) {
-			this.props.handleAssets(acceptedFiles[0]);
-		} else {
-			VehiclesAction.setAssets(acceptedFiles[0]);
-		}
-
-		this.setState({
-			assets: acceptedFiles,
-			reUpload: true
-		});
+		//VehiclesAction.setAssets(acceptedFiles[0]);
+		this.props.setAssets(acceptedFiles[0]);
 	}
 
 	render() {
 		// Set preview
 		let assetPreview = '';
+		let assets = this.props.assets;
 
-		if (this.props.isEditingMode && !this.state.reUpload) {
-			assetPreview = <img src={this.state.assets.path} />;
+		if (this.props.isEditingMode) {
+			assetPreview = <img src={ assets.path } />;
 		} else {
-			assetPreview = this.state.assets.map((file, id) => {
-				return (
-					<img key={id} src={file.path} />
-				);
-			});
+			assetPreview = <img src={ assets.preview } />;
 		}
 
 		return (
 			<div>
-				<Dropzone onDrop={this.onDrop}>
+				<Dropzone onDrop={ this.onDrop.bind(this) }>
 					<div>Try dropping some files here, or click to select files to upload.</div>
 				</Dropzone>
 				<div>

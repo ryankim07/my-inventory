@@ -45,6 +45,7 @@ class PropertyDashboard extends React.Component
 			isEditingMode: false,
 			newPropertyAdded: false,
 			loader: true,
+			reUpload: false,
 			mainPanel: null,
 			showRightPanel: false,
 			flashMessage: null,

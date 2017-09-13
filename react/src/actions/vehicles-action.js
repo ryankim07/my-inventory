@@ -91,25 +91,7 @@ let VehiclesAction = {
 					msg: resp.msg
                 });
             });
-    },
-
-	setAssets: function(file) {
-		Api
-			.postImage('http://mcs.dev/api/asset', file)
-			.then(function (msg) {
-				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.SET_ASSETS,
-					file: file
-				});
-			})
-			.catch(function(resp) {
-				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.RECEIVE_ERROR,
-					status: resp.status,
-					msg: resp.msg
-				});
-			});
-	}
+    }
 };
 
 export default VehiclesAction;

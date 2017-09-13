@@ -56,7 +56,7 @@ class VehiclesList extends React.Component
 							<td>{ vehicle.vin }</td>
 							<td>{ vehicle.plate }</td>
 							<td>
-								<button onClick={ this.removeMyVehicle.bind(this.vehicle.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
+								<button onClick={ this.removeMyVehicle.bind(this, vehicle.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
 								<button onClick={ this.editMyVehicle.bind(this, vehicle) }><i className="fa fa-pencil" aria-hidden="true" /></button>
 							</td>
 						</tr>

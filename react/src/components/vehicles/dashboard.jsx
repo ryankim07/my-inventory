@@ -35,6 +35,7 @@ class VehiclesDashboard extends React.Component
 			isEditingMode: false,
 			newVehicleAdded: false,
 			loader: true,
+			reUpload: false,
 			showRightPanel: false,
 			flashMessage: null,
 			columnCss: {
@@ -136,8 +137,8 @@ class VehiclesDashboard extends React.Component
 		this.setState({vehicle: vehicle});
 	}
 
-	setFlashMessage($msg) {
-		this.setState({flashMessage: $msg})
+	setFlashMessage(msg) {
+		this.setState({flashMessage: msg})
 	}
 
 	closeRightPanel() {

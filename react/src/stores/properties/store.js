@@ -7,7 +7,6 @@ import _ from 'lodash';
 let _properties = [];
 let _property = {};
 let _savedProperty = {};
-let _assets;
 let _mainPanel;
 let _propertyAdded = false;
 let _showRightPanel = false;
@@ -28,10 +27,6 @@ function setSavedProperty(property) {
 
 function flagNewProperty() {
     _propertyAdded = true;
-}
-
-function setAssets(assets) {
-    _assets = assets;
 }
 
 function setMainPanel(name) {
@@ -187,10 +182,6 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		setStoreFlashMessage(property.msg);
 	},
 
-	setAssets: function(assets) {
-		setAssets(assets)
-	},
-
 	isAuthenticated: function() {
 		if (localStorage.getItem('id_token') === null) {
 			return false;
@@ -267,10 +258,6 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
 		case ActionConstants.GET_PROPERTY:
 			PropertiesStore.setProperty(action.results);
 		break;
-
-		case ActionConstants.SET_ASSETS:
-			PropertiesStore.setAssets(action.file);
-        break;
 
 		case ActionConstants.SHOW_PROPERTY_ADD_PANEL:
 			PropertiesStore.setMainPanel(action.name);

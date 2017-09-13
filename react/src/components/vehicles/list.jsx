@@ -6,33 +6,20 @@ import Loader from '../helper/loader';
 
 class VehiclesList extends React.Component
 {
-    constructor(props) {
-        super(props);
-    }
-
-	handleAdd() {
+    handleAdd() {
 		AppDispatcher.handleViewAction({
 			actionType: ActionConstants.SHOW_VEHICLE_ADD_PANEL
         });
     }
 
-    editMyVehicle(data) {
-        // Set panel width
-		/*let imageName = data.assets[0] === undefined ? data.assets.name : data.assets[0].name;
-		let imagePath = data.assets[0] === undefined ? data.assets.path : data.assets[0].path;
-
-		data['assets']: {
-			name: data.imageName,
-				path: data.imagePath
-		}*/
-
-		AppDispatcher.handleViewAction({
+    handleEdit(vehicle) {
+        AppDispatcher.handleViewAction({
 			actionType: ActionConstants.EDIT_MY_VEHICLE,
-			vehicle: data
+			results: vehicle
 		});
     }
 
-    removeMyVehicle(id) {
+    handleRemove(id) {
         VehiclesAction.removeMyVehicle(id);
     }
 
@@ -56,8 +43,8 @@ class VehiclesList extends React.Component
 							<td>{ vehicle.vin }</td>
 							<td>{ vehicle.plate }</td>
 							<td>
-								<button onClick={ this.removeMyVehicle.bind(this, vehicle.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
-								<button onClick={ this.editMyVehicle.bind(this, vehicle) }><i className="fa fa-pencil" aria-hidden="true" /></button>
+								<button onClick={ this.handleRemove.bind(this, vehicle.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
+								<button onClick={ this.handleEdit.bind(this, vehicle) }><i className="fa fa-pencil" aria-hidden="true" /></button>
 							</td>
 						</tr>
 					);

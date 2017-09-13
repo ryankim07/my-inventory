@@ -9,7 +9,7 @@ let VehiclesAction = {
             .then(function (vehicles) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.RECEIVE_MY_VEHICLES,
-                    vehicles: vehicles
+                    results: vehicles
                 });
             })
             .catch(function(resp) {
@@ -24,10 +24,10 @@ let VehiclesAction = {
     addMyVehicle: function(data) {
         Api
             .post('http://mcs.dev/api/vehicle', data, data.assets)
-            .then(function (results) {
+            .then(function (vehicle) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.ADD_MY_VEHICLE,
-					results: results
+					results: vehicle
                 });
             })
             .catch(function(resp) {
@@ -42,10 +42,10 @@ let VehiclesAction = {
 	updateMyVehicle: function(data) {
 		Api
 			.post('http://mcs.dev/api/vehicle', data, data.assets)
-			.then(function (results) {
+			.then(function (vehicle) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.UPDATE_MY_VEHICLE,
-					results: results
+					results: vehicle
 				});
 			})
 			.catch(function(resp) {
@@ -60,10 +60,10 @@ let VehiclesAction = {
     removeMyVehicle: function(id) {
         Api
             .delete('http://mcs.dev/api/vehicles/' + id)
-            .then(function (results) {
+            .then(function (vehicle) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.REMOVE_MY_VEHICLE,
-					results: results
+					results: vehicle
                 });
             })
             .catch(function(resp) {
@@ -81,7 +81,7 @@ let VehiclesAction = {
             .then(function(manufacturers) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.RECEIVE_MFGS,
-                    manufacturers: manufacturers
+                    results: manufacturers
                 });
             })
             .catch(function(resp) {

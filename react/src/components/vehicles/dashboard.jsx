@@ -35,7 +35,6 @@ class VehiclesDashboard extends React.Component
 			isEditingMode: false,
 			newVehicleAdded: false,
 			loader: true,
-			reUpload: false,
 			showRightPanel: false,
 			flashMessage: null,
 			columnCss: {
@@ -80,6 +79,7 @@ class VehiclesDashboard extends React.Component
 	shouldComponentUpdate(nextProps, nextState) {
 		// Check here and don't render component again if it's an image upload action
 		let emptyObj = _.every(_.values(nextState.vehicle), function(v) {return !v;});
+
 		if (nextState.vehicle.assets !== '' && emptyObj) {
 			return false;
 		}
@@ -97,10 +97,10 @@ class VehiclesDashboard extends React.Component
 	}
 
 	_onChange() {
+		let vehicle  		 = MyVehiclesStore.loadVehicleToUpdate();
 		let vehicles 		 = MyVehiclesStore.getMyVehicles();
 		let manufacturers 	 = ApiVehiclesStore.getApiVehicles();
 		let addingNewVehicle = MyVehiclesStore.isNewVehicleAdded();
-		let vehicleToUpdate  = MyVehiclesStore.getVehicleToUpdate();
 		let flashMsg 		 = MyVehiclesStore.getStoreFlashMessage();
 		let isAuthenticated  = MyVehiclesStore.isAuthenticated();
 		let openRightPanel   = MyVehiclesStore.openRightPanel();
@@ -112,8 +112,8 @@ class VehiclesDashboard extends React.Component
 			return false;
 		}
 
-		if (!_.every(_.values(vehicleToUpdate), function(v) {return !v;})) {
-			stateVehicle = vehicleToUpdate;
+		if (!_.every(_.values(vehicle), function(v) {return !v;})) {
+			stateVehicle = vehicle;
 			isEditingMode = true;
 		}
 
@@ -143,7 +143,7 @@ class VehiclesDashboard extends React.Component
 
 	closeRightPanel() {
 		this.setState({
-			flashMessage: this.state.flashMessage,
+			showRightPanel: false,
 			columnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
@@ -157,6 +157,7 @@ class VehiclesDashboard extends React.Component
 				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success" />}
 				<VehiclesList
 					state={ this.state }
+					handleFormChange={ this.handleFormChange }
 					mobileWidth={ this.state.columnCss.mobileWidth }
 					desktopWidth={ this.state.columnCss.desktopWidth }
 					className="main-column"

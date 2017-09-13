@@ -1,6 +1,5 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
-import VehiclesAction from '../../actions/vehicles-action';
 
 class Uploader extends React.Component
 {
@@ -14,9 +13,8 @@ class Uploader extends React.Component
 		}
 	}*/
 
-	// When dragging and dropping
+	// Dragging and dropping.  Need to pass array to create reject object in backend
 	onDrop(acceptedFiles) {
-		//VehiclesAction.setAssets(acceptedFiles[0]);
 		this.props.setAssets(acceptedFiles[0]);
 	}
 
@@ -26,7 +24,11 @@ class Uploader extends React.Component
 		let assets = this.props.assets;
 
 		if (this.props.isEditingMode) {
-			assetPreview = <img src={ assets.path } />;
+			assetPreview = assets.map((image, index) => {
+				return (
+					<img key={ index } src={ image.path } />
+				);
+			});
 		} else {
 			assetPreview = <img src={ assets.preview } />;
 		}

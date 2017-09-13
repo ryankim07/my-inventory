@@ -7,32 +7,27 @@ import _ from 'lodash';
 let _my_vehicles = [];
 let _my_vehicle = {};
 let _myVehicleAdded = false;
-let _assets;
 let _showPanel = false;
 let _errStatus;
 let _storeMsg;
 
-function setAllMyVehicles(vehicles) {
-    _my_vehicles = vehicles ;
+function setMyVehicle(vehicle) {
+	_my_vehicle = vehicle ;
 }
 
-function setMyVehicle(vehicles) {
-	_my_vehicle = vehicles ;
+function getMyVehicles() {
+	return _my_vehicles;
 }
 
-function setNewMyVehicle(vehicle) {
-	_my_vehicles.push(vehicle);
+function setMyVehicles(vehicles) {
+	_my_vehicles = vehicles ;
 }
 
 function flagNewVehicle() {
     _myVehicleAdded = true;
 }
 
-function setAssets(assets) {
-    _assets = assets;
-}
-
-function openRightPanel(show) {
+function setRightPanel(show) {
 	_showPanel = show;
 }
 
@@ -46,6 +41,21 @@ function setErrorStatus(status) {
 
 function removeToken() {
 	localStorage.removeItem('id_token');
+}
+
+function clearPropertyObj() {
+	return _my_vehicle = {
+		id: '',
+		mfg_id: '',
+		mfg: '',
+		model_id: '',
+		model: '',
+		year: '',
+		color: '',
+		vin: '',
+		plate: '',
+		assets: []
+	};
 }
 
 let MyVehiclesStore = assign({}, EventEmitter.prototype, {
@@ -66,35 +76,8 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 		return _my_vehicles;
 	},
 
-	setMyVehicles: function (vehicles) {
-		if (vehicles.msg) {
-			setStoreFlashMessage(vehicles.msg)
-		} else {
-			setAllMyVehicles(vehicles)
-		}
-	},
-
-	addMyVehicle: function (results) {
-		let vehicle = results.vehicle;
-
-		setNewMyVehicle(vehicle);
-		openRightPanel(false);
-		flagNewVehicle();
-		setStoreFlashMessage(results.msg);
-	},
-
-	editMyVehicle: function (vehicle) {
-		setStoreFlashMessage('');
-		setMyVehicle(vehicle);
-		openRightPanel(true);
-	},
-
-	getVehicleToUpdate: function () {
+	loadVehicleToUpdate: function () {
 		return _my_vehicle;
-	},
-
-	unsetVehicleToUpdate: function () {
-		return _my_vehicle = {};
 	},
 
 	isNewVehicleAdded: function () {
@@ -105,45 +88,8 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 		return _myVehicleAdded = false;
 	},
 
-	updateMyVehicle: function(data) {
-		let vehicle = data.vehicle;
-		let index = _.indexOf(_my_vehicles, _.find(_my_vehicles, (record) => {
-				return record.id == vehicle.id;
-			})
-		);
-
-		_my_vehicles.splice(index, 1, {
-			id: vehicle.id,
-			mfg: vehicle.mfg,
-			mfg_id: vehicle.mfg_id,
-			model_id: vehicle.model_id,
-			model: vehicle.model,
-			year: vehicle.year,
-			color: vehicle.color.charAt(0).toUpperCase() + vehicle.color.slice(1),
-			vin: vehicle.vin,
-			plate: vehicle.plate,
-			assets: vehicle.assets
-		});
-
-		openRightPanel(false);
-		setStoreFlashMessage(data.msg);
-	},
-
-	removeMyVehicle: function(vehicle) {
-		let vehicles = _my_vehicles;
-
-		_.remove(vehicles, (myVehicle) => {
-			return vehicle.id == myVehicle.id;
-		});
-
-		_my_vehicles = vehicles;
-
-		openRightPanel(false);
-		setStoreFlashMessage(vehicle.msg);
-	},
-
-	setAssets: function(assets) {
-		setAssets(assets)
+	openRightPanel: function() {
+    	return _showPanel;
 	},
 
 	isAuthenticated: function() {
@@ -154,32 +100,12 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 		return true;
 	},
 
-	openRightPanel: function() {
-    	return _showPanel;
-	},
-
-	setRightPanel: function(show) {
-		openRightPanel(show)
-	},
-
 	getStoreFlashMessage: function() {
 		return _storeMsg;
 	},
 
-	setStoreFlashMessage: function (msg) {
-		setStoreFlashMessage()
-	},
-
 	unsetStoreFlashMessage: function() {
 		_storeMsg = '';
-	},
-
-	setErrorStatus: function(status) {
-		setErrorStatus(status);
-	},
-
-	removeToken: function () {
-		removeToken();
 	}
 });
 
@@ -187,40 +113,74 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
 
     let action = payload.action;
+    let results = action.results;
+	let vehicles = getMyVehicles();
 
     switch(action.actionType) {
         case ActionConstants.RECEIVE_MY_VEHICLES:
-			MyVehiclesStore.setMyVehicles(action.vehicles);
+        	if (results.msg) {
+				setStoreFlashMessage(results.msg)
+			} else {
+				setMyVehicles(results)
+			}
         break;
 
         case ActionConstants.ADD_MY_VEHICLE:
-            MyVehiclesStore.addMyVehicle(action.results);
+			setMyVehicle(results);
+			flagNewVehicle();
+			setStoreFlashMessage(results.msg);
+			setRightPanel(true);
         break;
 
         case ActionConstants.EDIT_MY_VEHICLE:
-			MyVehiclesStore.editMyVehicle(action.vehicle);
+			setStoreFlashMessage('');
+			setMyVehicle(results);
+			setRightPanel(true);
         break;
 
         case ActionConstants.UPDATE_MY_VEHICLE:
-            MyVehiclesStore.updateMyVehicle(action.results);
+			let index = _.indexOf(_my_vehicles, _.find(_my_vehicles, (record) => {
+					return record.id == results.id;
+				})
+			);
+
+			vehicles.splice(index, 1, {
+				id: results.id,
+				mfg: results.mfg,
+				mfg_id: results.mfg_id,
+				model_id: results.model_id,
+				model: results.model,
+				year: results.year,
+				color: results.color.charAt(0).toUpperCase() + results.color.slice(1),
+				vin: results.vin,
+				plate: results.plate,
+				assets: results.assets
+			});
+
+			setMyVehicles(vehicles);
+			setRightPanel(false);
+			setStoreFlashMessage(results.msg);
         break;
 
         case ActionConstants.REMOVE_MY_VEHICLE:
-            MyVehiclesStore.removeMyVehicle(action.results);
-        break;
+			_.remove(vehicles, (myVehicle) => {
+				return results.id == myVehicle.id;
+			});
 
-		case ActionConstants.SET_ASSETS:
-			MyVehiclesStore.setAssets(action.file);
+			setMyVehicles(vehicles);
+			setRightPanel(false);
+			setStoreFlashMessage(vehicle.msg);
         break;
 
 		case ActionConstants.SHOW_VEHICLE_ADD_PANEL:
-			MyVehiclesStore.setRightPanel(true);
+			clearPropertyObj();
+			setRightPanel(true);
 		break;
 
 		case ActionConstants.RECEIVE_ERROR:
-			MyVehiclesStore.setStoreFlashMessage(action.msg);
-			MyVehiclesStore.setErrorStatus(action.status);
-			MyVehiclesStore.removeToken();
+			setStoreFlashMessage(action.msg);
+			setErrorStatus(action.status);
+			removeToken();
 		break;
 
         default:

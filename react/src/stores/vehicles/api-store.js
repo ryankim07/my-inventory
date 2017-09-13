@@ -43,7 +43,7 @@ ApiVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
 
     switch(action.actionType) {
         case ActionConstants.RECEIVE_MFGS:
-            setApiManufacturers(action.manufacturers);
+            setApiManufacturers(action.results);
         break;
 
         default:

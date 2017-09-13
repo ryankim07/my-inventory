@@ -7,6 +7,7 @@ class VehicleAdd extends React.Component
     constructor(props) {
         super(props);
 
+		this.handleFormChange = this.handleFormChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
 		this.setAssets 		  = this.setAssets.bind(this);
     }

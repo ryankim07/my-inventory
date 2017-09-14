@@ -3,10 +3,6 @@ import Dropzone from 'react-dropzone';
 
 class Uploader extends React.Component
 {
-	constructor(props) {
-		super(props);
-	}
-
 	/*componentWillReceiveProps(nextProps) {
 		if (this.state.assets.path !== nextProps.assets.path) {
 			this.state.assets = nextProps.assets;
@@ -14,19 +10,19 @@ class Uploader extends React.Component
 	}*/
 
 	// Dragging and dropping.  Need to pass array to create reject object in backend
-	onDrop(acceptedFiles) {
-		this.props.setAssets(acceptedFiles[0]);
+	handleDrop(propertyName, e) {
+		this.props.onHandleFormChange(propertyName, e);
 	}
 
 	render() {
 		// Set preview
 		let assetPreview = '';
-		let assets = this.props.assets;
+		let assets		 = this.props.assets;
 
 		if (this.props.isEditingMode) {
 			assetPreview = assets.map((image, index) => {
 				return (
-					<img key={ index } src={ image.path } />
+					<img key={ index } src={ image.preview } />
 				);
 			});
 		} else {
@@ -35,7 +31,7 @@ class Uploader extends React.Component
 
 		return (
 			<div>
-				<Dropzone onDrop={ this.onDrop.bind(this) }>
+				<Dropzone onDrop={ this.handleDrop.bind(this, 'assets') }>
 					<div>Try dropping some files here, or click to select files to upload.</div>
 				</Dropzone>
 				<div>

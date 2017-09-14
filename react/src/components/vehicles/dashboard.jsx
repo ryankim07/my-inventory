@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 import VehiclesAction from '../../actions/vehicles-action';
 import ApiVehiclesStore from '../../stores/vehicles/api-store';
 import MyVehiclesStore from '../../stores/vehicles/store';
@@ -18,18 +17,7 @@ class VehiclesDashboard extends React.Component
 		super(props);
 
 		this.state = {
-			vehicle: {
-				id: '',
-				mfg_id: '',
-				mfg: '',
-				model_id: '',
-				model: '',
-				year: '',
-				color: '',
-				vin: '',
-				plate: '',
-				assets: []
-			},
+			vehicle: {},
 			vehicles: [],
 			manufacturers: [],
 			isEditingMode: false,
@@ -43,10 +31,11 @@ class VehiclesDashboard extends React.Component
 			}
 		};
 
-		this._onChange 		  = this._onChange.bind(this);
-		this.handleFormChange = this.handleFormChange.bind(this);
-		this.setFlashMessage  = this.setFlashMessage.bind(this);
-		this.closeRightPanel  = this.closeRightPanel.bind(this);
+		this._onChange 		  	= this._onChange.bind(this);
+		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
+		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
+		this.setFlashMessage  	= this.setFlashMessage.bind(this);
+		this.closeRightPanel  	= this.closeRightPanel.bind(this);
 	}
 
 	componentWillMount() {
@@ -76,7 +65,7 @@ class VehiclesDashboard extends React.Component
 		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
+	/*shouldComponentUpdate(nextProps, nextState) {
 		// Check here and don't render component again if it's an image upload action
 		let emptyObj = _.every(_.values(nextState.vehicle), function(v) {return !v;});
 
@@ -94,36 +83,26 @@ class VehiclesDashboard extends React.Component
 		}
 
 		return true;
-	}
+	}*/
 
 	_onChange() {
-		let vehicle  		 = MyVehiclesStore.loadVehicleToUpdate();
-		let vehicles 		 = MyVehiclesStore.getMyVehicles();
-		let manufacturers 	 = ApiVehiclesStore.getApiVehicles();
-		let addingNewVehicle = MyVehiclesStore.isNewVehicleAdded();
-		let flashMsg 		 = MyVehiclesStore.getStoreFlashMessage();
-		let isAuthenticated  = MyVehiclesStore.isAuthenticated();
-		let openRightPanel   = MyVehiclesStore.openRightPanel();
-		let isEditingMode 	 = this.state.isEditingMode;
-		let stateVehicle 	 = this.state.vehicle;
+		let vehicles 		= MyVehiclesStore.getMyVehicles();
+		let manufacturers 	= ApiVehiclesStore.getApiVehicles();
+		let newVehicleAdded = MyVehiclesStore.isNewVehicleAdded();
+		let flashMsg 		= MyVehiclesStore.getStoreFlashMessage();
+		let isAuthenticated = MyVehiclesStore.isAuthenticated();
+		let showRightPanel  = MyVehiclesStore.showRightPanel();
 
 		if (!isAuthenticated){
 			this.context.router.push("/auth/login");
 			return false;
 		}
 
-		if (!_.every(_.values(vehicle), function(v) {return !v;})) {
-			stateVehicle = vehicle;
-			isEditingMode = true;
-		}
-
 		this.setState({
-			vehicle: stateVehicle,
 			vehicles: vehicles,
 			manufacturers: manufacturers,
-			isEditingMode: isEditingMode,
-			newVehicleAdded: addingNewVehicle,
-			showRightPanel: !!openRightPanel,
+			newVehicleAdded: newVehicleAdded,
+			showRightPanel: !!showRightPanel,
 			flashMessage: flashMsg !== undefined ? flashMsg : null,
 			loader: false,
 			columnCss: {
@@ -133,8 +112,27 @@ class VehiclesDashboard extends React.Component
 		});
 	}
 
-	handleFormChange(vehicle) {
-		this.setState({vehicle: vehicle});
+	onHandleFormSubmit(vehicle) {
+		if (!this.state.isEditingMode) {
+			VehiclesAction.addMyVehicle(vehicle);
+		} else {
+			VehiclesAction.updateMyVehicle(vehicle);
+		}
+
+		// Close the panel
+		this.closeRightPanel();
+	}
+
+	onHandleRightPanel(vehicle, isEditingMode) {
+		this.setState({
+			vehicle: vehicle,
+			isEditingMode: isEditingMode,
+			showRightPanel: true,
+			columnCss: {
+				'mobileWidth': mainShrinkedMobileColumnWidth,
+				'desktopWidth': mainShrinkedDesktopColumnWidth
+			}
+		});
 	}
 
 	setFlashMessage(msg) {
@@ -158,15 +156,14 @@ class VehiclesDashboard extends React.Component
 				<VehiclesList
 					state={ this.state }
 					handleFormChange={ this.handleFormChange }
-					mobileWidth={ this.state.columnCss.mobileWidth }
-					desktopWidth={ this.state.columnCss.desktopWidth }
+					onHandleRightPanel={ this.onHandleRightPanel }
 					className="main-column"
 				/>
 				{
 					this.state.showRightPanel ?
 						<VehicleAdd
 							state={ this.state }
-							handleFormChange={ this.handleFormChange }
+							onHandleFormSubmit={ this.onHandleFormSubmit }
 							closeRightPanel={ this.closeRightPanel }
 						/> : null
 				}

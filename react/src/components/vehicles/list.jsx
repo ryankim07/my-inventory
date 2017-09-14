@@ -1,34 +1,40 @@
 import React from 'react';
-import AppDispatcher from '../../dispatcher/app-dispatcher';
-import ActionConstants from '../../constants/action-constants';
 import VehiclesAction from '../../actions/vehicles-action';
 import Loader from '../helper/loader';
 
 class VehiclesList extends React.Component
 {
-    handleAdd() {
-		AppDispatcher.handleViewAction({
-			actionType: ActionConstants.SHOW_VEHICLE_ADD_PANEL
-        });
-    }
+	handleRightPanel(vehicle, type) {
+		let curVehicle = type == "add" ?
+			{
+				id: '',
+				mfg_id: '',
+				mfg: '',
+				model_id: '',
+				model: '',
+				year: '',
+				color: '',
+				vin: '',
+				plate: '',
+				assets: []
+			} : vehicle;
 
-    handleEdit(vehicle) {
-        AppDispatcher.handleViewAction({
-			actionType: ActionConstants.EDIT_MY_VEHICLE,
-			results: vehicle
-		});
-    }
+		let editingMode = type === "add" ? false : true;
+
+		this.props.onHandleRightPanel(curVehicle, editingMode);
+	}
 
     handleRemove(id) {
         VehiclesAction.removeMyVehicle(id);
     }
 
     render() {
+		let columnCss = this.props.state.columnCss;
         let vehiclesHtml = '';
 
 		// If loading is complete
         if (!this.props.state.loader) {
-        	let vehicles = this.props.state.vehicles;
+        	let vehicles  = this.props.state.vehicles;
 
         	if (!vehicles) {
 				vehiclesHtml = <tr><td>There are no saved vehicle.</td></tr>;
@@ -44,7 +50,7 @@ class VehiclesList extends React.Component
 							<td>{ vehicle.plate }</td>
 							<td>
 								<button onClick={ this.handleRemove.bind(this, vehicle.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
-								<button onClick={ this.handleEdit.bind(this, vehicle) }><i className="fa fa-pencil" aria-hidden="true" /></button>
+								<button onClick={ this.handleRightPanel.bind(this, vehicle, 'edit') }><i className="fa fa-pencil" aria-hidden="true" /></button>
 							</td>
 						</tr>
 					);
@@ -55,7 +61,7 @@ class VehiclesList extends React.Component
         }
 
         return (
-            <div className={ [this.props.mobileWidth, this.props.desktopWidth, this.props.className].join(' ') } id="vehicles-main">
+            <div className={ [columnCss.mobileWidth, columnCss.desktopWidth, this.props.className].join(' ') } id="vehicles-main">
                 <div className="row">
                     <div className="panel panel-info">
                         <div className="panel-heading">
@@ -64,7 +70,7 @@ class VehiclesList extends React.Component
                                     <span>Vehicle List</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2">
-									<button onClick={ this.handleAdd.bind(this) }><i className="fa fa-plus" aria-hidden="true" /></button>
+									<button onClick={ this.handleRightPanel.bind(this, null, 'add') }><i className="fa fa-plus" aria-hidden="true" /></button>
 								</div>
                             </div>
                         </div>

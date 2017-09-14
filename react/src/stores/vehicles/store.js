@@ -39,6 +39,14 @@ function setErrorStatus(status) {
 	_errStatus = status;
 }
 
+function isAuthenticated() {
+	if (localStorage.getItem('id_token') === null) {
+		return false;
+	}
+
+	return true;
+}
+
 function removeToken() {
 	localStorage.removeItem('id_token');
 }
@@ -88,16 +96,12 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 		return _myVehicleAdded = false;
 	},
 
-	openRightPanel: function() {
+	showRightPanel: function() {
     	return _showPanel;
 	},
 
 	isAuthenticated: function() {
-		if (localStorage.getItem('id_token') === null) {
-			return false;
-		}
-
-		return true;
+		return isAuthenticated();
 	},
 
 	getStoreFlashMessage: function() {
@@ -171,11 +175,6 @@ MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
 			setRightPanel(false);
 			setStoreFlashMessage(vehicle.msg);
         break;
-
-		case ActionConstants.SHOW_VEHICLE_ADD_PANEL:
-			clearPropertyObj();
-			setRightPanel(true);
-		break;
 
 		case ActionConstants.RECEIVE_ERROR:
 			setStoreFlashMessage(action.msg);

@@ -20,13 +20,19 @@ class Uploader extends React.Component
 		let assets		 = this.props.assets;
 
 		if (this.props.isEditingMode) {
-			assetPreview = assets.map((image, index) => {
-				return (
-					<img key={ index } src={ image.preview } />
-				);
-			});
+			let isArray = Array.isArray(assets);
+
+			if (isArray) {
+				assetPreview = assets.map((image, index) => {
+					return (
+						<img key={index} src={ image.path }/>
+					);
+				});
+			} else {
+				assetPreview = <img src={ assets.preview }/>;
+			}
 		} else {
-			assetPreview = <img src={ assets.preview } />;
+			assetPreview = <img src={ assets.path } />;
 		}
 
 		return (

@@ -1,5 +1,6 @@
 import React from 'react';
 import Uploader from '../helper/uploader';
+import Loader from '../helper/loader';
 
 class VehicleAdd extends React.Component
 {
@@ -11,12 +12,13 @@ class VehicleAdd extends React.Component
 		}
 
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
+		this.handleFormSubmit   = this.handleFormSubmit.bind(this);
     }
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.vehicle !== this.state.vehicle) {
+		if (nextProps.state.vehicle !== this.state.vehicle) {
 			this.setState({
-				vehicle: nextProps.vehicle
+				vehicle: nextProps.state.vehicle
 			});
 		}
 	}
@@ -41,7 +43,7 @@ class VehicleAdd extends React.Component
             break;
 
 			case 'assets':
-				vehicle[propertyName] = chosenValue;
+				vehicle[propertyName] = chosenValue[0];
 			break;
 
             default:
@@ -55,163 +57,169 @@ class VehicleAdd extends React.Component
     handleFormSubmit(event) {
 		event.preventDefault();
 
-		this.props.onHandleFormSubmit(vehicle);
+		this.props.onHandleFormSubmit(this.state.vehicle);
 	}
 
     render() {
-		let defaultMfgId 	 = parseInt(this.state.vehicle.mfg_id);
-		let manufacturers    = this.props.state.manufacturers;
-		let apiModelsOptions = '';
-		let yearsOptions 	 = [];
+		let vehicleForm   = '';
+		let defaultMfgId  = parseInt(this.state.vehicle.mfg_id);
+		let manufacturers = this.props.state.manufacturers;
 
-			// Get manufacturers list
-		let apiMfgsOptions = manufacturers.map((mfgs, mfgIndex) => {
-				return (
-                    <option key={ mfgIndex } value={ mfgs.id }>{ mfgs.mfg }</option>
-				);
-			});
+		if (!this.props.state.loader  && Object.keys(manufacturers).length !== 0) {
+			let apiModelsOptions = '';
+			let yearsOptions 	 = [];
 
-			// Get selected choice from dropdown
-		let selectedMfg = manufacturers.filter(manufacturer => {
-				return manufacturer.id === defaultMfgId
-			});
-
-			// Models options by ID
-			if (selectedMfg.length !== 0) {
-				apiModelsOptions = selectedMfg[0].models.map((veh, modelIndex) => {
+				// Get manufacturers list
+			let apiMfgsOptions = manufacturers.map((mfgs, mfgIndex) => {
 					return (
-                        <option key={ modelIndex } value={ veh.model_id }>{ veh.model }</option>
+						<option key={ mfgIndex } value={ mfgs.id }>{ mfgs.mfg }</option>
 					);
 				});
-			}
 
-			// Years options
-			for (let i = 2014; i <= 2020; i++) {
-				yearsOptions.push(<option key={ 'y-' + i } value={ i }>{ i }</option>)
-			}
+				// Get selected choice from dropdown
+			let selectedMfg = manufacturers.filter(manufacturer => {
+					return manufacturer.id === defaultMfgId
+				});
 
-		let vehicleForm =
-			<form onSubmit={this.handleFormSubmit}>
-				<div className="form-group">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Image</label>
-						<div className="input-group">
-							<Uploader
-								onHandleFormChange={ this.onHandleFormChange }
-								isEditingMode={ this.props.state.isEditingMode }
-								assets={ this.state.vehicle.assets }
-							/>
+				// Models options by ID
+				if (selectedMfg.length !== 0) {
+					apiModelsOptions = selectedMfg[0].models.map((veh, modelIndex) => {
+						return (
+							<option key={ modelIndex } value={ veh.model_id }>{ veh.model }</option>
+						);
+					});
+				}
+
+				// Years options
+				for (let i = 2014; i <= 2020; i++) {
+					yearsOptions.push(<option key={ 'y-' + i } value={ i }>{ i }</option>)
+				}
+
+			vehicleForm =
+				<form onSubmit={ this.handleFormSubmit }>
+					<div className="form-group">
+						<div className="col-xs-12 col-md-8">
+							<label className="control-label">Image</label>
+							<div className="input-group">
+								<Uploader
+									onHandleFormChange={ this.onHandleFormChange }
+									isEditingMode={ this.props.state.isEditingMode }
+									assets={ this.state.vehicle.assets }
+								/>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className="form-group required">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Year</label>
-						<div className="input-group">
-							<select ref="year"
-									onChange={ this.onHandleFormChange.bind(this, 'year') }
-									value={ this.state.vehicle.year }
-									className="form-control input-sm"
-									required="required">
-								<option value="">Select One</option>
-								{ yearsOptions }
-							</select>
+					<div className="form-group required">
+						<div className="col-xs-12 col-md-8">
+							<label className="control-label">Year</label>
+							<div className="input-group">
+								<select ref="year"
+										onChange={ this.onHandleFormChange.bind(this, 'year') }
+										value={ this.state.vehicle.year }
+										className="form-control input-sm"
+										required="required">
+									<option value="">Select One</option>
+									{ yearsOptions }
+								</select>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className="form-group required">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Manufacturer</label>
-						<div className="input-group">
-							<select ref="mfg_id"
-									onChange={ this.onHandleFormChange.bind(this, 'mfg_id') }
-									value={ this.state.vehicle.mfg_id }
-									className="form-control input-sm"
-									required="required">
-								<option value="">Select One</option>
-								{ apiMfgsOptions }
-							</select>
+					<div className="form-group required">
+						<div className="col-xs-12 col-md-8">
+							<label className="control-label">Manufacturer</label>
+							<div className="input-group">
+								<select ref="mfg_id"
+										onChange={ this.onHandleFormChange.bind(this, 'mfg_id') }
+										value={ this.state.vehicle.mfg_id }
+										className="form-control input-sm"
+										required="required">
+									<option value="">Select One</option>
+									{ apiMfgsOptions }
+								</select>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className="form-group required">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Model</label>
-						<div className="input-group">
-							<select ref="model_id"
-									onChange={ this.onHandleFormChange.bind(this, 'model_id') }
-									value={ this.state.vehicle.model_id }
-									className="form-control input-sm"
-									required="required">
-								<option value="">Select One</option>
-								{ apiModelsOptions }
-							</select>
+					<div className="form-group required">
+						<div className="col-xs-12 col-md-8">
+							<label className="control-label">Model</label>
+							<div className="input-group">
+								<select ref="model_id"
+										onChange={ this.onHandleFormChange.bind(this, 'model_id') }
+										value={ this.state.vehicle.model_id }
+										className="form-control input-sm"
+										required="required">
+									<option value="">Select One</option>
+									{ apiModelsOptions }
+								</select>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className="form-group required">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Color</label>
-						<div className="input-group">
-							<select ref="color"
-									onChange={ this.onHandleFormChange.bind(this, 'color') }
-									value={ this.state.vehicle.color }
-									className="form-control input-sm"
-									required="required">
-								<option value="">Select One</option>
-								<option value="white">White</option>
-								<option value="black">Black</option>
-								<option value="silver">Silver</option>
-								<option value="red">Red</option>
-								<option value="yellow">Yellow</option>
-								<option value="orange">Orange</option>
-							</select>
+					<div className="form-group required">
+						<div className="col-xs-12 col-md-8">
+							<label className="control-label">Color</label>
+							<div className="input-group">
+								<select ref="color"
+										onChange={ this.onHandleFormChange.bind(this, 'color') }
+										value={ this.state.vehicle.color }
+										className="form-control input-sm"
+										required="required">
+									<option value="">Select One</option>
+									<option value="white">White</option>
+									<option value="black">Black</option>
+									<option value="silver">Silver</option>
+									<option value="red">Red</option>
+									<option value="yellow">Yellow</option>
+									<option value="orange">Orange</option>
+								</select>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className="form-group required">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">VIN</label>
-						<div className="input-group">
-							<input type="text"
-								   ref="vin"
-								   onChange={ this.onHandleFormChange.bind(this, 'vin') }
-								   value={ this.state.vehicle.vin }
-								   className="form-control input-sm"
-								   required="required"/>
+					<div className="form-group required">
+						<div className="col-xs-12 col-md-8">
+							<label className="control-label">VIN</label>
+							<div className="input-group">
+								<input type="text"
+									   ref="vin"
+									   onChange={ this.onHandleFormChange.bind(this, 'vin') }
+									   value={ this.state.vehicle.vin }
+									   className="form-control input-sm"
+									   required="required"/>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className="form-group required">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Plate</label>
-						<div className="input-group">
-							<input type="text"
-								   ref="plate"
-								   onChange={ this.onHandleFormChange.bind(this, 'plate') }
-								   value={ this.state.vehicle.plate }
-								   className="form-control input-sm"
-								   required="required"/>
+					<div className="form-group required">
+						<div className="col-xs-12 col-md-8">
+							<label className="control-label">Plate</label>
+							<div className="input-group">
+								<input type="text"
+									   ref="plate"
+									   onChange={ this.onHandleFormChange.bind(this, 'plate') }
+									   value={ this.state.vehicle.plate }
+									   className="form-control input-sm"
+									   required="required"/>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className="form-group">
-					<div className="col-xs-12 col-md-8">
-						<div className="input-group">
-							<input type="hidden" ref="id" value={ this.state.vehicle.id } />
-							<input type="hidden" ref="mfg" value={ this.state.vehicle.mfg } />
-							<input type="hidden" ref="model" value={ this.state.vehicle.model } />
+					<div className="form-group">
+						<div className="col-xs-12 col-md-8">
+							<div className="input-group">
+								<input type="hidden" ref="id" value={ this.state.vehicle.id } />
+								<input type="hidden" ref="mfg" value={ this.state.vehicle.mfg } />
+								<input type="hidden" ref="model" value={ this.state.vehicle.model } />
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className="form-group">
-					<div className="col-xs-12 col-md-12">
-						<div className="clearfix">
-							<input type="submit" value="Submit" className="btn"/>
+					<div className="form-group">
+						<div className="col-xs-12 col-md-12">
+							<div className="clearfix">
+								<input type="submit" value="Submit" className="btn"/>
+							</div>
 						</div>
 					</div>
-				</div>
-			</form>
+				</form>
+		} else {
+			vehicleForm = <div><Loader /></div>;
+		}
 
         return (
             <div className="col-xs-4 col-md-4" id="vehicle-add">

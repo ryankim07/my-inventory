@@ -4,9 +4,7 @@ class Loader extends React.Component
 {
     render() {
         return (
-            <div>
-                <img src={'../images/ajax-loader.gif'} className="loadingSpinner" />
-            </div>
+            <img src={'../images/ajax-loader.gif'} className="loadingSpinner" />
         );
     }
 }

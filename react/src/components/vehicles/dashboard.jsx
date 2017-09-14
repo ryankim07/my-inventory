@@ -21,7 +21,6 @@ class VehiclesDashboard extends React.Component
 			vehicles: [],
 			manufacturers: [],
 			isEditingMode: false,
-			newVehicleAdded: false,
 			loader: true,
 			showRightPanel: false,
 			flashMessage: null,
@@ -65,33 +64,12 @@ class VehiclesDashboard extends React.Component
 		}
 	}
 
-	/*shouldComponentUpdate(nextProps, nextState) {
-		// Check here and don't render component again if it's an image upload action
-		let emptyObj = _.every(_.values(nextState.vehicle), function(v) {return !v;});
-
-		if (nextState.vehicle.assets !== '' && emptyObj) {
-			return false;
-		}
-
-		// Only redirect to list if new vehicle is being added
-		if (nextState.newVehicleAdded || this.state.newVehicleAdded) {
-			MyVehiclesStore.unFlagNewVehicle();
-			nextState.newVehicleAdded = false;
-			this.context.router.push('/vehicles/dashboard');
-
-			return false;
-		}
-
-		return true;
-	}*/
-
 	_onChange() {
-		let vehicles 		= MyVehiclesStore.getMyVehicles();
-		let manufacturers 	= ApiVehiclesStore.getApiVehicles();
-		let newVehicleAdded = MyVehiclesStore.isNewVehicleAdded();
-		let flashMsg 		= MyVehiclesStore.getStoreFlashMessage();
-		let isAuthenticated = MyVehiclesStore.isAuthenticated();
-		let showRightPanel  = MyVehiclesStore.showRightPanel();
+		let vehicles 		  = MyVehiclesStore.getMyVehicles();
+		let manufacturers 	  = ApiVehiclesStore.getApiVehicles();
+		let flashMessage 	  = MyVehiclesStore.getStoreFlashMessage();
+		let isAuthenticated   = MyVehiclesStore.isAuthenticated();
+		let openRightPanel    = MyVehiclesStore.showRightPanel();
 
 		if (!isAuthenticated){
 			this.context.router.push("/auth/login");
@@ -101,9 +79,8 @@ class VehiclesDashboard extends React.Component
 		this.setState({
 			vehicles: vehicles,
 			manufacturers: manufacturers,
-			newVehicleAdded: newVehicleAdded,
-			showRightPanel: !!showRightPanel,
-			flashMessage: flashMsg !== undefined ? flashMsg : null,
+			showRightPanel: !!openRightPanel,
+			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,
 			columnCss: {
 				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,

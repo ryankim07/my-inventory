@@ -6,7 +6,6 @@ import _ from 'lodash';
 
 let _my_vehicles = [];
 let _my_vehicle = {};
-let _myVehicleAdded = false;
 let _showPanel = false;
 let _errStatus;
 let _storeMsg;
@@ -15,16 +14,8 @@ function setMyVehicle(vehicle) {
 	_my_vehicle = vehicle ;
 }
 
-function getMyVehicles() {
-	return _my_vehicles;
-}
-
 function setMyVehicles(vehicles) {
 	_my_vehicles = vehicles ;
-}
-
-function flagNewVehicle() {
-    _myVehicleAdded = true;
 }
 
 function setRightPanel(show) {
@@ -37,14 +28,6 @@ function setStoreFlashMessage(msg) {
 
 function setErrorStatus(status) {
 	_errStatus = status;
-}
-
-function isAuthenticated() {
-	if (localStorage.getItem('id_token') === null) {
-		return false;
-	}
-
-	return true;
 }
 
 function removeToken() {
@@ -88,20 +71,47 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 		return _my_vehicle;
 	},
 
-	isNewVehicleAdded: function () {
-		return _myVehicleAdded;
+	updateMyVehicle: function(results) {
+    	let vehicle = results.vehicle;
+		let index   = _.indexOf(_my_vehicles, _.find(_my_vehicles, (record) => {
+				return record.id === vehicle.id;
+			})
+		);
+
+		_my_vehicles.splice(index, 1, {
+			id: vehicle.id,
+			mfg: vehicle.mfg,
+			mfg_id: vehicle.mfg_id,
+			model_id: vehicle.model_id,
+			model: vehicle.model,
+			year: vehicle.year,
+			color: vehicle.color.charAt(0).toUpperCase() + vehicle.color.slice(1),
+			vin: vehicle.vin,
+			plate: vehicle.plate,
+			assets: vehicle.assets
+		});
+
+		 _storeMsg = results.msg;
+		_showPanel = false;
 	},
 
-	unFlagNewVehicle: function() {
-		return _myVehicleAdded = false;
-	},
+	removeMyVehicle: function(results) {
+    	let vehicle = results.vehicle;
 
-	showRightPanel: function() {
-    	return _showPanel;
+		_.remove(_my_vehicles, (myVehicle) => {
+			return vehicle.id === myVehicle.id;
+		});
+
+		_storeMsg = results.msg;
+		_showPanel = false;
 	},
 
 	isAuthenticated: function() {
-		return isAuthenticated();
+		if (localStorage.getItem('id_token') === null) {
+			return false;
+		}
+
+		return true;
 	},
 
 	getStoreFlashMessage: function() {
@@ -110,15 +120,18 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 
 	unsetStoreFlashMessage: function() {
 		_storeMsg = '';
+	},
+
+	showRightPanel: function() {
+    	return _showPanel;
 	}
 });
 
 // Register callback with AppDispatcher
 MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
 
-    let action = payload.action;
+    let action  = payload.action;
     let results = action.results;
-	let vehicles = getMyVehicles();
 
     switch(action.actionType) {
         case ActionConstants.RECEIVE_MY_VEHICLES:
@@ -131,49 +144,22 @@ MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
 
         case ActionConstants.ADD_MY_VEHICLE:
 			setMyVehicle(results);
-			flagNewVehicle();
 			setStoreFlashMessage(results.msg);
 			setRightPanel(true);
         break;
 
         case ActionConstants.EDIT_MY_VEHICLE:
-			setStoreFlashMessage('');
 			setMyVehicle(results);
+			setStoreFlashMessage('');
 			setRightPanel(true);
         break;
 
         case ActionConstants.UPDATE_MY_VEHICLE:
-			let index = _.indexOf(_my_vehicles, _.find(_my_vehicles, (record) => {
-					return record.id == results.id;
-				})
-			);
-
-			vehicles.splice(index, 1, {
-				id: results.id,
-				mfg: results.mfg,
-				mfg_id: results.mfg_id,
-				model_id: results.model_id,
-				model: results.model,
-				year: results.year,
-				color: results.color.charAt(0).toUpperCase() + results.color.slice(1),
-				vin: results.vin,
-				plate: results.plate,
-				assets: results.assets
-			});
-
-			setMyVehicles(vehicles);
-			setRightPanel(false);
-			setStoreFlashMessage(results.msg);
+			MyVehiclesStore.updateMyVehicle(action.results);
         break;
 
         case ActionConstants.REMOVE_MY_VEHICLE:
-			_.remove(vehicles, (myVehicle) => {
-				return results.id == myVehicle.id;
-			});
-
-			setMyVehicles(vehicles);
-			setRightPanel(false);
-			setStoreFlashMessage(vehicle.msg);
+			MyVehiclesStore.removeMyVehicle(action.results);
         break;
 
 		case ActionConstants.RECEIVE_ERROR:

@@ -52,7 +52,7 @@ class Header extends React.Component
                                 <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ryan<span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <Link to="/auth/logout" className="menu-link"><i className="fa fa-car menu-link-icon" aria-hidden="true" />Logout</Link>
+                                        <Link to="/auth/logout" className="menu-link"><i className="fa fa-car menu-link-icon" aria-hidden="true" /> Logout</Link>
                                     </li>
                                 </ul>
                             </li>

@@ -144,10 +144,10 @@ class MyVehicles
             // Save or update vehicle
             $this->_saveVehicle();
 
-            // Save or update image
+            /*// Save or update image
             if (!is_null($this->assets)) {
                 $this->_saveImage();
-            }
+            }*/
 
             $msg = !$this->existingVehicle ? 'added' : 'updated';
 
@@ -205,10 +205,21 @@ class MyVehicles
      */
     private function _saveVehicle()
     {
-        if (!$this->existingVehicle) {
-            $this->entity = new MyVehicleEntity();
+        if (is_null($this->assets)) {
+            return false;
         }
 
+        // Upload asset
+        $assetFullPath = $this->fileUploader->upload($this->assets);
+
+        if (!$this->existingVehicle) {
+            $this->entity = new MyVehicleEntity();
+            $assetEntity  = new AssetsEntity();
+        } else {
+            $assetEntity = $this->em->getRepository('AppBundle\Entity\Vehicles\AssetsEntity')->findOneByMyVehicleId($this->existingVehicle->getId());
+        }
+
+        // Vehicle entity
         $this->entity->setMfgId($this->mfgId);
         $this->entity->setMfg($this->mfg->getMfg());
         $this->entity->setModelId($this->modelInfo['model_id']);
@@ -217,6 +228,12 @@ class MyVehicles
         $this->entity->setColor($this->color);
         $this->entity->setVin($this->vin);
         $this->entity->setPlate($this->plate);
+
+        // Assets entity
+        $assetEntity->setName($this->assets->getClientOriginalName());
+        $assetEntity->setPath($assetFullPath);
+
+        $this->entity->addAsset($assetEntity);
 
         if (!$this->existingVehicle) {
             $this->em->persist($this->entity);
@@ -232,7 +249,7 @@ class MyVehicles
      *
      * @return bool
      */
-    private function _saveImage()
+    /*private function _saveImage()
     {
         // Upload file
         $assetFullPath = $this->fileUploader->upload($this->assets);
@@ -248,24 +265,25 @@ class MyVehicles
             $existingAsset = $this->em->getRepository('AppBundle\Entity\Vehicles\AssetsEntity')->findOneByMyVehicleId($this->entity->getId());
 
             if (!$existingAsset) {
-                $assetEntity->setMyVehicles($this->entity->getId());
+                $assetEntity->setMyVehicles($this->entity);
             } else {
-                // Remove existing upload
-                $this->fileUploader->removeUpload($existingAsset->getPath());
+                //@TODO Remove existing upload
+                //$this->fileUploader->removeUpload($existingAsset->getPath());
+                $assetEntity = $existingAsset;
             }
         }
 
         $assetEntity->setName($this->assets->getClientOriginalName());
         $assetEntity->setPath($assetFullPath);
 
-        if (!$existingAsset) {
+       if (!$existingAsset) {
             $this->em->persist($assetEntity);
         }
 
         $this->em->flush();
 
         return true;
-    }
+    }*/
 
     /**
      * Find either by ID or VIN

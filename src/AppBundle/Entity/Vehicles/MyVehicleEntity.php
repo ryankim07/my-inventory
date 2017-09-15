@@ -296,6 +296,7 @@ class MyVehicleEntity
     public function addAsset(AssetsEntity $asset)
     {
         $this->assets[] = $asset;
+        $asset->setMyVehicles($this);
 
         return $this;
     }

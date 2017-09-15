@@ -10,6 +10,7 @@ let mainDefaultMobileColumnWidth = 'col-xs-12';
 let mainDefaultDesktopColumnWidth = 'col-md-12';
 let mainShrinkedMobileColumnWidth = 'col-xs-8';
 let mainShrinkedDesktopColumnWidth = 'col-md-8';
+let mainColumnClassName = 'main-column';
 
 class VehiclesDashboard extends React.Component
 {
@@ -146,7 +147,7 @@ class VehiclesDashboard extends React.Component
 					state={ state }
 					onHandleRightPanel={ this.onHandleRightPanel }
 					onHandleRemove={ this.onHandleRemove }
-					className="main-column"
+					className={ mainColumnClassName }
 				/>
 
 				{

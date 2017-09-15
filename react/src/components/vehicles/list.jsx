@@ -3,6 +3,7 @@ import Loader from '../helper/loader';
 
 class VehiclesList extends React.Component
 {
+	// Toggle panel for add or edit
 	handleRightPanel(vehicle, type) {
 		let curVehicle = type == "add" ?
 			{
@@ -23,6 +24,7 @@ class VehiclesList extends React.Component
 		this.props.onHandleRightPanel(curVehicle, editingMode);
 	}
 
+	// Handle delete
     handleRemove(id) {
 		this.props.onHandleRemove(id);
     }

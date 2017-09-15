@@ -3,32 +3,6 @@ import Loader from '../helper/loader';
 
 class VehiclesList extends React.Component
 {
-	// Toggle panel for add or edit
-	handleRightPanel(vehicle, type) {
-		let curVehicle = type == "add" ?
-			{
-				id: '',
-				mfg_id: '',
-				mfg: '',
-				model_id: '',
-				model: '',
-				year: '',
-				color: '',
-				vin: '',
-				plate: '',
-				assets: []
-			} : vehicle;
-
-		let editingMode = type === "add" ? false : true;
-
-		this.props.onHandleRightPanel(curVehicle, editingMode);
-	}
-
-	// Handle delete
-    handleRemove(id) {
-		this.props.onHandleRemove(id);
-    }
-
     render() {
 		let columnCss = this.props.state.columnCss;
         let vehiclesHtml = '';
@@ -50,8 +24,8 @@ class VehiclesList extends React.Component
 							<td>{ vehicle.vin }</td>
 							<td>{ vehicle.plate }</td>
 							<td>
-								<button onClick={ this.handleRemove.bind(this, vehicle.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
-								<button onClick={ this.handleRightPanel.bind(this, vehicle, 'edit') }><i className="fa fa-pencil" aria-hidden="true" /></button>
+								<button onClick={ this.props.onHandleRemove(vehicle.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
+								<button onClick={ this.props.onHandleRightPanel(vehicle, true) }><i className="fa fa-pencil" aria-hidden="true" /></button>
 							</td>
 						</tr>
 					);
@@ -71,7 +45,7 @@ class VehiclesList extends React.Component
                                     <span>Vehicle List</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2">
-									<button onClick={ this.handleRightPanel.bind(this, null, 'add') }><i className="fa fa-plus" aria-hidden="true" /></button>
+									<button onClick={ this.onHandleRightPanel(null, false) }><i className="fa fa-plus" aria-hidden="true" /></button>
 								</div>
                             </div>
                         </div>

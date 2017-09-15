@@ -3,12 +3,6 @@ import Dropzone from 'react-dropzone';
 
 class Uploader extends React.Component
 {
-	/*componentWillReceiveProps(nextProps) {
-		if (this.state.assets.path !== nextProps.assets.path) {
-			this.state.assets = nextProps.assets;
-		}
-	}*/
-
 	// Dragging and dropping.  Need to pass array to create reject object in backend
 	handleDrop(propertyName, e) {
 		this.props.onHandleFormChange(propertyName, e);

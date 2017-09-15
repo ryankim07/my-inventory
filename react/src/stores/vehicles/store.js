@@ -72,8 +72,7 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 	},
 
 	addMyVehicle: function(results) {
-    	let vehicles = _my_vehicles;
-    	vehicles.push(results.vehicle);
+		_my_vehicles.push(results.vehicle);
 		_storeMsg = results.msg;
 		_showPanel = false;
 	},
@@ -92,7 +91,7 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 			model_id: vehicle.model_id,
 			model: vehicle.model,
 			year: vehicle.year,
-			color: vehicle.color.charAt(0).toUpperCase() + vehicle.color.slice(1),
+			color: vehicle.color,
 			vin: vehicle.vin,
 			plate: vehicle.plate,
 			assets: vehicle.assets
@@ -103,10 +102,8 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 	},
 
 	removeMyVehicle: function(results) {
-    	let vehicle = results.vehicle;
-
 		_.remove(_my_vehicles, (myVehicle) => {
-			return vehicle.id === myVehicle.id;
+			return parseInt(results.id) === myVehicle.id;
 		});
 
 		_storeMsg = results.msg;

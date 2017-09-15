@@ -45,7 +45,7 @@ class VehiclesList extends React.Component
                                     <span>Vehicle List</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2">
-									<button onClick={ this.onHandleRightPanel(null, false) }><i className="fa fa-plus" aria-hidden="true" /></button>
+									<button onClick={ this.props.onHandleRightPanel(null, false) }><i className="fa fa-plus" aria-hidden="true" /></button>
 								</div>
                             </div>
                         </div>

@@ -32,8 +32,6 @@ class VehiclesDashboard extends React.Component
 		};
 
 		this._onChange 		  	= this._onChange.bind(this);
-		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
-		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.setFlashMessage  	= this.setFlashMessage.bind(this);
 		this.closeRightPanel  	= this.closeRightPanel.bind(this);
 	}
@@ -103,8 +101,8 @@ class VehiclesDashboard extends React.Component
 	}
 
 	// Handle right panel
-	onHandleRightPanel(vehicle, isEditingMode) {
-		let vehicle = isEditingMode ?
+	onHandleRightPanel(editingVehicle, isEditingMode) {
+		let vehicle = !isEditingMode ?
 			{
 				id: '',
 				mfg_id: '',
@@ -116,7 +114,7 @@ class VehiclesDashboard extends React.Component
 				vin: '',
 				plate: '',
 				assets: []
-			} : vehicle;
+			} : editingVehicle;
 
 		this.setState({
 			vehicle: vehicle,

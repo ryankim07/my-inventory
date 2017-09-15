@@ -65,11 +65,11 @@ class VehiclesDashboard extends React.Component
 	}
 
 	_onChange() {
-		let vehicles 		  = MyVehiclesStore.getMyVehicles();
-		let manufacturers 	  = ApiVehiclesStore.getApiVehicles();
-		let flashMessage 	  = MyVehiclesStore.getStoreFlashMessage();
-		let isAuthenticated   = MyVehiclesStore.isAuthenticated();
-		let openRightPanel    = MyVehiclesStore.showRightPanel();
+		let vehicles 		= MyVehiclesStore.getMyVehicles();
+		let manufacturers 	= ApiVehiclesStore.getApiVehicles();
+		let flashMessage 	= MyVehiclesStore.getStoreFlashMessage();
+		let isAuthenticated = MyVehiclesStore.isAuthenticated();
+		let openRightPanel  = MyVehiclesStore.showRightPanel();
 
 		if (!isAuthenticated){
 			this.context.router.push("/auth/login");

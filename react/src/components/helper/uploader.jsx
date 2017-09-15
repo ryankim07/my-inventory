@@ -32,7 +32,7 @@ class Uploader extends React.Component
 				assetPreview = <img src={ assets.preview }/>;
 			}
 		} else {
-			assetPreview = <img src={ assets.path } />;
+			assetPreview = <img src={ assets.preview } />;
 		}
 
 		return (

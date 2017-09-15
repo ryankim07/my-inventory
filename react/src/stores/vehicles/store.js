@@ -71,6 +71,13 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 		return _my_vehicle;
 	},
 
+	addMyVehicle: function(results) {
+    	let vehicles = _my_vehicles;
+    	vehicles.push(results.vehicle);
+		_storeMsg = results.msg;
+		_showPanel = false;
+	},
+
 	updateMyVehicle: function(results) {
     	let vehicle = results.vehicle;
 		let index   = _.indexOf(_my_vehicles, _.find(_my_vehicles, (record) => {
@@ -134,18 +141,8 @@ MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
     let results = action.results;
 
     switch(action.actionType) {
-        case ActionConstants.RECEIVE_MY_VEHICLES:
-        	if (results.msg) {
-				setStoreFlashMessage(results.msg)
-			} else {
-				setMyVehicles(results)
-			}
-        break;
-
         case ActionConstants.ADD_MY_VEHICLE:
-			setMyVehicle(results);
-			setStoreFlashMessage(results.msg);
-			setRightPanel(true);
+        	MyVehiclesStore.addMyVehicle(action.results);
         break;
 
         case ActionConstants.EDIT_MY_VEHICLE:
@@ -161,6 +158,14 @@ MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
         case ActionConstants.REMOVE_MY_VEHICLE:
 			MyVehiclesStore.removeMyVehicle(action.results);
         break;
+
+		case ActionConstants.RECEIVE_MY_VEHICLES:
+			if (results.msg) {
+				setStoreFlashMessage(results.msg)
+			} else {
+				setMyVehicles(results)
+			}
+		break;
 
 		case ActionConstants.RECEIVE_ERROR:
 			setStoreFlashMessage(action.msg);

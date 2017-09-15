@@ -32,6 +32,8 @@ class VehiclesDashboard extends React.Component
 		};
 
 		this._onChange 		  	= this._onChange.bind(this);
+		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
+		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.setFlashMessage  	= this.setFlashMessage.bind(this);
 		this.closeRightPanel  	= this.closeRightPanel.bind(this);
 	}
@@ -101,21 +103,7 @@ class VehiclesDashboard extends React.Component
 	}
 
 	// Handle right panel
-	onHandleRightPanel(editingVehicle, isEditingMode) {
-		let vehicle = !isEditingMode ?
-			{
-				id: '',
-				mfg_id: '',
-				mfg: '',
-				model_id: '',
-				model: '',
-				year: '',
-				color: '',
-				vin: '',
-				plate: '',
-				assets: []
-			} : editingVehicle;
-
+	onHandleRightPanel(vehicle, isEditingMode) {
 		this.setState({
 			vehicle: vehicle,
 			isEditingMode: isEditingMode,
@@ -149,23 +137,21 @@ class VehiclesDashboard extends React.Component
 	}
 
 	render() {
-		let state = this.state;
-
 		return (
 			<div className="row">
-				{ !state.flashMessage ? null : <FlashMessage message={ state.flashMessage } alertType="alert-success" />}
+				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success" />}
 
 				<VehiclesList
-					state={ state }
+					state={ this.state }
 					onHandleRightPanel={ this.onHandleRightPanel }
 					onHandleRemove={ this.onHandleRemove }
 					className={ mainColumnClassName }
 				/>
 
 				{
-					state.showRightPanel ?
+					this.state.showRightPanel ?
 						<VehicleAdd
-							state={ state }
+							state={ this.state }
 							onHandleFormSubmit={ this.onHandleFormSubmit }
 							closeRightPanel={ this.closeRightPanel }
 						/> : null

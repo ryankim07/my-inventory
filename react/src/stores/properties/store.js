@@ -13,7 +13,7 @@ let _showRightPanel = false;
 let _errStatus;
 let _storeMsg;
 
-function setAllProperties(properties) {
+function setProperties(properties) {
     _properties = properties ;
 }
 
@@ -231,13 +231,9 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
 
     let action = payload.action;
+	let results = action.results;
 
     switch(action.actionType) {
-        case ActionConstants.RECEIVE_PROPERTIES:
-			PropertiesStore.setProperties(action.properties);
-			PropertiesStore.clearPropertyObj();
-        break;
-
         case ActionConstants.ADD_PROPERTY:
             PropertiesStore.addProperty(action.results);
         break;
@@ -269,6 +265,16 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
 			PropertiesStore.setMainPanel(action.name);
 			PropertiesStore.setProperty(action.data);
 			PropertiesStore.setRightPanel(false);
+		break;
+
+		case ActionConstants.RECEIVE_PROPERTIES:
+			if (results.msg) {
+				setStoreFlashMessage(results.msg)
+			} else {
+				if (results.length !== 0) {
+					setProperties(results)
+				}
+			}
 		break;
 
 		case ActionConstants.RECEIVE_ERROR:

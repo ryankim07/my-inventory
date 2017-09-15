@@ -34,21 +34,6 @@ function removeToken() {
 	localStorage.removeItem('id_token');
 }
 
-function clearPropertyObj() {
-	return _my_vehicle = {
-		id: '',
-		mfg_id: '',
-		mfg: '',
-		model_id: '',
-		model: '',
-		year: '',
-		color: '',
-		vin: '',
-		plate: '',
-		assets: []
-	};
-}
-
 let MyVehiclesStore = assign({}, EventEmitter.prototype, {
     // Emit Change event
     emitChange: function(){
@@ -160,7 +145,9 @@ MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
 			if (results.msg) {
 				setStoreFlashMessage(results.msg)
 			} else {
-				setMyVehicles(results)
+				if (results.length !== 0) {
+					setMyVehicles(results)
+				}
 			}
 		break;
 

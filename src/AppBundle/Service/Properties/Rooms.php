@@ -71,10 +71,6 @@ class Rooms
     {
         $results = !is_null($id) ? $this->repo->find($id) : $this->repo->findBy([], ['name' => 'DESC']);
 
-        if (count($results) == 0) {
-            return false;
-        }
-
         if (!is_null($id)) {
             $results = $this->addDependencies($results);
         }

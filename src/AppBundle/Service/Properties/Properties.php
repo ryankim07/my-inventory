@@ -78,10 +78,6 @@ class Properties
     {
         $results = !is_null($id) ? $this->repo->find($id) : $this->repo->findBy([], ['built' => 'DESC']);
 
-        if (count($results) == 0) {
-            return false;
-        }
-
         $results = $this->addDependencies($results);
 
         return $results;

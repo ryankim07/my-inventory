@@ -53,10 +53,6 @@ class User
     {
         $results = !is_null($id) ? $this->repo->find($id) : $this->repo->findBy([], ['users' => 'ASC']);
 
-        if (count($results) == 0) {
-            return ['msg' => 'No users found.'];
-        }
-
         if (!is_null($id)) {
             $results = $this->addDependencies($results);
         }

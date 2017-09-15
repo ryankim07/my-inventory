@@ -64,6 +64,7 @@ class VehicleAdd extends React.Component
 		let vehicleForm   = '';
 		let defaultMfgId  = parseInt(this.state.vehicle.mfg_id);
 		let manufacturers = this.props.state.manufacturers;
+		let vehicle		  = this.state.vehicle;
 
 		if (!this.props.state.loader  && Object.keys(manufacturers).length !== 0) {
 			let apiModelsOptions = '';
@@ -104,7 +105,7 @@ class VehicleAdd extends React.Component
 								<Uploader
 									onHandleFormChange={ this.onHandleFormChange }
 									isEditingMode={ this.props.state.isEditingMode }
-									assets={ this.state.vehicle.assets }
+									assets={ vehicle.assets }
 								/>
 							</div>
 						</div>
@@ -115,7 +116,7 @@ class VehicleAdd extends React.Component
 							<div className="input-group">
 								<select ref="year"
 										onChange={ this.onHandleFormChange.bind(this, 'year') }
-										value={ this.state.vehicle.year }
+										value={ vehicle.year }
 										className="form-control input-sm"
 										required="required">
 									<option value="">Select One</option>
@@ -130,7 +131,7 @@ class VehicleAdd extends React.Component
 							<div className="input-group">
 								<select ref="mfg_id"
 										onChange={ this.onHandleFormChange.bind(this, 'mfg_id') }
-										value={ this.state.vehicle.mfg_id }
+										value={ vehicle.mfg_id }
 										className="form-control input-sm"
 										required="required">
 									<option value="">Select One</option>
@@ -145,7 +146,7 @@ class VehicleAdd extends React.Component
 							<div className="input-group">
 								<select ref="model_id"
 										onChange={ this.onHandleFormChange.bind(this, 'model_id') }
-										value={ this.state.vehicle.model_id }
+										value={ vehicle.model_id }
 										className="form-control input-sm"
 										required="required">
 									<option value="">Select One</option>
@@ -160,7 +161,7 @@ class VehicleAdd extends React.Component
 							<div className="input-group">
 								<select ref="color"
 										onChange={ this.onHandleFormChange.bind(this, 'color') }
-										value={ this.state.vehicle.color }
+										value={ vehicle.color }
 										className="form-control input-sm"
 										required="required">
 									<option value="">Select One</option>
@@ -181,7 +182,7 @@ class VehicleAdd extends React.Component
 								<input type="text"
 									   ref="vin"
 									   onChange={ this.onHandleFormChange.bind(this, 'vin') }
-									   value={ this.state.vehicle.vin }
+									   value={ vehicle.vin }
 									   className="form-control input-sm"
 									   required="required"/>
 							</div>
@@ -194,7 +195,7 @@ class VehicleAdd extends React.Component
 								<input type="text"
 									   ref="plate"
 									   onChange={ this.onHandleFormChange.bind(this, 'plate') }
-									   value={ this.state.vehicle.plate }
+									   value={ vehicle.plate }
 									   className="form-control input-sm"
 									   required="required"/>
 							</div>
@@ -203,9 +204,9 @@ class VehicleAdd extends React.Component
 					<div className="form-group">
 						<div className="col-xs-12 col-md-8">
 							<div className="input-group">
-								<input type="hidden" ref="id" value={ this.state.vehicle.id } />
-								<input type="hidden" ref="mfg" value={ this.state.vehicle.mfg } />
-								<input type="hidden" ref="model" value={ this.state.vehicle.model } />
+								<input type="hidden" ref="id" value={ vehicle.id } />
+								<input type="hidden" ref="mfg" value={ vehicle.mfg } />
+								<input type="hidden" ref="model" value={ vehicle.model } />
 							</div>
 						</div>
 					</div>

@@ -1,5 +1,4 @@
 import React from 'react';
-import VehiclesAction from '../../actions/vehicles-action';
 import Loader from '../helper/loader';
 
 class VehiclesList extends React.Component
@@ -25,7 +24,7 @@ class VehiclesList extends React.Component
 	}
 
     handleRemove(id) {
-        VehiclesAction.removeMyVehicle(id);
+		this.props.onHandleRemove(id);
     }
 
     render() {

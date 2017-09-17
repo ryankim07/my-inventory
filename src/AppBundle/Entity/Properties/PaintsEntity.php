@@ -38,25 +38,21 @@ class PaintsEntity
 
     /**
      * @ORM\Column(type="integer", length=10)
-     * @Assert\Blank()
      */
     private $number;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\Blank()
      */
     private $color;
 
     /**
      * @ORM\Column(type="string", length=7)
-     * @Assert\Blank()
      */
     private $hex;
 
     /**
      * @ORM\Column(type="string", length=11)
-     * @Assert\Blank()
      */
     private $rgb;
 

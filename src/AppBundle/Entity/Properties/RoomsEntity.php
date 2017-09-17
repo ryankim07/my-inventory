@@ -39,13 +39,11 @@ class RoomsEntity
 
     /**
      * @ORM\Column(type="string", length=6)
-     * @Assert\Blank()
      */
     private $totalArea;
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\Blank()
      */
     private $description;
 

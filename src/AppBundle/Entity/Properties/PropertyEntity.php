@@ -73,7 +73,6 @@ class PropertyEntity
 
     /**
      * @ORM\Column(type="string", length=20)
-     * @Assert\NotBlank()
      */
     private $parcelNumber;
 
@@ -402,6 +401,20 @@ class PropertyEntity
     }
 
     /**
+     * Set address
+     *
+     * @param \AppBundle\Entity\Properties\AddressEntity $address
+     *
+     * @return PropertyEntity
+     */
+    public function setAddress(AddressEntity $address = null)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
      * Add room
      *
      * @param \AppBundle\Entity\Properties\RoomsEntity $room
@@ -434,20 +447,6 @@ class PropertyEntity
     public function getRooms()
     {
         return $this->rooms;
-    }
-
-    /**
-     * Set address
-     *
-     * @param \AppBundle\Entity\Properties\AddressEntity $address
-     *
-     * @return PropertyEntity
-     */
-    public function setAddress(AddressEntity $address = null)
-    {
-        $this->address = $address;
-
-        return $this;
     }
 
     /**

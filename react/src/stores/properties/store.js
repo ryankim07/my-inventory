@@ -107,7 +107,7 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 			return false;
 		}
 
-		_.remove(properties, (myProperty) => {
+		_.remove(_properties, (myProperty) => {
 			return parseInt(results.id) == myProperty.id;
 		});
 

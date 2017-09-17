@@ -62,6 +62,12 @@ class RoomsEntity
     private $walls;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\RoomAssetsEntity", mappedBy="rooms", cascade={"persist"})
+     * @ORM\OrderBy({"name" = "ASC"})
+     */
+    private $roomAssets;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -232,5 +238,54 @@ class RoomsEntity
     public function getWalls()
     {
         return $this->walls;
+    }
+
+    /**
+     * Set property
+     *
+     * @param \AppBundle\Entity\Properties\PropertyEntity $property
+     *
+     * @return RoomsEntity
+     */
+    public function setProperty(\AppBundle\Entity\Properties\PropertyEntity $property = null)
+    {
+        $this->property = $property;
+
+        return $this;
+    }
+
+    /**
+     * Add roomAsset
+     *
+     * @param \AppBundle\Entity\Properties\RoomAssetsEntity $roomAsset
+     *
+     * @return RoomsEntity
+     */
+    public function addRoomAsset(\AppBundle\Entity\Properties\RoomAssetsEntity $roomAsset)
+    {
+        $this->roomAssets[] = $roomAsset;
+        $roomAsset->setRooms($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove roomAsset
+     *
+     * @param \AppBundle\Entity\Properties\RoomAssetsEntity $roomAsset
+     */
+    public function removeRoomAsset(\AppBundle\Entity\Properties\RoomAssetsEntity $roomAsset)
+    {
+        $this->roomAssets->removeElement($roomAsset);
+    }
+
+    /**
+     * Get roomAssets
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRoomAssets()
+    {
+        return $this->roomAssets;
     }
 }

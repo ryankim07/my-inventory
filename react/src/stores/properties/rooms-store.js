@@ -46,8 +46,9 @@ let PropertiesRoomsStore = assign({}, EventEmitter.prototype, {
 	},
 
 	setRooms: function (results) {
-		if (results.msg) {
-			_storeMsg = results.msg;
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
 		} else {
 			if (results.length !== 0) {
 				_rooms = (results)
@@ -60,12 +61,22 @@ let PropertiesRoomsStore = assign({}, EventEmitter.prototype, {
 	},
 
 	addRoom: function (results) {
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
+		}
+
 		_rooms.push(results.room);
 		_storeMsg = results.msg;
 		_showPanel = false;
 	},
 
 	updateRoom: function(results) {
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
+		}
+
 		let room = results.room;
 		let index = _.indexOf(_rooms, _.find(_rooms, (record) => {
 				return record.id == room.id;
@@ -85,6 +96,11 @@ let PropertiesRoomsStore = assign({}, EventEmitter.prototype, {
 	},
 
 	removeRoom: function(results) {
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
+		}
+
 		_.remove(rooms, (myRoom) => {
 			return parseInt(room.id) == myRoom.id;
 		});

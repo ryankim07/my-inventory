@@ -10,7 +10,7 @@ import Signup from './src/components/auth/signup';
 import VehicleDashboard from './src/components/vehicles/dashboard';
 import VehicleAdd from './src/components/vehicles/add';
 import VehiclesList from './src/components/vehicles/list';
-import PropertyDashboard from './src/components/properties/dashboard';
+import PropertiesDashboard from './src/components/properties/dashboard';
 import PropertyAdd from './src/components/properties/add';
 import PropertiesList from './src/components/properties/list';
 import PropertyView from './src/components/properties/view';
@@ -43,7 +43,7 @@ ReactDOM.render(
                 <Route path="/vehicles" component={ VehiclesList } />
             </Route>
 
-			<Route path="/properties/dashboard" component={ PropertyDashboard } >
+			<Route path="/properties/dashboard" component={ PropertiesDashboard } >
 				<Route path="/properties" component={ PropertiesList } />
 				<Route path="/properties/add" component={ PropertyAdd } />
 				<Route path="/properties/view" component={ PropertyView } />

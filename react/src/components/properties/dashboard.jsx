@@ -14,7 +14,7 @@ let mainColumnClassName = 'main-column';
 let mainPanelDefaultName = 'list';
 let mainPanelViewName = 'view;'
 
-class PropertyDashboard extends React.Component
+class PropertiesDashboard extends React.Component
 {
 	constructor(props) {
 		super(props);
@@ -183,4 +183,4 @@ class PropertyDashboard extends React.Component
 	}
 }
 
-export default PropertyDashboard;
+export default PropertiesDashboard;

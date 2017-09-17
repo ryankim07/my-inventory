@@ -130,13 +130,13 @@ class Properties
             $msg = "Property successfully {$op}.";
 
             // Save or update property
-            if ($this->_saveProperty()) {
+            if (!$this->_saveProperty()) {
                 $msg = "Property could not be {$op}.";
             };
 
             return [
                 'property' => $this->entity,
-                'msg'      => "Property successfully {$msg}."
+                'msg'      => $msg
             ];
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
@@ -222,11 +222,9 @@ class Properties
         $this->entity->addAddress($addressEntity);
 
         if (!is_null($this->assets)) {
-            foreach($assetEntity as $asset) {
-                $asset->setName($this->assets->getClientOriginalName());
-                $asset->setPath($assetFullPath);
-                $this->entity->addAsset($asset);
-            }
+            $assetEntity->setName($this->assets->getClientOriginalName());
+            $assetEntity->setPath($assetFullPath);
+            $this->entity->addAsset($assetEntity);
         }
 
         if (!$this->existingProperty) {

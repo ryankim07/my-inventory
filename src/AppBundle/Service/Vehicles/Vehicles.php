@@ -222,7 +222,7 @@ class Vehicles
         if (!is_null($this->assets)) {
             $assetEntity->setName($this->assets->getClientOriginalName());
             $assetEntity->setPath($assetFullPath);
-            $this->entity->addAsset($assetEntity);
+            $this->entity->setAsset($assetEntity);
         }
 
         if (!$this->existingVehicle) {

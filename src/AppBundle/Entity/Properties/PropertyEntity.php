@@ -78,7 +78,7 @@ class PropertyEntity
     private $parcelNumber;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\PropertyAssetsEntity", mappedBy="properties")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\PropertyAssetsEntity", mappedBy="properties", cascade={"persist"})
      * @ORM\OrderBy({"name" = "ASC"})
      */
     private $assets;
@@ -93,6 +93,21 @@ class PropertyEntity
      * @ORM\OrderBy({"name" = "ASC"})
      */
     private $rooms;
+
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Properties\ExteriorFeaturesEntity", mappedBy="property", cascade={"persist"})
+     */
+    private $exteriorFeatures;
+
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Properties\InteriorFeaturesEntity", mappedBy="property", cascade={"persist"})
+     */
+    private $interiorFeatures;
+
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Properties\FeaturesEntity", mappedBy="property", cascade={"persist"})
+     */
+    private $features;
 
     /**
      * Constructor
@@ -338,6 +353,7 @@ class PropertyEntity
     public function addAsset(PropertyAssetsEntity $asset)
     {
         $this->assets[] = $asset;
+        $asset->setProperties($this);
 
         return $this;
     }
@@ -418,5 +434,91 @@ class PropertyEntity
     public function getRooms()
     {
         return $this->rooms;
+    }
+
+    /**
+     * Set address
+     *
+     * @param \AppBundle\Entity\Properties\AddressEntity $address
+     *
+     * @return PropertyEntity
+     */
+    public function setAddress(AddressEntity $address = null)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Set exteriorFeatures
+     *
+     * @param \AppBundle\Entity\Properties\ExteriorFeaturesEntity $exteriorFeatures
+     *
+     * @return PropertyEntity
+     */
+    public function setExteriorFeatures(ExteriorFeaturesEntity $exteriorFeatures = null)
+    {
+        $this->exteriorFeatures = $exteriorFeatures;
+
+        return $this;
+    }
+
+    /**
+     * Get exteriorFeatures
+     *
+     * @return \AppBundle\Entity\Properties\ExteriorFeaturesEntity
+     */
+    public function getExteriorFeatures()
+    {
+        return $this->exteriorFeatures;
+    }
+
+    /**
+     * Set interiorFeatures
+     *
+     * @param \AppBundle\Entity\Properties\InteriorFeaturesEntity $interiorFeatures
+     *
+     * @return PropertyEntity
+     */
+    public function setInteriorFeatures(\AppBundle\Entity\Properties\InteriorFeaturesEntity $interiorFeatures = null)
+    {
+        $this->interiorFeatures = $interiorFeatures;
+
+        return $this;
+    }
+
+    /**
+     * Get interiorFeatures
+     *
+     * @return \AppBundle\Entity\Properties\InteriorFeaturesEntity
+     */
+    public function getInteriorFeatures()
+    {
+        return $this->interiorFeatures;
+    }
+
+    /**
+     * Set features
+     *
+     * @param \AppBundle\Entity\Properties\FeaturesEntity $features
+     *
+     * @return PropertyEntity
+     */
+    public function setFeatures(\AppBundle\Entity\Properties\FeaturesEntity $features = null)
+    {
+        $this->features = $features;
+
+        return $this;
+    }
+
+    /**
+     * Get features
+     *
+     * @return \AppBundle\Entity\Properties\FeaturesEntity
+     */
+    public function getFeatures()
+    {
+        return $this->features;
     }
 }

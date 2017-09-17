@@ -49,8 +49,9 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
 	},
 
 	setVehicles: function(results) {
-		if (results.msg) {
-			_storeMsg = results.msg;
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
 		} else {
 			if (results.length !== 0) {
 				_vehicles = results;
@@ -59,12 +60,22 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
 	},
 
 	addVehicle: function(results) {
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
+		}
+
 		_vehicles.push(results.vehicle);
 		_storeMsg = results.msg;
 		_showPanel = false;
 	},
 
 	updateVehicle: function(results) {
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
+		}
+
     	let vehicle = results.vehicle;
 		let index   = _.indexOf(_vehicles, _.find(_vehicles, (record) => {
 				return record.id === vehicle.id;
@@ -89,6 +100,11 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
 	},
 
 	removeVehicle: function(results) {
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
+		}
+
 		_.remove(_vehicles, (myVehicle) => {
 			return parseInt(results.id) === myVehicle.id;
 		});

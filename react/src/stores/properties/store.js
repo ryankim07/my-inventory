@@ -49,8 +49,9 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 	},
 
 	setProperties: function(results) {
-		if (results.msg) {
-			_storeMsg = results.msg;
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
 		} else {
 			if (results.length !== 0) {
 				_properties = (results)
@@ -59,12 +60,22 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 	},
 
 	addProperty: function (results) {
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
+		}
+
 		_properties.push(results.property);
 		_storeMsg = results.msg;
 		_showPanel = false;
 	},
 
 	updateProperty: function(results) {
+    	if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
+		}
+
 		let property = results.property;
 		let index = _.indexOf(_properties, _.find(_properties, (record) => {
 				return record.id === property.id;
@@ -90,6 +101,11 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 	},
 
 	removeProperty: function(results) {
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
+		}
+
 		_.remove(properties, (myProperty) => {
 			return parseInt(results.id) == myProperty.id;
 		});

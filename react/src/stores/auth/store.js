@@ -42,25 +42,20 @@ let AuthStore = assign({}, EventEmitter.prototype, {
 		this.removeListener('change', callback);
 	},
 
+	getUser: function() {
+		return localStorage.getItem('profile');
+	},
+
+	getJwt: function() {
+		return localStorage.getItem('id_token');
+	},
+
 	isAuthenticated: function() {
 		if (localStorage.getItem('id_token') === null) {
 			return false;
 		}
 
 		return true;
-	},
-
-	getUser: function() {
-		return localStorage.getItem('profile');
-	},
-
-	removeToken: function(msg) {
-		removeToken();
-		setStoreFlashMessage(msg);
-	},
-
-	getJwt: function() {
-		return localStorage.getItem('id_token');
 	},
 
 	getStoreFlashMessage: function() {
@@ -87,7 +82,8 @@ AuthStore.dispatchToken = Dispatcher.register(function(payload)
 		break;
 
 		case ActionConstants.LOGIN_USER_ERROR:
-			AuthStore.removeToken(action.msg);
+			setStoreFlashMessage(msg);
+			removeToken();
 		break;
 	}
 

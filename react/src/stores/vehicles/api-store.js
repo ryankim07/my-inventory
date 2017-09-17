@@ -33,8 +33,9 @@ let ApiVehiclesStore = assign({}, EventEmitter.prototype, {
 	},
 
 	setApiVehicles: function(results) {
-		if (results.msg) {
-			_storeMsg = results.msg;
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
 		} else {
 			if (results.length !== 0) {
 				_apiVehicles = results;

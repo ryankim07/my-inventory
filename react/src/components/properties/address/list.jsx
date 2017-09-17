@@ -32,9 +32,9 @@ class PropertiesAddressList extends React.Component
 					<td>{ address.country }</td>
 					<td>{ address.subdivision }</td>
 					<td>
-						<button onClick={ this.handleRemove.bind(this, address.property_id) }><i className="fa fa-trash" aria-hidden="true" /></button>
-						<button onClick={ this.handleRightPanel.bind(this, property) }><i className="fa fa-pencil" aria-hidden="true" /></button>
 						<button onClick={ this.handleView.bind(this, property) }><i className="fa fa-search" aria-hidden="true" /></button>
+						<button onClick={ this.handleRightPanel.bind(this, property) }><i className="fa fa-pencil" aria-hidden="true" /></button>
+						<button onClick={ this.handleRemove.bind(this, address.property_id) }><i className="fa fa-trash" aria-hidden="true" /></button>
 					</td>
 				</tr>
 			);

@@ -276,7 +276,7 @@ class AddressEntity
      * @param PropertyEntity $property
      * @return $this
      */
-    public function addProperty(PropertyEntity $property)
+    public function setProperty(PropertyEntity $property)
     {
         $this->property = $property;
 

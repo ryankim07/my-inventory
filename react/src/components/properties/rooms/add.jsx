@@ -137,9 +137,10 @@ class PropertyRoomAdd extends React.Component
 				<div className="col-xs-12 col-md-8">
 					<label className="control-label">Description</label>
 					<div className="input-group">
-							<textarea ref="description"
-									  rows="5"
-									  className="form-control">
+							<textarea
+								ref="description"
+								rows="5"
+								className="form-control">
 							</textarea>
 					</div>
 				</div>

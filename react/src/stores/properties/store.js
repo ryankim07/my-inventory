@@ -93,7 +93,8 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 			unfinished_area: property.unfinished_area,
 			total_area: property.total_area,
 			parcel_number: property.parcel_number,
-			assets: property.assets
+			assets: property.assets,
+			address: property.address
 		});
 
 		_storeMsg = results.msg;

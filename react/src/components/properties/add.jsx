@@ -221,7 +221,7 @@ class PropertyAdd extends React.Component
 						</div>
 					</div>
 				</div>
-				<div className="form-group required">
+				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Parcel Number</label>
 						<div className="input-group">
@@ -229,8 +229,7 @@ class PropertyAdd extends React.Component
 								   ref="total_area"
 								   onChange={ this.onHandleFormChange.bind(this, 'parcel_number') }
 								   value={ property.parcel_number }
-								   className="form-control input-sm"
-								   required="required"/>
+								   className="form-control input-sm"/>
 						</div>
 					</div>
 				</div>

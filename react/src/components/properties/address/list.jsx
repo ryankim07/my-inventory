@@ -22,22 +22,30 @@ class PropertiesAddressList extends React.Component
     	let addressesHtml = properties.map((property) => {
 			let address = property.address;
 
-			return (
-				<tr key={ address.id }>
-					<td>{ address.street }</td>
-					<td>{ address.city }</td>
-					<td>{ address.state }</td>
-					<td>{ address.zip }</td>
-					<td>{ address.county }</td>
-					<td>{ address.country }</td>
-					<td>{ address.subdivision }</td>
-					<td>
-						<button onClick={ this.handleView.bind(this, property) }><i className="fa fa-search" aria-hidden="true" /></button>
-						<button onClick={ this.handleRightPanel.bind(this, property) }><i className="fa fa-pencil" aria-hidden="true" /></button>
-						<button onClick={ this.handleRemove.bind(this, address.property_id) }><i className="fa fa-trash" aria-hidden="true" /></button>
-					</td>
-				</tr>
-			);
+			if (!address  || address.length === 0) {
+				return(<tr><td><span>Unable to display properties due to missing address.</span></td></tr>);
+			} else {
+				return (
+					<tr key={address.id}>
+						<td>{address.street}</td>
+						<td>{address.city}</td>
+						<td>{address.state}</td>
+						<td>{address.zip}</td>
+						<td>{address.county}</td>
+						<td>{address.country}</td>
+						<td>{address.subdivision}</td>
+						<td>
+							<button onClick={this.handleView.bind(this, property)}><i className="fa fa-search"
+																					  aria-hidden="true"/></button>
+							<button onClick={this.handleRightPanel.bind(this, property)}><i className="fa fa-pencil"
+																							aria-hidden="true"/>
+							</button>
+							<button onClick={this.handleRemove.bind(this, address.property_id)}><i
+								className="fa fa-trash" aria-hidden="true"/></button>
+						</td>
+					</tr>
+				);
+			}
 		});
 
         return (

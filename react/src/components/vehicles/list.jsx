@@ -37,7 +37,7 @@ class VehiclesList extends React.Component
         	let vehicles  = this.props.state.vehicles;
 
         	if (!vehicles || vehicles.length === 0) {
-				vehiclesHtml = <tr><td><span>There are no saved vehicle.</span></td></tr>;
+				vehiclesHtml = <tr><td><span>There are no saved vehicles.</span></td></tr>;
 			} else {
 				vehiclesHtml = vehicles.map((vehicle) => {
 					return (

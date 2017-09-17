@@ -43,14 +43,14 @@ class PropertiesList extends React.Component
 			let properties = this.props.state.properties;
 
 			if (!properties  || properties.length === 0) {
-				propertiesHtml = <div><h3>There are no saved property.</h3></div>;
+				propertiesHtml = <div><span>There are no saved properties.</span></div>;
 			} else {
 				propertiesHtml =
 					<PropertyAddressList
 						properties={ properties }
 						onHandleRightPanel={ this.props.onHandleRightPanel }
 						onHandleView={ this.props.onHandleView }
-						handleRemove={ this.props.onHandleRemove }
+						onHandleRemove={ this.props.onHandleRemove }
 					/>;
 			}
         } else {

@@ -93,8 +93,8 @@ class PropertyExteriorFeaturesAdd extends React.Component
 					<label className="control-label">Exterior</label>
 					<div className="input-group">
 							<textarea ref="exterior"
-									  rows="5"
-									  className="form-control">
+								rows="5"
+								className="form-control">
 							</textarea>
 					</div>
 				</div>
@@ -104,8 +104,8 @@ class PropertyExteriorFeaturesAdd extends React.Component
 					<label className="control-label">Foundation</label>
 					<div className="input-group">
 							<textarea ref="foundation"
-									  rows="5"
-									  className="form-control">
+								rows="5"
+								className="form-control">
 							</textarea>
 					</div>
 				</div>

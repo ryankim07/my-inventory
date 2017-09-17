@@ -5,24 +5,20 @@ class VehiclesList extends React.Component
 {
 	// Toggle panel for add or edit
 	handleRightPanel(editingVehicle) {
-		let isEditingMode = false;
-		let vehicle = {
-			id: '',
-			mfg_id: '',
-			mfg: '',
-			model_id: '',
-			model: '',
-			year: '',
-			color: '',
-			vin: '',
-			plate: '',
-			assets: []
-		};
-
-		if (editingVehicle !== null) {
-			isEditingMode = true;
-			vehicle = editingVehicle;
-		}
+		let isEditingMode = !!editingVehicle;
+		let vehicle = editingVehicle === null ?
+			{
+				id: '',
+				mfg_id: '',
+				mfg: '',
+				model_id: '',
+				model: '',
+				year: '',
+				color: '',
+				vin: '',
+				plate: '',
+				assets: []
+			} : editingVehicle;
 
 		this.props.onHandleRightPanel(vehicle, isEditingMode);
 	}
@@ -53,7 +49,7 @@ class VehiclesList extends React.Component
 							<td>{ vehicle.vin }</td>
 							<td>{ vehicle.plate }</td>
 							<td>
-								<button onClick={ this.handleRemove.bind(this, vehicle.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
+								<button onClick={ this.handleRemove.bind(vehicle.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
 								<button onClick={ this.handleRightPanel.bind(this, vehicle) }><i className="fa fa-pencil" aria-hidden="true" /></button>
 							</td>
 						</tr>

@@ -47,7 +47,6 @@ class VehiclesDashboard extends React.Component
 	}
 
 	componentWillUnmount() {
-		ApiVehiclesStore.removeChangeListener(this._onChange);
 		MyVehiclesStore.removeChangeListener(this._onChange);
 	}
 

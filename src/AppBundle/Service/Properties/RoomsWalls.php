@@ -120,7 +120,7 @@ class RoomsWalls
                 'msg'      => "Room successfully {$msg}."
             ];
         } catch(\Exception $e) {
-            return ['msg' => $e->getMessage()];
+            return ['err_msg' => $e->getMessage()];
         }
     }
 
@@ -147,7 +147,7 @@ class RoomsWalls
                 'id'  => $id
             ];
         } catch(\Exception $e) {
-            return ['msg' => $e->getMessage()];
+            return ['err_msg' => $e->getMessage()];
         }
     }
 

@@ -122,7 +122,7 @@ class Properties
 
             $this->existingProperty = $this->find($id);
 
-            if (!$this->existingProperty) {
+            if ($this->existingProperty) {
                 $this->entity = $this->existingProperty;
             }
 
@@ -139,7 +139,7 @@ class Properties
                 'msg'      => "Property successfully {$msg}."
             ];
         } catch(\Exception $e) {
-            return ['msg' => $e->getMessage()];
+            return ['err_msg' => $e->getMessage()];
         }
     }
 
@@ -177,7 +177,7 @@ class Properties
                 'id'  => $id
             ];
         } catch(\Exception $e) {
-            return ['msg' => $e->getMessage()];
+            return ['err_msg' => $e->getMessage()];
         }
     }
 
@@ -189,15 +189,13 @@ class Properties
     private function _saveProperty()
     {
         // Upload asset
-        if (!is_null($this->assets)) {
-            $assetFullPath = $this->fileUploader->upload($this->assets);
-        }
+        $assetFullPath = !is_null($this->assets) ? $this->fileUploader->upload($this->assets) : null;
 
         if (!$this->existingProperty) {
             $this->entity = new PropertyEntity();
             $assetEntity  = new PropertyAssetsEntity();
         } else {
-            $assetEntity = $this->em->getRepository('AppBundle\Entity\Properties\PropertyEntity')->findOneByPropertyId($this->entity->getId());
+            $assetEntity = $this->em->getRepository('AppBundle\Entity\Properties\PropertyAssetsEntity')->findByPropertyId($this->entity->getId());
         }
 
         $this->entity->setBuilt($this->built);
@@ -224,9 +222,11 @@ class Properties
         $this->entity->addAddress($addressEntity);
 
         if (!is_null($this->assets)) {
-            $assetEntity->setName($this->assets->getClientOriginalName());
-            $assetEntity->setPath($assetFullPath);
-            $this->entity->addAsset($assetEntity);
+            foreach($assetEntity as $asset) {
+                $asset->setName($this->assets->getClientOriginalName());
+                $asset->setPath($assetFullPath);
+                $this->entity->addAsset($asset);
+            }
         }
 
         if (!$this->existingProperty) {

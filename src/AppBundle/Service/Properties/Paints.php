@@ -128,7 +128,7 @@ class Paints
                 'msg'      => "Paint color successfully {$msg}."
             ];
         } catch(\Exception $e) {
-            return ['msg' => $e->getMessage()];
+            return ['err_msg' => $e->getMessage()];
         }
     }
 
@@ -155,7 +155,7 @@ class Paints
                 'id'  => $id
             ];
         } catch(\Exception $e) {
-            return ['msg' => $e->getMessage()];
+            return ['err_msg' => $e->getMessage()];
         }
     }
 

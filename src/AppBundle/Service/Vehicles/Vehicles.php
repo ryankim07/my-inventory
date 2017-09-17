@@ -150,7 +150,7 @@ class Vehicles
                 'msg'     => $msg
             ];
         } catch(\Exception $e) {
-            return ['msg' => $e->getMessage()];
+            return ['err_msg' => $e->getMessage()];
         }
     }
 
@@ -188,7 +188,7 @@ class Vehicles
                 'id'  => $id
             ];
         } catch(\Exception $e) {
-            return ['msg' => $e->getMessage()];
+            return ['err_msg' => $e->getMessage()];
         }
     }
 
@@ -200,9 +200,7 @@ class Vehicles
     private function _saveVehicle()
     {
         // Upload asset
-        if (!is_null($this->assets)) {
-            $assetFullPath = $this->fileUploader->upload($this->assets);
-        }
+        $assetFullPath = !is_null($this->assets) ? $this->fileUploader->upload($this->assets) : null;
 
         if (!$this->existingVehicle) {
             $this->entity = new VehicleEntity();

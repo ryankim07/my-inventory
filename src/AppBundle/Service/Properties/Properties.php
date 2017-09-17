@@ -192,12 +192,15 @@ class Properties
         $assetFullPath = !is_null($this->assets) ? $this->fileUploader->upload($this->assets) : null;
 
         if (!$this->existingProperty) {
-            $this->entity = new PropertyEntity();
-            $assetEntity  = new PropertyAssetsEntity();
+            $this->entity  = new PropertyEntity();
+            $addressEntity = new AddressEntity();
+            $assetEntity   = new PropertyAssetsEntity();
         } else {
-            $assetEntity = $this->em->getRepository('AppBundle\Entity\Properties\PropertyAssetsEntity')->findByPropertyId($this->entity->getId());
+            $assetEntity   = $this->em->getRepository('AppBundle\Entity\Properties\PropertyAssetsEntity')->findByPropertyId($this->entity->getId());
+            $addressEntity = $this->em->getRepository('AppBundle\Entity\Properties\AddressEntity')->findOneByPropertyId($this->entity->getId());
         }
 
+        // Property entity
         $this->entity->setBuilt($this->built);
         $this->entity->setStyle($this->style);
         $this->entity->setFloors($this->floors);
@@ -208,8 +211,7 @@ class Properties
         $this->entity->setTotalArea($this->totalArea);
         $this->entity->setParcelNumber($this->parcelNumber);
 
-        $addressEntity = new AddressEntity();
-
+        // Address entity
         $addressEntity->setPropertyId($this->entity->getId());
         $addressEntity->setStreet($this->address['street']);
         $addressEntity->setCity($this->address['city']);
@@ -222,9 +224,17 @@ class Properties
         $this->entity->addAddress($addressEntity);
 
         if (!is_null($this->assets)) {
-            $assetEntity->setName($this->assets->getClientOriginalName());
-            $assetEntity->setPath($assetFullPath);
-            $this->entity->addAsset($assetEntity);
+            if (!$this->existingProperty) {
+                $assetEntity->setName($this->assets->getClientOriginalName());
+                $assetEntity->setPath($assetFullPath);
+                $this->entity->addAsset($assetEntity);
+            } else {
+                foreach($assetEntity as $asset) {
+                    $asset->setName($this->assets->getClientOriginalName());
+                    $asset->setPath($assetFullPath);
+                    $this->entity->addAsset($asset);
+                }
+            }
         }
 
         if (!$this->existingProperty) {

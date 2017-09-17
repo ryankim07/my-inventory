@@ -38,10 +38,10 @@ class PropertyAssetsEntity
     public $path;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Properties\PropertyEntity", inversedBy="propertyAssets")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Properties\PropertyEntity", inversedBy="assets")
      * @ORM\JoinColumn(name="property_id", referencedColumnName="id")
      */
-    private $properties;
+    private $property;
 
     /**
      * Get id
@@ -54,20 +54,11 @@ class PropertyAssetsEntity
     }
 
     /**
-     * Get property ID
+     * Set propertyId
      *
-     * @return integer
-     */
-    public function getPropertyId()
-    {
-        return $this->propertyId;
-    }
-
-    /**
-     * Set property ID
+     * @param integer $propertyId
      *
-     * @param $propertyId
-     * @return $this
+     * @return PropertyAssetsEntity
      */
     public function setPropertyId($propertyId)
     {
@@ -77,10 +68,21 @@ class PropertyAssetsEntity
     }
 
     /**
+     * Get propertyId
+     *
+     * @return integer
+     */
+    public function getPropertyId()
+    {
+        return $this->propertyId;
+    }
+
+    /**
      * Set name
      *
-     * @param $name
-     * @return $this
+     * @param string $name
+     *
+     * @return PropertyAssetsEntity
      */
     public function setName($name)
     {
@@ -102,8 +104,9 @@ class PropertyAssetsEntity
     /**
      * Set path
      *
-     * @param $path
-     * @return $this
+     * @param string $path
+     *
+     * @return PropertyAssetsEntity
      */
     public function setPath($path)
     {
@@ -123,25 +126,26 @@ class PropertyAssetsEntity
     }
 
     /**
-     * Set properties
+     * Set property
      *
-     * @param PropertyEntity|null $properties
-     * @return $this\
+     * @param \AppBundle\Entity\Properties\PropertyEntity $property
+     *
+     * @return PropertyAssetsEntity
      */
-    public function setProperties(PropertyEntity $properties = null)
+    public function setProperty(\AppBundle\Entity\Properties\PropertyEntity $property = null)
     {
-        $this->properties = $properties;
+        $this->property = $property;
 
         return $this;
     }
 
     /**
-     * Get properties
+     * Get property
      *
-     * @return mixed
+     * @return \AppBundle\Entity\Properties\PropertyEntity
      */
-    public function getProperties()
+    public function getProperty()
     {
-        return $this->properties;
+        return $this->property;
     }
 }

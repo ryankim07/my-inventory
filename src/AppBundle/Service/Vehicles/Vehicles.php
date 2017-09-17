@@ -220,9 +220,17 @@ class Vehicles
         $this->entity->setPlate($this->plate);
 
         if (!is_null($this->assets)) {
-            $assetEntity->setName($this->assets->getClientOriginalName());
-            $assetEntity->setPath($assetFullPath);
-            $this->entity->setAsset($assetEntity);
+            if (!$this->existingVehicle) {
+                $assetEntity->setName($this->assets->getClientOriginalName());
+                $assetEntity->setPath($assetFullPath);
+                $this->entity->addAsset($assetEntity);
+            } else {
+                foreach($assetEntity as $asset) {
+                    $asset->setName($this->assets->getClientOriginalName());
+                    $asset->setPath($assetFullPath);
+                    $this->entity->addAsset($asset);
+                }
+            }
         }
 
         if (!$this->existingVehicle) {

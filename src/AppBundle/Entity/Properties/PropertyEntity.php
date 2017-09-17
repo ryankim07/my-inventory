@@ -78,7 +78,7 @@ class PropertyEntity
     private $parcelNumber;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\PropertyAssetsEntity", mappedBy="properties", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\PropertyAssetsEntity", mappedBy="property", cascade={"persist"})
      * @ORM\OrderBy({"name" = "ASC"})
      */
     private $assets;
@@ -115,7 +115,7 @@ class PropertyEntity
     public function __construct()
     {
         $this->assets = new ArrayCollection();
-        $this->rooms = new ArrayCollection();
+        $this->rooms  = new ArrayCollection();
     }
 
     /**
@@ -353,7 +353,7 @@ class PropertyEntity
     public function addAsset(PropertyAssetsEntity $asset)
     {
         $this->assets[] = $asset;
-        $asset->setProperties($this);
+        $asset->setProperty($this);
 
         return $this;
     }
@@ -388,7 +388,7 @@ class PropertyEntity
     public function addAddress(AddressEntity $address)
     {
         $this->address = $address;
-        $address->addProperty($this);
+        $address->setProperty($this);
     }
 
     /**
@@ -411,7 +411,7 @@ class PropertyEntity
     public function addRoom(RoomsEntity $room)
     {
         $this->rooms[] = $room;
-        $room->addProperty($this);
+        $room->setProperty($this);
 
         return $this;
     }
@@ -481,7 +481,7 @@ class PropertyEntity
      *
      * @return PropertyEntity
      */
-    public function setInteriorFeatures(\AppBundle\Entity\Properties\InteriorFeaturesEntity $interiorFeatures = null)
+    public function setInteriorFeatures(InteriorFeaturesEntity $interiorFeatures = null)
     {
         $this->interiorFeatures = $interiorFeatures;
 
@@ -505,7 +505,7 @@ class PropertyEntity
      *
      * @return PropertyEntity
      */
-    public function setFeatures(\AppBundle\Entity\Properties\FeaturesEntity $features = null)
+    public function setFeatures(FeaturesEntity $features = null)
     {
         $this->features = $features;
 

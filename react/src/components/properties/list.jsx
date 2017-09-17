@@ -4,16 +4,9 @@ import Loader from '../helper/loader';
 
 class PropertiesList extends React.Component
 {
-	constructor(props) {
-		super(props);
-
-		this.handleView = this.handleView.bind(this);
-	}
-
 	// Toggle panel for add or edit
-	handleRightPanel(editingProperty, isEditingMode) {
-		let property = !isEditingMode ?
-			{
+	handleRightPanel() {
+		let property = {
 				id: '',
 				style: '',
 				beds: '',
@@ -36,14 +29,9 @@ class PropertiesList extends React.Component
 					country: '',
 					subdivision: ''
 				}
-			} : editingProperty;
+			};
 
-		this.props.onHandleRightPanel(property, isEditingMode);
-	}
-
-	// Handle view
-	handleView(property) {
-		this.props.onHandleView(property);
+		this.props.onHandleRightPanel(property, false);
 	}
 
 	render() {
@@ -57,13 +45,13 @@ class PropertiesList extends React.Component
 			if (!properties  || properties.length === 0) {
 				propertiesHtml = <div><h3>There are no saved property.</h3></div>;
 			} else {
-				/*propertiesHtml =
+				propertiesHtml =
 					<PropertyAddressList
 						properties={ properties }
-						handleRightPanel={ this.handleRightPanel }
-						handleView={ this.handleView }
-						onHandleRemove={ this.props.onHandleRemove }
-					/>;*/
+						onHandleRightPanel={ this.props.onHandleRightPanel }
+						onHandleView={ this.props.onHandleView }
+						handleRemove={ this.props.onHandleRemove }
+					/>;
 			}
         } else {
             propertiesHtml = <div><Loader /></div>;
@@ -79,7 +67,7 @@ class PropertiesList extends React.Component
                                     <span>Properties List</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2">
-									<button onClick={ this.handleRightPanel(null, false) }><i className="fa fa-plus" aria-hidden="true" /></button>
+									<button onClick={ this.handleRightPanel.bind(this) }><i className="fa fa-plus" aria-hidden="true" /></button>
 								</div>
                             </div>
                         </div>

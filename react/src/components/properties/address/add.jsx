@@ -59,7 +59,7 @@ class PropertyAddressAdd extends React.Component
 						<div className="input-group">
 							<select ref="state"
 									onChange={ this.handleFormChange.bind(this, 'state') }
-									value={ address.built }
+									value={ address.state }
 									className="form-control input-sm"
 									required="required">
 								<option value="">Select One</option>

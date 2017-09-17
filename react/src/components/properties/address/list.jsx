@@ -2,6 +2,20 @@ import React from 'react';
 
 class PropertiesAddressList extends React.Component
 {
+	handleRightPanel(editingProperty) {
+		this.props.onHandleRightPanel(editingProperty, true);
+	}
+
+	// Handle view
+	handleView(property) {
+		this.props.onHandleView(property);
+	}
+
+	// Handle view
+	handleRemove(id) {
+		this.props.onHandleRemove(id);
+	}
+
 	render() {
     	let properties = this.props.properties;
 
@@ -18,9 +32,9 @@ class PropertiesAddressList extends React.Component
 					<td>{ address.country }</td>
 					<td>{ address.subdivision }</td>
 					<td>
-						<button onClick={ this.props.onHandleRemove(address.property_id) }><i className="fa fa-trash" aria-hidden="true" /></button>
-						<button onClick={ this.props.handleRightPanel(property, true) }><i className="fa fa-pencil" aria-hidden="true" /></button>
-						<button onClick={ this.props.handleView(property) }><i className="fa fa-search" aria-hidden="true" /></button>
+						<button onClick={ this.handleRemove.bind(this, address.property_id) }><i className="fa fa-trash" aria-hidden="true" /></button>
+						<button onClick={ this.handleRightPanel.bind(this, property) }><i className="fa fa-pencil" aria-hidden="true" /></button>
+						<button onClick={ this.handleView.bind(this, property) }><i className="fa fa-search" aria-hidden="true" /></button>
 					</td>
 				</tr>
 			);

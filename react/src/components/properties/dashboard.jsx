@@ -55,7 +55,7 @@ class PropertyDashboard extends React.Component
 	}
 
 	// When component from same route are unmounting and need to remount
-	/*componentWillReceiveProps(nextProps) {
+	componentWillReceiveProps(nextProps) {
 		if (nextProps.location.action !== 'POP' || nextProps.location.action !== 'PUSH') {
 			this.setState({
 				columnCss: {
@@ -67,7 +67,7 @@ class PropertyDashboard extends React.Component
 				flashMessage: null
 			});
 		}
-	}*/
+	}
 
 	// State changes
 	_onChange() {

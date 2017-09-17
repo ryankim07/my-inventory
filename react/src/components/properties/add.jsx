@@ -12,8 +12,7 @@ class PropertyAdd extends React.Component
 			property: this.props.state.property
 		}
 
-        this.onHandleFormChange = this.onHandleFormChange.bind(this);
-        this.handleFormSubmit   = this.handleFormSubmit.bind(this);
+		this.onHandleFormChange = this.onHandleFormChange.bind(this);
     }
 
 	componentWillReceiveProps(nextProps) {
@@ -27,11 +26,7 @@ class PropertyAdd extends React.Component
     // Handle input changes
 	onHandleFormChange(propertyName, event) {
         let property    = this.state.property;
-        let chosenValue = event.target.value;
-
-        if (propertyName === 'assets' || propertyName === 'address') {
-			chosenValue = event;
-		}
+        let chosenValue = propertyName === 'assets' || propertyName === 'address' ? event : event.target.value;
 
         switch (propertyName) {
             case 'finished_area':
@@ -58,7 +53,6 @@ class PropertyAdd extends React.Component
 	// Submit
 	handleFormSubmit(event) {
 		event.preventDefault();
-
 		this.props.onHandleFormSubmit(this.state.property);
 	}
 
@@ -93,7 +87,7 @@ class PropertyAdd extends React.Component
 		}
 
 		let propertyForm =
-			<form onSubmit={ this.handleFormSubmit }>
+			<form onSubmit={ this.handleFormSubmit.bind(this) }>
 				<div>
 					<hr/>
 					<p>General Information</p>

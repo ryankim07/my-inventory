@@ -3,16 +3,8 @@ import Previous from '../helper/previous';
 
 class PropertyView extends React.Component
 {
-    constructor(props) {
-        super(props);
-
-        this.handleActions = this.handleActions.bind(this);
-    }
-
-    // Handle other actions
-	handleActions(e) {
-    	let action 	   = e.target.dataset.action;
-    	let propertyId = this.props.property.id;
+    handleActions(action) {
+    	let propertyId = this.props.state.property.id;
     	let pathName   = null;
 
 		switch (action) {
@@ -34,21 +26,22 @@ class PropertyView extends React.Component
 	}
 
 	render() {
-		let property = this.props.property;
+		let columnCss = this.props.state.columnCss;
+		let property = this.props.state.property;
 		let address  = property.address;
 
 		let propertyFeaturesBtn = property.property_features === undefined ?
-			<button onClick={this.handleActions} data-action="add-property-features">
+			<button onClick={ this.handleActions.bind(this, 'add-property-features') }>
 				Add Property Features
 			</button> : null;
 
 		let exteriorFeaturesBtn = property.exterior_features === undefined ?
-			<button onClick={this.handleActions} data-action="add-exterior-features">
+			<button onClick={ this.handleActions.bind(this, 'add-exterior-features') }>
 				Add Exterior Features
 			</button> : null;
 
 		let interiorFeaturesBtn = property.interior_features === undefined ?
-			<button onClick={this.handleActions} data-action="add-interior-features">
+			<button onClick={ this.handleActions.bind(this, 'add-interior-features') }>
 				Add Interior Features
 			</button> : null;
 
@@ -64,82 +57,82 @@ class PropertyView extends React.Component
 					<ul>
 						<li>
 							<label>Street:</label>
-							<span>{address.street}</span>
+							<span>{address.street }</span>
 						</li>
 						<li>
 							<label>City:</label>
-							<span>{address.city}</span>
+							<span>{address.city }</span>
 						</li>
 						<li>
 							<label>State:</label>
-							<span>{address.state}</span>
+							<span>{address.state }</span>
 						</li>
 						<li>
 							<label>Zip:</label>
-							<span>{address.zip}</span>
+							<span>{address.zip }</span>
 						</li>
 						<li>
 							<label>County:</label>
-							<span>{address.county}</span>
+							<span>{address.county }</span>
 						</li>
 						<li>
 							<label>Country:</label>
-							<span>{address.country}</span>
+							<span>{address.country }</span>
 						</li>
 						<li>
 							<label>Subdivision:</label>
-							<span>{address.subdivision}</span>
+							<span>{address.subdivision }</span>
 						</li>
 					</ul>
 				</div>
 				<div>
 					<h4>Property Details</h4>
 					<div>
-						<button onClick={this.handleActions} data-action="view-rooms">View Rooms</button>
+						<button onClick={ this.handleActions.bind(this, 'view-rooms') }>View Rooms</button>
 					</div>
 					<ul>
 						<li>
 							<label>Built:</label>
-							<span>{property.built}</span>
+							<span>{ property.built }</span>
 						</li>
 						<li>
 							<label>Style:</label>
-							<span>{property.style}</span>
+							<span>{ property.style }</span>
 						</li>
 						<li>
 							<label>Floors:</label>
-							<span>{property.floors}</span>
+							<span>{ property.floors }</span>
 						</li>
 						<li>
 							<label>Beds:</label>
-							<span>{property.beds}</span>
+							<span>{ property.beds }</span>
 						</li>
 						<li>
 							<label>Baths:</label>
-							<span>{property.baths}</span>
+							<span>{ property.baths }</span>
 						</li>
 						<li>
 							<label>Finished Area:</label>
-							<span>{property.finished_area}</span>
+							<span>{ property.finished_area }</span>
 						</li>
 						<li>
 							<label>Unfinished Area:</label>
-							<span>{property.unfinished_area}</span>
+							<span>{ property.unfinished_area }</span>
 						</li>
 						<li>
 							<label>Total Area:</label>
-							<span>{property.total_area}</span>
+							<span>{ property.total_area }</span>
 						</li>
 						<li>
 							<label>Parcel Number:</label>
-							<span>{property.parcel_number}</span>
+							<span>{ property.parcel_number }</span>
 						</li>
 					</ul>
 				</div>
 			</div>
 
         return (
-            <div className={[this.props.mobileWidth, this.props.desktopWidth, this.props.className].join(' ')} id="property-view">
+            <div className={ [columnCss.mobileWidth, columnCss.desktopWidth, this.props.className].join(' ') } id="property-view">
                 <div className="row">
                     <div className="panel panel-info">
                         <div className="panel-heading">

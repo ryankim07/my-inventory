@@ -44,7 +44,7 @@ class Assets
             if (is_null($existingAsset)) {
                 $asset = new AssetsEntity();
                 $asset->setFile($file);
-                $asset->setMyVehicleId(null);
+                $asset->setVehicleId(null);
                 $asset->setPath($file->getPathName());
                 $asset->setName($file->getClientOriginalName());
                 //$asset->setUploadDir($this->fileUploader->uploadDir);

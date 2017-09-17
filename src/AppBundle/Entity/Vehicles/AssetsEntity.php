@@ -5,7 +5,7 @@ namespace AppBundle\Entity\Vehicles;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
-use AppBundle\Entity\Vehicles\MyVehicleEntity;
+use AppBundle\Entity\Vehicles\VehicleEntity;
 
 /**
  * @ORM\Entity
@@ -24,7 +24,7 @@ class AssetsEntity
      * @ORM\Column(type="integer")
      * @Assert\NotBlank()
      */
-    private $myVehicleId;
+    private $vehicleId;
     
     /**
      * @ORM\Column(type="string", length=255)
@@ -38,10 +38,10 @@ class AssetsEntity
     public $path;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vehicles\MyVehicleEntity", inversedBy="assets")
-     * @ORM\JoinColumn(name="my_vehicle_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vehicles\VehicleEntity", inversedBy="assets")
+     * @ORM\JoinColumn(name="vehicle_id", referencedColumnName="id")
      */
-    private $myVehicles;
+    private $vehicles;
 
     /**
      * Get id
@@ -54,24 +54,24 @@ class AssetsEntity
     }
 
     /**
-     * Get my vehicle ID
+     * Get vehicle ID
      *
      * @return integer
      */
-    public function getMyVehicleId()
+    public function getVehicleId()
     {
-        return $this->myVehicleId;
+        return $this->vehicleId;
     }
 
     /**
-     * Set my vehicle ID
+     * Set vehicle ID
      *
-     * @param $myVehicleId
+     * @param $vehicleId
      * @return $this
      */
-    public function setMyVehicleId($myVehicleId)
+    public function setVehicleId($vehicleId)
     {
-        $this->myVehicleId = $myVehicleId;
+        $this->vehicleId = $vehicleId;
 
         return $this;
     }
@@ -123,25 +123,25 @@ class AssetsEntity
     }
 
     /**
-     * Set myVehicles
+     * Set vehicles
      *
-     * @param \AppBundle\Entity\Vehicles\MyVehicleEntity|null $myVehicles
+     * @param \AppBundle\Entity\Vehicles\VehicleEntity|null $vehicles
      * @return $this
      */
-    public function setMyVehicles(MyVehicleEntity $myVehicles = null)
+    public function setVehicles(VehicleEntity $vehicles = null)
     {
-        $this->myVehicles = $myVehicles;
+        $this->vehicles = $vehicles;
 
         return $this;
     }
 
     /**
-     * Get myVehicles
+     * Get vehicles
      *
      * @return mixed
      */
-    public function getMyVehicles()
+    public function getVehicles()
     {
-        return $this->myVehicles;
+        return $this->vehicles;
     }
 }

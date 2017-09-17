@@ -56,8 +56,8 @@ services:
         class: AppBundle\Service\Vehicles\Assets
         arguments: ["@doctrine.orm.vehicles_entity_manager", "@File_Uploader"]
 
-    My_Vehicles:
-        class: AppBundle\Service\Vehicles\MyVehicles
+    Vehicles:
+        class: AppBundle\Service\Vehicles\Vehicles
         arguments: ["@doctrine.orm.vehicles_entity_manager", "@Sync_Db", "@File_Uploader"]
 
     Properties:

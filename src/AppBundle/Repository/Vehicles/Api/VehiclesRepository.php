@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 class VehiclesRepository extends EntityRepository
 {
-    public function getAllMyVehicles()
+    public function getAllVehicles()
     {
         /*$query = $this->getEntityManager()
             ->createQuery(

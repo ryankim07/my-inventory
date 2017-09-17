@@ -3,12 +3,12 @@ import ActionConstants from '../constants/action-constants';
 import Api from '../services/Api';
 
 let VehiclesAction = {
-    getMyVehicles: function() {
+    getVehicles: function() {
         Api
             .get('http://mcs.dev/api/vehicles')
             .then(function (vehicles) {
                 AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.RECEIVE_MY_VEHICLES,
+                    actionType: ActionConstants.RECEIVE_VEHICLES,
                     results: vehicles
                 });
             })
@@ -21,12 +21,12 @@ let VehiclesAction = {
             });
     },
 
-    addMyVehicle: function(data) {
+    addVehicle: function(data) {
         Api
             .post('http://mcs.dev/api/vehicle', data, data.assets)
             .then(function (vehicle) {
                 AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.ADD_MY_VEHICLE,
+                    actionType: ActionConstants.ADD_VEHICLE,
 					results: vehicle
                 });
             })
@@ -39,12 +39,12 @@ let VehiclesAction = {
             });
     },
 
-	updateMyVehicle: function(data) {
+	updateVehicle: function(data) {
 		Api
 			.post('http://mcs.dev/api/vehicle', data, data.assets)
 			.then(function (vehicle) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.UPDATE_MY_VEHICLE,
+					actionType: ActionConstants.UPDATE_VEHICLE,
 					results: vehicle
 				});
 			})
@@ -57,12 +57,12 @@ let VehiclesAction = {
 			});
 	},
 
-    removeMyVehicle: function(id) {
+    removeVehicle: function(id) {
         Api
             .delete('http://mcs.dev/api/vehicles/' + id)
             .then(function (vehicle) {
                 AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.REMOVE_MY_VEHICLE,
+                    actionType: ActionConstants.REMOVE_VEHICLE,
 					results: vehicle
                 });
             })

@@ -16,24 +16,24 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
  * @Security("is_granted(['ROLE_USER','ROLE_ADMIN'])")
  */
-class MyVehicleController extends FOSRestController
+class VehicleController extends FOSRestController
 {
     /**
-     * Get my vehicles
+     * Get vehicles
      *
      * @Rest\Get("/api/vehicles", name="get_all_vehicles")
      * @return mixed|string
      */
     public function getListAction()
     {
-        $service = $this->get('My_Vehicles');
+        $service = $this->get('Vehicles');
         $results = $service->findAll();
 
         return $results;
     }
 
     /**
-     * Add my new vehicle
+     * Add new vehicle
      *
      * @Rest\Post("/api/vehicle", name="new_vehicle")
      * @param Request $request
@@ -46,7 +46,7 @@ class MyVehicleController extends FOSRestController
         $data['assets'] = $request->files->get('file');
 
         // Call service to save
-        $service = $this->get('My_Vehicles');
+        $service = $this->get('Vehicles');
         $results = $service->save($data);
 
         return new View($results, Response::HTTP_OK);
@@ -61,7 +61,7 @@ class MyVehicleController extends FOSRestController
      */
     public function deleteAction($id)
     {
-        $service = $this->get('My_Vehicles');
+        $service = $this->get('Vehicles');
         $results = $service->delete($id);
 
         return new View($results, Response::HTTP_OK);

@@ -1,6 +1,6 @@
 import React from 'react';
 import VehiclesAction from '../../actions/vehicles-action';
-import MyVehiclesStore from '../../stores/vehicles/store';
+import VehiclesStore from '../../stores/vehicles/store';
 import VehicleAdd from './add';
 import VehiclesList from './list';
 import FlashMessage from '../helper/flash-message';
@@ -38,16 +38,16 @@ class VehiclesDashboard extends React.Component
 	}
 
 	componentWillMount() {
-		MyVehiclesStore.addChangeListener(this._onChange);
-		MyVehiclesStore.unsetStoreFlashMessage();
+		VehiclesStore.addChangeListener(this._onChange);
+		VehiclesStore.unsetStoreFlashMessage();
 	}
 
 	componentDidMount() {
-		VehiclesAction.getMyVehicles();
+		VehiclesAction.getVehicles();
 	}
 
 	componentWillUnmount() {
-		MyVehiclesStore.removeChangeListener(this._onChange);
+		VehiclesStore.removeChangeListener(this._onChange);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -64,10 +64,10 @@ class VehiclesDashboard extends React.Component
 	}
 
 	_onChange() {
-		let vehicles 		= MyVehiclesStore.getMyVehicles();
-		let flashMessage 	= MyVehiclesStore.getStoreFlashMessage();
-		let isAuthenticated = MyVehiclesStore.isAuthenticated();
-		let openRightPanel  = MyVehiclesStore.showRightPanel();
+		let vehicles 		= VehiclesStore.getVehicles();
+		let flashMessage 	= VehiclesStore.getStoreFlashMessage();
+		let isAuthenticated = VehiclesStore.isAuthenticated();
+		let openRightPanel  = VehiclesStore.showRightPanel();
 
 		if (!isAuthenticated){
 			this.context.router.push("/auth/login");
@@ -89,9 +89,9 @@ class VehiclesDashboard extends React.Component
 	// Handle submit
 	onHandleFormSubmit(vehicle) {
 		if (!this.state.isEditingMode) {
-			VehiclesAction.addMyVehicle(vehicle);
+			VehiclesAction.addVehicle(vehicle);
 		} else {
-			VehiclesAction.updateMyVehicle(vehicle);
+			VehiclesAction.updateVehicle(vehicle);
 		}
 	}
 
@@ -110,7 +110,7 @@ class VehiclesDashboard extends React.Component
 
 	// Handle delete
 	onHandleRemove(id) {
-		VehiclesAction.removeMyVehicle(id);
+		VehiclesAction.removeVehicle(id);
 	}
 
 	// Set flash message

@@ -8,9 +8,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="my_vehicles")
+ * @ORM\Table(name="vehicles")
  */
-class MyVehicleEntity
+class VehicleEntity
 {
     /**
      * @ORM\Column(type="integer", length=11)
@@ -72,7 +72,7 @@ class MyVehicleEntity
     private $plate;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Vehicles\AssetsEntity", mappedBy="myVehicles", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Vehicles\AssetsEntity", mappedBy="vehicles", cascade={"persist"})
      * @ORM\OrderBy({"name" = "ASC"})
      */
     private $assets;
@@ -296,7 +296,7 @@ class MyVehicleEntity
     public function addAsset(AssetsEntity $asset)
     {
         $this->assets[] = $asset;
-        $asset->setMyVehicles($this);
+        $asset->setVehicles($this);
 
         return $this;
     }

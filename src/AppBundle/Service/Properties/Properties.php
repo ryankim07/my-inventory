@@ -126,15 +126,13 @@ class Properties
                 $this->entity = $this->existingProperty;
             }
 
+            $op = !$this->existingProperty ? 'added' : 'updated';
+            $msg = "Property successfully {$op}.";
+
             // Save or update property
-            $this->_saveProperty();
-
-            // Save or update image
-            if (!is_null($this->assets)) {
-                $this->_saveImage();
-            }
-
-            $msg = !$this->existingProperty ? 'added' : 'updated';
+            if ($this->_saveProperty()) {
+                $msg = "Property could not be {$op}.";
+            };
 
             return [
                 'property' => $this->entity,
@@ -190,8 +188,16 @@ class Properties
      */
     private function _saveProperty()
     {
+        // Upload asset
+        if (!is_null($this->assets)) {
+            $assetFullPath = $this->fileUploader->upload($this->assets);
+        }
+
         if (!$this->existingProperty) {
             $this->entity = new PropertyEntity();
+            $assetEntity  = new PropertyAssetsEntity();
+        } else {
+            $assetEntity = $this->em->getRepository('AppBundle\Entity\Properties\PropertyEntity')->findOneByPropertyId($this->entity->getId());
         }
 
         $this->entity->setBuilt($this->built);
@@ -217,48 +223,14 @@ class Properties
 
         $this->entity->addAddress($addressEntity);
 
+        if (!is_null($this->assets)) {
+            $assetEntity->setName($this->assets->getClientOriginalName());
+            $assetEntity->setPath($assetFullPath);
+            $this->entity->addAsset($assetEntity);
+        }
+
         if (!$this->existingProperty) {
             $this->em->persist($this->entity);
-        }
-
-        $this->em->flush();
-
-        return true;
-    }
-
-    /**
-     * Save or update image
-     *
-     * @return bool
-     */
-    private function _saveImage()
-    {
-        // Upload file
-        $assetFullPath = $this->fileUploader->upload($this->assets);
-
-        $existingAsset = false;
-        $assetEntity   = new PropertyAssetsEntity();
-
-        if (!$this->existingProperty) {
-            $assetEntity->setProperties($this->entity);
-
-        } else {
-            // Insert or update existing path for updated image
-            $existingAsset = $this->em->getRepository('AppBundle\Entity\Properties\PropertyEntity')->findOneByPropertyId($this->entity->getId());
-
-            if (!$existingAsset) {
-                $assetEntity->setProperties($this->entity->getId());
-            } else {
-                // Remove existing upload
-                $this->fileUploader->removeUpload($existingAsset->getPath());
-            }
-        }
-
-        $assetEntity->setName($this->assets->getClientOriginalName());
-        $assetEntity->setPath($assetFullPath);
-
-        if (!$existingAsset) {
-            $this->em->persist($assetEntity);
         }
 
         $this->em->flush();

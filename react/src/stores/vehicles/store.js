@@ -4,14 +4,14 @@ import Dispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
 import _ from 'lodash';
 
-let _my_vehicles = [];
-let _my_vehicle = {};
+let _vehicles = [];
+let _vehicle = {};
 let _showPanel = false;
 let _errStatus;
 let _storeMsg;
 
-function setMyVehicle(vehicle) {
-	_my_vehicle = vehicle ;
+function setVehicle(vehicle) {
+	_vehicle = vehicle ;
 }
 
 function setRightPanel(show) {
@@ -30,7 +30,7 @@ function removeToken() {
 	localStorage.removeItem('id_token');
 }
 
-let MyVehiclesStore = assign({}, EventEmitter.prototype, {
+let VehiclesStore = assign({}, EventEmitter.prototype, {
     // Emit Change event
     emitChange: function(){
         this.emit('change');
@@ -44,24 +44,34 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
         this.removeListener('change', callback);
 	},
 
-	getMyVehicles: function () {
-		return _my_vehicles;
+	getVehicles: function () {
+		return _vehicles;
 	},
 
-	addMyVehicle: function(results) {
-		_my_vehicles.push(results.vehicle);
+	setVehicles: function(results) {
+		if (results.msg) {
+			_storeMsg = results.msg;
+		} else {
+			if (results.length !== 0) {
+				_vehicles = results;
+			}
+		}
+	},
+
+	addVehicle: function(results) {
+		_vehicles.push(results.vehicle);
 		_storeMsg = results.msg;
 		_showPanel = false;
 	},
 
-	updateMyVehicle: function(results) {
+	updateVehicle: function(results) {
     	let vehicle = results.vehicle;
-		let index   = _.indexOf(_my_vehicles, _.find(_my_vehicles, (record) => {
+		let index   = _.indexOf(_vehicles, _.find(_vehicles, (record) => {
 				return record.id === vehicle.id;
 			})
 		);
 
-		_my_vehicles.splice(index, 1, {
+		_vehicles.splice(index, 1, {
 			id: vehicle.id,
 			mfg: vehicle.mfg,
 			mfg_id: vehicle.mfg_id,
@@ -78,23 +88,13 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 		_showPanel = false;
 	},
 
-	removeMyVehicle: function(results) {
-		_.remove(_my_vehicles, (myVehicle) => {
+	removeVehicle: function(results) {
+		_.remove(_vehicles, (myVehicle) => {
 			return parseInt(results.id) === myVehicle.id;
 		});
 
 		_storeMsg = results.msg;
 		_showPanel = false;
-	},
-
-	setVehicles: function(results) {
-		if (results.msg) {
-			_storeMsg = results.msg;
-		} else {
-			if (results.length !== 0) {
-				_my_vehicles = results;
-			}
-		}
 	},
 
 	isAuthenticated: function() {
@@ -119,32 +119,32 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 });
 
 // Register callback with AppDispatcher
-MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
+VehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
 
     let action  = payload.action;
     let results = action.results;
 
     switch(action.actionType) {
-        case ActionConstants.ADD_MY_VEHICLE:
-        	MyVehiclesStore.addMyVehicle(results);
+        case ActionConstants.ADD_VEHICLE:
+        	VehiclesStore.addVehicle(results);
         break;
 
-        case ActionConstants.EDIT_MY_VEHICLE:
-			setMyVehicle(results);
+        case ActionConstants.EDIT_VEHICLE:
+			setVehicle(results);
 			setStoreFlashMessage('');
 			setRightPanel(true);
         break;
 
-        case ActionConstants.UPDATE_MY_VEHICLE:
-			MyVehiclesStore.updateMyVehicle(results);
+        case ActionConstants.UPDATE_VEHICLE:
+			VehiclesStore.updateVehicle(results);
         break;
 
-        case ActionConstants.REMOVE_MY_VEHICLE:
-			MyVehiclesStore.removeMyVehicle(results);
+        case ActionConstants.REMOVE_VEHICLE:
+			VehiclesStore.removeVehicle(results);
         break;
 
-		case ActionConstants.RECEIVE_MY_VEHICLES:
-			MyVehiclesStore.setVehicles(results);
+		case ActionConstants.RECEIVE_VEHICLES:
+			VehiclesStore.setVehicles(results);
 		break;
 
 		case ActionConstants.RECEIVE_ERROR:
@@ -158,9 +158,9 @@ MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
     }
 
     // If action was responded to, emit change event
-    MyVehiclesStore.emitChange();
+    VehiclesStore.emitChange();
 
     return true;
 });
 
-export default MyVehiclesStore;
+export default VehiclesStore;

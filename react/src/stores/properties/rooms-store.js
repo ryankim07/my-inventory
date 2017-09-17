@@ -7,29 +7,12 @@ import _ from 'lodash';
 let _rooms = [];
 let _nonAddedRooms = [];
 let _room = {};
-let _roomAdded = false;
 let _showPanel = false;
 let _errStatus;
 let _storeMsg;
 
-function setRooms(rooms) {
-    _rooms = rooms ;
-}
-
 function setRoom(room) {
 	_room = room ;
-}
-
-function setNewRoom(room) {
-	_rooms.push(room);
-}
-
-function flagNewRoom() {
-    _roomAdded = true;
-}
-
-function openRightPanel(show) {
-	_showPanel = show;
 }
 
 function setStoreFlashMessage(msg) {
@@ -42,10 +25,6 @@ function setErrorStatus(status) {
 
 function removeToken() {
 	localStorage.removeItem('id_token');
-}
-
-function setNonAddedRooms(rooms) {
-	_nonAddedRooms = rooms ;
 }
 
 let PropertiesRoomsStore = assign({}, EventEmitter.prototype, {
@@ -62,59 +41,32 @@ let PropertiesRoomsStore = assign({}, EventEmitter.prototype, {
         this.removeListener('change', callback);
 	},
 
-	addRoom: function (results) {
-    	let room = results.room;
-
-    	setNewRoom(room);
-
-		_.remove(_nonAddedRooms, (addedRoom) => {
-			return room.name === addedRoom.value;
-		});
-
-		openRightPanel(false);
-		flagNewRoom();
-		setStoreFlashMessage(results.msg);
-	},
-
-	editRoom: function (room) {
-		setStoreFlashMessage('');
-		setRoom(room);
-	},
-
 	getRooms: function () {
 		return _rooms;
 	},
 
-	setRooms: function (rooms) {
-		if (rooms.msg) {
-			setStoreFlashMessage(rooms.msg)
+	setRooms: function (results) {
+		if (results.msg) {
+			_storeMsg = results.msg;
 		} else {
-			setRooms(rooms)
+			if (results.length !== 0) {
+				_rooms = (results)
+			}
 		}
 	},
 
-	getNonAddedRooms: function () {
-		return _nonAddedRooms;
+	setNonAddedRooms: function(results) {
+		_nonAddedRooms = results;
 	},
 
-	getRoomToUpdate: function () {
-		return _room;
+	addRoom: function (results) {
+		_rooms.push(results.room);
+		_storeMsg = results.msg;
+		_showPanel = false;
 	},
 
-	unsetRoomToUpdate: function () {
-		return _room = {};
-	},
-
-	isNewRoomAdded: function () {
-		return _roomAdded;
-	},
-
-	unFlagNewRoom: function() {
-		return _roomAdded = false;
-	},
-
-	updateRoom: function(data) {
-		let room = data.room;
+	updateRoom: function(results) {
+		let room = results.room;
 		let index = _.indexOf(_rooms, _.find(_rooms, (record) => {
 				return record.id == room.id;
 			})
@@ -128,20 +80,17 @@ let PropertiesRoomsStore = assign({}, EventEmitter.prototype, {
 			description: room.description
 		});
 
-		openRightPanel(false);
-		setStoreFlashMessage(data.msg);
+		_storeMsg = results.msg;
+		_showPanel = false;
 	},
 
-	removeRoom: function(room) {
-		let rooms = _rooms;
-
+	removeRoom: function(results) {
 		_.remove(rooms, (myRoom) => {
-			return room.id == myRoom.id;
+			return parseInt(room.id) == myRoom.id;
 		});
 
-		setRooms(rooms);
-		openRightPanel(false);
-		setStoreFlashMessage(room.msg);
+		_storeMsg = results.msg;
+		_showPanel = false;
 	},
 
 	isAuthenticated: function() {
@@ -152,56 +101,50 @@ let PropertiesRoomsStore = assign({}, EventEmitter.prototype, {
 		return true;
 	},
 
-	openRightPanel: function() {
-    	return _showPanel;
-	},
-
-	closeRightPanel: function() {
-		openRightPanel(false);
-	},
-
 	getStoreFlashMessage: function() {
 		return _storeMsg;
 	},
 
 	unsetStoreFlashMessage: function() {
 		_storeMsg = '';
+	},
+
+	showRightPanel: function() {
+		return _showPanel;
 	}
 });
 
 // Register callback with AppDispatcher
 PropertiesRoomsStore.dispatchToken = Dispatcher.register(function(payload) {
 
-    let action = payload.action;
+    let action  = payload.action;
+	let results = action.results;
 
     switch(action.actionType) {
-		case ActionConstants.RECEIVE_PROPERTY_ROOMS:
-			setRooms(action.rooms);
-		break;
-
-        case ActionConstants.RECEIVE_NON_ADDED_ROOMS:
-			setNonAddedRooms(action.rooms);
-		break;
-
         case ActionConstants.ADD_PROPERTY_ROOM:
-            PropertiesRoomsStore.addRoom(action.results);
+            PropertiesRoomsStore.addRoom(results);
         break;
 
         case ActionConstants.EDIT_PROPERTY_ROOM:
-			PropertiesRoomsStore.editRoom(action.room, action.showRightPanel);
-			openRightPanel(true);
+			setRoom(results);
+			setStoreFlashMessage('');
+			setRightPanel(true);
         break;
 
         case ActionConstants.UPDATE_PROPERTY_ROOM:
-            PropertiesRoomsStore.updateRoom(action.results);
+            PropertiesRoomsStore.updateRoom(results);
         break;
 
         case ActionConstants.REMOVE_PROPERTY_ROOM:
-            PropertiesRoomsStore.removeRoom(action.results);
+            PropertiesRoomsStore.removeRoom(results);
         break;
 
-		case ActionConstants.ADD_NEW_PROPERTY_ROOM:
-			openRightPanel(true);
+		case ActionConstants.RECEIVE_PROPERTY_ROOMS:
+			PropertiesRoomsStore.setRooms($results);
+		break;
+
+		case ActionConstants.RECEIVE_NON_ADDED_ROOMS:
+			PropertiesRoomsStore.setNonAddedRooms($results);
 		break;
 
 		case ActionConstants.RECEIVE_ERROR:

@@ -8,10 +8,6 @@ let _paints = [];
 let _errStatus;
 let _storeMsg;
 
-function setPaints(paints) {
-    _paints = paints ;
-}
-
 let PropertiesPaintsStore = assign({}, EventEmitter.prototype, {
     // Emit Change event
     emitChange: function(){
@@ -30,11 +26,13 @@ let PropertiesPaintsStore = assign({}, EventEmitter.prototype, {
 		return _paints;
 	},
 
-	setPropertyPaints: function (paints) {
-		if (paints.msg) {
-			setStoreFlashMessage(paints.msg)
+	setPropertyPaints: function (results) {
+		if (results.msg) {
+			_storeMsg = results.msg;
 		} else {
-			setPaints(paints)
+			if (results.length !== 0) {
+				_properties = results;
+			}
 		}
 	},
 
@@ -58,11 +56,12 @@ let PropertiesPaintsStore = assign({}, EventEmitter.prototype, {
 // Register callback with AppDispatcher
 PropertiesPaintsStore.dispatchToken = Dispatcher.register(function(payload) {
 
-    let action = payload.action;
+    let action  = payload.action;
+	let results = action.results;
 
     switch(action.actionType) {
         case ActionConstants.RECEIVE_PROPERTY_PAINTS:
-			PropertiesPaintsStore.setPropertyPaints(action.results);
+			PropertiesPaintsStore.setPropertyPaints(results);
         break;
 
         default:

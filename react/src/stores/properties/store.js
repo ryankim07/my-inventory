@@ -14,10 +14,6 @@ function setProperty(property) {
 	_property = property ;
 }
 
-function setProperties(properties) {
-    _properties = properties ;
-}
-
 function setRightPanel(show) {
 	_showPanel = show;
 }
@@ -50,6 +46,16 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 
 	getProperties: function () {
 		return _properties;
+	},
+
+	setProperties: function(results) {
+		if (results.msg) {
+			_storeMsg = results.msg;
+		} else {
+			if (results.length !== 0) {
+				_properties = (results)
+			}
+		}
 	},
 
 	addProperty: function (results) {
@@ -116,12 +122,12 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 // Register callback with AppDispatcher
 PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
 
-    let action = payload.action;
+    let action  = payload.action;
 	let results = action.results;
 
     switch(action.actionType) {
         case ActionConstants.ADD_PROPERTY:
-            PropertiesStore.addProperty(action.results);
+            PropertiesStore.addProperty(results);
         break;
 
         case ActionConstants.EDIT_PROPERTY:
@@ -131,21 +137,15 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
         break;
 
         case ActionConstants.UPDATE_PROPERTY:
-            PropertiesStore.updateProperty(action.results);
+            PropertiesStore.updateProperty(results);
         break;
 
         case ActionConstants.REMOVE_PROPERTY:
-            PropertiesStore.removeProperty(action.results);
+            PropertiesStore.removeProperty(results);
         break;
 
 		case ActionConstants.RECEIVE_PROPERTIES:
-			if (results.msg) {
-				setStoreFlashMessage(results.msg)
-			} else {
-				if (results.length !== 0) {
-					setProperties(results)
-				}
-			}
+			PropertiesStore.setProperties(results);
 		break;
 
 		case ActionConstants.RECEIVE_ERROR:

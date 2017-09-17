@@ -1,7 +1,6 @@
 import React from 'react';
 import ApiVehiclesAction from '../../actions/api-vehicles-action';
 import ApiVehiclesStore from '../../stores/vehicles/api-store';
-import Loader from '../helper/loader';
 
 class ApiVehiclesDropdown extends React.Component
 {
@@ -10,7 +9,7 @@ class ApiVehiclesDropdown extends React.Component
 
 		this.state = {
 			apiVehicles: [],
-			loader: true
+			show: true
 		}
 
 		this._onChange = this._onChange.bind(this);
@@ -33,7 +32,7 @@ class ApiVehiclesDropdown extends React.Component
 
 		this.setState({
 			apiVehicles: apiVehicles,
-			loader: false
+			show: false
 		});
 	}
 
@@ -46,7 +45,7 @@ class ApiVehiclesDropdown extends React.Component
 		let apiMfgsOptions   = '';
 		let apiModelsOptions = '';
 
-		if (!this.state.loader) {
+		if (!this.state.show) {
 			let apiVehicles = this.state.apiVehicles;
 
 			// Get api vehicles list

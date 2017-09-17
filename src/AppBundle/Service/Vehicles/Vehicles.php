@@ -3,12 +3,12 @@
 namespace AppBundle\Service\Vehicles;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\Vehicles\MyVehicleEntity;
+use AppBundle\Entity\Vehicles\VehicleEntity;
 use AppBundle\Entity\Vehicles\AssetsEntity;
 use AppBundle\Service\Vehicles\Api\SyncDb;
 use AppBundle\Service\FileUploader;
 
-class MyVehicles
+class Vehicles
 {
     private $em;
     private $repo;
@@ -36,13 +36,13 @@ class MyVehicles
     public function __construct(EntityManager $entityManager, SyncDb $syncDb, FileUploader $fileUploader)
     {
         $this->em           = $entityManager;
-        $this->repo         = $this->em->getRepository('AppBundle\Entity\Vehicles\MyVehicleEntity');
+        $this->repo         = $this->em->getRepository('AppBundle\Entity\Vehicles\VehicleEntity');
         $this->syncDb       = $syncDb;
         $this->fileUploader = $fileUploader;
     }
 
     /**
-     * Get all my vehicles
+     * Get all vehicles
      *
      * @return mixed|string
      */
@@ -52,7 +52,7 @@ class MyVehicles
     }
 
     /**
-     * Find my specific vehicle
+     * Find specific vehicle
      *
      * @param $id
      * @return mixed|null|object|string
@@ -155,7 +155,7 @@ class MyVehicles
     }
 
     /**
-     * Delete my vehicle
+     * Delete vehicle
      *
      * @param $id
      * @return array
@@ -171,7 +171,7 @@ class MyVehicles
             $assets  = $vehicle->getAssets();
 
             foreach($assets as $asset) {
-                if ($asset->getMyVehicleId() == $id) {
+                if ($asset->getVehicleId() == $id) {
                     $this->fileUploader->removeUpload($asset->getPath());
                     $this->em->remove($asset);
                     break;
@@ -205,10 +205,10 @@ class MyVehicles
         }
 
         if (!$this->existingVehicle) {
-            $this->entity = new MyVehicleEntity();
+            $this->entity = new VehicleEntity();
             $assetEntity  = new AssetsEntity();
         } else {
-            $assetEntity = $this->em->getRepository('AppBundle\Entity\Vehicles\AssetsEntity')->findOneByMyVehicleId($this->existingVehicle->getId());
+            $assetEntity = $this->em->getRepository('AppBundle\Entity\Vehicles\AssetsEntity')->findOneByVehicleId($this->existingVehicle->getId());
         }
 
         // Vehicle entity
@@ -241,7 +241,7 @@ class MyVehicles
      *
      * @param $id
      * @param $vin
-     * @return MyVehicleEntity|null|object
+     * @return VehicleEntity|null|object
      */
     private function findByIdOrVin($id, $vin)
     {

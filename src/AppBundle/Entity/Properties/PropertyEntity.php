@@ -83,7 +83,7 @@ class PropertyEntity
     private $assets;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Properties\AddressEntity", mappedBy="property", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Properties\AddressEntity", mappedBy="property", cascade={"persist", "remove"})
      */
     private $address;
 

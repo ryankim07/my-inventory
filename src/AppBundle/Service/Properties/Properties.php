@@ -157,7 +157,7 @@ class Properties
 
         try {
             $property = $this->repo->find($id);
-            $address  = $property->getAddress();
+            //$address  = $property->getAddress();
             $assets   = $property->getAssets();
 
             foreach($assets as $asset) {
@@ -170,7 +170,7 @@ class Properties
                 }
             }
 
-            $property->setAddress(null);
+            //$property->setAddress(null);
             $this->em->remove($property);
             $this->em->flush();
 

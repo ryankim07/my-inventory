@@ -34,6 +34,7 @@ class AssetsEntity
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank
      */
     public $path;
 

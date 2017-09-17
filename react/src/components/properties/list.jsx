@@ -1,78 +1,76 @@
 import React from 'react';
-import AppDispatcher from '../../dispatcher/app-dispatcher';
-import ActionConstants from '../../constants/action-constants';
-import PropertiesAction from '../../actions/properties-action';
 import PropertyAddressList from './address/list';
 import Loader from '../helper/loader';
 
 class PropertiesList extends React.Component
 {
-    constructor(props) {
-        super(props);
+	constructor(props) {
+		super(props);
 
-        this.handleEdit   = this.handleEdit.bind(this);
-        this.handleRemove = this.handleRemove.bind(this);
-		this.handleView   = this.handleView.bind(this);
-    }
-
-    editProperty(data) {
-
-    }
-
-	handleAdd() {
-		AppDispatcher.handleViewAction({
-			actionType: ActionConstants.SHOW_PROPERTY_ADD_PANEL,
-			name: null
-		});
+		this.handleView = this.handleView.bind(this);
 	}
 
-	handleEdit(data) {
-		AppDispatcher.handleViewAction({
-			actionType: ActionConstants.EDIT_PROPERTY,
-			data: data
-		});
+	// Toggle panel for add or edit
+	handleRightPanel(editingProperty, isEditingMode) {
+		let property = !isEditingMode ?
+			{
+				id: '',
+				style: '',
+				beds: '',
+				baths: '',
+				finished_area: '',
+				unfinished_area: '',
+				total_area: '',
+				floors: '',
+				built: '',
+				parcel_number: '',
+				assets: [],
+				address: {
+					id: '',
+					property_id: '',
+					street: '',
+					city: '',
+					state: '',
+					zip: '',
+					county: '',
+					country: '',
+					subdivision: ''
+				}
+			} : editingProperty;
+
+		this.props.onHandleRightPanel(property, isEditingMode);
 	}
 
-	handleRemove(id) {
-		PropertiesAction.removeAddress(id);
-	}
-
+	// Handle view
 	handleView(property) {
-		AppDispatcher.handleViewAction({
-			actionType: ActionConstants.SHOW_PROPERTY_VIEW_PANEL,
-			name: "view",
-			data: property
-		});
-		/*this.context.router.push({
-			pathname: "/properties/dashboard",
-			state: {property_id: propertyId}
-		});*/
+		this.props.onHandleView(property);
 	}
 
-    render() {
+	render() {
+		let columnCss = this.props.state.columnCss;
         let propertiesHtml = '';
 
 		// If loading is complete
         if (!this.props.state.loader) {
 			let properties = this.props.state.properties;
 
-			if (!properties) {
+			if (!properties  || properties.length === 0) {
 				propertiesHtml = <div><h3>There are no saved property.</h3></div>;
 			} else {
-				propertiesHtml =
+				/*propertiesHtml =
 					<PropertyAddressList
 						properties={ properties }
-						handleEdit={ this.handleEdit }
-						handleRemove={ this.handleRemove }
+						handleRightPanel={ this.handleRightPanel }
 						handleView={ this.handleView }
-					/>;
+						onHandleRemove={ this.props.onHandleRemove }
+					/>;*/
 			}
         } else {
-            propertiesHtml = <Loader />;
+            propertiesHtml = <div><Loader /></div>;
         }
 
         return (
-            <div className={ [this.props.mobileWidth, this.props.desktopWidth, this.props.className].join(' ') } id="properties-main">
+            <div className={ [columnCss.mobileWidth, columnCss.desktopWidth, this.props.className].join(' ') } id="properties-main">
                 <div className="row">
                     <div className="panel panel-info">
                         <div className="panel-heading">
@@ -81,7 +79,7 @@ class PropertiesList extends React.Component
                                     <span>Properties List</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2">
-									<button onClick={ this.handleAdd.bind(this) }><i className="fa fa-plus" aria-hidden="true" /></button>
+									<button onClick={ this.handleRightPanel(null, false) }><i className="fa fa-plus" aria-hidden="true" /></button>
 								</div>
                             </div>
                         </div>
@@ -93,10 +91,6 @@ class PropertiesList extends React.Component
             </div>
         )
     }
-}
-
-PropertiesList.contextTypes = {
-	router: React.PropTypes.object.isRequired
 }
 
 export default PropertiesList;

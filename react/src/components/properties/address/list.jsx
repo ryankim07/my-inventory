@@ -1,39 +1,10 @@
 import React from 'react';
-import PropertiesAddressAction from '../../../actions/properties-address-action';
 
 class PropertiesAddressList extends React.Component
 {
-    constructor(props) {
-        super(props);
-    }
+	render() {
+    	let properties = this.props.properties;
 
-	handleRemove(id) {
-		this.props.handleRemove(id);
-	}
-
-	handleEdit(data) {
-		this.props.handleEdit(data);
-		// Set panel width
-		/*let imageName = data.assets[0] === undefined ? data.assets.name : data.assets[0].name;
-		let imagePath = data.assets[0] === undefined ? data.assets.path : data.assets[0].path;
-
-		data['assets']: {
-			name: data.imageName,
-				path: data.imagePath
-		}
-
-		AppDispatcher.handleViewAction({
-			actionType: ActionConstants.EDIT_MY_VEHICLE,
-			vehicle: data
-		});*/
-	}
-
-	handleView(property) {
-		this.props.handleView(property);
-	}
-
-    render() {
-    	let properties    = this.props.properties;
     	let addressesHtml = properties.map((property) => {
 			let address = property.address;
 
@@ -47,9 +18,9 @@ class PropertiesAddressList extends React.Component
 					<td>{ address.country }</td>
 					<td>{ address.subdivision }</td>
 					<td>
-						<button onClick={ this.handleRemove.bind(this, address.property_id) }><i className="fa fa-trash" aria-hidden="true" /></button>
-						<button onClick={ this.handleEdit.bind(this, property) }><i className="fa fa-pencil" aria-hidden="true" /></button>
-						<button onClick={ this.handleView.bind(this, property) }><i className="fa fa-search" aria-hidden="true" /></button>
+						<button onClick={ this.props.onHandleRemove(address.property_id) }><i className="fa fa-trash" aria-hidden="true" /></button>
+						<button onClick={ this.props.handleRightPanel(property, true) }><i className="fa fa-pencil" aria-hidden="true" /></button>
+						<button onClick={ this.props.handleView(property) }><i className="fa fa-search" aria-hidden="true" /></button>
 					</td>
 				</tr>
 			);
@@ -74,10 +45,6 @@ class PropertiesAddressList extends React.Component
 			</table>
 		)
     }
-}
-
-PropertiesAddressList.contextTypes = {
-	router: React.PropTypes.object.isRequired
 }
 
 export default PropertiesAddressList;

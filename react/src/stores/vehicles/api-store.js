@@ -3,17 +3,10 @@ import assign from 'object-assign';
 import Dispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
 
-let _manufacturers = [];
-
-function setApiManufacturers(manufacturers) {
-    _manufacturers = manufacturers ;
-}
+let _apiVehicles = [];
+let _storeMsg;
 
 let ApiVehiclesStore = assign({}, EventEmitter.prototype, {
-    getApiVehicles: function () {
-        return _manufacturers;
-    },
-
     // Emit Change event
     emitChange: function(){
         this.emit('change');
@@ -33,17 +26,32 @@ let ApiVehiclesStore = assign({}, EventEmitter.prototype, {
 	 */
 	removeChangeListener: function(callback){
         this.removeListener('change', callback);
-    }
+    },
+
+    getApiVehicles: function () {
+		return _apiVehicles;
+	},
+
+	setApiVehicles: function(results) {
+		if (results.msg) {
+			_storeMsg = results.msg;
+		} else {
+			if (results.length !== 0) {
+				_apiVehicles = results;
+			}
+		}
+	}
 });
 
 // Register callback with AppDispatcher
 ApiVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
 
-    let action = payload.action;
+    let action  = payload.action;
+    let results = action.results;
 
     switch(action.actionType) {
-        case ActionConstants.RECEIVE_MFGS:
-            setApiManufacturers(action.results);
+        case ActionConstants.RECEIVE_API_VEHICLES:
+			ApiVehiclesStore.setApiVehicles(results);
         break;
 
         default:

@@ -73,24 +73,6 @@ let VehiclesAction = {
 					msg: resp.msg
                 });
             });
-    },
-
-    getApiVehicles: function() {
-        Api
-            .get('http://mcs.dev/api/sync/list')
-            .then(function(manufacturers) {
-                AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.RECEIVE_MFGS,
-                    results: manufacturers
-                });
-            })
-            .catch(function(resp) {
-                AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.RECEIVE_ERROR,
-					status: resp.status,
-					msg: resp.msg
-                });
-            });
     }
 };
 

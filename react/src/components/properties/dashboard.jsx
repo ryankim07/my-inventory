@@ -1,15 +1,18 @@
 import React from 'react';
 import PropertiesAction from '../../actions/properties-action';
 import PropertiesStore from '../../stores/properties/store';
-import PropertiesList from './list';
 import PropertyView from './view';
 import PropertyAdd from './add';
-import FlashMessage from '../flash-message';
+import PropertiesList from './list';
+import FlashMessage from '../helper/flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
 let mainDefaultDesktopColumnWidth = 'col-md-12';
 let mainShrinkedMobileColumnWidth = 'col-xs-8';
 let mainShrinkedDesktopColumnWidth = 'col-md-8';
+let mainColumnClassName = 'main-column';
+let mainPanelDefaultName = 'list';
+let mainPanelViewName = 'view;'
 
 class PropertyDashboard extends React.Component
 {
@@ -17,36 +20,11 @@ class PropertyDashboard extends React.Component
 		super(props);
 
 		this.state = {
-			property: {
-				id: '',
-				style: '',
-				beds: '',
-				baths: '',
-				finished_area: '',
-				unfinished_area: '',
-				total_area: '',
-				floors: '',
-				built: '',
-				parcel_number: '',
-				assets: [],
-				address: {
-					id: '',
-					property_id: '',
-					street: '',
-					city: '',
-					state: '',
-					zip: '',
-					county: '',
-					country: '',
-					subdivision: ''
-				}
-			},
+			property: {},
 			properties: [],
 			isEditingMode: false,
-			newPropertyAdded: false,
 			loader: true,
-			reUpload: false,
-			mainPanel: null,
+			mainPanel: mainPanelDefaultName,
 			showRightPanel: false,
 			flashMessage: null,
 			columnCss: {
@@ -55,10 +33,12 @@ class PropertyDashboard extends React.Component
 			},
 		};
 
-		this._onChange 		  = this._onChange.bind(this);
-		this.handleFormChange = this.handleFormChange.bind(this);
-		this.setFlashMessage  = this.setFlashMessage.bind(this);
-		this.closeRightPanel  = this.closeRightPanel.bind(this);
+		this._onChange 		    = this._onChange.bind(this);
+		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
+		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
+		this.onHandleView 		= this.onHandleView.bind(this);
+		this.setFlashMessage    = this.setFlashMessage.bind(this);
+		this.closeRightPanel    = this.closeRightPanel.bind(this);
 	}
 
 	componentWillMount() {
@@ -75,7 +55,7 @@ class PropertyDashboard extends React.Component
 	}
 
 	// When component from same route are unmounting and need to remount
-	componentWillReceiveProps(nextProps) {
+	/*componentWillReceiveProps(nextProps) {
 		if (nextProps.location.action !== 'POP' || nextProps.location.action !== 'PUSH') {
 			this.setState({
 				columnCss: {
@@ -83,45 +63,18 @@ class PropertyDashboard extends React.Component
 					'desktopWidth': mainDefaultDesktopColumnWidth
 				},
 				showRightPanel: false,
-				mainPanel: null,
+				mainPanel: mainPanelDefaultName,
 				flashMessage: null
 			});
 		}
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		// Check here and don't render component again if it's an image upload action
-		let emptyObj = _.every(_.values(nextState.property), function(v) {return !v;});
-
-		if (nextState.property.assets !== '' && emptyObj) {
-			return false;
-		}
-
-		// Only redirect to list if new property is being added
-		if (nextState.newPropertyAdded || this.state.newPropertyAdded) {
-			PropertiesStore.unFlagNewProperty();
-			nextState.newPropertyAdded = false;
-			this.context.router.push("/properties/dashboard");
-
-			return false;
-		}
-
-		return true;
-	}
+	}*/
 
 	// State changes
 	_onChange() {
-		let property   		  = PropertiesStore.getProperty();
-		let properties		  = PropertiesStore.getProperties();
-		let addingNewProperty = PropertiesStore.isNewPropertyAdded();
-		let propertyToUpdate  = PropertiesStore.getPropertyToUpdate();
-		//@TODO
-		let savedProperty 	  = PropertiesStore.getSavedProperty();
-		let flashMsg 		  = PropertiesStore.getStoreFlashMessage();
-		let isAuthenticated   = PropertiesStore.isAuthenticated();
-		let mainPanel		  = PropertiesStore.getMainPanel();
-		let openRightPanel 	  = PropertiesStore.openRightPanel();
-		let isEditingMode 	  = this.state.isEditingMode;
+		let properties		= PropertiesStore.getProperties();
+		let flashMessage 	= PropertiesStore.getStoreFlashMessage();
+		let isAuthenticated = PropertiesStore.isAuthenticated();
+		let openRightPanel 	= PropertiesStore.showRightPanel();
 
 		if (!isAuthenticated){
 			this.context.router.push("/auth/login");
@@ -129,13 +82,9 @@ class PropertyDashboard extends React.Component
 		}
 
 		this.setState({
-			property: property,
 			properties: properties,
-			isEditingMode: isEditingMode,
-			newPropertyAdded: addingNewProperty,
-			mainPanel: mainPanel === undefined ? null : mainPanel,
 			showRightPanel: !!openRightPanel,
-			flashMessage: flashMsg !== undefined ? flashMsg : null,
+			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,
 			columnCss: {
 				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
@@ -144,11 +93,43 @@ class PropertyDashboard extends React.Component
 		});
 	}
 
-	// Handle form changes
-	handleFormChange(property) {
+	// Handle submit
+	onHandleFormSubmit(property) {
+		if (!this.state.isEditingMode) {
+			PropertiesAction.addProperty(property);
+		} else {
+			PropertiesAction.updateProperty(property);
+		}
+	}
+
+	// Handle right panel
+	onHandleRightPanel(property, isEditingMode) {
 		this.setState({
-			property: property
+			property: property,
+			isEditingMode: isEditingMode,
+			showRightPanel: true,
+			columnCss: {
+				'mobileWidth': mainShrinkedMobileColumnWidth,
+				'desktopWidth': mainShrinkedDesktopColumnWidth
+			}
 		});
+	}
+
+	// Handle view
+	onHandleView(property) {
+		this.setState({
+			property: property,
+			mainPanel: mainPanelViewName,
+			columnCss: {
+				'mobileWidth': mainShrinkedMobileColumnWidth,
+				'desktopWidth': mainShrinkedDesktopColumnWidth
+			}
+		});
+	}
+
+	// Handle delete
+	onHandleRemove(id) {
+		PropertiesAction.removeProperty(id);
 	}
 
 	// Set flash message
@@ -159,12 +140,12 @@ class PropertyDashboard extends React.Component
 	// Close right panel
 	closeRightPanel() {
 		this.setState({
+			mainPanel: mainPanelDefaultName,
+			showRightPanel: false,
 			columnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
-			},
-			mainPanel: null,
-			showRightPanel: false
+			}
 		});
 	}
 
@@ -172,22 +153,20 @@ class PropertyDashboard extends React.Component
 	render() {
 		return (
 			<div className="row">
-				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-success" />}
+				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage } alertType="alert-success" />}
 
 				{
-					this.state.mainPanel === null ?
+					this.state.mainPanel === mainPanelDefaultName ?
 						<PropertiesList
 							state={ this.state }
-							mobileWidth={ this.state.columnCss.mobileWidth }
-							desktopWidth={ this.state.columnCss.desktopWidth }
-							className="main-column"
+							onHandleRightPanel={ this.onHandleRightPanel }
+							onHandleView={ this.onHandleView }
+							onHandleRemove={ this.onHandleRemove }
+							className={ mainColumnClassName }
 						/> :
 						<PropertyView
-							mobileWidth={ this.state.columnCss.mobileWidth }
-							desktopWidth={ this.state.columnCss.desktopWidth }
-							className="main-column"
-							property={ this.state.property }
-							loader={ this.state.loader }
+							state={ this.state }
+							className={ mainColumnClassName }
 						/>
 				}
 
@@ -195,17 +174,13 @@ class PropertyDashboard extends React.Component
 					this.state.showRightPanel ?
 						<PropertyAdd
 							state={ this.state }
-							handleFormChange={ this.handleFormChange }
+							onHandleFormSubmit={ this.onHandleFormSubmit }
 							closeRightPanel={ this.closeRightPanel }
 						/> : null
 				}
 			</div>
 		)
 	}
-}
-
-PropertyDashboard.contextTypes = {
-	router: React.PropTypes.object.isRequired
 }
 
 export default PropertyDashboard;

@@ -6,7 +6,7 @@ import PropertyRoomsStore from '../../../stores/properties/rooms-store';
 import PropertiesRoomsAction from '../../../actions/properties-rooms-action';
 import PropertyPaintsStore from '../../../stores/properties/paints-store';
 import PropertiesPaintsAction from "../../../actions/properties-paints-action";
-import FlashMessage from '../../flash-message';
+import FlashMessage from '../../helper/flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
 let mainDefaultDesktopColumnWidth = 'col-md-12';

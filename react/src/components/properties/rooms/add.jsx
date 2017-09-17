@@ -43,9 +43,6 @@ class PropertyRoomAdd extends React.Component
 			PropertiesRoomsAction.addRoom(this.props.state.room);
 		} else {
 			PropertiesRoomsAction.updateRoom(this.props.state.room);
-
-			// Close the panel
-			this.closeRightPanel();
 		}
 	}
 

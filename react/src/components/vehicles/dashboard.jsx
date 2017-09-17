@@ -1,10 +1,9 @@
 import React from 'react';
 import VehiclesAction from '../../actions/vehicles-action';
-import ApiVehiclesStore from '../../stores/vehicles/api-store';
 import MyVehiclesStore from '../../stores/vehicles/store';
 import VehicleAdd from './add';
 import VehiclesList from './list';
-import FlashMessage from '../flash-message';
+import FlashMessage from '../helper/flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
 let mainDefaultDesktopColumnWidth = 'col-md-12';
@@ -20,7 +19,6 @@ class VehiclesDashboard extends React.Component
 		this.state = {
 			vehicle: {},
 			vehicles: [],
-			manufacturers: [],
 			isEditingMode: false,
 			loader: true,
 			showRightPanel: false,
@@ -34,6 +32,7 @@ class VehiclesDashboard extends React.Component
 		this._onChange 		  	= this._onChange.bind(this);
 		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
+		this.onHandleRemove 	= this.onHandleRemove.bind(this);
 		this.setFlashMessage  	= this.setFlashMessage.bind(this);
 		this.closeRightPanel  	= this.closeRightPanel.bind(this);
 	}
@@ -44,11 +43,11 @@ class VehiclesDashboard extends React.Component
 	}
 
 	componentDidMount() {
-		VehiclesAction.getApiVehicles();
 		VehiclesAction.getMyVehicles();
 	}
 
 	componentWillUnmount() {
+		ApiVehiclesStore.removeChangeListener(this._onChange);
 		MyVehiclesStore.removeChangeListener(this._onChange);
 	}
 
@@ -67,7 +66,6 @@ class VehiclesDashboard extends React.Component
 
 	_onChange() {
 		let vehicles 		= MyVehiclesStore.getMyVehicles();
-		let manufacturers 	= ApiVehiclesStore.getApiVehicles();
 		let flashMessage 	= MyVehiclesStore.getStoreFlashMessage();
 		let isAuthenticated = MyVehiclesStore.isAuthenticated();
 		let openRightPanel  = MyVehiclesStore.showRightPanel();
@@ -79,7 +77,6 @@ class VehiclesDashboard extends React.Component
 
 		this.setState({
 			vehicles: vehicles,
-			manufacturers: manufacturers,
 			showRightPanel: !!openRightPanel,
 			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,
@@ -97,9 +94,6 @@ class VehiclesDashboard extends React.Component
 		} else {
 			VehiclesAction.updateMyVehicle(vehicle);
 		}
-
-		// Close the panel
-		this.closeRightPanel();
 	}
 
 	// Handle right panel
@@ -147,7 +141,6 @@ class VehiclesDashboard extends React.Component
 					onHandleRemove={ this.onHandleRemove }
 					className={ mainColumnClassName }
 				/>
-
 				{
 					this.state.showRightPanel ?
 						<VehicleAdd

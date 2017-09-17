@@ -4,31 +4,13 @@ import Api from '../services/Api';
 
 let PropertiesAction = {
 
-	getProperty: function(id) {
-		Api
-			.get('http://mcs.dev/api/properties/' + id)
-			.then(function (results) {
-				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.GET_PROPERTY,
-					results: results
-				});
-			})
-			.catch(function(resp) {
-				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.GET_PROPERTY,
-					status: resp.status,
-					msg: resp.msg
-				});
-			});
-	},
-
-    getProperties: function() {
+	getProperties: function() {
         Api
             .get('http://mcs.dev/api/properties')
             .then(function (properties) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.RECEIVE_PROPERTIES,
-                    properties: properties
+                    results: properties
                 });
             })
             .catch(function(resp) {
@@ -43,10 +25,10 @@ let PropertiesAction = {
     addProperty: function(data) {
         Api
             .post('http://mcs.dev/api/property', data, data.assets)
-            .then(function (results) {
+            .then(function (property) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.ADD_PROPERTY,
-					results: results
+					results: property
                 });
             })
             .catch(function(resp) {
@@ -61,10 +43,10 @@ let PropertiesAction = {
 	updateProperty: function(data) {
 		Api
 			.post('http://mcs.dev/api/property', data, data.assets)
-			.then(function (results) {
+			.then(function (property) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.UPDATE_PROPERTY,
-					results: results
+					results: property
 				});
 			})
 			.catch(function(resp) {
@@ -79,10 +61,10 @@ let PropertiesAction = {
     removeProperty: function(id) {
         Api
             .delete('http://mcs.dev/api/properties/' + id)
-            .then(function (results) {
+            .then(function (property) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.REMOVE_PROPERTY,
-					results: results
+					results: property
                 });
             })
             .catch(function(resp) {

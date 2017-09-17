@@ -1,7 +1,7 @@
 import React from 'react';
 import AuthStore from '../../stores/auth/store';
 import AuthAction from '../../actions/auth-action';
-import FlashMessage from '../flash-message';
+import FlashMessage from '../helper/flash-message';
 
 class Login extends React.Component
 {

@@ -14,10 +14,6 @@ function setMyVehicle(vehicle) {
 	_my_vehicle = vehicle ;
 }
 
-function setMyVehicles(vehicles) {
-	_my_vehicles = vehicles ;
-}
-
 function setRightPanel(show) {
 	_showPanel = show;
 }
@@ -50,10 +46,6 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 
 	getMyVehicles: function () {
 		return _my_vehicles;
-	},
-
-	loadVehicleToUpdate: function () {
-		return _my_vehicle;
 	},
 
 	addMyVehicle: function(results) {
@@ -95,6 +87,16 @@ let MyVehiclesStore = assign({}, EventEmitter.prototype, {
 		_showPanel = false;
 	},
 
+	setVehicles: function(results) {
+		if (results.msg) {
+			_storeMsg = results.msg;
+		} else {
+			if (results.length !== 0) {
+				_my_vehicles = results;
+			}
+		}
+	},
+
 	isAuthenticated: function() {
 		if (localStorage.getItem('id_token') === null) {
 			return false;
@@ -124,7 +126,7 @@ MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
 
     switch(action.actionType) {
         case ActionConstants.ADD_MY_VEHICLE:
-        	MyVehiclesStore.addMyVehicle(action.results);
+        	MyVehiclesStore.addMyVehicle(results);
         break;
 
         case ActionConstants.EDIT_MY_VEHICLE:
@@ -134,26 +136,20 @@ MyVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
         break;
 
         case ActionConstants.UPDATE_MY_VEHICLE:
-			MyVehiclesStore.updateMyVehicle(action.results);
+			MyVehiclesStore.updateMyVehicle(results);
         break;
 
         case ActionConstants.REMOVE_MY_VEHICLE:
-			MyVehiclesStore.removeMyVehicle(action.results);
+			MyVehiclesStore.removeMyVehicle(results);
         break;
 
 		case ActionConstants.RECEIVE_MY_VEHICLES:
-			if (results.msg) {
-				setStoreFlashMessage(results.msg)
-			} else {
-				if (results.length !== 0) {
-					setMyVehicles(results)
-				}
-			}
+			MyVehiclesStore.setVehicles(results);
 		break;
 
 		case ActionConstants.RECEIVE_ERROR:
-			setStoreFlashMessage(action.msg);
-			setErrorStatus(action.status);
+			setStoreFlashMessage(msg);
+			setErrorStatus(status);
 			removeToken();
 		break;
 

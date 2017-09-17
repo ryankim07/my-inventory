@@ -3,11 +3,7 @@ import { upperFirstLetter } from "../../helper/utils"
 
 class PropertyAddressAdd extends React.Component
 {
-    constructor(props) {
-        super(props);
-    }
-
-    // Handle input changes
+	// Handle input changes
     handleFormChange(propertyName, event) {
         let address     = this.props.address;
         let chosenValue = event.target.value;
@@ -23,10 +19,12 @@ class PropertyAddressAdd extends React.Component
                 address[propertyName] = chosenValue;
         }
 
-        this.props.handleAddressChange(address);
+        this.props.onHandleFormChange('address', address);
     }
 
 	render() {
+    	let address = this.props.address;
+
         return (
 			<div>
 				<div className="form-group required">
@@ -36,7 +34,7 @@ class PropertyAddressAdd extends React.Component
 							<input type="text"
 								   ref="street"
 								   onChange={ this.handleFormChange.bind(this, 'street') }
-								   value={ this.props.address.street }
+								   value={ address.street }
 								   className="form-control input-sm"
 								   required="required"/>
 						</div>
@@ -49,7 +47,7 @@ class PropertyAddressAdd extends React.Component
 							<input type="text"
 								   ref="city"
 								   onChange={ this.handleFormChange.bind(this, 'city') }
-								   value={ this.props.address.city }
+								   value={ address.city }
 								   className="form-control input-sm"
 								   required="required"/>
 						</div>
@@ -61,7 +59,7 @@ class PropertyAddressAdd extends React.Component
 						<div className="input-group">
 							<select ref="state"
 									onChange={ this.handleFormChange.bind(this, 'state') }
-									value={ this.props.address.built }
+									value={ address.built }
 									className="form-control input-sm"
 									required="required">
 								<option value="">Select One</option>
@@ -77,7 +75,7 @@ class PropertyAddressAdd extends React.Component
 							<input type="text"
 								   ref="zip"
 								   onChange={ this.handleFormChange.bind(this, 'zip') }
-								   value={ this.props.address.zip }
+								   value={ address.zip }
 								   className="form-control input-sm"
 								   required="required"/>
 						</div>
@@ -89,7 +87,7 @@ class PropertyAddressAdd extends React.Component
 						<div className="input-group">
 							<select ref="county"
 									onChange={ this.handleFormChange.bind(this, 'county') }
-									value={ this.props.address.county }
+									value={ address.county }
 									className="form-control input-sm">
 								<option value="">Select One</option>
 								<option value="Orange County">Orange County</option>
@@ -103,7 +101,7 @@ class PropertyAddressAdd extends React.Component
 						<div className="input-group">
 							<select ref="country"
 									onChange={ this.handleFormChange.bind(this, 'country') }
-									value={ this.props.address.country }
+									value={ address.country }
 									className="form-control input-sm">
 								<option value="">Select One</option>
 								<option value="US">United States</option>
@@ -118,7 +116,7 @@ class PropertyAddressAdd extends React.Component
 							<input type="text"
 								   ref="subdivision"
 								   onChange={ this.handleFormChange.bind(this, 'subdivision') }
-								   value={ this.props.address.subdivision }
+								   value={ address.subdivision }
 								   className="form-control input-sm"/>
 						</div>
 					</div>
@@ -126,7 +124,7 @@ class PropertyAddressAdd extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input type="hidden" ref="id" value={ this.props.address.id } />
+							<input type="hidden" ref="id" value={ address.id } />
 						</div>
 					</div>
 				</div>

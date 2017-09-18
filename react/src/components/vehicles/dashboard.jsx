@@ -153,4 +153,9 @@ class VehiclesDashboard extends React.Component
 	}
 }
 
+VehiclesDashboard.contextTypes = {
+	router: React.PropTypes.object.isRequired
+}
+
+
 export default VehiclesDashboard;

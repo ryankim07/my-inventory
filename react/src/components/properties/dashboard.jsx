@@ -183,4 +183,8 @@ class PropertiesDashboard extends React.Component
 	}
 }
 
+PropertiesDashboard.contextTypes = {
+	router: React.PropTypes.object.isRequired
+}
+
 export default PropertiesDashboard;

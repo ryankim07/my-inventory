@@ -6,14 +6,47 @@ class PropertyInfoView extends React.Component
 	// Toggle panel for add or edit
 	handleRightPanel(panel, isEditingMode) {
 		let features = null;
+		let sidePanelFeaturesName 	 	  = this.props.sidePanelFeaturesName;
+		let sidePanelExteriorFeaturesName = this.props.sidePanelExteriorFeaturesName;
+		let sidePanelInteriorFeaturesName = this.props.sidePanelInteriorFeaturesName;
 
 		switch (panel) {
-			case 'add-exterior-features':
+			case sidePanelFeaturesName:
+				features = {
+					id: '',
+					property_id: this.props.state.property.id,
+					parking: '',
+					multi_unit: '',
+					hoa: '',
+					utilities: '',
+					lot: '',
+					common_walls: '',
+					facing_direction: '',
+					others: ''
+				}
+			break;
+
+			case sidePanelExteriorFeaturesName:
 				features = {
 					id: '',
 					property_id: this.props.state.property.id,
 					exterior: '',
 					foundation: '',
+					others: ''
+				}
+			break;
+
+			case sidePanelInteriorFeaturesName:
+				features = {
+					id: '',
+					property_id: this.props.state.property.id,
+					laundry: '',
+					kitchen: '',
+					bathroom: '',
+					cooling: '',
+					heating: '',
+					fireplace: '',
+					flooring: '',
 					others: ''
 				}
 			break;
@@ -28,18 +61,19 @@ class PropertyInfoView extends React.Component
 	}
 
 	render() {
-		let columnCss = this.props.state.columnCss;
-		let property = this.props.state.property;
-		let address  = property.address;
+		let columnCss 		 = this.props.state.columnCss;
+		let property 		 = this.props.state.property;
+		let address  		 = property.address;
+		let exteriorFeatures = property.exterior_features;
 
 		let propertyFeaturesBtn = property.property_features === undefined ?
-			<button onClick={ this.handleRightPanel.bind(this, 'add-property-features', false) }><i className="fa fa-plus" aria-hidden="true" /> Add Property Features</button> : null;
+			<button onClick={ this.handleRightPanel.bind(this, this.props.sidePanelFeaturesName, false) }><i className="fa fa-plus" aria-hidden="true" /> Add Property Features</button> : null;
 
 		let exteriorFeaturesBtn = property.exterior_features === undefined ?
-			<button onClick={ this.handleRightPanel.bind(this, 'add-exterior-features', false) }><i className="fa fa-plus" aria-hidden="true" /> Add Exterior Features</button> : null;
+			<button onClick={ this.handleRightPanel.bind(this, this.props.sidePanelExteriorFeaturesName, false) }><i className="fa fa-plus" aria-hidden="true" /> Add Exterior Features</button> : null;
 
 		let interiorFeaturesBtn = property.interior_features === undefined ?
-			<button onClick={ this.handleRightPanel.bind(this, 'add-interior-features', false) }><i className="fa fa-plus" aria-hidden="true" /> Add Interior Features</button> : null;
+			<button onClick={ this.handleRightPanel.bind(this, this.props.sidePanelInteriorFeaturesName, false) }><i className="fa fa-plus" aria-hidden="true" /> Add Interior Features</button> : null;
 
 		let propertyHtml =
 			<div>
@@ -122,6 +156,26 @@ class PropertyInfoView extends React.Component
 						<li>
 							<label>Parcel Number:</label>
 							<span>{ property.parcel_number }</span>
+						</li>
+					</ul>
+				</div>
+				<div>
+					<h4>Exterior Features</h4>
+					<div>
+						<button onClick={ this.handleView.bind(this, 'view-rooms') }>View Rooms</button>
+					</div>
+					<ul>
+						<li>
+							<label>Exterior:</label>
+							<span>{ exteriorFeatures.exterior }</span>
+						</li>
+						<li>
+							<label>Foundation:</label>
+							<span>{ exteriorFeatures.foundation }</span>
+						</li>
+						<li>
+							<label>Others:</label>
+							<span>{ exteriorFeatures.others }</span>
 						</li>
 					</ul>
 				</div>

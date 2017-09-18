@@ -95,7 +95,8 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
 			assets: vehicle.assets
 		});
 
-		 _storeMsg = results.msg;
+		_vehicle   = vehicle;
+		_storeMsg  = results.msg;
 		_showPanel = false;
 	},
 

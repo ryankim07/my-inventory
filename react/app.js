@@ -15,7 +15,9 @@ import PropertyAdd from './src/components/properties/add';
 import PropertiesList from './src/components/properties/list';
 import PropertiesInfoDashboard from './src/components/properties/info/dashboard';
 import PropertyInfoView from './src/components/properties/info/view';
-import PropertyExteriorFeaturesAdd from './src/components/properties/exterior_features/add';
+import PropertyAddFeatures from './src/components/properties/info/add_features';
+import PropertyAddExteriorFeatures from './src/components/properties/info/add_exterior_features';
+import PropertyAddInteriorFeatures from './src/components/properties/info/add_interior_features';
 import PropertyRoomsDashboard from './src/components/properties/rooms/dashboard';
 import PropertyRoomAdd from "./src/components/properties/rooms/add";
 import PropertyRoomsList from './src/components/properties/rooms/list';
@@ -49,7 +51,9 @@ ReactDOM.render(
 				<Route path="/properties/add" component={ PropertyAdd } />
 				<Route path="/properties/info/dashboard" component={ PropertiesInfoDashboard } >
 					<Route path="/properties/info/view" component={ PropertyInfoView } />
-					<Route path="/property/exterior-features/add" component={ PropertyExteriorFeaturesAdd } />
+					<Route path="/property/info/add_features" component={ PropertyAddFeatures } />
+					<Route path="/property/info/add_exterior_features" component={ PropertyAddExteriorFeatures } />
+					<Route path="/property/info/add_interior_features" component={ PropertyAddInteriorFeatures } />
 				</Route>
 			</Route>
 

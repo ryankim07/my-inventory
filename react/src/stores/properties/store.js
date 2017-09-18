@@ -104,6 +104,7 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 			interior_features: property.interior_features
 		});
 
+		_property = property;
 		_storeMsg = results.msg;
 		_showPanel = false;
 	},

@@ -3,7 +3,9 @@ import PropertiesAction from '../../../actions/properties-action';
 import PropertiesStore from '../../../stores/properties/store';
 import PropertyRoomsDashboard from '../rooms/dashboard';
 import PropertyInfoView from './view';
-import PropertyExteriorFeaturesAdd from '../exterior_features/add';
+import PropertyAddFeatures from '../info/add_features';
+import PropertyAddExteriorFeatures from '../info/add_exterior_features';
+import PropertyAddInteriorFeatures from '../info/add_interior_features';
 import FlashMessage from '../../helper/flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -12,7 +14,10 @@ let mainShrinkedMobileColumnWidth = 'col-xs-8';
 let mainShrinkedDesktopColumnWidth = 'col-md-8';
 let mainColumnClassName = 'main-column';
 let mainPanelDefaultName = 'info';
-let mainPanelRoomsDashboardName = 'rooms-dashboard;'
+let mainPanelRoomsDashboardName = 'rooms-dashboard';
+let sidePanelFeaturesName = 'features';
+let sidePanelExteriorFeaturesName = 'exterior-features';
+let sidePanelInteriorFeaturesName = 'interior-features';
 
 class PropertyInfoDashboard extends React.Component
 {
@@ -21,9 +26,12 @@ class PropertyInfoDashboard extends React.Component
 
 		this.state = {
 			property: this.props.state.property,
+			features: {},
 			exteriorFeatures: {},
+			interiorFeatures: {},
 			isEditingMode: false,
 			mainPanel: mainPanelDefaultName,
+			sidePanel: null,
 			showRightPanel: false,
 			flashMessage: null,
 			columnCss: {
@@ -32,7 +40,9 @@ class PropertyInfoDashboard extends React.Component
 			},
 		};
 
+		this._onChange 		    = this._onChange.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
+		this.onHandleView 		= this.onHandleView.bind(this);
 		this.setFlashMessage    = this.setFlashMessage.bind(this);
 		this.closeRightPanel    = this.closeRightPanel.bind(this);
 	}
@@ -91,23 +101,18 @@ class PropertyInfoDashboard extends React.Component
 
 	// Handle right panel
 	onHandleRightPanel(panel, features, isEditingMode) {
-		let columnCss = {
-			'mobileWidth': mainShrinkedMobileColumnWidth,
-			'desktopWidth': mainShrinkedDesktopColumnWidth
-		};
-
-		let showRightPanel = true;
-
-		switch (panel) {
-			case 'add-exterior-features':
-				this.setState({
-					exteriorFeatures: features,
-					isEditingMode: isEditingMode,
-					showRightPanel,
-					columnCss
-				});
-			break;
-		}
+		this.setState({
+			features: panel === sidePanelFeaturesName ? features : null,
+			exteriorFeatures: panel === sidePanelExteriorFeaturesName ? features : null,
+			interiorFeatures: panel === sidePanelInteriorFeaturesName ? features : null,
+			isEditingMode: isEditingMode,
+			showRightPanel: true,
+			sidePanel: panel,
+			columnCss: {
+				'mobileWidth': mainShrinkedMobileColumnWidth,
+				'desktopWidth': mainShrinkedDesktopColumnWidth
+			}
+		});
 	}
 
 	// Handle view
@@ -146,34 +151,70 @@ class PropertyInfoDashboard extends React.Component
 
 	// Render
 	render() {
+		let mainPanel     = this.state.mainPanel;
+		let mainPanelHtml = '';
+		let sidePanel 	  = this.state.sidePanel;
+		let sidePanelHtml = '';
+
+		if (mainPanel === mainPanelDefaultName) {
+			mainPanelHtml =
+				<PropertyInfoView
+					state={this.state}
+					className={mainColumnClassName}
+					onHandleRightPanel={this.onHandleRightPanel}
+					onHandleView={this.onHandleView}
+					sidePanelFeaturesName={sidePanelFeaturesName}
+					sidePanelExteriorFeaturesName={sidePanelExteriorFeaturesName}
+					sidePanelInteriorFeaturesName={sidePanelInteriorFeaturesName}
+				/>;
+		} else {
+			mainPanelHtml =
+				<PropertyRoomsDashboard
+					rooms={ this.state.property.rooms }
+				/>;
+		}
+
+		switch (sidePanel) {
+			case sidePanelFeaturesName:
+				sidePanelHtml =
+					<PropertyAddFeatures
+						state={ this.state }
+						onHandleFormSubmit={ this.onHandleFormSubmit }
+						closeRightPanel={ this.closeRightPanel }
+					/>;
+			break;
+
+			case sidePanelExteriorFeaturesName:
+				sidePanelHtml =
+					<PropertyAddExteriorFeatures
+						state={ this.state }
+						onHandleFormSubmit={ this.onHandleFormSubmit }
+						closeRightPanel={ this.closeRightPanel }
+					/>;
+			break;
+
+			case sidePanelInteriorFeaturesName:
+				sidePanelHtml =
+					<PropertyAddInteriorFeatures
+						state={ this.state }
+						onHandleFormSubmit={ this.onHandleFormSubmit }
+						closeRightPanel={ this.closeRightPanel }
+					/>;
+			break;
+		}
+
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage } alertType="alert-success" />}
-
-				{
-					this.state.mainPanel === mainPanelDefaultName ?
-						<PropertyInfoView
-							state={ this.state }
-							className={ mainColumnClassName }
-							onHandleRightPanel={ this.onHandleRightPanel }
-							onHandleView={ this.onHandleView }
-						/> :
-						<PropertyRoomsDashboard
-							rooms={ this.state.property.rooms }
-						/>
-				}
-
-				{
-					this.state.showRightPanel ?
-						<PropertyExteriorFeaturesAdd
-							state={ this.state }
-							onHandleFormSubmit={ this.onHandleFormSubmit }
-							closeRightPanel={ this.closeRightPanel }
-						/> : null
-				}
+				{ mainPanelHtml }
+				{ this.state.showRightPanel ? sidePanelHtml : null }
 			</div>
 		)
 	}
+}
+
+PropertyInfoDashboard.contextTypes = {
+	router: React.PropTypes.object.isRequired
 }
 
 export default PropertyInfoDashboard;

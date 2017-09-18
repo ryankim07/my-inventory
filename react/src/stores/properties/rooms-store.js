@@ -5,7 +5,7 @@ import ActionConstants from '../../constants/action-constants';
 import _ from 'lodash';
 
 let _rooms = [];
-let _nonAddedRooms = [];
+
 let _room = {};
 let _showPanel = false;
 let _errStatus;
@@ -45,69 +45,7 @@ let PropertiesRoomsStore = assign({}, EventEmitter.prototype, {
 		return _rooms;
 	},
 
-	setRooms: function (results) {
-		if (results.err_msg) {
-			_storeMsg = results.err_msg;
-			return false;
-		} else {
-			if (results.length !== 0) {
-				_rooms = (results)
-			}
-		}
-	},
 
-	setNonAddedRooms: function(results) {
-		_nonAddedRooms = results;
-	},
-
-	addRoom: function (results) {
-		if (results.err_msg) {
-			_storeMsg = results.err_msg;
-			return false;
-		}
-
-		_rooms.push(results.room);
-		_storeMsg = results.msg;
-		_showPanel = false;
-	},
-
-	updateRoom: function(results) {
-		if (results.err_msg) {
-			_storeMsg = results.err_msg;
-			return false;
-		}
-
-		let room = results.room;
-		let index = _.indexOf(_rooms, _.find(_rooms, (record) => {
-				return record.id == room.id;
-			})
-		);
-
-		_rooms.splice(index, 1, {
-			id: room.id,
-			property_id: room.property_id,
-			name: room.name,
-			total_area: room.total_area,
-			description: room.description
-		});
-
-		_storeMsg = results.msg;
-		_showPanel = false;
-	},
-
-	removeRoom: function(results) {
-		if (results.err_msg) {
-			_storeMsg = results.err_msg;
-			return false;
-		}
-
-		_.remove(rooms, (myRoom) => {
-			return parseInt(room.id) == myRoom.id;
-		});
-
-		_storeMsg = results.msg;
-		_showPanel = false;
-	},
 
 	isAuthenticated: function() {
 		if (localStorage.getItem('id_token') === null) {
@@ -137,30 +75,10 @@ PropertiesRoomsStore.dispatchToken = Dispatcher.register(function(payload) {
 	let results = action.results;
 
     switch(action.actionType) {
-        case ActionConstants.ADD_PROPERTY_ROOM:
-            PropertiesRoomsStore.addRoom(results);
-        break;
 
-        case ActionConstants.EDIT_PROPERTY_ROOM:
-			setRoom(results);
-			setStoreFlashMessage('');
-			setRightPanel(true);
-        break;
-
-        case ActionConstants.UPDATE_PROPERTY_ROOM:
-            PropertiesRoomsStore.updateRoom(results);
-        break;
-
-        case ActionConstants.REMOVE_PROPERTY_ROOM:
-            PropertiesRoomsStore.removeRoom(results);
-        break;
 
 		case ActionConstants.RECEIVE_PROPERTY_ROOMS:
 			PropertiesRoomsStore.setRooms($results);
-		break;
-
-		case ActionConstants.RECEIVE_NON_ADDED_ROOMS:
-			PropertiesRoomsStore.setNonAddedRooms($results);
 		break;
 
 		case ActionConstants.RECEIVE_ERROR:

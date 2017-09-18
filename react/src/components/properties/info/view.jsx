@@ -56,8 +56,8 @@ class PropertyInfoView extends React.Component
 	}
 
 	// Handle view
-	handleView(property) {
-		this.props.onHandleView(property);
+	handleView(panel) {
+		this.props.onHandleView(panel);
 	}
 
 	render() {
@@ -87,31 +87,31 @@ class PropertyInfoView extends React.Component
 					<ul>
 						<li>
 							<label>Street:</label>
-							<span>{address.street }</span>
+							<span>{ address.street }</span>
 						</li>
 						<li>
 							<label>City:</label>
-							<span>{address.city }</span>
+							<span>{ address.city }</span>
 						</li>
 						<li>
 							<label>State:</label>
-							<span>{address.state }</span>
+							<span>{ address.state }</span>
 						</li>
 						<li>
 							<label>Zip:</label>
-							<span>{address.zip }</span>
+							<span>{ address.zip }</span>
 						</li>
 						<li>
 							<label>County:</label>
-							<span>{address.county }</span>
+							<span>{ address.county }</span>
 						</li>
 						<li>
 							<label>Country:</label>
-							<span>{address.country }</span>
+							<span>{ address.country }</span>
 						</li>
 						<li>
 							<label>Subdivision:</label>
-							<span>{address.subdivision }</span>
+							<span>{ address.subdivision }</span>
 						</li>
 					</ul>
 				</div>
@@ -162,7 +162,7 @@ class PropertyInfoView extends React.Component
 				<div>
 					<h4>Exterior Features</h4>
 					<div>
-						<button onClick={ this.handleView.bind(this, 'view-rooms') }>View Rooms</button>
+						<button onClick={ this.handleView.bind(this, this.props.mainPanelRoomsDashboardName) }>View Rooms</button>
 					</div>
 					<ul>
 						<li>

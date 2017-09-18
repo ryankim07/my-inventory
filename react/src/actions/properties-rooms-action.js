@@ -4,31 +4,13 @@ import Api from '../services/Api';
 
 let PropertiesRoomsAction = {
 
-	getPropertyRooms: function(id) {
-		Api
-			.get('http://mcs.dev/api/properties/property-rooms/' + id)
-			.then(function(rooms) {
-				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.RECEIVE_PROPERTY_ROOMS,
-					rooms: rooms
-				});
-			})
-			.catch(function(resp) {
-				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.RECEIVE_ERROR,
-					status: resp.status,
-					msg: resp.msg
-				});
-			});
-	},
-
 	getNonAddedRooms: function(id) {
 		Api
 			.get('http://mcs.dev/api/properties/non-added-rooms/property/' + id)
 			.then(function(rooms) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.RECEIVE_NON_ADDED_ROOMS,
-					rooms: rooms
+					results: rooms
 				});
 			})
 			.catch(function(resp) {
@@ -43,10 +25,10 @@ let PropertiesRoomsAction = {
     addRoom: function(data) {
         Api
             .post('http://mcs.dev/api/property/room', data)
-            .then(function (results) {
+            .then(function (room) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.ADD_PROPERTY_ROOM,
-					results: results
+					results: room
                 });
             })
             .catch(function(resp) {
@@ -61,10 +43,10 @@ let PropertiesRoomsAction = {
 	updateRoom: function(data) {
 		Api
 			.post('http://mcs.dev/api/property/room', data)
-			.then(function (results) {
+			.then(function (room) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.UPDATE_PROPERTY_ROOM,
-					results: results
+					results: room
 				});
 			})
 			.catch(function(resp) {
@@ -79,10 +61,10 @@ let PropertiesRoomsAction = {
     removeRoom: function(id) {
         Api
             .delete('http://mcs.dev/api/properties/rooms/' + id)
-            .then(function (results) {
+            .then(function (room) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.REMOVE_PROPERTY_ROOM,
-					results: results
+					results: room
                 });
             })
             .catch(function(resp) {

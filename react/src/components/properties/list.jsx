@@ -4,9 +4,19 @@ import Loader from '../helper/loader';
 
 class PropertiesList extends React.Component
 {
+	constructor(props) {
+		super(props);
+
+		this.handleRightPanel = this.handleRightPanel.bind(this);
+	}
+
 	// Toggle panel for add or edit
-	handleRightPanel() {
-		let property = {
+	handleRightPanel(id) {
+		let isEditingMode = !!id;
+
+		let property = isEditingMode ?
+			this.props.state.properties.find(obj => obj.id === id)	:
+			{
 				id: '',
 				style: '',
 				beds: '',
@@ -29,9 +39,9 @@ class PropertiesList extends React.Component
 					country: '',
 					subdivision: ''
 				}
-		};
+			}
 
-		this.props.onHandleRightPanel(property, false);
+		this.props.onHandleRightPanel(property, isEditingMode);
 	}
 
 	render() {
@@ -45,13 +55,17 @@ class PropertiesList extends React.Component
 			if (!properties  || properties.length === 0) {
 				propertiesHtml = <div><span>There are no saved properties.</span></div>;
 			} else {
-				propertiesHtml =
-					<PropertyAddressList
-						properties={ properties }
-						onHandleRightPanel={ this.props.onHandleRightPanel }
-						onHandleView={ this.props.onHandleView }
-						onHandleRemove={ this.props.onHandleRemove }
-					/>;
+				propertiesHtml = properties.map((property) => {
+					return (
+						<PropertyAddressList
+							key={ property.id }
+							address={ property.address }
+							handleRightPanel={ this.handleRightPanel }
+							onHandleView={ this.props.onHandleView }
+							onHandleRemove={ this.props.onHandleRemove }
+						/>
+					);
+				});
 			}
         } else {
             propertiesHtml = <div><Loader /></div>;
@@ -67,7 +81,7 @@ class PropertiesList extends React.Component
                                     <span>Properties List</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2">
-									<button onClick={ this.handleRightPanel.bind(this) }><i className="fa fa-plus" aria-hidden="true" /></button>
+									<button onClick={ this.handleRightPanel.bind(this, false) }><i className="fa fa-plus" aria-hidden="true" /></button>
 								</div>
                             </div>
                         </div>

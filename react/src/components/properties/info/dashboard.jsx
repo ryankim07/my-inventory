@@ -116,10 +116,9 @@ class PropertyInfoDashboard extends React.Component
 	}
 
 	// Handle view
-	onHandleView(property) {
+	onHandleView(panel) {
 		this.setState({
-			property: property,
-			mainPanel: mainPanelRoomsDashboardName,
+			mainPanel: panel,
 			columnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
@@ -151,30 +150,23 @@ class PropertyInfoDashboard extends React.Component
 
 	// Render
 	render() {
-		let mainPanel     = this.state.mainPanel;
-		let mainPanelHtml = '';
-		let sidePanel 	  = this.state.sidePanel;
+		let mainPanelHtml = this.state.mainPanel === mainPanelDefaultName ?
+			<PropertyInfoView
+				state={ this.state }
+				className={ mainColumnClassName }
+				onHandleRightPanel={ this.onHandleRightPanel }
+				onHandleView={ this.onHandleView }
+				mainPanelRoomsDashboardName={ mainPanelRoomsDashboardName }
+				sidePanelFeaturesName={ sidePanelFeaturesName }
+				sidePanelExteriorFeaturesName={ sidePanelExteriorFeaturesName }
+				sidePanelInteriorFeaturesName={ sidePanelInteriorFeaturesName }
+			/> :
+			<PropertyRoomsDashboard
+				state={ this.state }
+			/>;
+
 		let sidePanelHtml = '';
-
-		if (mainPanel === mainPanelDefaultName) {
-			mainPanelHtml =
-				<PropertyInfoView
-					state={this.state}
-					className={mainColumnClassName}
-					onHandleRightPanel={this.onHandleRightPanel}
-					onHandleView={this.onHandleView}
-					sidePanelFeaturesName={sidePanelFeaturesName}
-					sidePanelExteriorFeaturesName={sidePanelExteriorFeaturesName}
-					sidePanelInteriorFeaturesName={sidePanelInteriorFeaturesName}
-				/>;
-		} else {
-			mainPanelHtml =
-				<PropertyRoomsDashboard
-					rooms={ this.state.property.rooms }
-				/>;
-		}
-
-		switch (sidePanel) {
+		switch (this.state.sidePanel) {
 			case sidePanelFeaturesName:
 				sidePanelHtml =
 					<PropertyAddFeatures

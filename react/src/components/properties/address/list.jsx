@@ -2,13 +2,13 @@ import React from 'react';
 
 class PropertiesAddressList extends React.Component
 {
-	handleRightPanel(editingProperty) {
-		this.props.onHandleRightPanel(editingProperty, true);
+	handleRightPanel(id) {
+		this.props.handleRightPanel(id);
 	}
 
 	// Handle view
-	handleView(property) {
-		this.props.onHandleView(property);
+	handleView(id) {
+		this.props.onHandleView(id);
 	}
 
 	// Handle view
@@ -17,32 +17,23 @@ class PropertiesAddressList extends React.Component
 	}
 
 	render() {
-    	let properties = this.props.properties;
-
-    	let addressesHtml = properties.map((property) => {
-			let address = property.address;
-
-			if (!address  || address.length === 0) {
-				return(<tr><td><span>Unable to display properties due to missing address.</span></td></tr>);
-			} else {
-				return (
-					<tr key={address.id}>
-						<td>{address.street}</td>
-						<td>{address.city}</td>
-						<td>{address.state}</td>
-						<td>{address.zip}</td>
-						<td>{address.county}</td>
-						<td>{address.country}</td>
-						<td>{address.subdivision}</td>
-						<td>
-							<button onClick={this.handleView.bind(this, property)}><i className="fa fa-search" aria-hidden="true"/></button>
-							<button onClick={this.handleRightPanel.bind(this, property)}><i className="fa fa-pencil" aria-hidden="true"/></button>
-							<button onClick={this.handleRemove.bind(this, address.property_id)}><i className="fa fa-trash" aria-hidden="true"/></button>
-						</td>
-					</tr>
-				);
-			}
-		});
+		let address = this.props.address;
+		let addressesHtml = !address ?
+			<tr><td><span>Unable to display properties due to missing address.</span></td></tr> :
+			<tr key={ address.id }>
+				<td>{ address.street }</td>
+				<td>{ address.city }</td>
+				<td>{ address.state }</td>
+				<td>{ address.zip }</td>
+				<td>{ address.county }</td>
+				<td>{ address.country }</td>
+				<td>{ address.subdivision }</td>
+				<td>
+					<button onClick={ this.handleView.bind(this, address.property_id) }><i className="fa fa-search" aria-hidden="true"/></button>
+					<button onClick={ this.handleRightPanel.bind(this, address.property_id) }><i className="fa fa-pencil" aria-hidden="true"/></button>
+					<button onClick={ this.handleRemove.bind(this, address.property_id) }><i className="fa fa-trash" aria-hidden="true"/></button>
+				</td>
+			</tr>;
 
         return (
 			<table className="table">

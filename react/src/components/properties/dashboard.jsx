@@ -151,24 +151,24 @@ class PropertiesDashboard extends React.Component
 
 	// Render
 	render() {
+		let mainPanelHtml = this.state.mainPanel === mainPanelDefaultName ?
+			<PropertiesList
+				state={ this.state }
+				onHandleRightPanel={ this.onHandleRightPanel }
+				onHandleView={ this.onHandleView }
+				onHandleRemove={ this.onHandleRemove }
+				className={ mainColumnClassName }
+			/> :
+			<PropertyInfoDashboard
+				state={ this.state }
+				className={ mainColumnClassName }
+			/>;
+
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage } alertType="alert-success" />}
 
-				{
-					this.state.mainPanel === mainPanelDefaultName ?
-						<PropertiesList
-							state={ this.state }
-							onHandleRightPanel={ this.onHandleRightPanel }
-							onHandleView={ this.onHandleView }
-							onHandleRemove={ this.onHandleRemove }
-							className={ mainColumnClassName }
-						/> :
-						<PropertyInfoDashboard
-							state={ this.state }
-							className={ mainColumnClassName }
-						/>
-				}
+				{ mainPanelHtml }
 
 				{
 					this.state.showRightPanel ?

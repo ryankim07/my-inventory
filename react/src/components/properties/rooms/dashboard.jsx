@@ -2,9 +2,9 @@ import React from 'react';
 import _ from 'lodash';
 import PropertyRoomsList from './list';
 import PropertyRoomAdd from './add';
-import PropertyRoomsStore from '../../../stores/properties/rooms-store';
+import PropertyStore from '../../../stores/properties/store';
 import PropertiesRoomsAction from '../../../actions/properties-rooms-action';
-import PropertyPaintsStore from '../../../stores/properties/paints-store';
+import PropertyPaintsStore from '../../../stores/properties/store';
 import PropertiesPaintsAction from "../../../actions/properties-paints-action";
 import FlashMessage from '../../helper/flash-message';
 
@@ -19,20 +19,11 @@ class PropertyRoomsDashboard extends React.Component
 		super(props);
 
 		this.state = {
-			property_id: this.props.location.state.property_id,
-			room: {
-				id: '',
-				property_id: this.props.location.state.property_id,
-				name: '',
-				total_area: '',
-				description: '',
-				walls: []
-			},
-			rooms: [],
+			property_id: this.props.state.property.id,
+			room: {},
+			rooms: this.props.state.rooms,
 			paints: [],
 			nonAddedRooms: [],
-			isEditingMode: false,
-			newRoomAdded: false,
 			disableAddWallsBtn: false,
 			showRightPanel: false,
 			flashMessage: null,
@@ -43,28 +34,29 @@ class PropertyRoomsDashboard extends React.Component
 			}
 		};
 
-		this._onChange 		  = this._onChange.bind(this);
-		this.setFlashMessage  = this.setFlashMessage.bind(this);
-		this.closeRightPanel  = this.closeRightPanel.bind(this);
-		this.handleFormChange = this.handleFormChange.bind(this);
-		this.handleWallChange = this.handleWallChange.bind(this);
-		this.setFlashMessage  = this.setFlashMessage.bind(this);
-		this.closeRightPanel  = this.closeRightPanel.bind(this);
+		this._onChange 		  	= this._onChange.bind(this);
+		this.setFlashMessage  	= this.setFlashMessage.bind(this);
+		this.closeRightPanel  	= this.closeRightPanel.bind(this);
+		this.handleFormChange 	= this.handleFormChange.bind(this);
+		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
+		this.onHandleRemove   	= this.onHandleRemove(this);
+		this.handleWallChange 	= this.handleWallChange.bind(this);
+		this.setFlashMessage  	= this.setFlashMessage.bind(this);
+		this.closeRightPanel  	= this.closeRightPanel.bind(this);
 	}
 
 	componentWillMount() {
-		PropertyRoomsStore.addChangeListener(this._onChange);
-		PropertyRoomsStore.unsetStoreFlashMessage();
+		PropertyStore.addChangeListener(this._onChange);
+		PropertyStore.unsetStoreFlashMessage();
 	}
 
 	componentDidMount() {
-		PropertiesRoomsAction.getPropertyRooms(this.state.property_id);
 		PropertiesRoomsAction.getNonAddedRooms(this.state.property_id);
-		PropertiesPaintsAction.getPropertyPaints();
+		//PropertiesPaintsAction.getPropertyPaints();
 	}
 
 	componentWillUnmount() {
-		PropertyRoomsStore.removeChangeListener(this._onChange);
+		PropertyStore.removeChangeListener(this._onChange);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -80,68 +72,24 @@ class PropertyRoomsDashboard extends React.Component
 		}
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		// Only redirect to list if new room is being added
-		if (nextState.newRoomAdded || this.state.newRoomAdded) {
-			PropertyRoomsStore.unFlagNewRoom();
-			nextState.newRoomAdded = false;
-
-			this.context.router.push({
-				pathname: "/properties/rooms/dashboard",
-				state: {
-					property_id: this.state.property_id
-				}
-			});
-
-			return false;
-		}
-
-		return true;
-	}
-
 	_onChange() {
-		let rooms 	 		= PropertyRoomsStore.getRooms();
-		let paints			= PropertyPaintsStore.getPropertyPaints();
-		let nonAddedRooms	= PropertyRoomsStore.getNonAddedRooms();
-		let isNewRoomAdded  = PropertyRoomsStore.isNewRoomAdded();
-		let roomToUpdate    = PropertyRoomsStore.getRoomToUpdate();
-		let flashMsg 		= PropertyRoomsStore.getStoreFlashMessage();
-		let isAuthenticated = PropertyRoomsStore.isAuthenticated();
-		let openRightPanel 	= PropertyRoomsStore.openRightPanel();
-		let isEditingMode   = this.state.isEditingMode;
-		let stateRoom       = this.state.room;
+		//let paints			= PropertyPaintsStore.getPropertyPaints();
+		let nonAddedRooms	= PropertyStore.getNonAddedRooms();
+		let flashMessage 	= PropertyStore.getStoreFlashMessage();
+		let isAuthenticated = PropertyStore.isAuthenticated();
+		let openRightPanel 	= PropertyStore.openRightPanel();
 
 		if (!isAuthenticated){
 			this.context.router.push("/auth/login");
 			return false;
 		}
 
-		if (isNewRoomAdded) {
-			stateRoom = {
-				id: '',
-				property_id: this.state.room.property_id,
-				name: '',
-				total_area: '',
-				description: '',
-				walls: []
-			};
-		}
-
-		if (!_.every(_.values(roomToUpdate), function(v) {return !v;})) {
-			stateRoom 	  = roomToUpdate;
-			isEditingMode = true;
-		}
-
 		this.setState({
-			room: stateRoom,
-			rooms: rooms,
-			paints: paints,
+			//paints: paints,
 			nonAddedRooms: nonAddedRooms,
-			isEditingMode: isEditingMode,
-			newRoomAdded: isNewRoomAdded,
 			disableAddWallsBtn: false,
 			showRightPanel: !!openRightPanel,
-			flashMessage: flashMsg !== undefined ? flashMsg : null,
+			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,
 			columnCss: {
 				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
@@ -156,17 +104,31 @@ class PropertyRoomsDashboard extends React.Component
 		});
 	}
 
+	// Handle right panel
+	onHandleRightPanel(property, isEditingMode) {
+		this.setState({
+			property: property,
+			isEditingMode: isEditingMode,
+			showRightPanel: true,
+			columnCss: {
+				'mobileWidth': mainShrinkedMobileColumnWidth,
+				'desktopWidth': mainShrinkedDesktopColumnWidth
+			}
+		});
+	}
+
+	onHandleRemove(id) {
+		PropertiesRoomsAction.removeRoom(id);
+	}
+
 	// Handle appropriate action whenever wall fields are changed
 	handleWallChange(walls, disableBtn) {
+		let room = this.state.room;
+		room['walls'] = walls;
+		//@TODO
+		room.push({walls: walls});
 		this.setState({
-			room: {
-				id: this.state.room.id,
-				property_id: this.state.room.property_id,
-				name: this.state.room.name,
-				total_area: this.state.room.total_area,
-				description: this.state.room.description,
-				walls: walls
-			},
+			room: room,
 			disableAddWallsBtn: disableBtn
 		});
 	}
@@ -187,7 +149,7 @@ class PropertyRoomsDashboard extends React.Component
 		this.context.router.push({
 			pathname: "/properties/rooms/dashboard",
 			state: {
-				property_id: this.state.property_id
+				property_id: this.state.room.property_id
 			}
 		});
 
@@ -197,12 +159,15 @@ class PropertyRoomsDashboard extends React.Component
 	render() {
 		return (
 			<div className="row">
-				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-success" />}
+				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success" />}
+
 				<PropertyRoomsList
 					state={ this.state }
-					mobileWidth={this.state.columnCss.mobileWidth}
-					desktopWidth={this.state.columnCss.desktopWidth}
-					className="main-column" />
+					onHandleRightPanel={ onHandleRightPanel }
+					onHandleRemove={ onHandleRemove }
+					className="main-column"
+				/>
+
 				{
 					this.state.showRightPanel ?
 						/*<PropertyRoomAdd

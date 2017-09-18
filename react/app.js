@@ -19,7 +19,7 @@ import PropertyAddFeatures from './src/components/properties/info/add_features';
 import PropertyAddExteriorFeatures from './src/components/properties/info/add_exterior_features';
 import PropertyAddInteriorFeatures from './src/components/properties/info/add_interior_features';
 import PropertyRoomsDashboard from './src/components/properties/rooms/dashboard';
-import PropertyRoomAdd from "./src/components/properties/rooms/add";
+import PropertyAddRoom from "./src/components/properties/rooms/add";
 import PropertyRoomsList from './src/components/properties/rooms/list';
 
 function requireAuth(nextState, replace)
@@ -58,7 +58,7 @@ ReactDOM.render(
 			</Route>
 
 			<Route path="/properties/rooms/dashboard" component={ PropertyRoomsDashboard } >
-				<Route path="/property/rooms/add" component={ PropertyRoomAdd } />
+				<Route path="/property/rooms/add" component={ PropertyAddRoom } />
 				<Route path="/properties/rooms" component={ PropertyRoomsList } />
 			</Route>
         </Route>

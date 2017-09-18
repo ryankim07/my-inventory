@@ -1,30 +1,28 @@
 import React from 'react';
-import Loader from '../../helper/loader';
 import Previous from '../../helper/previous';
 
 class PropertyRoomsList extends React.Component
 {
-    constructor(props) {
-        super(props);
-    }
+	constructor(props) {
+		super(props);
 
-	handleRightPanel(room) {
-		let isEditingMode = !!editingRoom;
-		let vehicle = editingVehicle === null ?
+		this.handleRightPanel = this.handleRightPanel.bind(this);
+	}
+
+    handleRightPanel(id) {
+		let isEditingMode = !!id;
+		let property = isEditingMode ?
+			this.props.state.property.rooms.find(obj => obj.id === id) :
 			{
 				id: '',
-				mfg_id: '',
-				mfg: '',
+				property_id: '',
+				name: '',
 				model_id: '',
-				model: '',
-				year: '',
-				color: '',
-				vin: '',
-				plate: '',
-				assets: []
-			} : editingVehicle;
+				total_area: '',
+				description: ''
+			}
 
-		this.props.onHandleRightPanel(vehicle, isEditingMode);
+		this.props.onHandleRightPanel(property, isEditingMode);
 	}
 
 	handleRemove(id) {
@@ -33,31 +31,23 @@ class PropertyRoomsList extends React.Component
 
     render() {
 		let columnCss = this.props.state.columnCss;
-        let roomsHtml = '';
+        let rooms     = this.props.state.property.rooms
 
-		if (!this.props.state.loader) {
-			let rooms = this.props.state.property.rooms;
-
-			if (!rooms) {
-				roomsHtml = <tr><td>There are no saved rooms.</td></tr>;
-			} else {
-				roomsHtml = rooms.map((room) => {
-					return (
-						<tr key={ room.id }>
-							<td>{ room.name }</td>
-							<td>{ room.total_area }</td>
-							<td>{ room.description }</td>
-							<td>
-								<button onClick={ this.handleRightPanel.bind(this, room) }><i className="fa fa-pencil" aria-hidden="true" /></button>
-								<button onClick={ this.handleRemove.bind(this, room.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
-							</td>
-						</tr>
-					);
-				});
-			}
-		} else {
-			roomsHtml = <tr><td><Loader /></td></tr>;
-		}
+		let roomsHtml = !rooms ?
+			<tr><td>There are no saved rooms.</td></tr> :
+			rooms.map((room) => {
+				return (
+					<tr key={ room.id }>
+						<td>{ room.name }</td>
+						<td>{ room.total_area }</td>
+						<td>{ room.description }</td>
+						<td>
+							<button onClick={ this.handleRightPanel.bind(this, room.id) }><i className="fa fa-pencil" aria-hidden="true" /></button>
+							<button onClick={ this.handleRemove.bind(this, room.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
+						</td>
+					</tr>
+				);
+			});
 
         return (
             <div className={ [columnCss.mobileWidth, columnCss.desktopWidth, this.props.className].join(' ') } id="rooms-main">

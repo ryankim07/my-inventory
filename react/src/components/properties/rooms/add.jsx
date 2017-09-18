@@ -1,9 +1,10 @@
 import React from 'react';
 import PropertiesRoomsAction from '../../../actions/properties-rooms-action';
+import NonAddedRoomsDropdown from '../rooms/non_added_rooms_dropdown';
 import PropertyRoomWalls from '../rooms/walls';
 import { numberFormat } from "../../helper/utils"
 
-class PropertyRoomAdd extends React.Component
+class PropertyAddRoom extends React.Component
 {
     constructor(props) {
         super(props);
@@ -93,28 +94,11 @@ class PropertyRoomAdd extends React.Component
 			);
 		});
 
-		let roomsOptions = this.props.state.nonAddedRooms.map((rooms, roomIndex) => {
-			return (
-				<option key={ roomIndex } value={ rooms.value }>{ rooms.title }</option>
-			);
-		});
-
 		let roomForm = <form onSubmit={ this.handleFormSubmit }>
-			<div className="form-group required">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Room Name</label>
-					<div className="input-group">
-						<select ref="name"
-								onChange={ this.handleFormChange.bind(this, 'name') }
-								value={ this.props.state.room.name }
-								className="form-control input-sm"
-								required="required">
-							<option value="">Select One</option>
-							{ roomsOptions }
-						</select>
-					</div>
-				</div>
-			</div>
+			<NonAddedRoomsDropdown
+				room={ this.props.state.room }
+				onHandleFormChange={ this.onHandleFormChange }
+			/>
 			<div className="form-group">
 				<div className="col-xs-12 col-md-8">
 					<label className="control-label">Total Area</label>
@@ -149,7 +133,6 @@ class PropertyRoomAdd extends React.Component
 				<div className="col-xs-12 col-md-8">
 					<div className="input-group">
 						<input type="hidden" ref="id" value={ this.props.state.room.id } />
-						<input type="hidden" ref="property_id" value={ this.props.state.property_id } />
 					</div>
 				</div>
 			</div>
@@ -186,8 +169,8 @@ class PropertyRoomAdd extends React.Component
     }
 }
 
-PropertyRoomAdd.contextTypes = {
+PropertyAddRoom.contextTypes = {
 	router: React.PropTypes.object.isRequired
 }
 
-export default PropertyRoomAdd;
+export default PropertyAddRoom;

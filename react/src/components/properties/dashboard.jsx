@@ -116,9 +116,9 @@ class PropertiesDashboard extends React.Component
 	}
 
 	// Handle view
-	onHandleView(property) {
+	onHandleView(id) {
 		this.setState({
-			property: property,
+			property: this.state.properties.find(obj => obj.id === id),
 			mainPanel: mainPanelInfoDashboardName,
 			columnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,

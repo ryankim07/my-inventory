@@ -118,7 +118,7 @@ class PropertyInfoView extends React.Component
 				<div>
 					<h4>Property Details</h4>
 					<div>
-						<button onClick={ this.handleView.bind(this, 'view-rooms') }>View Rooms</button>
+						<button onClick={ this.handleView.bind(this, mainPanelRoomsDashboardName) }>View Rooms</button>
 					</div>
 					<ul>
 						<li>
@@ -162,7 +162,7 @@ class PropertyInfoView extends React.Component
 				<div>
 					<h4>Exterior Features</h4>
 					<div>
-						<button onClick={ this.handleView.bind(this, this.props.mainPanelRoomsDashboardName) }>View Rooms</button>
+						<button onClick={ this.handleView.bind(this, this.props.sidePanelExteriorFeaturesName) }><i className="fa fa-pencil" aria-hidden="true"/> Edit exterior features</button>
 					</div>
 					<ul>
 						<li>

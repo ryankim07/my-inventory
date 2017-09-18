@@ -36,26 +36,21 @@ class VehiclesList extends React.Component
         if (!this.props.state.loader) {
         	let vehicles  = this.props.state.vehicles;
 
-        	if (!vehicles || vehicles.length === 0) {
-				vehiclesHtml = <tr><td><span>There are no saved vehicles.</span></td></tr>;
-			} else {
-				vehiclesHtml = vehicles.map((vehicle) => {
-					return (
-						<tr key={ vehicle.id }>
-							<td>{ vehicle.mfg }</td>
-							<td>{ vehicle.model }</td>
-							<td>{ vehicle.year }</td>
-							<td>{ vehicle.color }</td>
-							<td>{ vehicle.vin }</td>
-							<td>{ vehicle.plate }</td>
-							<td>
-								<button onClick={ this.handleRightPanel.bind(this, vehicle) }><i className="fa fa-pencil" aria-hidden="true" /></button>
-								<button onClick={ this.handleRemove.bind(this,  vehicle.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
-							</td>
-						</tr>
-					);
-				});
-			}
+			vehiclesHtml = !vehicles || vehicles.length === 0 ?
+				<tr><td><span>There are no saved vehicles.</span></td></tr> :
+				<tr key={ vehicle.id }>
+					<td>{ vehicle.mfg }</td>
+					<td>{ vehicle.model }</td>
+					<td>{ vehicle.year }</td>
+					<td>{ vehicle.color }</td>
+					<td>{ vehicle.vin }</td>
+					<td>{ vehicle.plate }</td>
+					<td>
+						<button onClick={ this.handleRightPanel.bind(this, vehicle) }><i className="fa fa-pencil" aria-hidden="true" /></button>
+						<button onClick={ this.handleRemove.bind(this,  vehicle.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
+					</td>
+				</tr>
+
         } else {
             vehiclesHtml = <tr><td><Loader /></td></tr>;
         }

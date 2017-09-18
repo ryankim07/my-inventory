@@ -52,10 +52,9 @@ class PropertiesList extends React.Component
         if (!this.props.state.loader) {
 			let properties = this.props.state.properties;
 
-			if (!properties  || properties.length === 0) {
-				propertiesHtml = <div><span>There are no saved properties.</span></div>;
-			} else {
-				propertiesHtml = properties.map((property) => {
+			propertiesHtml = !properties  || properties.length === 0 ?
+				<div><span>There are no saved properties.</span></div> :
+				properties.map((property) => {
 					return (
 						<PropertyAddressList
 							key={ property.id }
@@ -66,7 +65,6 @@ class PropertiesList extends React.Component
 						/>
 					);
 				});
-			}
         } else {
             propertiesHtml = <div><Loader /></div>;
         }

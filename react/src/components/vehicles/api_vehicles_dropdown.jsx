@@ -28,10 +28,8 @@ class ApiVehiclesDropdown extends React.Component
 	}
 
 	_onChange() {
-		let apiVehicles = ApiVehiclesStore.getApiVehicles();
-
 		this.setState({
-			apiVehicles: apiVehicles,
+			apiVehicles: ApiVehiclesStore.getApiVehicles(),
 			show: false
 		});
 	}

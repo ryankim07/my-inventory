@@ -1,7 +1,7 @@
 import React from 'react';
 import { upperFirstLetter } from "../../helper/utils"
 
-class PropertyAddressAdd extends React.Component
+class PropertyAddAddress extends React.Component
 {
 	// Handle input changes
     handleFormChange(propertyName, event) {
@@ -133,4 +133,4 @@ class PropertyAddressAdd extends React.Component
     }
 }
 
-export default PropertyAddressAdd;
+export default PropertyAddAddress;

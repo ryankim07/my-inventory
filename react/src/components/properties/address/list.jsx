@@ -18,6 +18,7 @@ class PropertiesAddressList extends React.Component
 
 	render() {
 		let address = this.props.address;
+
 		let addressesHtml = !address ?
 			<tr><td><span>Unable to display properties due to missing address.</span></td></tr> :
 			<tr key={ address.id }>
@@ -33,7 +34,7 @@ class PropertiesAddressList extends React.Component
 					<button onClick={ this.handleRightPanel.bind(this, address.property_id) }><i className="fa fa-pencil" aria-hidden="true"/></button>
 					<button onClick={ this.handleRemove.bind(this, address.property_id) }><i className="fa fa-trash" aria-hidden="true"/></button>
 				</td>
-			</tr>;
+			</tr>
 
         return (
 			<table className="table">

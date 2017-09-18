@@ -77,7 +77,7 @@ class PropertyEntity
     private $parcelNumber;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\PropertyAssetsEntity", mappedBy="property", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\PropertyAssetsEntity", mappedBy="property", cascade={"persist", "remove"})
      * @ORM\OrderBy({"name" = "ASC"})
      */
     private $assets;
@@ -88,7 +88,7 @@ class PropertyEntity
     private $address;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\RoomsEntity", mappedBy="property", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\RoomsEntity", mappedBy="property", cascade={"persist", "remove"})
      * @ORM\OrderBy({"name" = "ASC"})
      */
     private $rooms;
@@ -99,12 +99,12 @@ class PropertyEntity
     private $exteriorFeatures;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Properties\InteriorFeaturesEntity", mappedBy="property", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Properties\InteriorFeaturesEntity", mappedBy="property", cascade={"persist", "remove"})
      */
     private $interiorFeatures;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Properties\FeaturesEntity", mappedBy="property", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Properties\FeaturesEntity", mappedBy="property", cascade={"persist", "remove"})
      */
     private $features;
 

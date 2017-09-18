@@ -72,7 +72,7 @@ class VehicleEntity
     private $plate;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Vehicles\AssetsEntity", mappedBy="vehicles", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Vehicles\AssetsEntity", mappedBy="vehicles", cascade={"persist", "remove"})
      * @ORM\OrderBy({"name" = "ASC"})
      */
     private $assets;

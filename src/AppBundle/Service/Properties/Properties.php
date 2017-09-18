@@ -218,17 +218,17 @@ class Properties
         }
 
         // Existing property but new features
-        if (!$featuresEntity) {
+        if (is_null($featuresEntity)) {
             $featuresEntity = new FeaturesEntity();
         }
 
         // Existing property but new exterior features
-        if (!$exteriorFeaturesEntity) {
+        if (is_null($exteriorFeaturesEntity)) {
             $exteriorFeaturesEntity = new ExteriorFeaturesEntity();
         }
 
         // Existing property but new interior features
-        if (!$interiorFeaturesEntity) {
+        if (is_null($interiorFeaturesEntity)) {
             $interiorFeaturesEntity = new InteriorFeaturesEntity();
         }
 
@@ -244,46 +244,54 @@ class Properties
         $this->entity->setParcelNumber($this->parcelNumber);
 
         // Address entity
-        $addressEntity->setPropertyId($this->entity->getId());
-        $addressEntity->setStreet($this->address['street']);
-        $addressEntity->setCity($this->address['city']);
-        $addressEntity->setState($this->address['state']);
-        $addressEntity->setZip($this->address['zip']);
-        $addressEntity->setCounty($this->address['county']);
-        $addressEntity->setCountry($this->address['country']);
-        $addressEntity->setSubdivision($this->address['subdivision']);
-        $this->entity->addAddress($addressEntity);
+        if (!is_null($this->address)) {
+            $addressEntity->setPropertyId($this->entity->getId());
+            $addressEntity->setStreet($this->address['street']);
+            $addressEntity->setCity($this->address['city']);
+            $addressEntity->setState($this->address['state']);
+            $addressEntity->setZip($this->address['zip']);
+            $addressEntity->setCounty($this->address['county']);
+            $addressEntity->setCountry($this->address['country']);
+            $addressEntity->setSubdivision($this->address['subdivision']);
+            $this->entity->addAddress($addressEntity);
+        }
 
         // Features entity
-        $featuresEntity->setPropertyId($this->entity->getId());
-        $featuresEntity->setParking($this->features['parking']);
-        $featuresEntity->setMultiUnit($this->features['multi_unit']);
-        $featuresEntity->setHoa($this->features['hoa']);
-        $featuresEntity->setUtilities($this->features['utilities']);
-        $featuresEntity->setLot($this->features['lot']);
-        $featuresEntity->setCommonWalls($this->features['common_walls']);
-        $featuresEntity->setFacingDirection($this->features['facing_direction']);
-        $featuresEntity->setOthers($this->features['others']);
-        $this->entity->addFeatures($featuresEntity);
+        if (!is_null($this->features)) {
+            $featuresEntity->setPropertyId($this->entity->getId());
+            $featuresEntity->setParking($this->features['parking']);
+            $featuresEntity->setMultiUnit($this->features['multi_unit']);
+            $featuresEntity->setHoa($this->features['hoa']);
+            $featuresEntity->setUtilities($this->features['utilities']);
+            $featuresEntity->setLot($this->features['lot']);
+            $featuresEntity->setCommonWalls($this->features['common_walls']);
+            $featuresEntity->setFacingDirection($this->features['facing_direction']);
+            $featuresEntity->setOthers($this->features['others']);
+            $this->entity->addFeatures($featuresEntity);
+        }
 
         // Exterior features entity
-        $exteriorFeaturesEntity->setPropertyId($this->entity->getId());
-        $exteriorFeaturesEntity->setExterior($this->exteriorFeatures['exterior']);
-        $exteriorFeaturesEntity->setFoundation($this->exteriorFeatures['foundation']);
-        $exteriorFeaturesEntity->setOthers($this->exteriorFeatures['others']);
-        $this->entity->addExteriorFeatures($exteriorFeaturesEntity);
+        if (!is_null($this->exteriorFeatures)) {
+            $exteriorFeaturesEntity->setPropertyId($this->entity->getId());
+            $exteriorFeaturesEntity->setExterior($this->exteriorFeatures['exterior']);
+            $exteriorFeaturesEntity->setFoundation($this->exteriorFeatures['foundation']);
+            $exteriorFeaturesEntity->setOthers($this->exteriorFeatures['others']);
+            $this->entity->addExteriorFeatures($exteriorFeaturesEntity);
+        }
 
         // Interior features entity
-        $interiorFeaturesEntity->setPropertyId($this->entity->getId());
-        $interiorFeaturesEntity->setLaundry($this->interiorFeatures['laundry']);
-        $interiorFeaturesEntity->setKitchen($this->interiorFeatures['kitchen']);
-        $interiorFeaturesEntity->setBathroom($this->interiorFeatures['bathroom']);
-        $interiorFeaturesEntity->setCooling($this->interiorFeatures['cooling']);
-        $interiorFeaturesEntity->setHeating($this->interiorFeatures['heating']);
-        $interiorFeaturesEntity->setFireplace($this->interiorFeatures['fireplace']);
-        $interiorFeaturesEntity->setFlooring($this->interiorFeatures['flooring']);
-        $interiorFeaturesEntity->setOthers($this->interiorFeatures['others']);
-        $this->entity->addInteriorFeatures($interiorFeaturesEntity);
+        if (!is_null($this->interiorFeatures)) {
+            $interiorFeaturesEntity->setPropertyId($this->entity->getId());
+            $interiorFeaturesEntity->setLaundry($this->interiorFeatures['laundry']);
+            $interiorFeaturesEntity->setKitchen($this->interiorFeatures['kitchen']);
+            $interiorFeaturesEntity->setBathroom($this->interiorFeatures['bathroom']);
+            $interiorFeaturesEntity->setCooling($this->interiorFeatures['cooling']);
+            $interiorFeaturesEntity->setHeating($this->interiorFeatures['heating']);
+            $interiorFeaturesEntity->setFireplace($this->interiorFeatures['fireplace']);
+            $interiorFeaturesEntity->setFlooring($this->interiorFeatures['flooring']);
+            $interiorFeaturesEntity->setOthers($this->interiorFeatures['others']);
+            $this->entity->addInteriorFeatures($interiorFeaturesEntity);
+        }
 
         // Assets entity
         if (!is_null($this->assets)) {

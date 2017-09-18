@@ -13,11 +13,12 @@ import VehiclesList from './src/components/vehicles/list';
 import PropertiesDashboard from './src/components/properties/dashboard';
 import PropertyAdd from './src/components/properties/add';
 import PropertiesList from './src/components/properties/list';
-import PropertyView from './src/components/properties/view';
+import PropertiesInfoDashboard from './src/components/properties/info/dashboard';
+import PropertyInfoView from './src/components/properties/info/view';
+import PropertyExteriorFeaturesAdd from './src/components/properties/exterior_features/add';
 import PropertyRoomsDashboard from './src/components/properties/rooms/dashboard';
 import PropertyRoomAdd from "./src/components/properties/rooms/add";
 import PropertyRoomsList from './src/components/properties/rooms/list';
-import PropertyExteriorFeaturesAdd from './src/components/properties/exterior_features/add';
 
 function requireAuth(nextState, replace)
 {
@@ -46,8 +47,10 @@ ReactDOM.render(
 			<Route path="/properties/dashboard" component={ PropertiesDashboard } >
 				<Route path="/properties" component={ PropertiesList } />
 				<Route path="/properties/add" component={ PropertyAdd } />
-				<Route path="/properties/view" component={ PropertyView } />
-				<Route path="/property/exterior-features/add" component={ PropertyExteriorFeaturesAdd } />
+				<Route path="/properties/info/dashboard" component={ PropertiesInfoDashboard } >
+					<Route path="/properties/info/view" component={ PropertyInfoView } />
+					<Route path="/property/exterior-features/add" component={ PropertyExteriorFeaturesAdd } />
+				</Route>
 			</Route>
 
 			<Route path="/properties/rooms/dashboard" component={ PropertyRoomsDashboard } >

@@ -59,6 +59,10 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		}
 	},
 
+	getProperty: function() {
+    	return _property;
+	},
+
 	addProperty: function (results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
@@ -94,7 +98,10 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 			total_area: property.total_area,
 			parcel_number: property.parcel_number,
 			assets: property.assets,
-			address: property.address
+			address: property.address,
+			features: property.features,
+			exterior_features: property.exterior_features,
+			interior_features: property.interior_features
 		});
 
 		_storeMsg = results.msg;

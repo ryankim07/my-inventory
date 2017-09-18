@@ -6,137 +6,98 @@ class PropertyExteriorFeaturesAdd extends React.Component
         super(props);
 
         this.state = {
-            features: {
-                id: '',
-                property_id: this.props.location.state.property_id,
-                exterior: '',
-                foundation: '',
-				others: ''
-            },
-			nonAddedFeatures: [],
-			isEditingMode: false,
-            newFeaturesAdded: false,
-			flashMessage: null
+			exteriorFeatures: this.props.state.exteriorFeatures
         };
 
-        this._onChange = this._onChange.bind(this);
-        this.handleFormSubmit = this.handleFormSubmit.bind(this);
+		this.handleFormChange = this.handleFormChange.bind(this);
     }
 
-	componentDidMount() {
-		//PropertyExteriorFeaturesAction.getNonAddedFeatures(this.state.features.property_id);
+	handleFormChange(propertyName, event) {
+		let exteriorFeatures = this.state.exteriorFeatures;
+		exteriorFeatures[propertyName] = event.target.value;
+
+		this.setState({exteriorFeatures: exteriorFeatures});
 	}
-
-    componentWillUnmount() {
-		PropertyExteriorFeaturesStore.removeChangeListener(this._onChange);
-		PropertyExteriorFeaturesStore.unsetFeaturesToUpdate();
-	}
-
-    shouldComponentUpdate(nextProps, nextState) {
-		// Only redirect to list if new exterior features is being added
-        if (nextState.newFeaturesAdded || this.state.newFeaturesAdded) {
-			PropertyExteriorFeaturesStore.unFlagNewFeatures();
-			nextState.newFeaturesAdded = false;
-			this.context.router.push('/properties/dashboard');
-			return false;
-		}
-
-		return true;
-    }
-
-    // Listen to changes in store, update it's own state
-    _onChange() {
-    	/*let addingNewFeatures   = PropertyExteriorFeaturesStore.isNewFeaturesAdded();
-		let featuresToUpdate    = PropertyExteriorFeaturesStore.getFeaturesToUpdate();
-		let isEditingMode   = this.state.isEditingMode;
-		let stateFeatures       = this.state.features;
-		let flashMsg        = PropertyExteriorFeaturesStore.getStoreFlashMessage();
-		let isAuthenticated = PropertyExteriorFeaturesStore.isAuthenticated();
-
-		if (!isAuthenticated){
-			this.context.router.push("/auth/login");
-			return false;
-		}
-
-		if (!_.every(_.values(featuresToUpdate), function(v) {return !v;})) {
-			stateFeatures = featuresToUpdate;
-			isEditingMode = true;
-		}
-
-		this.setState({
-		    features: stateFeatures,
-			nonAddedFeatures: PropertyExteriorFeaturesStore.getNonAddedFeatures(),
-			isEditingMode: isEditingMode,
-			newFeaturesAdded: addingNewFeatures,
-			flashMessage: flashMsg !== undefined ? flashMsg : null
-		});*/
-    }
 
     // Submit
     handleFormSubmit(event) {
-        event.preventDefault();
+		event.preventDefault();
 
-        if (!this.state.isEditingMode) {
-			PropertyExteriorFeaturesAction.addFeatures(this.state.features);
-		} else {
-			PropertyExteriorFeaturesAction.updateFeatures(this.state.features);
+		let property = this.props.state.property;
+		property.exterior_features = this.state.exteriorFeatures;
 
-        	// Close the panel
-            this.props.closeRightPanel();
-        }
+		this.props.onHandleFormSubmit(property);
     }
 
 	render() {
-		let exteriorFeaturesForm = <form onSubmit={this.handleFormSubmit}>
-			<div className="form-group">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Exterior</label>
-					<div className="input-group">
-							<textarea ref="exterior"
-								rows="5"
-								className="form-control">
-							</textarea>
+		let exteriorFeatures = this.state.exteriorFeatures;
+
+		let exteriorFeaturesForm =
+			<form onSubmit={ this.handleFormSubmit.bind(this) }>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Exterior</label>
+						<div className="input-group">
+								<textarea
+									ref="exterior"
+									rows="5"
+									className="form-control"
+									onChange={ this.handleFormChange.bind(this, 'exterior') }
+									value={ exteriorFeatures.exterior } />
+						</div>
 					</div>
 				</div>
-			</div>
-			<div className="form-group">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Foundation</label>
-					<div className="input-group">
-							<textarea ref="foundation"
-								rows="5"
-								className="form-control">
-							</textarea>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Foundation</label>
+						<div className="input-group">
+								<textarea
+									ref="foundation"
+									rows="5"
+									className="form-control"
+									onChange={ this.handleFormChange.bind(this, 'foundation') }
+									value={ exteriorFeatures.foundation } />
+						</div>
 					</div>
 				</div>
-			</div>
-			<div className="form-group">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Others</label>
-					<div className="input-group">
-							<textarea ref="others"
-									  rows="5"
-									  className="form-control">
-							</textarea>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Others</label>
+						<div className="input-group">
+								<textarea
+									ref="others"
+									rows="5"
+									className="form-control"
+									onChange={ this.handleFormChange.bind(this, 'others') }
+									value={ exteriorFeatures.others } />
+						</div>
 					</div>
 				</div>
-			</div>
-			<div className="form-group">
-				<div className="col-xs-12 col-md-8">
-					<div className="input-group">
-						<input type="hidden" ref="id" value={this.state.features.id} />
-						<input type="hidden" ref="property_id" value={this.state.features.property_id} />
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<div className="input-group">
+							<input
+								type="hidden"
+								ref="id"
+								value={ exteriorFeatures.id } />
+							<input
+								type="hidden"
+								ref="property_id"
+								value={ exteriorFeatures.property_id } />
+						</div>
 					</div>
 				</div>
-			</div>
-			<div className="form-group">
-				<div className="col-xs-12 col-md-12">
-					<div className="clearfix">
-						<input type="submit" value="Submit" className="btn"/>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-12">
+						<div className="clearfix">
+							<input
+								type="submit"
+								value="Submit"
+								className="btn"/>
+						</div>
 					</div>
 				</div>
-			</div>
-		</form>
+			</form>
 
         return (
             <div className="col-xs-4 col-md-4" id="exterior-features-add">
@@ -148,7 +109,7 @@ class PropertyExteriorFeaturesAdd extends React.Component
                                     <span>Add Exterior Features</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2">
-                                    { this.state.isEditingMode ? <button onClick={this.props.closeRightPanel} className="close close-viewer" value="Close"><span>&times;</span></button> : ''}
+									<button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true" /></button>
                                 </div>
                             </div>
                         </div>
@@ -160,10 +121,6 @@ class PropertyExteriorFeaturesAdd extends React.Component
             </div>
         );
     }
-}
-
-PropertyExteriorFeaturesAdd.contextTypes = {
-	router: React.PropTypes.object.isRequired
 }
 
 export default PropertyExteriorFeaturesAdd;

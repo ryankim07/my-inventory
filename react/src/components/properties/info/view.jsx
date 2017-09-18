@@ -1,28 +1,30 @@
 import React from 'react';
-import Previous from '../helper/previous';
+import Previous from '../../helper/previous';
 
-class PropertyView extends React.Component
+class PropertyInfoView extends React.Component
 {
-    handleActions(action) {
-    	let propertyId = this.props.state.property.id;
-    	let pathName   = null;
+	// Toggle panel for add or edit
+	handleRightPanel(panel, isEditingMode) {
+		let features = null;
 
-		switch (action) {
-			case 'view-rooms':
-				pathName = "/properties/rooms/dashboard";
-			break;
-
+		switch (panel) {
 			case 'add-exterior-features':
-				pathName = "/properties/exterior-features/add";
+				features = {
+					id: '',
+					property_id: this.props.state.property.id,
+					exterior: '',
+					foundation: '',
+					others: ''
+				}
 			break;
 		}
 
-		this.context.router.push({
-			pathname: pathName,
-			state: {
-				property_id: propertyId
-			}
-		});
+		this.props.onHandleRightPanel(panel, features, isEditingMode);
+	}
+
+	// Handle view
+	handleView(property) {
+		this.props.onHandleView(property);
 	}
 
 	render() {
@@ -31,19 +33,13 @@ class PropertyView extends React.Component
 		let address  = property.address;
 
 		let propertyFeaturesBtn = property.property_features === undefined ?
-			<button onClick={ this.handleActions.bind(this, 'add-property-features') }>
-				Add Property Features
-			</button> : null;
+			<button onClick={ this.handleRightPanel.bind(this, 'add-property-features', false) }><i className="fa fa-plus" aria-hidden="true" /> Add Property Features</button> : null;
 
 		let exteriorFeaturesBtn = property.exterior_features === undefined ?
-			<button onClick={ this.handleActions.bind(this, 'add-exterior-features') }>
-				Add Exterior Features
-			</button> : null;
+			<button onClick={ this.handleRightPanel.bind(this, 'add-exterior-features', false) }><i className="fa fa-plus" aria-hidden="true" /> Add Exterior Features</button> : null;
 
 		let interiorFeaturesBtn = property.interior_features === undefined ?
-			<button onClick={ this.handleActions.bind(this, 'add-interior-features') }>
-				Add Interior Features
-			</button> : null;
+			<button onClick={ this.handleRightPanel.bind(this, 'add-interior-features', false) }><i className="fa fa-plus" aria-hidden="true" /> Add Interior Features</button> : null;
 
 		let propertyHtml =
 			<div>
@@ -88,7 +84,7 @@ class PropertyView extends React.Component
 				<div>
 					<h4>Property Details</h4>
 					<div>
-						<button onClick={ this.handleActions.bind(this, 'view-rooms') }>View Rooms</button>
+						<button onClick={ this.handleView.bind(this, 'view-rooms') }>View Rooms</button>
 					</div>
 					<ul>
 						<li>
@@ -155,8 +151,8 @@ class PropertyView extends React.Component
     }
 }
 
-PropertyView.contextTypes = {
+PropertyInfoView.contextTypes = {
 	router: React.PropTypes.object.isRequired
 }
 
-export default PropertyView;
+export default PropertyInfoView;

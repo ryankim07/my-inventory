@@ -49,7 +49,7 @@ class VehicleAdd extends React.Component
                 vehicle[propertyName] = chosenValue.toUpperCase();
         }
 
-        this.setState({vehicle});
+        this.setState({vehicle: vehicle});
     }
 
     // Submit

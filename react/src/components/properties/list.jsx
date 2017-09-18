@@ -29,7 +29,7 @@ class PropertiesList extends React.Component
 					country: '',
 					subdivision: ''
 				}
-			};
+		};
 
 		this.props.onHandleRightPanel(property, false);
 	}

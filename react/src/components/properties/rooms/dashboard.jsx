@@ -70,12 +70,12 @@ class PropertyRoomsDashboard extends React.Component
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.location.action !== 'POP') {
 			this.setState({
+				showRightPanel: false,
+				flashMessage: null,
 				columnCss: {
 					'mobileWidth': mainDefaultMobileColumnWidth,
 					'desktopWidth': mainDefaultDesktopColumnWidth
-				},
-				showRightPanel: false,
-				flashMessage: null
+				}
 			});
 		}
 	}
@@ -204,14 +204,21 @@ class PropertyRoomsDashboard extends React.Component
 					desktopWidth={this.state.columnCss.desktopWidth}
 					className="main-column" />
 				{
-					this.state.showRightPanel ? <PropertyRoomAdd
-						state={this.state}
-						onChange={this._onChange}
-						submit={this.handleFormSubmit}
-						formChange={this.handleFormChange}
-						wallChange={this.handleWallChange}
-						closeRightPanel={this.closeRightPanel}
-					/> : null
+					this.state.showRightPanel ?
+						/*<PropertyRoomAdd
+							state={this.state}
+							onChange={this._onChange}
+							submit={this.handleFormSubmit}
+							formChange={this.handleFormChange}
+							wallChange={this.handleWallChange}
+							closeRightPanel={this.closeRightPanel}
+						/> */
+						<PropertyExteriorFeaturesAdd
+							state={ this.state }
+							onHandleFormSubmit={ this.onHandleFormSubmit }
+							closeRightPanel={ this.closeRightPanel }
+						/>
+						: null
 				}
 			</div>
 		)

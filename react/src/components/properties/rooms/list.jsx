@@ -69,7 +69,7 @@ class PropertyRoomsList extends React.Component
                                 </div>
                                 <div className="col-xs-2 col-md-2">
 									<button onClick={ this.handleAdd.bind(this) }><i className="fa fa-plus" aria-hidden="true" /></button>
-									<Previous route="/properties/view"/>
+									<Previous route="/properties/info/view"/>
 								</div>
                             </div>
                         </div>

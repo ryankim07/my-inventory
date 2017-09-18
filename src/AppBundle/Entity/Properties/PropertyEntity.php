@@ -94,7 +94,7 @@ class PropertyEntity
     private $rooms;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Properties\ExteriorFeaturesEntity", mappedBy="property", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Properties\ExteriorFeaturesEntity", mappedBy="property", cascade={"persist", "remove"})
      */
     private $exteriorFeatures;
 
@@ -450,6 +450,18 @@ class PropertyEntity
     }
 
     /**
+     * Add exterior features
+     * Need this functionality to return within the property object
+     *
+     * @param ExteriorFeaturesEntity $exteriorFeatures
+     */
+    public function addExteriorFeatures(ExteriorFeaturesEntity $exteriorFeatures)
+    {
+        $this->exteriorFeatures = $exteriorFeatures;
+        $exteriorFeatures->setProperty($this);
+    }
+
+    /**
      * Set exteriorFeatures
      *
      * @param \AppBundle\Entity\Properties\ExteriorFeaturesEntity $exteriorFeatures
@@ -471,6 +483,12 @@ class PropertyEntity
     public function getExteriorFeatures()
     {
         return $this->exteriorFeatures;
+    }
+
+    public function addInteriorFeatures(InteriorFeaturesEntity $interiorFeatures)
+    {
+        $this->interiorFeatures = $interiorFeatures;
+        $interiorFeatures->setProperty($this);
     }
 
     /**
@@ -495,6 +513,12 @@ class PropertyEntity
     public function getInteriorFeatures()
     {
         return $this->interiorFeatures;
+    }
+
+    public function addFeatures(InteriorFeaturesEntity $features)
+    {
+        $this->features = $features;
+        $features->setProperty($this);
     }
 
     /**

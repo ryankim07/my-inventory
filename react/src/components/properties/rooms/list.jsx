@@ -33,7 +33,7 @@ class PropertyRoomsList extends React.Component
 		let columnCss = this.props.state.columnCss;
         let rooms     = this.props.state.property.rooms
 
-		let roomsHtml = !rooms ?
+		let roomsHtml = !rooms || rooms.length === 0 ?
 			<tr><td>There are no saved rooms.</td></tr> :
 			rooms.map((room) => {
 				return (

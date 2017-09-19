@@ -3,9 +3,9 @@ import PropertyRoomsList from './list';
 import PropertiesRoomsAction from '../../../actions/properties-rooms-action';
 import PropertyPaintsStore from '../../../stores/properties/store';
 import PropertiesPaintsAction from "../../../actions/properties-paints-action";
-import PropertyAddFeatures from './src/components/properties/info/add_features';
-import PropertyAddExteriorFeatures from './src/components/properties/info/add_exterior_features';
-import PropertyAddInteriorFeatures from './src/components/properties/info/add_interior_features';
+import PropertyAddFeatures from '../../../components/properties/info/add_features';
+import PropertyAddExteriorFeatures from '../../../components/properties/info/add_exterior_features';
+import PropertyAddInteriorFeatures from '../../../components/properties/info/add_interior_features';
 import PropertyAddRoom from './add';
 import FlashMessage from '../../helper/flash-message';
 

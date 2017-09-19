@@ -6,7 +6,7 @@ class PropertyAddExteriorFeatures extends React.Component
         super(props);
 
         this.state = {
-			exteriorFeatures: this.props.state.exteriorFeatures
+			exteriorFeatures: this.props.state.property.exterior_features
         };
 
 		this.handleFormChange = this.handleFormChange.bind(this);

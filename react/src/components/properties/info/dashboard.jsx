@@ -40,11 +40,11 @@ class PropertyInfoDashboard extends React.Component
 			},
 		};
 
-		this._onChange 		    = this._onChange.bind(this);
-		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
-		this.onHandleView 		= this.onHandleView.bind(this);
-		this.setFlashMessage    = this.setFlashMessage.bind(this);
-		this.closeRightPanel    = this.closeRightPanel.bind(this);
+		this._onChange 		    	= this._onChange.bind(this);
+		this.onHandleRightPanel 	= this.onHandleRightPanel.bind(this);
+		this.onHandleRoomsDashboard = this.onHandleRoomsDashboard.bind(this);
+		this.setFlashMessage    	= this.setFlashMessage.bind(this);
+		this.closeRightPanel    	= this.closeRightPanel.bind(this);
 	}
 
 	componentWillMount() {
@@ -116,9 +116,10 @@ class PropertyInfoDashboard extends React.Component
 	}
 
 	// Handle view
-	onHandleView(panel) {
+	onHandleRoomsDashboard(panel) {
 		this.setState({
 			mainPanel: panel,
+			showRightPanel: false,
 			columnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
@@ -155,7 +156,7 @@ class PropertyInfoDashboard extends React.Component
 				state={ this.state }
 				className={ mainColumnClassName }
 				onHandleRightPanel={ this.onHandleRightPanel }
-				onHandleView={ this.onHandleView }
+				onHandleRoomsDashboard={ this.onHandleRoomsDashboard }
 				mainPanelRoomsDashboardName={ mainPanelRoomsDashboardName }
 				sidePanelFeaturesName={ sidePanelFeaturesName }
 				sidePanelExteriorFeaturesName={ sidePanelExteriorFeaturesName }

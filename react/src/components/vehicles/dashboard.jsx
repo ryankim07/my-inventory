@@ -102,7 +102,7 @@ class VehiclesDashboard extends React.Component
 	onHandleRightPanel(id) {
 		let isEditingMode = !!id;
 		let vehicle = isEditingMode ?
-			this.state.vehicles.find(obj => obj.id === id) === null :
+			this.state.vehicles.find(obj => obj.id === id) :
 			{
 				id: '',
 				mfg_id: '',

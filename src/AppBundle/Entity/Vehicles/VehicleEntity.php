@@ -293,7 +293,7 @@ class VehicleEntity
      * @param AssetsEntity $asset
      * @return $this
      */
-    public function setAsset(AssetsEntity $asset)
+    public function addAsset(AssetsEntity $asset)
     {
         $this->assets[] = $asset;
         $asset->setVehicles($this);

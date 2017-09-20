@@ -99,7 +99,22 @@ class VehiclesDashboard extends React.Component
 	}
 
 	// Handle right panel
-	onHandleRightPanel(vehicle, isEditingMode) {
+	onHandleRightPanel(editingVehicle) {
+		let isEditingMode = !!editingVehicle;
+		let vehicle = editingVehicle === null ?
+			{
+				id: '',
+				mfg_id: '',
+				mfg: '',
+				model_id: '',
+				model: '',
+				year: '',
+				color: '',
+				vin: '',
+				plate: '',
+				assets: []
+			} : editingVehicle;
+
 		this.setState({
 			vehicle: vehicle,
 			isEditingMode: isEditingMode,

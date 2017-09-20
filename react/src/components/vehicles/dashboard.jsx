@@ -99,9 +99,10 @@ class VehiclesDashboard extends React.Component
 	}
 
 	// Handle right panel
-	onHandleRightPanel(editingVehicle) {
-		let isEditingMode = !!editingVehicle;
-		let vehicle = editingVehicle === null ?
+	onHandleRightPanel(id) {
+		let isEditingMode = !!id;
+		let vehicle = isEditingMode ?
+			this.state.vehicles.find(obj => obj.id === id) === null :
 			{
 				id: '',
 				mfg_id: '',
@@ -113,7 +114,7 @@ class VehiclesDashboard extends React.Component
 				vin: '',
 				plate: '',
 				assets: []
-			} : editingVehicle;
+			}
 
 		this.setState({
 			vehicle: vehicle,

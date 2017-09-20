@@ -24,7 +24,7 @@ class VehiclesList extends React.Component
 					<td>{ vehicle.vin }</td>
 					<td>{ vehicle.plate }</td>
 					<td>
-						<button onClick={ this.props.onHandleRightPanel.bind(this, vehicle) }><i className="fa fa-pencil" aria-hidden="true" /></button>
+						<button onClick={ this.props.onHandleRightPanel.bind(this, vehicle.id) }><i className="fa fa-pencil" aria-hidden="true" /></button>
 						<button onClick={ this.props.onHandleRemove.bind(this, vehicle.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
 					</td>
 				</tr>
@@ -45,7 +45,7 @@ class VehiclesList extends React.Component
                                     <span>Vehicle List</span>
                                 </div>
                                 <div className="col-xs-2 col-md-2">
-									<button onClick={ this.props.onHandleRightPanel.bind(this, null) }><i className="fa fa-plus" aria-hidden="true" /></button>
+									<button onClick={ this.props.onHandleRightPanel.bind(this, false) }><i className="fa fa-plus" aria-hidden="true" /></button>
 								</div>
                             </div>
                         </div>

@@ -6,16 +6,12 @@ class VehicleAdd extends React.Component
     constructor(props) {
         super(props);
 
-        this.state = {
-			vehicle: this.props.state.vehicle
-		}
-
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 		this.handleFormSubmit   = this.handleFormSubmit.bind(this);
     }
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.state.vehicle !== this.state.vehicle) {
+		if (nextProps.state.vehicle !== this.props.state.vehicle) {
 			this.setState({
 				vehicle: nextProps.state.vehicle
 			});
@@ -24,7 +20,7 @@ class VehicleAdd extends React.Component
 
     // Handle input changes
     onHandleFormChange(propertyName, event) {
-    	let vehicle 	= this.state.vehicle;
+    	let vehicle 	= this.props.state.vehicle;
         let chosenValue = propertyName === 'assets' ? event : event.target.value;
 
         switch (propertyName) {
@@ -54,13 +50,13 @@ class VehicleAdd extends React.Component
     // Submit
     handleFormSubmit(event) {
 		event.preventDefault();
-		this.props.onHandleFormSubmit(this.state.vehicle);
+		this.props.onHandleFormSubmit(this.props.state.vehicle);
 	}
 
     render() {
     	let apiVehicles  = this.props.state.apiVehicles;
-		let vehicle      = this.state.vehicle;
-		let defaultMfgId = parseInt(this.state.vehicle.mfg_id);
+		let vehicle      = this.props.state.vehicle;
+		let defaultMfgId = parseInt(vehicle.mfg_id);
 		let yearsOptions = [];
 
 		// Years options

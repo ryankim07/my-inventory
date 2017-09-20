@@ -1,8 +1,8 @@
 import React from 'react';
-import AuthStore from '../../stores/auth-store';
-import UsersStore from '../../stores/users-store';
+import AuthStore from '../../stores/auth/store';
+import UsersStore from '../../stores/auth/users-store';
 import UsersAction from '../../actions/users-action';
-import FlashMessage from '../flash-message';
+import FlashMessage from '../helper/flash-message';
 
 class Signup extends React.Component
 {

@@ -3,13 +3,13 @@
 security:
 
     encoders:
-        AppBundle\Entity\UserEntity:
+        AppBundle\Entity\Auth\UserEntity:
             algorithm: bcrypt
 
     providers:
         database_users:
             entity:
-                class: AppBundle:UserEntity
+                class: 'AppBundle\Entity\Auth\UserEntity'
                 property: username
 
     firewalls:
@@ -31,7 +31,7 @@ security:
             stateless: true
             guard:
                 authenticators:
-                    - 'Jwt_Token_Authenticator'
+                    - 'jwt_token_authenticator'
 
         main:
             pattern: ^/

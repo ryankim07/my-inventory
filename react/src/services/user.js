@@ -1,6 +1,6 @@
 import request from 'superagent';
 let Promise = require('es6-promise').Promise;
-import AuthStore from '../stores/auth-store';
+import AuthStore from '../stores/auth/store';
 
 /**
  * Wrapper for calling a API

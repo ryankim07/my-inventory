@@ -14,7 +14,7 @@ var config = {
     module: {
         loaders: [
             {
-                test: /\.jsx?$/,
+                test: /^(?!.*(hot)).*/,
                 include : APP_DIR,
                 loader: 'babel-loader',
                 exclude: /node_modules/,

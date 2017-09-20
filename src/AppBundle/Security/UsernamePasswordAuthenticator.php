@@ -58,11 +58,11 @@ class UsernamePasswordAuthenticator extends AbstractGuardAuthenticator
     /**
      * {@inheritdoc}
      */
-    public function checkCredentials($credentials, UserInterface $user)
+    public function checkCredentials($credentials, UserInterface $userInterface)
     {
         $plainPassword = $credentials['password'];
 
-        if (!$this->passwordEncoder->isPasswordValid($user, $plainPassword)) {
+        if (!$this->passwordEncoder->isPasswordValid($userInterface, $plainPassword)) {
             throw new AuthenticationException('Invalid credentials');
         }
 
@@ -95,5 +95,12 @@ class UsernamePasswordAuthenticator extends AbstractGuardAuthenticator
     public function supportsRememberMe()
     {
         return false;
+    }
+
+    public function encodePassword(UserInterface $userInterface, $plainPassword)
+    {
+        $password = $this->passwordEncoder->encodePassword($userInterface, $plainPassword);
+
+        return $password;
     }
 }

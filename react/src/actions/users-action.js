@@ -6,10 +6,10 @@ let UsersAction = {
 	getUsers: function() {
 		User
 			.get('http://mcs.dev/api/users')
-			.then(function (vehicles) {
+			.then(function (results) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.RECEIVE_USERS,
-					vehicles: vehicles
+					results: results
 				});
 			})
 			.catch(function(resp) {

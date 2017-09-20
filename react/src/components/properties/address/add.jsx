@@ -1,8 +1,10 @@
 import React from 'react';
-import { upperFirstLetter } from "../../helper/utils"
+import StatesDropdown from './states_dropdown';
+import { upperFirstLetter } from '../../helper/utils';
 
 class PropertyAddAddress extends React.Component
 {
+
 	// Handle input changes
     handleFormChange(propertyName, event) {
         let address     = this.props.address;
@@ -57,14 +59,14 @@ class PropertyAddAddress extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">State</label>
 						<div className="input-group">
-							<select ref="state"
-									onChange={ this.handleFormChange.bind(this, 'state') }
-									value={ address.state }
-									className="form-control input-sm"
-									required="required">
-								<option value="">Select One</option>
-								<option value="CA">CA</option>
-							</select>
+
+						<StatesDropdown
+							state={ address.state }
+							handleFormChange={ this.handleFormChange.bind(this, 'state') }
+							className="form-control input-sm"
+							required="required"
+						/>
+
 						</div>
 					</div>
 				</div>
@@ -90,6 +92,7 @@ class PropertyAddAddress extends React.Component
 									value={ address.county }
 									className="form-control input-sm">
 								<option value="">Select One</option>
+								<option value="Los Angeles County">Los Angeles County</option>
 								<option value="Orange County">Orange County</option>
 							</select>
 						</div>

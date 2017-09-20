@@ -36,8 +36,11 @@ class VehiclesList extends React.Component
         if (!this.props.state.loader) {
         	let vehicles  = this.props.state.vehicles;
 
-			vehiclesHtml = !vehicles || vehicles.length === 0 ?
-				<tr><td><span>There are no saved vehicles.</span></td></tr> :
+        	if (!vehicles || vehicles.length === 0) {
+				vehiclesHtml = <tr><td><span>There are no saved vehicles.</span></td></tr>;
+			} else {
+				vehiclesHtml = vehicles.map((vehicle) => {
+					return (
 				<tr key={ vehicle.id }>
 					<td>{ vehicle.mfg }</td>
 					<td>{ vehicle.model }</td>
@@ -50,7 +53,9 @@ class VehiclesList extends React.Component
 						<button onClick={ this.handleRemove.bind(this,  vehicle.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
 					</td>
 				</tr>
-
+					);
+				});
+			}
         } else {
             vehiclesHtml = <tr><td><Loader /></td></tr>;
         }

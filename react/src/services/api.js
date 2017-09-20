@@ -26,6 +26,10 @@ let Api = {
         });
     },
 
+	getMultiple: function(url1, url2) {
+		return Promise.all([this.get(url1), this.get(url2)]);
+	},
+
     post: function (url, data, asset) {
         return new Promise(function (resolve, reject) {
             	request

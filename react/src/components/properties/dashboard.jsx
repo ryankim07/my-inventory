@@ -11,8 +11,8 @@ let mainDefaultDesktopColumnWidth = 'col-md-12';
 let mainShrinkedMobileColumnWidth = 'col-xs-8';
 let mainShrinkedDesktopColumnWidth = 'col-md-8';
 let mainColumnClassName = 'main-column';
-let mainPanelDefaultName = 'list';
-let mainPanelInfoDashboardName = 'info;'
+let mainPanelName = 'list';
+let mainPanelInfoName = 'info;'
 
 class PropertiesDashboard extends React.Component
 {
@@ -24,7 +24,7 @@ class PropertiesDashboard extends React.Component
 			properties: [],
 			isEditingMode: false,
 			loader: true,
-			mainPanel: mainPanelDefaultName,
+			mainPanel: mainPanelName,
 			showRightPanel: false,
 			flashMessage: null,
 			columnCss: {
@@ -59,7 +59,7 @@ class PropertiesDashboard extends React.Component
 		if (nextProps.location.action !== 'POP' || nextProps.location.action !== 'PUSH') {
 			this.setState({
 				showRightPanel: false,
-				mainPanel: mainPanelDefaultName,
+				mainPanel: mainPanelName,
 				flashMessage: null,
 				columnCss: {
 					'mobileWidth': mainDefaultMobileColumnWidth,
@@ -116,10 +116,10 @@ class PropertiesDashboard extends React.Component
 	}
 
 	// Handle view
-	onHandleView(id) {
+	onHandleView(id, panel) {
 		this.setState({
 			property: this.state.properties.find(obj => obj.id === id),
-			mainPanel: mainPanelInfoDashboardName,
+			mainPanel: panel,
 			columnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
@@ -140,7 +140,7 @@ class PropertiesDashboard extends React.Component
 	// Close right panel
 	closeRightPanel() {
 		this.setState({
-			mainPanel: mainPanelDefaultName,
+			mainPanel: mainPanelName,
 			showRightPanel: false,
 			columnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
@@ -151,7 +151,7 @@ class PropertiesDashboard extends React.Component
 
 	// Render
 	render() {
-		let mainPanelHtml = this.state.mainPanel === mainPanelDefaultName ?
+		let mainPanelHtml = this.state.mainPanel === mainPanelName ?
 			<PropertiesList
 				state={ this.state }
 				onHandleRightPanel={ this.onHandleRightPanel }

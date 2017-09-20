@@ -7,9 +7,9 @@ class PropertiesAddressList extends React.Component
 	}
 
 	// Handle view
-	handleView(id) {
+	/*handleView(id) {
 		this.props.onHandleView(id);
-	}
+	}*/
 
 	// Handle view
 	handleRemove(id) {
@@ -30,7 +30,7 @@ class PropertiesAddressList extends React.Component
 				<td>{ address.country }</td>
 				<td>{ address.subdivision }</td>
 				<td>
-					<button onClick={ this.handleView.bind(this, address.property_id) }><i className="fa fa-search" aria-hidden="true"/></button>
+					<button onClick={ this.props.onHandleView.bind(this, address.property_id, 'info') }><i className="fa fa-search" aria-hidden="true"/></button>
 					<button onClick={ this.handleRightPanel.bind(this, address.property_id) }><i className="fa fa-pencil" aria-hidden="true"/></button>
 					<button onClick={ this.handleRemove.bind(this, address.property_id) }><i className="fa fa-trash" aria-hidden="true"/></button>
 				</td>

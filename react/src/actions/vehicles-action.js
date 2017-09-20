@@ -1,8 +1,21 @@
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import ActionConstants from '../constants/action-constants';
 import Api from '../services/Api';
+let Promise = require('es6-promise').Promise;
 
 let VehiclesAction = {
+	getVehiclesAndApiVehicles: function() {
+		Api
+			.getMultiple('http://mcs.dev/api/vehicles', 'http://mcs.dev/api/sync/list')
+			.then(function ([vehicles, apiVehicles])  {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.RECEIVE_VEHICLES_API_VEHICLES,
+					vehicles: vehicles,
+					apiVehicles: apiVehicles
+				});
+			});
+	},
+
     getVehicles: function() {
         Api
             .get('http://mcs.dev/api/vehicles')

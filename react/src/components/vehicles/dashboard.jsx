@@ -19,6 +19,7 @@ class VehiclesDashboard extends React.Component
 		this.state = {
 			vehicle: {},
 			vehicles: [],
+			apiVehicles: [],
 			isEditingMode: false,
 			loader: true,
 			showRightPanel: false,
@@ -43,7 +44,7 @@ class VehiclesDashboard extends React.Component
 	}
 
 	componentDidMount() {
-		VehiclesAction.getVehicles();
+		VehiclesAction.getVehiclesAndApiVehicles();
 	}
 
 	componentWillUnmount() {
@@ -65,6 +66,7 @@ class VehiclesDashboard extends React.Component
 
 	_onChange() {
 		let vehicles 		= VehiclesStore.getVehicles();
+		let apiVehicles		= VehiclesStore.getApiVehicles();
 		let flashMessage 	= VehiclesStore.getStoreFlashMessage();
 		let isAuthenticated = VehiclesStore.isAuthenticated();
 		let openRightPanel  = VehiclesStore.showRightPanel();
@@ -76,6 +78,7 @@ class VehiclesDashboard extends React.Component
 
 		this.setState({
 			vehicles: vehicles,
+			apiVehicles: apiVehicles,
 			showRightPanel: !!openRightPanel,
 			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,

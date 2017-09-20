@@ -20,7 +20,7 @@ class NonAddedRoomsDropdown extends React.Component
 	}
 
 	componentDidMount() {
-		PropertiesRoomsAction.getApiVehicles();
+		PropertiesRoomsAction.getNonAddedRooms();
 	}
 
 	componentWillUnmount() {

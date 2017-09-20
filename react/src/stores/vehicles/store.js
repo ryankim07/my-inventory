@@ -1,10 +1,11 @@
 import {EventEmitter} from 'events';
 import assign from 'object-assign';
+import _ from 'lodash';
 import Dispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
-import _ from 'lodash';
 
 let _vehicles = [];
+let _apiVehicles = [];
 let _vehicle = {};
 let _showPanel = false;
 let _errStatus;
@@ -32,7 +33,7 @@ function removeToken() {
 
 let VehiclesStore = assign({}, EventEmitter.prototype, {
     // Emit Change event
-    emitChange: function(){
+    emitChange: function() {
         this.emit('change');
     },
 
@@ -44,19 +45,22 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
         this.removeListener('change', callback);
 	},
 
-	getVehicles: function () {
+	setVehiclesAndApiVehicles: function(vehicles, apiVehicles) {
+		if (vehicles.length !== 0) {
+			_vehicles = vehicles;
+		}
+
+		if (apiVehicles.length !== 0) {
+			_apiVehicles = apiVehicles;
+		}
+	},
+
+	getVehicles: function() {
 		return _vehicles;
 	},
 
-	setVehicles: function(results) {
-		if (results.err_msg) {
-			_storeMsg = results.err_msg;
-			return false;
-		} else {
-			if (results.length !== 0) {
-				_vehicles = results;
-			}
-		}
+	getApiVehicles: function() {
+		return _apiVehicles;
 	},
 
 	addVehicle: function(results) {
@@ -162,6 +166,10 @@ VehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
 
 		case ActionConstants.RECEIVE_VEHICLES:
 			VehiclesStore.setVehicles(results);
+		break;
+
+		case ActionConstants.RECEIVE_VEHICLES_API_VEHICLES:
+			VehiclesStore.setVehiclesAndApiVehicles(action.vehicles, action.apiVehicles);
 		break;
 
 		case ActionConstants.RECEIVE_ERROR:

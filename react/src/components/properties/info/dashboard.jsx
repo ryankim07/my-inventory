@@ -13,7 +13,7 @@ let mainDefaultDesktopColumnWidth = 'col-md-12';
 let mainShrinkedMobileColumnWidth = 'col-xs-8';
 let mainShrinkedDesktopColumnWidth = 'col-md-8';
 let mainColumnClassName = 'main-column';
-let mainPanelDefaultName = 'info';
+let mainPanelName = 'info';
 let mainPanelRoomsDashboardName = 'rooms-dashboard';
 let sidePanelFeaturesName = 'features';
 let sidePanelExteriorFeaturesName = 'exterior-features';
@@ -30,7 +30,7 @@ class PropertyInfoDashboard extends React.Component
 			exteriorFeatures: {},
 			interiorFeatures: {},
 			isEditingMode: false,
-			mainPanel: mainPanelDefaultName,
+			mainPanel: mainPanelName,
 			sidePanel: null,
 			showRightPanel: false,
 			flashMessage: null,
@@ -61,7 +61,7 @@ class PropertyInfoDashboard extends React.Component
 		if (nextProps.location.action !== 'POP' || nextProps.location.action !== 'PUSH') {
 			this.setState({
 				showRightPanel: false,
-				mainPanel: mainPanelDefaultName,
+				mainPanel: mainPanelName,
 				flashMessage: null,
 				columnCss: {
 					'mobileWidth': mainDefaultMobileColumnWidth,
@@ -140,7 +140,7 @@ class PropertyInfoDashboard extends React.Component
 	// Close right panel
 	closeRightPanel() {
 		this.setState({
-			mainPanel: mainPanelDefaultName,
+			mainPanel: mainPanelName,
 			showRightPanel: false,
 			columnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
@@ -151,7 +151,7 @@ class PropertyInfoDashboard extends React.Component
 
 	// Render
 	render() {
-		let mainPanelHtml = this.state.mainPanel === mainPanelDefaultName ?
+		let mainPanelHtml = this.state.mainPanel === mainPanelName ?
 			<PropertyInfoView
 				state={ this.state }
 				className={ mainColumnClassName }

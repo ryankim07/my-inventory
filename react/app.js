@@ -54,8 +54,6 @@ ReactDOM.render(
 				<Route path="/property/rooms/forms/room" component={ PropertyRoomForm } />
 				<Route path="/properties/rooms" component={ PropertyRoomsList } />
 			</Route>
-
-			<Route path="/property/info/add_features" component={ PropertyAddFeatures } />
         </Route>
     </Router>,
 

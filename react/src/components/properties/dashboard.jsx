@@ -1,15 +1,15 @@
 import React from 'react';
-import PropertiesAction from '../../../actions/properties-action';
-import PropertiesStore from '../../../stores/properties/store';
-import PropertyForm from './forms/property';
-import PropertiesList from './list';
-import PropertyInfoView from './../info/view';
-import PropertyFeaturesForm from './../info/forms/features';
-import PropertyExteriorFeaturesForm from './../info/forms/exterior_features';
-import PropertyInteriorFeaturesForm from './../info/forms/interior_features';
-import PropertyRoomsList from './../rooms/list';
-import PropertyRoomForm from './../rooms/forms/room';
-import FlashMessage from '../../helper/flash-message';
+import PropertiesAction from '../../actions/properties-action';
+import PropertiesStore from '../../stores/properties/store';
+import PropertyForm from './main/forms/property';
+import PropertiesList from './main/list';
+import PropertyInfoView from './info/view';
+import PropertyFeaturesForm from './info/forms/features';
+import PropertyExteriorFeaturesForm from './info/forms/exterior_features';
+import PropertyInteriorFeaturesForm from './info/forms/interior_features';
+import PropertyRoomsList from './rooms/list';
+import PropertyRoomForm from './rooms/forms/room';
+import FlashMessage from '../helper/flash-message';
 
 // Global properties
 let mainDefaultMobileColumnWidth = 'col-xs-12';

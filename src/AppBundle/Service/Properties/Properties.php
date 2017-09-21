@@ -282,9 +282,9 @@ class Properties
         // Interior features entity
         if (!is_null($this->interiorFeatures)) {
             $interiorFeaturesEntity->setPropertyId($this->entity->getId());
-            $interiorFeaturesEntity->setLaundry($this->interiorFeatures['laundry']);
             $interiorFeaturesEntity->setKitchen($this->interiorFeatures['kitchen']);
             $interiorFeaturesEntity->setBathroom($this->interiorFeatures['bathroom']);
+            $interiorFeaturesEntity->setLaundry($this->interiorFeatures['laundry']);
             $interiorFeaturesEntity->setCooling($this->interiorFeatures['cooling']);
             $interiorFeaturesEntity->setHeating($this->interiorFeatures['heating']);
             $interiorFeaturesEntity->setFireplace($this->interiorFeatures['fireplace']);

@@ -34,17 +34,18 @@ class InteriorFeaturesEntity
     /**
      * @ORM\Column(type="text")
      */
-    private $laundry;
-
-    /**
-     * @ORM\Column(type="text")
-     */
 
     private $kitchen;
+
     /**
      * @ORM\Column(type="text")
      */
     private $bathroom;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $laundry;
 
     /**
      * @ORM\Column(type="text")
@@ -112,30 +113,6 @@ class InteriorFeaturesEntity
     }
 
     /**
-     * Set laundry
-     *
-     * @param string $laundry
-     *
-     * @return InteriorFeaturesEntity
-     */
-    public function setLaundry($laundry)
-    {
-        $this->laundry = $laundry;
-
-        return $this;
-    }
-
-    /**
-     * Get laundry
-     *
-     * @return string
-     */
-    public function getLaundry()
-    {
-        return $this->laundry;
-    }
-
-    /**
      * Set kitchen
      *
      * @param string $kitchen
@@ -181,6 +158,30 @@ class InteriorFeaturesEntity
     public function getBathroom()
     {
         return $this->bathroom;
+    }
+
+    /**
+     * Set laundry
+     *
+     * @param string $laundry
+     *
+     * @return InteriorFeaturesEntity
+     */
+    public function setLaundry($laundry)
+    {
+        $this->laundry = $laundry;
+
+        return $this;
+    }
+
+    /**
+     * Get laundry
+     *
+     * @return string
+     */
+    public function getLaundry()
+    {
+        return $this->laundry;
     }
 
     /**

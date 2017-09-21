@@ -1,5 +1,5 @@
 import React from 'react';
-import Loader from '../helper/loader';
+import Loader from '../../helper/loader';
 
 class VehiclesList extends React.Component
 {

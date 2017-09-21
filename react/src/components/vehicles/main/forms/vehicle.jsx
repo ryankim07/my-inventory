@@ -1,5 +1,5 @@
 import React from 'react';
-import Uploader from '../../helper/uploader';
+import Uploader from '../../../helper/uploader';
 
 class VehicleForm extends React.Component
 {

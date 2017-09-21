@@ -1,9 +1,9 @@
 import React from 'react';
-import VehiclesAction from '../../actions/vehicles-action';
-import VehiclesStore from '../../stores/vehicles/store';
-import VehicleForm from './forms/vehicle';
-import VehiclesList from './list';
-import FlashMessage from '../helper/flash-message';
+import VehiclesAction from '../../../actions/vehicles-action';
+import VehiclesStore from '../../../stores/vehicles/store';
+import VehicleForm from './../main/forms/vehicle';
+import VehiclesList from './../main/list';
+import FlashMessage from '../../helper/flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
 let mainDefaultDesktopColumnWidth = 'col-md-12';

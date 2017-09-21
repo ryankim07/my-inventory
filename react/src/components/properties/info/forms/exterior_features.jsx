@@ -1,6 +1,6 @@
 import React from 'react';
 
-class PropertyAddExteriorFeatures extends React.Component
+class PropertyExteriorFeaturesForm extends React.Component
 {
     constructor(props) {
         super(props);
@@ -123,4 +123,4 @@ class PropertyAddExteriorFeatures extends React.Component
     }
 }
 
-export default PropertyAddExteriorFeatures;
+export default PropertyExteriorFeaturesForm;

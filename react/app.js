@@ -8,17 +8,16 @@ import Login from './src/components/auth/login';
 import Logout from './src/components/auth/logout';
 import Signup from './src/components/auth/signup';
 import VehicleDashboard from './src/components/vehicles/dashboard';
-import VehicleAdd from './src/components/vehicles/add';
+import VehicleForm from './src/components/vehicles/forms/vehicle';
 import VehiclesList from './src/components/vehicles/list';
 import PropertiesDashboard from './src/components/properties/dashboard';
-import PropertyAdd from './src/components/properties/add';
+import PropertyForm from './src/components/properties/forms/property';
 import PropertiesList from './src/components/properties/list';
-import PropertiesInfoDashboard from './src/components/properties/info/dashboard';
 import PropertyInfoView from './src/components/properties/info/view';
-import PropertyAddFeatures from './src/components/properties/info/add_features';
-import PropertyAddExteriorFeatures from './src/components/properties/info/add_exterior_features';
-import PropertyAddInteriorFeatures from './src/components/properties/info/add_interior_features';
-import PropertyAddRoom from "./src/components/properties/rooms/add";
+import PropertyFeaturesForm from './src/components/properties/info/forms/features';
+import PropertyExteriorFeaturesForm from './src/components/properties/info/forms/exterior_features';
+import PropertyInteriorFeaturesForm from './src/components/properties/info/forms/interior_features';
+import PropertyRoomForm from "./src/components/properties/rooms/forms/room";
 import PropertyRoomsList from './src/components/properties/rooms/list';
 
 function requireAuth(nextState, replace)
@@ -41,21 +40,19 @@ ReactDOM.render(
 			<Route path="/auth/signup" component={ Signup } />
 
             <Route path="/vehicles/dashboard" component={ VehicleDashboard } >
-                <Route path="/vehicle/add" component={ VehicleAdd } />
+                <Route path="/vehicle/vehicle" component={ VehicleForm } />
                 <Route path="/vehicles" component={ VehiclesList } />
             </Route>
 
 			<Route path="/properties/dashboard" component={ PropertiesDashboard } >
 				<Route path="/properties" component={ PropertiesList } />
-				<Route path="/properties/add" component={ PropertyAdd } />
-				<Route path="/properties/info/dashboard" component={ PropertiesInfoDashboard } >
-					<Route path="/properties/info/view" component={ PropertyInfoView } />
-
-					<Route path="/property/info/add_exterior_features" component={ PropertyAddExteriorFeatures } />
-					<Route path="/property/info/add_interior_features" component={ PropertyAddInteriorFeatures } />
-					<Route path="/property/rooms/add" component={ PropertyAddRoom } />
-					<Route path="/properties/rooms" component={ PropertyRoomsList } />
-				</Route>
+				<Route path="/properties/forms/property" component={ PropertyForm } />
+				<Route path="/properties/info/view" component={ PropertyInfoView } />
+				<Route path="/property/info/forms/features" component={ PropertyFeaturesForm } />
+				<Route path="/property/info/forms/exterior_features" component={ PropertyExteriorFeaturesForm } />
+				<Route path="/property/info/forms/interior_features" component={ PropertyInteriorFeaturesForm } />
+				<Route path="/property/rooms/forms/room" component={ PropertyRoomForm } />
+				<Route path="/properties/rooms" component={ PropertyRoomsList } />
 			</Route>
 
 			<Route path="/property/info/add_features" component={ PropertyAddFeatures } />

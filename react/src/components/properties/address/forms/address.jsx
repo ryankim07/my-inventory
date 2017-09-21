@@ -1,8 +1,8 @@
 import React from 'react';
-import StatesDropdown from './states_dropdown';
-import { upperFirstLetter } from '../../helper/utils';
+import StatesDropdown from './../states_dropdown';
+import { upperFirstLetter } from '../../../helper/utils';
 
-class PropertyAddAddress extends React.Component
+class PropertyAddressForm extends React.Component
 {
 	// Handle input changes
     handleFormChange(propertyName, event) {
@@ -135,4 +135,4 @@ class PropertyAddAddress extends React.Component
     }
 }
 
-export default PropertyAddAddress;
+export default PropertyAddressForm;

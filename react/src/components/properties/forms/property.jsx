@@ -1,9 +1,9 @@
 import React from 'react';
-import Uploader from '../helper/uploader';
-import PropertyAddAddress from './address/add';
-import { numberFormat } from "../helper/utils"
+import Uploader from '../../helper/uploader';
+import PropertyAddressForm from './../address/forms/address';
+import { numberFormat } from "../../helper/utils"
 
-class PropertyAdd extends React.Component
+class PropertyForm extends React.Component
 {
     constructor(props) {
         super(props);
@@ -246,7 +246,7 @@ class PropertyAdd extends React.Component
 					<hr/>
 				</div>
 
-				<PropertyAddAddress
+				<PropertyAddressForm
 					address={ property.address }
 					onHandleFormChange={ this.onHandleFormChange }
 				/>
@@ -297,4 +297,4 @@ class PropertyAdd extends React.Component
     }
 }
 
-export default PropertyAdd;
+export default PropertyForm;

@@ -176,12 +176,32 @@ class PropertyInfoView extends React.Component
 				</div>
 				<ul>
 					<li>
-						<label>Exterior:</label>
-						<span>{ features.exterior }</span>
+						<label>Parking:</label>
+						<span>{ features.parking }</span>
 					</li>
 					<li>
-						<label>Foundation:</label>
-						<span>{ features.foundation }</span>
+						<label>Multi Unit:</label>
+						<span>{ features.multi_unit }</span>
+					</li>
+					<li>
+						<label>Hoa:</label>
+						<span>{ features.hoa }</span>
+					</li>
+					<li>
+						<label>Utilities:</label>
+						<span>{ features.utilities }</span>
+					</li>
+					<li>
+						<label>Lot:</label>
+						<span>{ features.lot }</span>
+					</li>
+					<li>
+						<label>Common Walls:</label>
+						<span>{ features.common_walls }</span>
+					</li>
+					<li>
+						<label>Facing Direction:</label>
+						<span>{ features.facing_direction }</span>
 					</li>
 					<li>
 						<label>Others:</label>
@@ -220,12 +240,32 @@ class PropertyInfoView extends React.Component
 				</div>
 				<ul>
 					<li>
-						<label>Exterior:</label>
-						<span>{ interiorFeatures.exterior }</span>
+						<label>Kitchen:</label>
+						<span>{ interiorFeatures.kitchen }</span>
 					</li>
 					<li>
-						<label>Foundation:</label>
-						<span>{ interiorFeatures.foundation }</span>
+						<label>Bathroom:</label>
+						<span>{ interiorFeatures.bathroom }</span>
+					</li>
+					<li>
+						<label>Laundry:</label>
+						<span>{ interiorFeatures.laundry }</span>
+					</li>
+					<li>
+						<label>Cooling:</label>
+						<span>{ interiorFeatures.cooling }</span>
+					</li>
+					<li>
+						<label>Heating:</label>
+						<span>{ interiorFeatures.heating }</span>
+					</li>
+					<li>
+						<label>Fireplace:</label>
+						<span>{ interiorFeatures.fireplace }</span>
+					</li>
+					<li>
+						<label>Flooring:</label>
+						<span>{ interiorFeatures.flooring }</span>
 					</li>
 					<li>
 						<label>Others:</label>

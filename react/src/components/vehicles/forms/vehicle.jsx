@@ -1,7 +1,7 @@
 import React from 'react';
-import Uploader from '../helper/uploader';
+import Uploader from '../../helper/uploader';
 
-class VehicleAdd extends React.Component
+class VehicleForm extends React.Component
 {
     constructor(props) {
         super(props);
@@ -239,4 +239,4 @@ class VehicleAdd extends React.Component
     }
 }
 
-export default VehicleAdd;
+export default VehicleForm;

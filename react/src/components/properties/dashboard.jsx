@@ -1,12 +1,12 @@
 import React from 'react';
 import PropertiesAction from '../../actions/properties-action';
 import PropertiesStore from '../../stores/properties/store';
-import PropertyAdd from './add';
+import PropertyForm from './forms/property';
 import PropertiesList from './list';
 import PropertyInfoView from './info/view';
-import PropertyAddFeatures from './info/add_features';
-import PropertyAddExteriorFeatures from './info/add_exterior_features';
-import PropertyAddInteriorFeatures from './info/add_interior_features';
+import PropertyFeaturesForm from './info/forms/features';
+import PropertyExteriorFeaturesForm from './info/forms/exterior_features';
+import PropertyInteriorFeaturesForm from './info/forms/interior_features';
 import FlashMessage from '../helper/flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -185,7 +185,7 @@ class PropertiesDashboard extends React.Component
 		switch (this.state.rightPanel) {
 			case 'features':
 				rightPanelHtml =
-					<PropertyAddFeatures
+					<PropertyFeaturesForm
 						state={ this.state }
 						onHandleFormSubmit={ this.onHandleFormSubmit }
 						closeRightPanel={ this.closeRightPanel }
@@ -194,7 +194,7 @@ class PropertiesDashboard extends React.Component
 
 			case 'exterior-features':
 				rightPanelHtml =
-					<PropertyAddExteriorFeatures
+					<PropertyExteriorFeaturesForm
 						state={ this.state }
 						onHandleFormSubmit={ this.onHandleFormSubmit }
 						closeRightPanel={ this.closeRightPanel }
@@ -203,7 +203,7 @@ class PropertiesDashboard extends React.Component
 
 			case 'interior-features':
 				rightPanelHtml =
-					<PropertyAddInteriorFeatures
+					<PropertyInteriorFeaturesForm
 						state={ this.state }
 						onHandleFormSubmit={ this.onHandleFormSubmit }
 						closeRightPanel={ this.closeRightPanel }
@@ -212,7 +212,7 @@ class PropertiesDashboard extends React.Component
 
 			default:
 				rightPanelHtml =
-					<PropertyAdd
+					<PropertyForm
 						state={ this.state }
 						onHandleFormSubmit={ this.onHandleFormSubmit }
 						closeRightPanel={ this.closeRightPanel }

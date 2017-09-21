@@ -6,7 +6,7 @@ import PropertiesPaintsAction from "../../../actions/properties-paints-action";
 import PropertyAddFeatures from '../../../components/properties/info/add_features';
 import PropertyAddExteriorFeatures from '../../../components/properties/info/add_exterior_features';
 import PropertyAddInteriorFeatures from '../../../components/properties/info/add_interior_features';
-import PropertyAddRoom from './add';
+import PropertyRoomForm from './forms/add';
 import FlashMessage from '../../helper/flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -119,7 +119,7 @@ class PropertyRoomsDashboard extends React.Component
 
 				{
 					this.state.showRightPanel ?
-						<PropertyAddRoom
+						<PropertyRoomForm
 							state={this.state}
 							submit={this.handleFormSubmit}
 							formChange={this.handleFormChange}

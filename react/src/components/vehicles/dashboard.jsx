@@ -1,7 +1,7 @@
 import React from 'react';
 import VehiclesAction from '../../actions/vehicles-action';
 import VehiclesStore from '../../stores/vehicles/store';
-import VehicleAdd from './add';
+import VehicleForm from './forms/vehicle';
 import VehiclesList from './list';
 import FlashMessage from '../helper/flash-message';
 
@@ -161,7 +161,7 @@ class VehiclesDashboard extends React.Component
 				/>
 				{
 					this.state.showRightPanel ?
-						<VehicleAdd
+						<VehicleForm
 							state={ this.state }
 							onHandleFormSubmit={ this.onHandleFormSubmit }
 							closeRightPanel={ this.closeRightPanel }

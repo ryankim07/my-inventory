@@ -1,10 +1,10 @@
 import React from 'react';
-import PropertiesRoomsAction from '../../../actions/properties-rooms-action';
-import NonAddedRoomsDropdown from '../rooms/non_added_rooms_dropdown';
-import PropertyRoomWalls from '../rooms/walls';
-import { numberFormat } from "../../helper/utils"
+import PropertiesRoomsAction from '../../../../actions/properties-rooms-action';
+import NonAddedRoomsDropdown from '../../rooms/non_added_rooms_dropdown';
+import PropertyRoomWalls from '../../rooms/walls';
+import { numberFormat } from "../../../helper/utils"
 
-class PropertyAddRoom extends React.Component
+class PropertyRoomForm extends React.Component
 {
     constructor(props) {
         super(props);
@@ -169,8 +169,8 @@ class PropertyAddRoom extends React.Component
     }
 }
 
-PropertyAddRoom.contextTypes = {
+PropertyRoomForm.contextTypes = {
 	router: React.PropTypes.object.isRequired
 }
 
-export default PropertyAddRoom;
+export default PropertyRoomForm;

@@ -258,7 +258,7 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
 			PropertiesStore.setNonAddedRooms(results);
 		break;
 
-		case ActionConstants.RECEIVE_ERROR:
+		case ActionConstants.PROPERTIES_ERROR:
 			setStoreFlashMessage(action.msg);
 			setErrorStatus(action.status);
 			removeToken();

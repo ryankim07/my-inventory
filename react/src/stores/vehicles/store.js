@@ -172,7 +172,7 @@ VehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
 			VehiclesStore.setVehiclesAndApiVehicles(action.vehicles, action.apiVehicles);
 		break;
 
-		case ActionConstants.RECEIVE_ERROR:
+		case ActionConstants.VEHICLES_ERROR:
 			setStoreFlashMessage(msg);
 			setErrorStatus(status);
 			removeToken();

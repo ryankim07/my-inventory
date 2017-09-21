@@ -13,6 +13,13 @@ let VehiclesAction = {
 					vehicles: vehicles,
 					apiVehicles: apiVehicles
 				});
+			})
+			.catch(function(resp) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.VEHICLES_ERROR,
+					status: resp.status,
+					msg: resp.msg
+				});
 			});
 	},
 
@@ -27,7 +34,7 @@ let VehiclesAction = {
             })
             .catch(function(resp) {
                 AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.RECEIVE_ERROR,
+                    actionType: ActionConstants.VEHICLES_ERROR,
                     status: resp.status,
 					msg: resp.msg
                 });
@@ -45,7 +52,7 @@ let VehiclesAction = {
             })
             .catch(function(resp) {
                 AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.RECEIVE_ERROR,
+                    actionType: ActionConstants.VEHICLES_ERROR,
 					status: resp.status,
 					msg: resp.msg
                 });
@@ -63,7 +70,7 @@ let VehiclesAction = {
 			})
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.RECEIVE_ERROR,
+					actionType: ActionConstants.VEHICLES_ERROR,
 					status: resp.status,
 					msg: resp.msg
 				});
@@ -81,7 +88,7 @@ let VehiclesAction = {
             })
             .catch(function(resp) {
                 AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.RECEIVE_ERROR,
+                    actionType: ActionConstants.VEHICLES_ERROR,
 					status: resp.status,
 					msg: resp.msg
                 });

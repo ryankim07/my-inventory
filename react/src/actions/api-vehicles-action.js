@@ -14,7 +14,7 @@ let ApiVehiclesAction = {
             })
             .catch(function(resp) {
                 AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.RECEIVE_ERROR,
+                    actionType: ActionConstants.API_VEHICLES_ERROR,
 					status: resp.status,
 					msg: resp.msg
                 });

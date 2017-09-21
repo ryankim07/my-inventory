@@ -1,6 +1,6 @@
 import React from 'react';
-import PropertyAddressList from './address/list';
-import Loader from '../helper/loader';
+import PropertyAddressList from './../address/list';
+import Loader from '../../helper/loader';
 
 class PropertiesList extends React.Component
 {

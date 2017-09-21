@@ -1,20 +1,22 @@
 import React from 'react';
-import PropertiesAction from '../../actions/properties-action';
-import PropertiesStore from '../../stores/properties/store';
+import PropertiesAction from '../../../actions/properties-action';
+import PropertiesStore from '../../../stores/properties/store';
 import PropertyForm from './forms/property';
 import PropertiesList from './list';
-import PropertyInfoView from './info/view';
-import PropertyFeaturesForm from './info/forms/features';
-import PropertyExteriorFeaturesForm from './info/forms/exterior_features';
-import PropertyInteriorFeaturesForm from './info/forms/interior_features';
-import FlashMessage from '../helper/flash-message';
+import PropertyInfoView from './../info/view';
+import PropertyFeaturesForm from './../info/forms/features';
+import PropertyExteriorFeaturesForm from './../info/forms/exterior_features';
+import PropertyInteriorFeaturesForm from './../info/forms/interior_features';
+import PropertyRoomsList from './../rooms/list';
+import PropertyRoomForm from './../rooms/forms/room';
+import FlashMessage from '../../helper/flash-message';
 
+// Global properties
 let mainDefaultMobileColumnWidth = 'col-xs-12';
 let mainDefaultDesktopColumnWidth = 'col-md-12';
 let mainShrinkedMobileColumnWidth = 'col-xs-8';
 let mainShrinkedDesktopColumnWidth = 'col-md-8';
 let mainColumnClassName = 'main-column';
-let listMainPanel = 'list';
 
 class PropertiesDashboard extends React.Component
 {
@@ -74,6 +76,7 @@ class PropertiesDashboard extends React.Component
 
 	// State changes
 	_onChange() {
+		let property		= PropertiesStore.getProperty();
 		let properties		= PropertiesStore.getProperties();
 		let flashMessage 	= PropertiesStore.getStoreFlashMessage();
 		let isAuthenticated = PropertiesStore.isAuthenticated();
@@ -85,6 +88,7 @@ class PropertiesDashboard extends React.Component
 		}
 
 		this.setState({
+			property: property,
 			properties: properties,
 			showRightPanel: !!openRightPanel,
 			flashMessage: flashMessage !== undefined ? flashMessage : null,
@@ -166,7 +170,17 @@ class PropertiesDashboard extends React.Component
 						onHandleRightPanel={ this.onHandleRightPanel }
 						onHandleMainPanel={ this.onHandleMainPanel }
 						className={ mainColumnClassName }
-					/>
+					/>;
+			break;
+
+			case 'rooms':
+				mainPanelHtml =
+					<PropertyRoomsList
+						state={ this.state }
+						onHandleRightPanel={ this.onHandleRightPanel }
+						onHandleRemove={ this.onHandleRemove }
+						className="main-column"
+					/>;
 			break;
 
 			default:
@@ -208,6 +222,15 @@ class PropertiesDashboard extends React.Component
 						onHandleFormSubmit={ this.onHandleFormSubmit }
 						closeRightPanel={ this.closeRightPanel }
 					/>;
+			break;
+
+			case 'add-room':
+				rightPanelHtml =
+					<PropertyRoomForm
+						state={ this.state }
+						onHandleFormSubmit={ this.onHandleFormSubmit }
+						closeRightPanel={ this.closeRightPanel }
+					/>
 			break;
 
 			default:

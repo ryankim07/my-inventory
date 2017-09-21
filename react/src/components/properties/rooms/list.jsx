@@ -9,7 +9,8 @@ class PropertyRoomsList extends React.Component
 		this.handleRightPanel = this.handleRightPanel.bind(this);
 	}
 
-    handleRightPanel(id) {
+	// Toggle panel for add or edit
+	handleRightPanel(id) {
 		let isEditingMode = !!id;
 		let property = isEditingMode ?
 			this.props.state.property.rooms.find(obj => obj.id === id) :
@@ -22,7 +23,7 @@ class PropertyRoomsList extends React.Component
 				description: ''
 			}
 
-		this.props.onHandleRightPanel(property, isEditingMode);
+		this.props.onHandleRightPanel(property, isEditingMode, 'add-room');
 	}
 
 	handleRemove(id) {

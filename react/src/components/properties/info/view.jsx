@@ -7,16 +7,34 @@ let interiorFeaturesRightPanel = 'interior-features';
 
 class PropertyInfoView extends React.Component
 {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			property: this.props.state.property
+		};
+	}
+
+	// When component from same route are unmounting and need to remount
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.state.property !== this.props.state.property) {
+			this.setState({
+				property: nextProps.state.property
+			});
+		}
+	}
+
 	// Toggle panel for add or edit
 	handleRightPanel(id, rightPanel) {
-		let property = this.props.state.property;
+		let property 	  = this.state.property;
+		let properties    = this.props.state.properties;
 		let isEditingMode = !!id;
-		let features = null;
+		let features 	  = null;
 
 		switch (rightPanel) {
 			case featuresRightPanel:
 				features = isEditingMode ?
-				this.props.state.properties.features.find(obj => obj.id === id) :
+				properties.features.find(obj => obj.id === id) :
 				{
 					id: '',
 					property_id: this.props.state.property.id,
@@ -35,7 +53,7 @@ class PropertyInfoView extends React.Component
 
 			case exteriorFeaturesRightPanel:
 				features = isEditingMode ?
-				this.props.state.properties.exterior_features.find(obj => obj.id === id) :
+				properties.exterior_features.find(obj => obj.id === id) :
 				{
 					id: '',
 					property_id: this.props.state.property.id,
@@ -49,7 +67,7 @@ class PropertyInfoView extends React.Component
 
 			case interiorFeaturesRightPanel:
 				features = isEditingMode ?
-				this.props.state.properties.interior_features.find(obj => obj.id === id) :
+				properties.interior_features.find(obj => obj.id === id) :
 				{
 					id: '',
 					property_id: this.props.state.property.id,
@@ -67,12 +85,12 @@ class PropertyInfoView extends React.Component
 			break;
 		}
 
-		this.props.onHandleRightPanel(property, isEditingMode, rightPanel);
+		this.props.onHandleRightPanel(property, true, rightPanel);
 	}
 
 	render() {
 		let columnCss 		 = this.props.state.columnCss;
-		let property 		 = this.props.state.property;
+		let property 		 = this.state.property;
 		let address  		 = property.address === undefined || Object.keys(property.address).length === 0 ? null : property.address;
 		let features		 = property.features === undefined || property.features.id === "" ? null : property.features;
 		let exteriorFeatures = property.exterior_features === undefined || property.exterior_features.id === "" ? null : property.exterior_features;
@@ -126,7 +144,7 @@ class PropertyInfoView extends React.Component
 			<div>
 				<h4>Property Details</h4>
 				<div>
-					<button onClick={ this.props.onHandleMainPanel.bind(this, property.id, 'rooms-dashboard') }>View Rooms</button>
+					<button onClick={ this.props.onHandleMainPanel.bind(this, property.id, 'rooms') }>View Rooms</button>
 				</div>
 				<ul>
 					<li>

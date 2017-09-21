@@ -14,10 +14,7 @@ let mainShrinkedMobileColumnWidth = 'col-xs-8';
 let mainShrinkedDesktopColumnWidth = 'col-md-8';
 let mainColumnClassName = 'main-column';
 let mainPanelName = 'info';
-let mainPanelRoomsDashboardName = 'rooms-dashboard';
-let sidePanelFeaturesName = 'features';
-let sidePanelExteriorFeaturesName = 'exterior-features';
-let sidePanelInteriorFeaturesName = 'interior-features';
+
 
 class PropertyInfoDashboard extends React.Component
 {
@@ -101,18 +98,7 @@ class PropertyInfoDashboard extends React.Component
 
 	// Handle right panel
 	onHandleRightPanel(panel, features, isEditingMode) {
-		this.setState({
-			features: panel === sidePanelFeaturesName ? features : null,
-			exteriorFeatures: panel === sidePanelExteriorFeaturesName ? features : null,
-			interiorFeatures: panel === sidePanelInteriorFeaturesName ? features : null,
-			isEditingMode: isEditingMode,
-			showRightPanel: true,
-			sidePanel: panel,
-			columnCss: {
-				'mobileWidth': mainShrinkedMobileColumnWidth,
-				'desktopWidth': mainShrinkedDesktopColumnWidth
-			}
-		});
+
 	}
 
 	// Handle view
@@ -158,9 +144,6 @@ class PropertyInfoDashboard extends React.Component
 				onHandleRightPanel={ this.onHandleRightPanel }
 				onHandleRoomsDashboard={ this.onHandleRoomsDashboard }
 				mainPanelRoomsDashboardName={ mainPanelRoomsDashboardName }
-				sidePanelFeaturesName={ sidePanelFeaturesName }
-				sidePanelExteriorFeaturesName={ sidePanelExteriorFeaturesName }
-				sidePanelInteriorFeaturesName={ sidePanelInteriorFeaturesName }
 			/> :
 			<PropertyRoomsDashboard
 				state={ this.state }
@@ -168,32 +151,7 @@ class PropertyInfoDashboard extends React.Component
 
 		let sidePanelHtml = '';
 		switch (this.state.sidePanel) {
-			case sidePanelFeaturesName:
-				sidePanelHtml =
-					<PropertyAddFeatures
-						state={ this.state }
-						onHandleFormSubmit={ this.onHandleFormSubmit }
-						closeRightPanel={ this.closeRightPanel }
-					/>;
-			break;
 
-			case sidePanelExteriorFeaturesName:
-				sidePanelHtml =
-					<PropertyAddExteriorFeatures
-						state={ this.state }
-						onHandleFormSubmit={ this.onHandleFormSubmit }
-						closeRightPanel={ this.closeRightPanel }
-					/>;
-			break;
-
-			case sidePanelInteriorFeaturesName:
-				sidePanelHtml =
-					<PropertyAddInteriorFeatures
-						state={ this.state }
-						onHandleFormSubmit={ this.onHandleFormSubmit }
-						closeRightPanel={ this.closeRightPanel }
-					/>;
-			break;
 		}
 
 		return (

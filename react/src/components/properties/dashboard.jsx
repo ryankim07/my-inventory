@@ -3,7 +3,10 @@ import PropertiesAction from '../../actions/properties-action';
 import PropertiesStore from '../../stores/properties/store';
 import PropertyAdd from './add';
 import PropertiesList from './list';
-import PropertyInfoDashboard from './info/dashboard';
+import PropertyInfoView from './info/view';
+import PropertyAddFeatures from './info/add_features';
+import PropertyAddExteriorFeatures from './info/add_exterior_features';
+import PropertyAddInteriorFeatures from './info/add_interior_features';
 import FlashMessage from '../helper/flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -11,8 +14,7 @@ let mainDefaultDesktopColumnWidth = 'col-md-12';
 let mainShrinkedMobileColumnWidth = 'col-xs-8';
 let mainShrinkedDesktopColumnWidth = 'col-md-8';
 let mainColumnClassName = 'main-column';
-let mainPanelName = 'list';
-let mainPanelInfoName = 'info;'
+let listMainPanel = 'list';
 
 class PropertiesDashboard extends React.Component
 {
@@ -24,7 +26,8 @@ class PropertiesDashboard extends React.Component
 			properties: [],
 			isEditingMode: false,
 			loader: true,
-			mainPanel: mainPanelName,
+			mainPanel: null,
+			rightPanel: null,
 			showRightPanel: false,
 			flashMessage: null,
 			columnCss: {
@@ -36,7 +39,7 @@ class PropertiesDashboard extends React.Component
 		this._onChange 		    = this._onChange.bind(this);
 		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
-		this.onHandleView 		= this.onHandleView.bind(this);
+		this.onHandleMainPanel 	= this.onHandleMainPanel.bind(this);
 		this.setFlashMessage    = this.setFlashMessage.bind(this);
 		this.closeRightPanel    = this.closeRightPanel.bind(this);
 	}
@@ -58,8 +61,8 @@ class PropertiesDashboard extends React.Component
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.location.action !== 'POP' || nextProps.location.action !== 'PUSH') {
 			this.setState({
+				mainPanel: this.state.mainPanel,
 				showRightPanel: false,
-				mainPanel: mainPanelName,
 				flashMessage: null,
 				columnCss: {
 					'mobileWidth': mainDefaultMobileColumnWidth,
@@ -102,21 +105,14 @@ class PropertiesDashboard extends React.Component
 		}
 	}
 
-	// Handle right panel
-	onHandleRightPanel(property, isEditingMode) {
-		this.setState({
-			property: property,
-			isEditingMode: isEditingMode,
-			showRightPanel: true,
-			columnCss: {
-				'mobileWidth': mainShrinkedMobileColumnWidth,
-				'desktopWidth': mainShrinkedDesktopColumnWidth
-			}
-		});
+	// Handle delete
+	onHandleRemove(id) {
+		PropertiesAction.removeProperty(id);
 	}
 
-	// Handle view
-	onHandleView(id, panel) {
+	// Handle main panel
+	// ID will determine the state in which next panel should display
+	onHandleMainPanel(id, panel) {
 		this.setState({
 			property: this.state.properties.find(obj => obj.id === id),
 			mainPanel: panel,
@@ -127,20 +123,24 @@ class PropertiesDashboard extends React.Component
 		});
 	}
 
-	// Handle delete
-	onHandleRemove(id) {
-		PropertiesAction.removeProperty(id);
-	}
-
-	// Set flash message
-	setFlashMessage($msg) {
-		this.setState({flashMessage: $msg})
+	// Handle right panel
+	onHandleRightPanel(property, isEditingMode, rightPanel) {
+		this.setState({
+			property: property,
+			rightPanel: rightPanel,
+			isEditingMode: isEditingMode,
+			showRightPanel: true,
+			columnCss: {
+				'mobileWidth': mainShrinkedMobileColumnWidth,
+				'desktopWidth': mainShrinkedDesktopColumnWidth
+			}
+		});
 	}
 
 	// Close right panel
 	closeRightPanel() {
 		this.setState({
-			mainPanel: mainPanelName,
+			mainPanel: this.state.mainPanel,
 			showRightPanel: false,
 			columnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
@@ -149,35 +149,81 @@ class PropertiesDashboard extends React.Component
 		});
 	}
 
+	// Set flash message
+	setFlashMessage($msg) {
+		this.setState({flashMessage: $msg})
+	}
+
 	// Render
 	render() {
-		let mainPanelHtml = this.state.mainPanel === mainPanelName ?
-			<PropertiesList
-				state={ this.state }
-				onHandleRightPanel={ this.onHandleRightPanel }
-				onHandleView={ this.onHandleView }
-				onHandleRemove={ this.onHandleRemove }
-				className={ mainColumnClassName }
-			/> :
-			<PropertyInfoDashboard
-				state={ this.state }
-				className={ mainColumnClassName }
-			/>;
+		// Main panel
+		let mainPanelHtml = '';
+		switch (this.state.mainPanel) {
+			case 'info':
+				mainPanelHtml =
+					<PropertyInfoView
+						state={ this.state }
+						onHandleRightPanel={ this.onHandleRightPanel }
+						onHandleMainPanel={ this.onHandleMainPanel }
+						className={ mainColumnClassName }
+					/>
+			break;
+
+			default:
+				mainPanelHtml =
+					<PropertiesList
+						state={ this.state }
+						onHandleRightPanel={ this.onHandleRightPanel }
+						onHandleMainPanel={ this.onHandleMainPanel }
+						onHandleRemove={ this.onHandleRemove }
+						className={ mainColumnClassName }
+					/>;
+		}
+
+		// Right panel
+		let rightPanelHtml = '';
+		switch (this.state.rightPanel) {
+			case 'features':
+				rightPanelHtml =
+					<PropertyAddFeatures
+						state={ this.state }
+						onHandleFormSubmit={ this.onHandleFormSubmit }
+						closeRightPanel={ this.closeRightPanel }
+					/>;
+				break;
+
+			case 'exterior-features':
+				rightPanelHtml =
+					<PropertyAddExteriorFeatures
+						state={ this.state }
+						onHandleFormSubmit={ this.onHandleFormSubmit }
+						closeRightPanel={ this.closeRightPanel }
+					/>;
+			break;
+
+			case 'interior-features':
+				rightPanelHtml =
+					<PropertyAddInteriorFeatures
+						state={ this.state }
+						onHandleFormSubmit={ this.onHandleFormSubmit }
+						closeRightPanel={ this.closeRightPanel }
+					/>;
+			break;
+
+			default:
+				rightPanelHtml =
+					<PropertyAdd
+						state={ this.state }
+						onHandleFormSubmit={ this.onHandleFormSubmit }
+						closeRightPanel={ this.closeRightPanel }
+					/>;
+		}
 
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage } alertType="alert-success" />}
-
 				{ mainPanelHtml }
-
-				{
-					this.state.showRightPanel ?
-						<PropertyAdd
-							state={ this.state }
-							onHandleFormSubmit={ this.onHandleFormSubmit }
-							closeRightPanel={ this.closeRightPanel }
-						/> : null
-				}
+				{ this.state.showRightPanel ? rightPanelHtml : null }
 			</div>
 		)
 	}

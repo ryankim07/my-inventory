@@ -6,17 +6,17 @@ class PropertyAddFeatures extends React.Component
         super(props);
 
         this.state = {
-			exteriorFeatures: this.props.state.exteriorFeatures
+			features: this.props.state.property.features
         };
 
 		this.handleFormChange = this.handleFormChange.bind(this);
     }
 
 	handleFormChange(propertyName, event) {
-		let exteriorFeatures = this.state.exteriorFeatures;
-		exteriorFeatures[propertyName] = event.target.value;
+		let features = this.state.features;
+		features[propertyName] = event.target.value;
 
-		this.setState({exteriorFeatures: exteriorFeatures});
+		this.setState({features: features});
 	}
 
     // Submit
@@ -24,39 +24,104 @@ class PropertyAddFeatures extends React.Component
 		event.preventDefault();
 
 		let property = this.props.state.property;
-		property.exterior_features = this.state.exteriorFeatures;
+		property.features = this.state.features;
 
 		this.props.onHandleFormSubmit(property);
     }
 
 	render() {
-		let exteriorFeatures = this.state.exteriorFeatures;
+		let features = this.props.state.property.features;
 
-		let exteriorFeaturesForm =
+		let featuresForm =
 			<form onSubmit={ this.handleFormSubmit.bind(this) }>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Exterior</label>
+						<label className="control-label">Parking</label>
 						<div className="input-group">
 								<textarea
 									ref="exterior"
 									rows="5"
 									className="form-control"
-									onChange={ this.handleFormChange.bind(this, 'exterior') }
-									value={ exteriorFeatures.exterior } />
+									onChange={ this.handleFormChange.bind(this, 'parking') }
+									value={ features.parking } />
 						</div>
 					</div>
 				</div>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Foundation</label>
+						<label className="control-label">Multi Unit</label>
 						<div className="input-group">
 								<textarea
 									ref="foundation"
 									rows="5"
 									className="form-control"
-									onChange={ this.handleFormChange.bind(this, 'foundation') }
-									value={ exteriorFeatures.foundation } />
+									onChange={ this.handleFormChange.bind(this, 'multi_unit') }
+									value={ features.multi_unit } />
+						</div>
+					</div>
+				</div>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Hoa</label>
+						<div className="input-group">
+								<textarea
+									ref="others"
+									rows="5"
+									className="form-control"
+									onChange={ this.handleFormChange.bind(this, 'hoa') }
+									value={ features.hoa } />
+						</div>
+					</div>
+				</div>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Utilities</label>
+						<div className="input-group">
+								<textarea
+									ref="others"
+									rows="5"
+									className="form-control"
+									onChange={ this.handleFormChange.bind(this, 'utilities') }
+									value={ features.utilities } />
+						</div>
+					</div>
+				</div>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Lot</label>
+						<div className="input-group">
+								<textarea
+									ref="others"
+									rows="5"
+									className="form-control"
+									onChange={ this.handleFormChange.bind(this, 'lot') }
+									value={ features.lot } />
+						</div>
+					</div>
+				</div>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Common Walls</label>
+						<div className="input-group">
+								<textarea
+									ref="others"
+									rows="5"
+									className="form-control"
+									onChange={ this.handleFormChange.bind(this, 'common_walls') }
+									value={ features.common_walls } />
+						</div>
+					</div>
+				</div>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Facing Direction</label>
+						<div className="input-group">
+								<textarea
+									ref="others"
+									rows="5"
+									className="form-control"
+									onChange={ this.handleFormChange.bind(this, 'facing_direction') }
+									value={ features.facing_direction } />
 						</div>
 					</div>
 				</div>
@@ -69,7 +134,7 @@ class PropertyAddFeatures extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'others') }
-									value={ exteriorFeatures.others } />
+									value={ features.others } />
 						</div>
 					</div>
 				</div>
@@ -79,11 +144,11 @@ class PropertyAddFeatures extends React.Component
 							<input
 								type="hidden"
 								ref="id"
-								value={ exteriorFeatures.id } />
+								value={ features.id } />
 							<input
 								type="hidden"
 								ref="property_id"
-								value={ exteriorFeatures.property_id } />
+								value={ features.property_id } />
 						</div>
 					</div>
 				</div>
@@ -114,7 +179,7 @@ class PropertyAddFeatures extends React.Component
                             </div>
                         </div>
                         <div className="panel-body">
-                            { exteriorFeaturesForm }
+                            { featuresForm }
                         </div>
                     </div>
                 </div>

@@ -13,9 +13,8 @@ class PropertiesList extends React.Component
 	// Toggle panel for add or edit
 	handleRightPanel(id) {
 		let isEditingMode = !!id;
-
 		let property = isEditingMode ?
-			this.props.state.properties.find(obj => obj.id === id)	:
+			this.props.state.properties.find(obj => obj.id === id) :
 			{
 				id: '',
 				style: '',
@@ -41,7 +40,7 @@ class PropertiesList extends React.Component
 				}
 			}
 
-		this.props.onHandleRightPanel(property, isEditingMode);
+		this.props.onHandleRightPanel(property, isEditingMode, 'property-add');
 	}
 
 	render() {
@@ -60,7 +59,7 @@ class PropertiesList extends React.Component
 							key={ property.id }
 							address={ property.address }
 							handleRightPanel={ this.handleRightPanel }
-							onHandleView={ this.props.onHandleView }
+							onHandleMainPanel={ this.props.onHandleMainPanel }
 							onHandleRemove={ this.props.onHandleRemove }
 						/>
 					);

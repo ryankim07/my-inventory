@@ -6,6 +6,10 @@ class VehicleAdd extends React.Component
     constructor(props) {
         super(props);
 
+        this.state = {
+			vehicle: this.props.state.vehicle
+		}
+
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 		this.handleFormSubmit   = this.handleFormSubmit.bind(this);
     }
@@ -50,12 +54,12 @@ class VehicleAdd extends React.Component
     // Submit
     handleFormSubmit(event) {
 		event.preventDefault();
-		this.props.onHandleFormSubmit(this.props.state.vehicle);
+		this.props.onHandleFormSubmit(this.state.vehicle);
 	}
 
     render() {
     	let apiVehicles  = this.props.state.apiVehicles;
-		let vehicle      = this.props.state.vehicle;
+		let vehicle      = this.state.vehicle;
 		let defaultMfgId = parseInt(vehicle.mfg_id);
 		let yearsOptions = [];
 

@@ -6,17 +6,17 @@ class PropertyAddInteriorFeatures extends React.Component
         super(props);
 
         this.state = {
-			exteriorFeatures: this.props.state.exteriorFeatures
+			interiorFeatures: this.props.state.property.interior_features
         };
 
 		this.handleFormChange = this.handleFormChange.bind(this);
     }
 
 	handleFormChange(propertyName, event) {
-		let exteriorFeatures = this.state.exteriorFeatures;
-		exteriorFeatures[propertyName] = event.target.value;
+		let interiorFeatures = this.state.interiorFeatures;
+		interiorFeatures[propertyName] = event.target.value;
 
-		this.setState({exteriorFeatures: exteriorFeatures});
+		this.setState({interiorFeatures: interiorFeatures});
 	}
 
     // Submit
@@ -24,39 +24,104 @@ class PropertyAddInteriorFeatures extends React.Component
 		event.preventDefault();
 
 		let property = this.props.state.property;
-		property.exterior_features = this.state.exteriorFeatures;
+		property.interior_features = this.state.interiorFeatures;
 
 		this.props.onHandleFormSubmit(property);
     }
 
 	render() {
-		let exteriorFeatures = this.state.exteriorFeatures;
+		let interiorFeatures = this.state.interiorFeatures;
 
-		let exteriorFeaturesForm =
+		let interiorFeaturesForm =
 			<form onSubmit={ this.handleFormSubmit.bind(this) }>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Exterior</label>
+						<label className="control-label">Kitchen</label>
 						<div className="input-group">
 								<textarea
 									ref="exterior"
 									rows="5"
 									className="form-control"
-									onChange={ this.handleFormChange.bind(this, 'exterior') }
-									value={ exteriorFeatures.exterior } />
+									onChange={ this.handleFormChange.bind(this, 'kitchen') }
+									value={ interiorFeatures.kitchen } />
 						</div>
 					</div>
 				</div>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Foundation</label>
+						<label className="control-label">Bathroom</label>
 						<div className="input-group">
 								<textarea
 									ref="foundation"
 									rows="5"
 									className="form-control"
-									onChange={ this.handleFormChange.bind(this, 'foundation') }
-									value={ exteriorFeatures.foundation } />
+									onChange={ this.handleFormChange.bind(this, 'bathroom') }
+									value={ interiorFeatures.bathroom } />
+						</div>
+					</div>
+				</div>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Laundry</label>
+						<div className="input-group">
+								<textarea
+									ref="foundation"
+									rows="5"
+									className="form-control"
+									onChange={ this.handleFormChange.bind(this, 'laundry') }
+									value={ interiorFeatures.laundry } />
+						</div>
+					</div>
+				</div>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Cooling</label>
+						<div className="input-group">
+								<textarea
+									ref="foundation"
+									rows="5"
+									className="form-control"
+									onChange={ this.handleFormChange.bind(this, 'cooling') }
+									value={ interiorFeatures.cooling } />
+						</div>
+					</div>
+				</div>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Heating</label>
+						<div className="input-group">
+								<textarea
+									ref="foundation"
+									rows="5"
+									className="form-control"
+									onChange={ this.handleFormChange.bind(this, 'heating') }
+									value={ interiorFeatures.heating } />
+						</div>
+					</div>
+				</div>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Fireplace</label>
+						<div className="input-group">
+								<textarea
+									ref="foundation"
+									rows="5"
+									className="form-control"
+									onChange={ this.handleFormChange.bind(this, 'fireplace') }
+									value={ interiorFeatures.fireplace } />
+						</div>
+					</div>
+				</div>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Flooring</label>
+						<div className="input-group">
+								<textarea
+									ref="foundation"
+									rows="5"
+									className="form-control"
+									onChange={ this.handleFormChange.bind(this, 'flooring') }
+									value={ interiorFeatures.flooring } />
 						</div>
 					</div>
 				</div>
@@ -69,7 +134,7 @@ class PropertyAddInteriorFeatures extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'others') }
-									value={ exteriorFeatures.others } />
+									value={ interiorFeatures.others } />
 						</div>
 					</div>
 				</div>
@@ -79,11 +144,11 @@ class PropertyAddInteriorFeatures extends React.Component
 							<input
 								type="hidden"
 								ref="id"
-								value={ exteriorFeatures.id } />
+								value={ interiorFeatures.id } />
 							<input
 								type="hidden"
 								ref="property_id"
-								value={ exteriorFeatures.property_id } />
+								value={ interiorFeatures.property_id } />
 						</div>
 					</div>
 				</div>
@@ -114,7 +179,7 @@ class PropertyAddInteriorFeatures extends React.Component
                             </div>
                         </div>
                         <div className="panel-body">
-                            { exteriorFeaturesForm }
+                            { interiorFeaturesForm }
                         </div>
                     </div>
                 </div>

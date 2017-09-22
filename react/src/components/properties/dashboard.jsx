@@ -157,17 +157,17 @@ class PropertiesDashboard extends React.Component
 		let room = isEditingMode ?
 			rooms.find(obj => obj.id === id) :
 			{
-				id: null,
+				id: '',
 				property_id: this.state.property.id,
-				name: null,
-				total_area: null,
-				description: null,
+				name: '',
+				total_area: '',
+				description: '',
 				walls: [
 					{
-						id: null,
-						room_id: null,
-						paint_id: null,
-						name: null
+						id: '',
+						room_id: '',
+						paint_id: '',
+						name: ''
 					}
 				],
 				room_assets: []

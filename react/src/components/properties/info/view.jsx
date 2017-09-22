@@ -36,16 +36,16 @@ class PropertyInfoView extends React.Component
 				features = isEditingMode ?
 				properties.features.find(obj => obj.id === id) :
 				{
-					id: null,
+					id: '',
 					property_id: this.props.state.property.id,
-					parking: null,
-					multi_unit: null,
-					hoa: null,
-					utilities: null,
-					lot: null,
-					common_walls: null,
-					facing_direction: null,
-					others: null
+					parking: '',
+					multi_unit: '',
+					hoa: '',
+					utilities: '',
+					lot: '',
+					common_walls: '',
+					facing_direction: '',
+					others: ''
 				}
 
 				property.features = features;
@@ -55,11 +55,11 @@ class PropertyInfoView extends React.Component
 				features = isEditingMode ?
 				properties.exterior_features.find(obj => obj.id === id) :
 				{
-					id: null,
+					id: '',
 					property_id: this.props.state.property.id,
-					exterior: null,
-					foundation: null,
-					others: null
+					exterior: '',
+					foundation: '',
+					others: ''
 				}
 
 				property.exterior_features = features;
@@ -69,16 +69,16 @@ class PropertyInfoView extends React.Component
 				features = isEditingMode ?
 				properties.interior_features.find(obj => obj.id === id) :
 				{
-					id: null,
+					id: '',
 					property_id: this.props.state.property.id,
-					laundry: null,
-					kitchen: null,
-					bathroom: null,
-					cooling: null,
-					heating: null,
-					fireplace: null,
-					flooring: null,
-					others: null
+					laundry: '',
+					kitchen: '',
+					bathroom: '',
+					cooling: '',
+					heating: '',
+					fireplace: '',
+					flooring: '',
+					others: ''
 				}
 
 				property.interior_features = features;

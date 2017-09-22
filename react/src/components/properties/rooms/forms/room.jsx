@@ -96,8 +96,8 @@ class PropertyRoomForm extends React.Component
     	event.preventDefault();
 		let walls = this.props.state.room.walls;
 		let newWall   = {
-			name: null,
-			paint_id: null
+			name: '',
+			paint_id: ''
 		};
 
 		walls.push(newWall);

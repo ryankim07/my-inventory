@@ -54,13 +54,13 @@ class RoomsEntity
     private $property;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\RoomsWallsEntity", mappedBy="rooms", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\RoomsWallsEntity", mappedBy="rooms", cascade={"persist", "remove"})
      * @ORM\OrderBy({"name" = "ASC"})
      */
     private $walls;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\RoomAssetsEntity", mappedBy="rooms", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\RoomAssetsEntity", mappedBy="rooms", cascade={"persist", "remove"})
      * @ORM\OrderBy({"name" = "ASC"})
      */
     private $roomAssets;

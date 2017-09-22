@@ -99,7 +99,7 @@ class Paints
     public function save($data)
     {
         if (count($data) == 0) {
-            return ['msg' => 'Room information empty.'];
+            return ['msg' => 'Paint information empty.'];
         }
 
         try {

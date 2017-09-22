@@ -60,21 +60,13 @@ services:
         class: AppBundle\Service\Vehicles\Vehicles
         arguments: ["@doctrine.orm.vehicles_entity_manager", "@Sync_Db", "@File_Uploader"]
 
+    Configured_Rooms:
+        class: AppBundle\Service\Configuration\Properties\Rooms
+
     Properties:
         class: AppBundle\Service\Properties\Properties
-        arguments: ["@doctrine.orm.houses_entity_manager", "@File_Uploader", "@Configured_Rooms"]
-
-    Address:
-        class: AppBundle\Service\Properties\Address
-        arguments: ["@doctrine.orm.houses_entity_manager"]
-
-    Rooms:
-        class: AppBundle\Service\Properties\Rooms
-        arguments: ["@doctrine.orm.houses_entity_manager"]
+        arguments: ["@doctrine.orm.houses_entity_manager", "@Configured_Rooms", "@File_Uploader"]
 
     Paints:
         class: AppBundle\Service\Properties\Paints
         arguments: ["@doctrine.orm.houses_entity_manager"]
-
-    Configured_Rooms:
-        class: AppBundle\Service\Configuration\Properties\Rooms

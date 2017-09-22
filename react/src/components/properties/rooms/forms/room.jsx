@@ -59,7 +59,7 @@ class PropertyRoomForm extends React.Component
 				break;
 		}
 
-		this.props.wallChange(walls);
+		this.handleWallChange(walls);
 	}
 
 	// Submit
@@ -75,6 +75,7 @@ class PropertyRoomForm extends React.Component
 
     // Handle appropriate action whenever wall fields are changed
 	handleWallChange(walls) {
+		let room = this.state.room;
 		let totalWalls = walls.length;
 		let filledFields = 0;
 
@@ -86,9 +87,12 @@ class PropertyRoomForm extends React.Component
 			}
 		});
 
-		let disableBtn = filledFields === totalWalls ? false : true;
+		room.push({walls: walls});
 
-		this.props.wallChange(walls, disableBtn);
+		this.setState({
+			room: room,
+			disableAddWallsBtn: filledFields === totalWalls ? false : true
+		});
 	}
 
 	// Add new wall div
@@ -125,7 +129,6 @@ class PropertyRoomForm extends React.Component
 						index={ wallIndex }
 						wall={ wall }
 						handleFormChange={ this.handleFormChange }
-						handleWallChange={ this.handleWallChange }
 						removeWall={ this.removeWall }
 					/>
 					<PropertyPaintsDropdown

@@ -4,7 +4,7 @@ import { upperFirstLetter } from "../../../helper/utils"
 class PropertyRoomWallsDropdown extends React.Component
 {
 	render() {
-		let wallSides= ["left", "right", "front", "back", "ceiling", "all"];
+		let wallSides = ["left", "right", "front", "back", "ceiling", "all"];
 		let refName   = 'wall_' + this.props.index;
 
 		let wallSidesOptions = wallSides.map((wall, wallIndex) => {
@@ -21,7 +21,7 @@ class PropertyRoomWallsDropdown extends React.Component
 					<div className="input-group">
 						<select
 							ref={ refName }
-							onChange={ this.props.handleWallChange.bind(this, refName) }
+							onChange={ this.props.handleFormChange.bind(this, refName) }
 							value={ this.props.wall.name }
 							className="form-control input-sm">
 							<option value="">Select One</option>

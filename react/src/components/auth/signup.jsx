@@ -101,81 +101,88 @@ class Signup extends React.Component
 
 	render() {
 		return (
-			<form onSubmit={this.handleFormSubmit}>
-				<div className="form-group required">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Role</label>
-						<div className="input-group">
-							<select ref="role"
-									onChange={this.handleFormChange.bind(this, 'role')}
-									value={this.state.user.role}
-									className="form-control input-sm"
-									required="required">
-								<option value="">Select One</option>
-								<option value="ROLE_USER">User</option>
-								<option value="ROLE_ADMIN">Admin</option>
-							</select>
+			<div className="row">
+				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-danger" />}
+				<form onSubmit={this.handleFormSubmit}>
+					<div className="form-group required">
+						<div className="col-xs-12 col-md-8">
+							<label className="control-label">Role</label>
+							<div className="input-group">
+								<select ref="role"
+										onChange={this.handleFormChange.bind(this, 'role')}
+										value={this.state.user.role}
+										className="form-control input-sm"
+										required="required">
+									<option value="">Select One</option>
+									<option value="ROLE_USER">User</option>
+									<option value="ROLE_ADMIN">Admin</option>
+								</select>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className="form-group required">
-					<div className="col-xs-12 col-md-12">
-						<label className="control-label">Email</label>
-						<div className="input-group">
-							<input type="email"
-								   	ref="email"
-								   	className="form-control input-sm"
-								   	required="required"
-								   	value={this.state.user.email}
-								   	onChange={this.handleFormChange.bind(this, 'email')} />
+					<div className="form-group required">
+						<div className="col-xs-12 col-md-12">
+							<label className="control-label">Email</label>
+							<div className="input-group">
+								<input type="email"
+										ref="email"
+										className="form-control input-sm"
+										required="required"
+										value={this.state.user.email}
+										onChange={this.handleFormChange.bind(this, 'email')} />
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className="form-group required">
-					<div className="col-xs-12 col-md-12">
-						<label className="control-label">Username</label>
-						<div className="input-group">
-							<input type="text"
-								   	ref="username"
-								   	className="form-control input-sm"
-								   	required="required"
-								   	value={this.state.user.username}
-								   	onChange={this.handleFormChange.bind(this, 'username')} />
+					<div className="form-group required">
+						<div className="col-xs-12 col-md-12">
+							<label className="control-label">Username</label>
+							<div className="input-group">
+								<input type="text"
+										ref="username"
+										className="form-control input-sm"
+										required="required"
+										value={this.state.user.username}
+										onChange={this.handleFormChange.bind(this, 'username')} />
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className="form-group required">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Password</label>
-						<div className="input-group">
-							<input type="password"
-								   ref="password"
-								   className="form-control input-sm"
-								   required="required" />
+					<div className="form-group required">
+						<div className="col-xs-12 col-md-8">
+							<label className="control-label">Password</label>
+							<div className="input-group">
+								<input type="password"
+									   ref="password"
+									   className="form-control input-sm"
+									   required="required" />
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className="form-group required">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Confirm Password</label>
-						<div className="input-group">
-							<input type="password"
-								   ref="confirm_password"
-								   className="form-control input-sm"
-								   required="required" />
+					<div className="form-group required">
+						<div className="col-xs-12 col-md-8">
+							<label className="control-label">Confirm Password</label>
+							<div className="input-group">
+								<input type="password"
+									   ref="confirm_password"
+									   className="form-control input-sm"
+									   required="required" />
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className="form-group">
-					<div className="col-xs-12 col-md-12">
-						<div className="clearfix">
-							<input type="submit" value="Submit" className="btn"/>
+					<div className="form-group">
+						<div className="col-xs-12 col-md-12">
+							<div className="clearfix">
+								<input type="submit" value="Submit" className="btn"/>
+							</div>
 						</div>
 					</div>
-				</div>
-			</form>
+				</form>
+			</div>
 		);
 	}
+}
+
+Signup.contextTypes = {
+	router: React.PropTypes.object.isRequired
 }
 
 export default Signup;

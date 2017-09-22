@@ -6,7 +6,7 @@
  * Time: 4:10 PM
  */
 
-namespace AppBundle\Entity\Properties;
+namespace AppBundle\Entity\Paints;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;

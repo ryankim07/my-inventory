@@ -6,10 +6,10 @@
  * Time: 10:28 AM
  */
 
-namespace AppBundle\Service\Properties;
+namespace AppBundle\Service\Paints;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\Properties\PaintsEntity;
+use AppBundle\Entity\Paints\PaintsEntity;
 
 class Paints
 {

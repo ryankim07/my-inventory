@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Properties;
+namespace AppBundle\Controller\Paints;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -20,7 +20,7 @@ class PaintController extends FOSRestController
     /**
      * Get paints
      *
-     * @Rest\Get("/api/properties/paints", name="get_all_paints")
+     * @Rest\Get("/api/paints", name="get_all_paints")
      * @return mixed|string
      */
     public function getListAction()
@@ -38,7 +38,7 @@ class PaintController extends FOSRestController
     /**
      * Add new paint
      *
-     * @Rest\Post("/api/property/paint", name="new_paint")
+     * @Rest\Post("/api/paint", name="new_paint")
      * @param Request $request
      * @return View
      */
@@ -57,7 +57,7 @@ class PaintController extends FOSRestController
     /**
      * Delete paint
      *
-     * @Rest\Delete("/api/properties/paints/{id}", name="delete_paint")
+     * @Rest\Delete("/api/paints/{id}", name="delete_paint")
      * @param $id
      * @return View
      */

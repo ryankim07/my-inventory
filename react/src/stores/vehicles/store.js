@@ -55,12 +55,12 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
 		}
 	},
 
-	getVehicles: function() {
-		return _vehicles;
-	},
-
 	getApiVehicles: function() {
 		return _apiVehicles;
+	},
+
+	getVehicles: function() {
+		return _vehicles;
 	},
 
 	addVehicle: function(results) {
@@ -168,7 +168,7 @@ VehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
 			VehiclesStore.setVehicles(results);
 		break;
 
-		case ActionConstants.RECEIVE_VEHICLES_API_VEHICLES:
+		case ActionConstants.RECEIVE_VEHICLES_AND_API_VEHICLES:
 			VehiclesStore.setVehiclesAndApiVehicles(action.vehicles, action.apiVehicles);
 		break;
 

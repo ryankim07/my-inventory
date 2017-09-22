@@ -76,7 +76,7 @@ class PropertyRoomWalls extends React.Component
 							wallChange={ this.props.wallChange }
 							allWalls={ this.props.allWalls }
 							wall={ this.props.wall}
-							paints={ this.props.paints }
+							paints={ this.props.state.paints }
 						/>
                     </div>
                 </div>

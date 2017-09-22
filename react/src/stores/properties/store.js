@@ -6,6 +6,7 @@ import _ from 'lodash';
 
 let _properties = [];
 let _property = {};
+let _paints = [];
 let _showPanel = false;
 let _errStatus;
 let _storeMsg;
@@ -46,6 +47,20 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 
     removeChangeListener: function(callback) {
         this.removeListener('change', callback);
+	},
+
+	setPropertiesAndPaints: function(properties, paints) {
+		if (properties.length !== 0) {
+			_properties = properties;
+		}
+
+		if (paints.length !== 0) {
+			_paints = paints;
+		}
+	},
+
+	getPaints: function() {
+		return _paints;
 	},
 
 	getProperties: function () {
@@ -225,6 +240,10 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
 
 		case ActionConstants.RECEIVE_PROPERTIES:
 			PropertiesStore.setProperties(results);
+		break;
+
+		case ActionConstants.RECEIVE_PROPERTIES_AND_PAINTS:
+			PropertiesStore.setPropertiesAndPaints(action.properties, action.paints);
 		break;
 
 		case ActionConstants.ADD_PROPERTY_ROOM:

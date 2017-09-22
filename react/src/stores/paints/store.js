@@ -8,7 +8,7 @@ let _paints = [];
 let _errStatus;
 let _storeMsg;
 
-let PropertiesPaintsStore = assign({}, EventEmitter.prototype, {
+let PaintsStore = assign({}, EventEmitter.prototype, {
     // Emit Change event
     emitChange: function(){
         this.emit('change');
@@ -55,14 +55,14 @@ let PropertiesPaintsStore = assign({}, EventEmitter.prototype, {
 });
 
 // Register callback with AppDispatcher
-PropertiesPaintsStore.dispatchToken = Dispatcher.register(function(payload) {
+PaintsStore.dispatchToken = Dispatcher.register(function(payload) {
 
     let action  = payload.action;
 	let results = action.results;
 
     switch(action.actionType) {
         case ActionConstants.RECEIVE_PROPERTY_PAINTS:
-			PropertiesPaintsStore.setPropertyPaints(results);
+			PaintsStore.setPropertyPaints(results);
         break;
 
         default:
@@ -70,9 +70,9 @@ PropertiesPaintsStore.dispatchToken = Dispatcher.register(function(payload) {
     }
 
     // If action was responded to, emit change event
-    PropertiesPaintsStore.emitChange();
+    PaintsStore.emitChange();
 
     return true;
 });
 
-export default PropertiesPaintsStore;
+export default PaintsStore;

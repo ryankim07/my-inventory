@@ -4,6 +4,25 @@ import Api from '../services/Api';
 
 let PropertiesAction = {
 
+	getPropertiesAndPaints: function() {
+		Api
+			.getMultiple('http://mcs.dev/api/properties', 'http://mcs.dev/api/paints/paints')
+			.then(function ([properties, paints])  {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.RECEIVE_PROPERTIES_AND_PAINTS,
+					properties: properties,
+					paints: paints
+				});
+			})
+			.catch(function(resp) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.VEHICLES_ERROR,
+					status: resp.status,
+					msg: resp.msg
+				});
+			});
+	},
+
 	getProperties: function() {
         Api
             .get('http://mcs.dev/api/properties')

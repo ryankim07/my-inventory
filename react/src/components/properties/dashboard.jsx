@@ -29,6 +29,7 @@ class PropertiesDashboard extends React.Component
 			room: {
 				walls: []
 			},
+			paints: [],
 			isEditingMode: false,
 			loader: true,
 			mainPanel: null,
@@ -56,7 +57,7 @@ class PropertiesDashboard extends React.Component
 	}
 
 	componentDidMount() {
-		PropertiesAction.getProperties();
+		PropertiesAction.getPropertiesAndPaints();
 	}
 
 	componentWillUnmount() {
@@ -82,6 +83,7 @@ class PropertiesDashboard extends React.Component
 	_onChange() {
 		let property		= PropertiesStore.getProperty();
 		let properties		= PropertiesStore.getProperties();
+		let paints          = PropertiesStore.getPaints();
 		let flashMessage 	= PropertiesStore.getStoreFlashMessage();
 		let isAuthenticated = PropertiesStore.isAuthenticated();
 		let openRightPanel 	= PropertiesStore.showRightPanel();
@@ -94,6 +96,7 @@ class PropertiesDashboard extends React.Component
 		this.setState({
 			property: property,
 			properties: properties,
+			paints: paints,
 			showRightPanel: !!openRightPanel,
 			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,

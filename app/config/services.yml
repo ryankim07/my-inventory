@@ -68,5 +68,5 @@ services:
         arguments: ["@doctrine.orm.houses_entity_manager", "@Configured_Rooms", "@File_Uploader"]
 
     Paints:
-        class: AppBundle\Service\Properties\Paints
+        class: AppBundle\Service\Paints\Paints
         arguments: ["@doctrine.orm.houses_entity_manager"]

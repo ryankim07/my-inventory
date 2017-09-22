@@ -1,5 +1,4 @@
 import React from 'react';
-import PropertiesRoomsAction from '../../../../actions/properties-rooms-action';
 import NonAddedRoomsDropdown from '../../rooms/non_added_rooms_dropdown';
 import PropertyRoomWalls from '../../rooms/walls';
 import { numberFormat } from "../../../helper/utils"
@@ -46,11 +45,11 @@ class PropertyRoomForm extends React.Component
 	handleFormSubmit(event) {
 		event.preventDefault();
 
-		if (!this.props.state.isEditingMode) {
+		/*if (!this.props.state.isEditingMode) {
 			PropertiesRoomsAction.addRoom(this.props.state.room);
 		} else {
 			PropertiesRoomsAction.updateRoom(this.props.state.room);
-		}
+		}*/
 	}
 
     // Handle appropriate action whenever wall fields are changed

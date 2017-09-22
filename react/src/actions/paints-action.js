@@ -2,14 +2,14 @@ import AppDispatcher from '../dispatcher/app-dispatcher';
 import ActionConstants from '../constants/action-constants';
 import Api from '../services/Api';
 
-let PropertiesPaintsAction = {
+let PaintsAction = {
 
-	getPropertyPaints: function() {
+	getPaints: function() {
 		Api
-			.get('http://mcs.dev/api/properties/paints')
+			.get('http://mcs.dev/api/paints')
 			.then(function(results) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.RECEIVE_PROPERTY_PAINTS,
+					actionType: ActionConstants.RECEIVE_PAINTS,
 					results: results
 				});
 			})
@@ -23,4 +23,4 @@ let PropertiesPaintsAction = {
 	},
 };
 
-export default PropertiesPaintsAction;
+export default PaintsAction;

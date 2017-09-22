@@ -118,7 +118,13 @@ class PropertyRoomsDashboard extends React.Component
 				/>
 
 				{
-
+					<PropertyRoomForm
+						state={this.state}
+						submit={this.handleFormSubmit}
+						formChange={this.handleFormChange}
+						wallChange={this.handleWallChange}
+						closeRightPanel={this.closeRightPanel}
+					/>
 				}
 			</div>
 		)

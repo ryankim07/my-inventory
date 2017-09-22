@@ -9,14 +9,20 @@ class PropertyRoomForm extends React.Component
     constructor(props) {
         super(props);
 
-		this.handleFormSubmit = this.handleFormSubmit.bind(this);
-        this.handleFormChange = this.handleFormChange.bind(this);
-		this.handleWallChange = this.handleWallChange.bind(this);
-		this.addWalls         = this.addWalls.bind(this);
+		this.state = {
+			room: this.props.state.room,
+			paints: [],
+			disableAddWallsBtn: false,
+		};
+
+		this.handleFormSubmit 	= this.handleFormSubmit.bind(this);
+        this.onHandleFormChange = this.onHandleFormChange.bind(this);
+		this.handleWallChange 	= this.handleWallChange.bind(this);
+		this.addWalls         	= this.addWalls.bind(this);
     }
 
 	// Handle input changes
-	handleFormChange(propertyName, event) {
+	onHandleFormChange(propertyName, event) {
 		let room        = this.props.state.room;
 		let chosenValue = event.target.value;
 
@@ -33,7 +39,7 @@ class PropertyRoomForm extends React.Component
 				room[propertyName] = chosenValue;
 		}
 
-		this.props.formChange(room);
+		this.setState({room: room});
 	}
 
 	// Submit
@@ -80,13 +86,14 @@ class PropertyRoomForm extends React.Component
 	}
 
 	render() {
-    	let disableAddWallsBtn = this.props.state.disableAddWallsBtn;
+    	let room = this.state.room;
+    	let disableAddWallsBtn = this.state.disableAddWallsBtn;
 
-		let addWallsSection = this.props.state.room.walls.map((wall, index) => {
+		let addWallsSection = room.rooms_walls.map((wall, index) => {
 			return (
 				<PropertyRoomWalls
 					key={ index } index={ index }
-					allWalls={ this.props.state.room.walls }
+					allWalls={ room.walls }
 					wall={ wall }
 					wallChange={ this.handleWallChange }
 					paints={ this.props.state.paints }
@@ -96,7 +103,8 @@ class PropertyRoomForm extends React.Component
 
 		let roomForm = <form onSubmit={ this.handleFormSubmit }>
 			<NonAddedRoomsDropdown
-				room={ this.props.state.room }
+				room={ this.state.room }
+				nonAddedRooms={ this.props.state.property.non_added_rooms }
 				onHandleFormChange={ this.onHandleFormChange }
 			/>
 			<div className="form-group">
@@ -105,8 +113,8 @@ class PropertyRoomForm extends React.Component
 					<div className="input-group">
 						<input type="text"
 							   ref="total_area"
-							   onChange={ this.handleFormChange.bind(this, 'total_area') }
-							   value={ this.props.state.room.total_area }
+							   onChange={ this.onHandleFormChange.bind(this, 'total_area') }
+							   value={ room.total_area }
 							   className="form-control input-sm"/>
 					</div>
 				</div>
@@ -132,7 +140,7 @@ class PropertyRoomForm extends React.Component
 			<div className="form-group">
 				<div className="col-xs-12 col-md-8">
 					<div className="input-group">
-						<input type="hidden" ref="id" value={ this.props.state.room.id } />
+						<input type="hidden" ref="id" value={ room.id } />
 					</div>
 				</div>
 			</div>
@@ -167,10 +175,6 @@ class PropertyRoomForm extends React.Component
             </div>
         );
     }
-}
-
-PropertyRoomForm.contextTypes = {
-	router: React.PropTypes.object.isRequired
 }
 
 export default PropertyRoomForm;

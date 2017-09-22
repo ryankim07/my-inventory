@@ -6,7 +6,6 @@ import _ from 'lodash';
 
 let _properties = [];
 let _property = {};
-let _nonAddedRooms = [];
 let _showPanel = false;
 let _errStatus;
 let _storeMsg;
@@ -128,14 +127,6 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		_showPanel = false;
 	},
 
-	getNonAddedRooms: function() {
-    	return _nonAddedRooms;
-	},
-
-	setNonAddedRooms: function(results) {
-		_nonAddedRooms = results;
-	},
-
 	addRoom: function (results) {
     	if (results.err_msg) {
 			_storeMsg = results.err_msg;
@@ -252,10 +243,6 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
 
 		case ActionConstants.REMOVE_PROPERTY_ROOM:
 			PropertiesStore.removeRoom(results);
-		break;
-
-		case ActionConstants.RECEIVE_NON_ADDED_ROOMS:
-			PropertiesStore.setNonAddedRooms(results);
 		break;
 
 		case ActionConstants.PROPERTIES_ERROR:

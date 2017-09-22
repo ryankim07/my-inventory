@@ -5,7 +5,6 @@ import ActionConstants from '../../constants/action-constants';
 import _ from 'lodash';
 
 let _rooms = [];
-let _nonAddedRooms = [];
 let _room = {};
 let _showPanel = false;
 let _errStatus;
@@ -54,10 +53,6 @@ let PropertiesRoomsStore = assign({}, EventEmitter.prototype, {
 				_rooms = (results)
 			}
 		}
-	},
-
-	setNonAddedRooms: function(results) {
-		_nonAddedRooms = results;
 	},
 
 	addRoom: function (results) {
@@ -157,10 +152,6 @@ PropertiesRoomsStore.dispatchToken = Dispatcher.register(function(payload) {
 
 		case ActionConstants.RECEIVE_PROPERTY_ROOMS:
 			PropertiesRoomsStore.setRooms($results);
-		break;
-
-		case ActionConstants.RECEIVE_NON_ADDED_ROOMS:
-			PropertiesRoomsStore.setNonAddedRooms($results);
 		break;
 
 		case ActionConstants.RECEIVE_ERROR:

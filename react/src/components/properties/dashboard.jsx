@@ -26,6 +26,9 @@ class PropertiesDashboard extends React.Component
 		this.state = {
 			property: {},
 			properties: [],
+			room: {
+				walls: []
+			},
 			isEditingMode: false,
 			loader: true,
 			mainPanel: null,
@@ -38,12 +41,13 @@ class PropertiesDashboard extends React.Component
 			},
 		};
 
-		this._onChange 		    = this._onChange.bind(this);
-		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
-		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
-		this.onHandleMainPanel 	= this.onHandleMainPanel.bind(this);
-		this.setFlashMessage    = this.setFlashMessage.bind(this);
-		this.closeRightPanel    = this.closeRightPanel.bind(this);
+		this._onChange 		   	 	= this._onChange.bind(this);
+		this.onHandleFormSubmit 	= this.onHandleFormSubmit.bind(this);
+		this.onHandleRightPanel 	= this.onHandleRightPanel.bind(this);
+		this.onHandleRightRoomPanel = this.onHandleRightRoomPanel.bind(this);
+		this.onHandleMainPanel 		= this.onHandleMainPanel.bind(this);
+		this.setFlashMessage    	= this.setFlashMessage.bind(this);
+		this.closeRightPanel    	= this.closeRightPanel.bind(this);
 	}
 
 	componentWillMount() {
@@ -114,6 +118,10 @@ class PropertiesDashboard extends React.Component
 		PropertiesAction.removeProperty(id);
 	}
 
+	/*onHandleRemoveRoom(id) {
+		PropertiesAction.removeRoom(id);
+	}*/
+
 	// Handle main panel
 	// ID will determine the state in which next panel should display
 	onHandleMainPanel(id, panel) {
@@ -132,6 +140,40 @@ class PropertiesDashboard extends React.Component
 		this.setState({
 			property: property,
 			rightPanel: rightPanel,
+			isEditingMode: isEditingMode,
+			showRightPanel: true,
+			columnCss: {
+				'mobileWidth': mainShrinkedMobileColumnWidth,
+				'desktopWidth': mainShrinkedDesktopColumnWidth
+			}
+		});
+	}
+
+	onHandleRightRoomPanel(id) {
+		let isEditingMode = !!id;
+		let property = this.state.property;
+		let rooms	 = property.rooms
+		let room = isEditingMode ?
+			rooms.find(obj => obj.id === id) :
+			{
+				id: '',
+				property_id: this.state.property.id,
+				name: '',
+				total_area: '',
+				description: '',
+				rooms_walls: [
+					{
+						id: '',
+						room_id: '',
+						paint_id: '',
+						name: ''
+					}
+				]
+			}
+
+		this.setState({
+			room: room,
+			rightPanel: 'room',
 			isEditingMode: isEditingMode,
 			showRightPanel: true,
 			columnCss: {
@@ -173,11 +215,11 @@ class PropertiesDashboard extends React.Component
 					/>;
 			break;
 
-			case 'rooms':
+			case 'rooms-list':
 				mainPanelHtml =
 					<PropertyRoomsList
 						state={ this.state }
-						onHandleRightPanel={ this.onHandleRightPanel }
+						onHandleRightRoomPanel={ this.onHandleRightRoomPanel }
 						onHandleRemove={ this.onHandleRemove }
 						className="main-column"
 					/>;
@@ -224,7 +266,7 @@ class PropertiesDashboard extends React.Component
 					/>;
 			break;
 
-			case 'add-room':
+			case 'room':
 				rightPanelHtml =
 					<PropertyRoomForm
 						state={ this.state }

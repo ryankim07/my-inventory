@@ -26,7 +26,6 @@ class PropertiesList extends React.Component
 				floors: '',
 				built: '',
 				parcel_number: '',
-				assets: [],
 				address: {
 					id: '',
 					property_id: '',
@@ -37,7 +36,12 @@ class PropertiesList extends React.Component
 					county: '',
 					country: '',
 					subdivision: ''
-				}
+				},
+				features: {},
+				exteriorFeatures: {},
+				interiorFeatures: {},
+				rooms: [],
+				assets: []
 			}
 
 		this.props.onHandleRightPanel(property, isEditingMode, 'property-add');

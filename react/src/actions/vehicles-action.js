@@ -4,6 +4,7 @@ import Api from '../services/Api';
 let Promise = require('es6-promise').Promise;
 
 let VehiclesAction = {
+
 	getVehiclesAndApiVehicles: function() {
 		Api
 			.getMultiple('http://mcs.dev/api/vehicles', 'http://mcs.dev/api/sync/list')

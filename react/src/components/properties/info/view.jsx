@@ -144,7 +144,7 @@ class PropertyInfoView extends React.Component
 			<div>
 				<h4>Property Details</h4>
 				<div>
-					<button onClick={ this.props.onHandleMainPanel.bind(this, property.id, 'rooms') }>View Rooms</button>
+					<button onClick={ this.props.onHandleMainPanel.bind(this, property.id, 'rooms-list') }>View Rooms</button>
 				</div>
 				<ul>
 					<li>

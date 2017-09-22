@@ -16,12 +16,15 @@ use AppBundle\Entity\Properties\ExteriorFeaturesEntity;
 use AppBundle\Entity\Properties\InteriorFeaturesEntity;
 use AppBundle\Entity\Properties\PropertyAssetsEntity;
 use AppBundle\Service\FileUploader;
+use AppBundle\Service\Configuration\Properties\Rooms as ConfiguredRooms;
 
 class Properties
 {
     private $em;
     private $repo;
     private $fileUploader;
+    private $roomsService;
+    private $configuredRoomsService;
     private $built;
     private $style;
     private $beds;
@@ -44,13 +47,19 @@ class Properties
      *
      * @param EntityManager $entityManager
      * @param FileUploader $fileUploader
+     * @param Rooms $roomsService
+     * @param ConfiguredRooms $configuredRoomsService
      */
     public function __construct(EntityManager $entityManager,
-                                FileUploader $fileUploader)
+                                FileUploader $fileUploader,
+                                Rooms $roomsService,
+                                ConfiguredRooms $configuredRoomsService)
     {
-        $this->em           = $entityManager;
-        $this->repo         = $this->em->getRepository('AppBundle\Entity\Properties\PropertyEntity');
-        $this->fileUploader = $fileUploader;
+        $this->em                     = $entityManager;
+        $this->repo                   = $this->em->getRepository('AppBundle\Entity\Properties\PropertyEntity');
+        $this->fileUploader           = $fileUploader;
+        $this->roomsService           = $roomsService;
+        $this->configuredRoomsService = $configuredRoomsService;
     }
 
     /**
@@ -95,8 +104,35 @@ class Properties
      * @param $results
      * @return mixed
      */
-    private function addDependencies($results)
+    private function addDependencies($properties)
     {
+        $results = [];
+
+        foreach($properties as $property) {
+            $propertyId    = $property->getId();
+            $allRooms      = $this->roomsService->findByPropertyId($propertyId);
+            $existingRooms = [];
+
+            foreach ($allRooms as $room) {
+                $existingRooms[] = $room->getName();
+            }
+
+            $configRooms = $this->configuredRoomsService->getRoomsList();
+
+            $roomsDiff = array_diff($configRooms, $existingRooms);
+
+            $diff = [];
+            foreach ($roomsDiff as $index => $value) {
+                $diff[] = [
+                    'value' => $value,
+                    'title' => ucwords($value)
+                ];
+            }
+
+            $property->addNonAddedRooms($diff);
+            $results[] = $property;
+        }
+
         return $results;
     }
 

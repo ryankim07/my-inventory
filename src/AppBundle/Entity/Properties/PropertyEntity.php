@@ -109,12 +109,19 @@ class PropertyEntity
     private $features;
 
     /**
+     * Non mapped property
+     * @var ArrayCollection
+     */
+    private $nonAddedRooms;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->assets = new ArrayCollection();
-        $this->rooms  = new ArrayCollection();
+        $this->assets        = new ArrayCollection();
+        $this->rooms         = new ArrayCollection();
+        $this->nonAddedRooms = new ArrayCollection();
     }
 
     /**
@@ -543,5 +550,10 @@ class PropertyEntity
     public function getFeatures()
     {
         return $this->features;
+    }
+
+    public function addNonAddedRooms($rooms)
+    {
+        $this->nonAddedRooms = $rooms;
     }
 }

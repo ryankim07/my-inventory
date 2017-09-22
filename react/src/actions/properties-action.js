@@ -6,7 +6,7 @@ let PropertiesAction = {
 
 	getPropertiesAndPaints: function() {
 		Api
-			.getMultiple('http://mcs.dev/api/properties', 'http://mcs.dev/api/paints/paints')
+			.getMultiple('http://mcs.dev/api/properties', 'http://mcs.dev/api/paints')
 			.then(function ([properties, paints])  {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.RECEIVE_PROPERTIES_AND_PAINTS,
@@ -16,7 +16,7 @@ let PropertiesAction = {
 			})
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.VEHICLES_ERROR,
+					actionType: ActionConstants.PROPERTIES_ERROR,
 					status: resp.status,
 					msg: resp.msg
 				});

@@ -26,10 +26,8 @@ class PropertiesDashboard extends React.Component
 		this.state = {
 			property: {},
 			properties: [],
-			room: {
-				walls: []
-			},
 			paints: [],
+			room: {},
 			isEditingMode: false,
 			loader: true,
 			mainPanel: null,
@@ -159,19 +157,20 @@ class PropertiesDashboard extends React.Component
 		let room = isEditingMode ?
 			rooms.find(obj => obj.id === id) :
 			{
-				id: '',
+				id: null,
 				property_id: this.state.property.id,
-				name: '',
-				total_area: '',
-				description: '',
-				rooms_walls: [
+				name: null,
+				total_area: null,
+				description: null,
+				walls: [
 					{
-						id: '',
-						room_id: '',
-						paint_id: '',
-						name: ''
+						id: null,
+						room_id: null,
+						paint_id: null,
+						name: null
 					}
-				]
+				],
+				room_assets: []
 			}
 
 		this.setState({
@@ -278,6 +277,7 @@ class PropertiesDashboard extends React.Component
 					/>
 			break;
 
+			// Add new property default right panel
 			default:
 				rightPanelHtml =
 					<PropertyForm

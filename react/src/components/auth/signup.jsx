@@ -11,11 +11,11 @@ class Signup extends React.Component
 
 		this.state = {
 			user: {
-				email: '',
-				username: '',
-				password: '',
-				confirm_password: '',
-				role: ''
+				email: null,
+				username: null,
+				password: null,
+				confirm_password: null,
+				role: null
 			},
 			isNewUser: false,
 			newUserAdded: false,

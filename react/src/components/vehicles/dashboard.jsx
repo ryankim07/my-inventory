@@ -104,15 +104,15 @@ class VehiclesDashboard extends React.Component
 		let vehicle = isEditingMode ?
 			this.state.vehicles.find(obj => obj.id === id) :
 			{
-				id: '',
-				mfg_id: '',
-				mfg: '',
-				model_id: '',
-				model: '',
-				year: '',
-				color: '',
-				vin: '',
-				plate: '',
+				id: null,
+				mfg_id: null,
+				mfg: null,
+				model_id: null,
+				model: null,
+				year: null,
+				color: null,
+				vin: null,
+				plate: null,
 				assets: []
 			}
 

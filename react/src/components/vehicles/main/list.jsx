@@ -16,18 +16,18 @@ class VehiclesList extends React.Component
 			} else {
 				vehiclesHtml = vehicles.map((vehicle) => {
 					return (
-				<tr key={ vehicle.id }>
-					<td>{ vehicle.mfg }</td>
-					<td>{ vehicle.model }</td>
-					<td>{ vehicle.year }</td>
-					<td>{ vehicle.color }</td>
-					<td>{ vehicle.vin }</td>
-					<td>{ vehicle.plate }</td>
-					<td>
-						<button onClick={ this.props.onHandleRightPanel.bind(this, vehicle.id) }><i className="fa fa-pencil" aria-hidden="true" /></button>
-						<button onClick={ this.props.onHandleRemove.bind(this, vehicle.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
-					</td>
-				</tr>
+						<tr key={ vehicle.id }>
+							<td>{ vehicle.mfg }</td>
+							<td>{ vehicle.model }</td>
+							<td>{ vehicle.year }</td>
+							<td>{ vehicle.color }</td>
+							<td>{ vehicle.vin }</td>
+							<td>{ vehicle.plate }</td>
+							<td>
+								<button onClick={ this.props.onHandleRightPanel.bind(this, vehicle.id) }><i className="fa fa-pencil" aria-hidden="true" /></button>
+								<button onClick={ this.props.onHandleRemove.bind(this, vehicle.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
+							</td>
+						</tr>
 					);
 				});
 			}

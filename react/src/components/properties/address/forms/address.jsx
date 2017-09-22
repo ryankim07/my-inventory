@@ -1,5 +1,5 @@
 import React from 'react';
-import StatesDropdown from './../states_dropdown';
+import StatesDropdown from './../forms/states_dropdown';
 import { upperFirstLetter } from '../../../helper/utils';
 
 class PropertyAddressForm extends React.Component

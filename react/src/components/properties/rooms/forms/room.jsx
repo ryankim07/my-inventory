@@ -1,6 +1,7 @@
 import React from 'react';
-import NonAddedRoomsDropdown from '../../rooms/non_added_rooms_dropdown';
-import PropertyRoomWalls from '../../rooms/walls';
+import NonAddedRoomsDropdown from '../../rooms/forms/non_added_rooms_dropdown';
+import PropertyRoomWallsDropdown from '../../rooms/forms/walls_dropdown';
+import PropertyPaintsDropdown from '../../rooms/forms/paints_dropdown';
 import { numberFormat } from "../../../helper/utils"
 
 class PropertyRoomForm extends React.Component
@@ -10,7 +11,6 @@ class PropertyRoomForm extends React.Component
 
 		this.state = {
 			room: this.props.state.room,
-			paints: [],
 			disableAddWallsBtn: false,
 		};
 
@@ -18,6 +18,7 @@ class PropertyRoomForm extends React.Component
         this.onHandleFormChange = this.onHandleFormChange.bind(this);
 		this.handleWallChange 	= this.handleWallChange.bind(this);
 		this.addWalls         	= this.addWalls.bind(this);
+		this.removeWall         = this.removeWall.bind(this);
     }
 
 	// Handle input changes
@@ -39,6 +40,26 @@ class PropertyRoomForm extends React.Component
 		}
 
 		this.setState({room: room});
+	}
+
+	// Handle form changes
+	handleFormChange(propertyName, event) {
+		let id    		= propertyName.match(/\d/);
+		let property 	= propertyName.split(/_(.*)/);
+		let chosenValue = event.target.value;
+		let walls 		= this.props.allWalls;
+
+		switch (property[0]) {
+			case 'wall':
+				walls[id].name = chosenValue;
+				break;
+
+			case 'paint':
+				walls[id].paint_id = chosenValue;
+				break;
+		}
+
+		this.props.wallChange(walls);
 	}
 
 	// Submit
@@ -75,8 +96,8 @@ class PropertyRoomForm extends React.Component
     	event.preventDefault();
 		let walls = this.props.state.room.walls;
 		let newWall   = {
-			name: '',
-			paint_id: ''
+			name: null,
+			paint_id: null
 		};
 
 		walls.push(newWall);
@@ -84,19 +105,36 @@ class PropertyRoomForm extends React.Component
 		this.props.wallChange(walls,  true);
 	}
 
+	removeWall(index, event) {
+		event.preventDefault();
+
+		let walls = this.props.allWalls;
+		walls.splice(index, 1);
+
+		this.props.wallChange(walls);
+	}
+
 	render() {
-    	let room = this.state.room;
+    	let room 			   = this.state.room;
     	let disableAddWallsBtn = this.state.disableAddWallsBtn;
 
-		let addWallsSection = room.rooms_walls.map((wall, index) => {
+    	let wallDetails = room.walls.map((wall, wallIndex) => {
 			return (
-				<PropertyRoomWalls
-					key={ index } index={ index }
-					allWalls={ room.walls }
-					wall={ wall }
-					wallChange={ this.handleWallChange }
-					paints={ this.props.state.paints }
-				/>
+				<div key={ wallIndex }>
+					<PropertyRoomWallsDropdown
+						index={ wallIndex }
+						wall={ wall }
+						handleFormChange={ this.handleFormChange }
+						handleWallChange={ this.handleWallChange }
+						removeWall={ this.removeWall }
+					/>
+					<PropertyPaintsDropdown
+						index={ wallIndex }
+						wall={ wall }
+						paints={ this.props.state.paints }
+						handleFormChange={ this.handleFormChange }
+					/>
+				</div>
 			);
 		});
 
@@ -110,29 +148,38 @@ class PropertyRoomForm extends React.Component
 				<div className="col-xs-12 col-md-8">
 					<label className="control-label">Total Area</label>
 					<div className="input-group">
-						<input type="text"
-							   ref="total_area"
-							   onChange={ this.onHandleFormChange.bind(this, 'total_area') }
-							   value={ room.total_area }
-							   className="form-control input-sm"/>
+						<input
+							type="text"
+							ref="total_area"
+							onChange={ this.onHandleFormChange.bind(this, 'total_area') }
+							value={ room.total_area }
+							className="form-control input-sm"
+						/>
 					</div>
 				</div>
 			</div>
 
-			<div className="walls">
-				{ addWallsSection }
-				{ disableAddWallsBtn === false ? <button onClick={ this.addWalls }><i className="fa fa-plus" aria-hidden="true" /></button> : '' }
-			</div>
+			{ wallDetails }
+
+			{ disableAddWallsBtn === false ?
+				<div className="form-group">
+					<div className="col-xs-12 col-md-12">
+						<div className="clearfix">
+							<button onClick={ this.addWalls }><i className="fa fa-plus" aria-hidden="true" /> Add Walls</button>
+						</div>
+					</div>
+				</div> : null
+			}
 
 			<div className="form-group">
 				<div className="col-xs-12 col-md-8">
 					<label className="control-label">Description</label>
 					<div className="input-group">
-							<textarea
-								ref="description"
-								rows="5"
-								className="form-control">
-							</textarea>
+						<textarea
+							ref="description"
+							rows="5"
+							className="form-control">
+						</textarea>
 					</div>
 				</div>
 			</div>

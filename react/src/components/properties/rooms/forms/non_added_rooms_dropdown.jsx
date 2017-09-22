@@ -14,11 +14,12 @@ class NonAddedRoomsDropdown extends React.Component
 				<div className="col-xs-12 col-md-8">
 					<label className="control-label">Room Name</label>
 					<div className="input-group">
-						<select ref="name"
-								onChange={ this.props.onHandleFormChange.bind(this, 'name') }
-								value={ this.props.room.name }
-								className="form-control input-sm"
-								required="required">
+						<select
+							ref="name"
+							onChange={ this.props.onHandleFormChange.bind(this, 'name') }
+							value={ this.props.room.name }
+							className="form-control input-sm"
+							required="required">
 							<option value="">Select One</option>
 							{ roomsOptions }
 						</select>

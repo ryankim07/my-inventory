@@ -11,45 +11,46 @@ class PropertyRoomForm extends React.Component
 
 		this.state = {
 			room: this.props.state.room,
-			disableAddWallsBtn: false,
+			disableAddWallsBtn: true,
 		};
 
-		this.handleFormSubmit 	= this.handleFormSubmit.bind(this);
-        this.onHandleFormChange = this.onHandleFormChange.bind(this);
-		this.handleWallChange 	= this.handleWallChange.bind(this);
-		this.addWalls         	= this.addWalls.bind(this);
-		this.removeWall         = this.removeWall.bind(this);
+		this.handleFormSubmit    = this.handleFormSubmit.bind(this);
+        this.onHandleFormChange  = this.onHandleFormChange.bind(this);
+		this.onHandleWallsChange = this.onHandleWallsChange.bind(this);
+		this.onHandleAddWalls    = this.onHandleAddWalls.bind(this);
+		this.onHandleRemoveWalls = this.onHandleRemoveWalls.bind(this);
     }
 
 	// Handle input changes
-	onHandleFormChange(propertyName, event) {
-		let room        = this.props.state.room;
+	onHandleFormChange(field, event) {
+    	let room        = this.state.room;
 		let chosenValue = event.target.value;
 
-		switch (propertyName) {
+		switch (field) {
 			case 'total_area':
 				if (chosenValue === 0) {
 					alert('Please enter correct total area.');
 				} else {
-					room[propertyName] = numberFormat(chosenValue);
+					room[field] = numberFormat(chosenValue);
 				}
-				break;
+			break;
 
 			default:
-				room[propertyName] = chosenValue;
+				room[field] = chosenValue;
 		}
 
 		this.setState({room: room});
 	}
 
-	// Handle form changes
-	handleFormChange(propertyName, event) {
-		let id    		= propertyName.match(/\d/);
-		let property 	= propertyName.split(/_(.*)/);
-		let chosenValue = event.target.value;
-		let walls 		= this.props.allWalls;
+	onHandleWallsChange(propertyName, event) {
+		let room         = this.state.room;
+		let walls        = room.walls
+		let chosenValue  = event.target.value;
+		let id			 = propertyName.match(/\d+$/)[0];
+		let field 		 = propertyName.split(/_(.*)/)[0];
+		let filledFields = 0;
 
-		switch (property[0]) {
+		switch (field) {
 			case 'wall':
 				walls[id].name = chosenValue;
 				break;
@@ -59,26 +60,6 @@ class PropertyRoomForm extends React.Component
 				break;
 		}
 
-		this.handleWallChange(walls);
-	}
-
-	// Submit
-	handleFormSubmit(event) {
-		event.preventDefault();
-
-		/*if (!this.props.state.isEditingMode) {
-			PropertiesRoomsAction.addRoom(this.props.state.room);
-		} else {
-			PropertiesRoomsAction.updateRoom(this.props.state.room);
-		}*/
-	}
-
-    // Handle appropriate action whenever wall fields are changed
-	handleWallChange(walls) {
-		let room = this.state.room;
-		let totalWalls = walls.length;
-		let filledFields = 0;
-
 		walls.map((wall, index) => {
 			if (wall.name === "all" || index === 4) {
 				filledFields = 0;
@@ -87,35 +68,45 @@ class PropertyRoomForm extends React.Component
 			}
 		});
 
-		room.push({walls: walls});
-
 		this.setState({
 			room: room,
-			disableAddWallsBtn: filledFields === totalWalls ? false : true
+			disableAddWallsBtn: filledFields === walls.length ? false : true
 		});
 	}
 
-	// Add new wall div
-    addWalls(event) {
-    	event.preventDefault();
-		let walls = this.props.state.room.walls;
-		let newWall   = {
-			name: '',
-			paint_id: ''
-		};
-
-		walls.push(newWall);
-
-		this.props.wallChange(walls,  true);
-	}
-
-	removeWall(index, event) {
+	// Submit
+	// Submit
+	handleFormSubmit(event) {
 		event.preventDefault();
 
-		let walls = this.props.allWalls;
-		walls.splice(index, 1);
+		let property = this.props.state.property;
+		this.props.onHandleFormSubmit(property.push(this.state.room));
+	}
 
-		this.props.wallChange(walls);
+	// Add new wall div
+	onHandleAddWalls(event) {
+    	event.preventDefault();
+
+    	let room  = this.state.room;
+		let newWall   = {
+			id: '',
+			room_id: '',
+			paint_id: '',
+			name: ''
+		};
+
+		room.walls.push(newWall);
+
+		this.setState({room: room});
+	}
+
+	onHandleRemoveWalls(index, event) {
+		event.preventDefault();
+
+		let room = this.state.room;
+		room.walls.splice(index, 1);
+
+		this.setState({room: room});
 	}
 
 	render() {
@@ -128,79 +119,80 @@ class PropertyRoomForm extends React.Component
 					<PropertyRoomWallsDropdown
 						index={ wallIndex }
 						wall={ wall }
-						handleFormChange={ this.handleFormChange }
-						removeWall={ this.removeWall }
+						onHandleWallsChange={ this.onHandleWallsChange }
+						onHandleRemoveWalls={ this.onHandleRemoveWalls }
 					/>
 					<PropertyPaintsDropdown
 						index={ wallIndex }
 						wall={ wall }
 						paints={ this.props.state.paints }
-						handleFormChange={ this.handleFormChange }
+						onHandleWallsChange={ this.onHandleWallsChange }
 					/>
 				</div>
 			);
 		});
 
-		let roomForm = <form onSubmit={ this.handleFormSubmit }>
-			<NonAddedRoomsDropdown
-				room={ this.state.room }
-				nonAddedRooms={ this.props.state.property.non_added_rooms }
-				onHandleFormChange={ this.onHandleFormChange }
-			/>
-			<div className="form-group">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Total Area</label>
-					<div className="input-group">
-						<input
-							type="text"
-							ref="total_area"
-							onChange={ this.onHandleFormChange.bind(this, 'total_area') }
-							value={ room.total_area }
-							className="form-control input-sm"
-						/>
+		let roomForm =
+			<form onSubmit={ this.handleFormSubmit }>
+				<NonAddedRoomsDropdown
+					room={ this.state.room }
+					nonAddedRooms={ this.props.state.property.non_added_rooms }
+					onHandleFormChange={ this.onHandleFormChange }
+				/>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Total Area</label>
+						<div className="input-group">
+							<input
+								type="text"
+								ref="total_area"
+								onChange={ this.onHandleFormChange.bind(this, 'total_area') }
+								value={ room.total_area }
+								className="form-control input-sm"
+							/>
+						</div>
 					</div>
 				</div>
-			</div>
 
-			{ wallDetails }
+				{ wallDetails }
 
-			{ disableAddWallsBtn === false ?
+				{ disableAddWallsBtn === false ?
+					<div className="form-group">
+						<div className="col-xs-12 col-md-12">
+							<div className="clearfix">
+								<button onClick={ this.onHandleAddWalls }><i className="fa fa-plus" aria-hidden="true" /> Add Walls</button>
+							</div>
+						</div>
+					</div> : null
+				}
+
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Description</label>
+						<div className="input-group">
+							<textarea
+								ref="description"
+								rows="5"
+								className="form-control">
+							</textarea>
+						</div>
+					</div>
+				</div>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<div className="input-group">
+							<input type="hidden" ref="id" value={ room.id } />
+						</div>
+					</div>
+				</div>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-12">
 						<div className="clearfix">
-							<button onClick={ this.addWalls }><i className="fa fa-plus" aria-hidden="true" /> Add Walls</button>
+							<input type="submit" value="Submit" className="btn"/>
 						</div>
 					</div>
-				</div> : null
-			}
-
-			<div className="form-group">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Description</label>
-					<div className="input-group">
-						<textarea
-							ref="description"
-							rows="5"
-							className="form-control">
-						</textarea>
-					</div>
 				</div>
-			</div>
-			<div className="form-group">
-				<div className="col-xs-12 col-md-8">
-					<div className="input-group">
-						<input type="hidden" ref="id" value={ room.id } />
-					</div>
-				</div>
-			</div>
-			<div className="form-group">
-				<div className="col-xs-12 col-md-12">
-					<div className="clearfix">
-						<input type="submit" value="Submit" className="btn"/>
-					</div>
-				</div>
-			</div>
-		</form>
+			</form>
 
         return (
             <div className="col-xs-4 col-md-4" id="room-add">

@@ -8,6 +8,8 @@
 
 namespace AppBundle\Service\Properties;
 
+use AppBundle\Entity\Properties\RoomsEntity;
+use AppBundle\Entity\Properties\RoomsWallsEntity;
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Properties\PropertyEntity;
 use AppBundle\Entity\Properties\AddressEntity;
@@ -34,10 +36,10 @@ class Properties
     private $totalArea;
     private $parcelNumber;
     private $address;
-    private $assets;
     private $features;
     private $exteriorFeatures;
     private $interiorFeatures;
+    private $assets;
     private $entity;
     private $existingProperty;
 
@@ -89,7 +91,9 @@ class Properties
     {
         $results = !is_null($id) ? $this->repo->find($id) : $this->repo->findBy([], ['built' => 'DESC']);
 
-        $results = $this->addDependencies($results);
+        if (!$results instanceof PropertyEntity) {
+            $results = $this->addDependencies($results);
+        }
 
         return $results;
     }
@@ -157,10 +161,10 @@ class Properties
             $this->totalArea        = $data['total_area'];
             $this->parcelNumber     = $data['parcel_number'];
             $this->address          = $data['address'];
-            $this->assets           = $data['assets'];
             $this->features         = $data['features'];
             $this->exteriorFeatures = $data['exterior_features'];
             $this->interiorFeatures = $data['interior_features'];
+            $this->assets           = $data['assets'];
 
             $this->existingProperty = $this->find($id);
 
@@ -172,7 +176,7 @@ class Properties
             $msg = "Property successfully {$op}.";
 
             // Save or update property
-            if (!$this->_saveProperty()) {
+            if (!$this->_save()) {
                 $msg = "Property could not be {$op}.";
             };
 
@@ -230,7 +234,7 @@ class Properties
      *
      * @return bool
      */
-    private function _saveProperty()
+    private function _save()
     {
         // Upload asset
         $assetFullPath = !is_null($this->assets) ? $this->fileUploader->upload($this->assets) : null;
@@ -238,16 +242,17 @@ class Properties
         if (!$this->existingProperty) {
             $this->entity           = new PropertyEntity();
             $addressEntity          = new AddressEntity();
-            $assetEntity            = new PropertyAssetsEntity();
             $featuresEntity         = new FeaturesEntity();
             $exteriorFeaturesEntity = new ExteriorFeaturesEntity();
             $interiorFeaturesEntity = new InteriorFeaturesEntity();
+            $assetEntity            = new PropertyAssetsEntity();
         } else {
-            $assetEntity            = $this->em->getRepository('AppBundle\Entity\Properties\PropertyAssetsEntity')->findByPropertyId($this->entity->getId());
             $addressEntity          = $this->em->getRepository('AppBundle\Entity\Properties\AddressEntity')->findOneByPropertyId($this->entity->getId());
             $exteriorFeaturesEntity = $this->em->getRepository('AppBundle\Entity\Properties\ExteriorFeaturesEntity')->findOneByPropertyId($this->entity->getId());
             $featuresEntity         = $this->em->getRepository('AppBundle\Entity\Properties\FeaturesEntity')->findOneByPropertyId($this->entity->getId());
             $interiorFeaturesEntity = $this->em->getRepository('AppBundle\Entity\Properties\InteriorFeaturesEntity')->findOneByPropertyId($this->entity->getId());
+            $assetEntity            = $this->em->getRepository('AppBundle\Entity\Properties\PropertyAssetsEntity')->findByPropertyId($this->entity->getId());
+
         }
 
         // Existing property but new features

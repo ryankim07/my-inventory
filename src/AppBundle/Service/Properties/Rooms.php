@@ -6,24 +6,23 @@
  * Time: 10:28 AM
  */
 
-namespace AppBundle\Service\Paints;
+namespace AppBundle\Service\Properties;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\Paints\PaintsEntity;
+use AppBundle\Entity\Properties\RoomsEntity;
+use AppBundle\Entity\Properties\RoomsWallsEntity;
 
-class Paints
+class Rooms
 {
     private $em;
     private $repo;
-    private $vendorId;
+    private $propertyId;
     private $name;
-    private $number;
-    private $color;
-    private $hex;
-    private $rgb;
-    private $notes;
+    private $totalArea;
+    private $description;
+    private $walls;
     private $entity;
-    private $existingPaint;
+    private $existingRoom;
 
     /**
      * Constructor
@@ -33,7 +32,7 @@ class Paints
     public function __construct(EntityManager $entityManager)
     {
         $this->em   = $entityManager;
-        $this->repo = $this->em->getRepository('AppBundle\Entity\Paints\PaintsEntity');
+        $this->repo = $this->em->getRepository('AppBundle\Entity\Properties\RoomsEntity');
     }
 
     /**
@@ -57,9 +56,9 @@ class Paints
         return $this->doSelect($id);
     }
 
-    public function findByVendorId($id)
+    public function findByPropertyId($id)
     {
-        return $this->repo->findByVendorId($id);
+        return $this->repo->findByPropertyId($id);
     }
 
     /**
@@ -99,33 +98,37 @@ class Paints
     public function save($data)
     {
         if (count($data) == 0) {
-            return ['msg' => 'Paint information empty.'];
+            return ['msg' => 'Room information empty.'];
         }
 
         try {
-            $id             = (int)$data['id'];
-            $this->vendorId = (int)$data['vendor_id'];
-            $this->name     = $data["name"];
-            $this->number   = $data["total_area"];
-            $this->color    = $data["description"];
-            $this->hex      = $data["hex"];
-            $this->rgb      =  $data["rgb"];
-            $this->notes    = $data["notes"];
+            $id                = (int)$data['id'];
+            $this->propertyId  = (int)$data['property_id'];
+            $this->name        = $data["name"];
+            $this->totalArea   = $data["total_area"];
+            $this->description = $data["description"];
+            $this->walls       = $data["walls"];
 
-            $this->existingPaint = $this->find($id);
+            $this->existingRoom = $this->find($id);
 
-            if (!$this->existingPaint) {
-                $this->entity = $this->existingPaint;
+            if (!$this->existingRoom) {
+                $this->entity = $this->existingRoom;
             }
 
             // Save or update room
-            $this->_savePaint();
+            $this->_save();
 
-            $msg = !$this->existingPaint ? 'added' : 'updated';
+            $msg = !$this->existingRoom ? 'added' : 'updated';
 
             return [
-                'property' => $this->entity,
-                'msg'      => "Paint color successfully {$msg}."
+                'room' => [
+                    'id'          => $this->entity->getId(),
+                    'property_id' => $this->entity->getPropertyId(),
+                    'name'        => $this->entity->getName(),
+                    'total_area'  => $this->entity->getTotalArea(),
+                    'description' => $this->entity->getDescription()
+                ],
+                'msg'   => "Room successfully {$msg}."
             ];
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
@@ -141,17 +144,17 @@ class Paints
     public function delete($id)
     {
         if (!isset($id)) {
-            return ['msg' => 'Empty ID for deleting paint.'];
+            return ['msg' => 'Empty ID for deleting room.'];
         }
 
         try {
-            $paint = $this->repo->find($id);
+            $room = $this->repo->find($id);
 
-            $this->em->remove($paint);
+            $this->em->remove($room);
             $this->em->flush();
 
             return [
-                'msg' => 'Paint color successfully deleted.',
+                'msg' => 'Room successfully deleted.',
                 'id'  => $id
             ];
         } catch(\Exception $e) {
@@ -160,14 +163,14 @@ class Paints
     }
 
     /**
-     * Save or update paint
+     * Save or update room
      *
      * @return bool
      */
-    private function _savePaint()
+    private function _save()
     {
-        if (!$this->existingPaint) {
-            $this->entity = new PaintsEntity();
+        if (!$this->existingRoom) {
+            $this->entity = new RoomsEntity();
         }
 
         $property = $this->em->getRepository('AppBundle\Entity\Properties\PropertyEntity')->find($this->propertyId);
@@ -179,7 +182,17 @@ class Paints
 
         $property->addRoom($this->entity);
 
-        if (!$this->existingPaint) {
+        foreach($this->walls as $wall) {
+            $wallsEntity = new RoomsWallsEntity();
+
+            $wallsEntity->setRoomId($this->entity->getId());
+            $wallsEntity->setPaintId((int) $wall['paint_id']);
+            $wallsEntity->setName($wall['name']);
+
+            $this->entity->addWall($wallsEntity);
+        }
+
+        if (!$this->existingRoom) {
             $this->em->persist($property);
         }
 

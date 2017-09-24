@@ -56,13 +56,13 @@ class PropertyController extends FOSRestController
     }
 
     /**
-     * Add new property
+     * Add new or update property
      *
      * @Rest\Post("/api/property", name="new_property")
      * @param Request $request
      * @return View
      */
-    public function postAction(Request $request)
+    public function postPropertyAction(Request $request)
     {
         // Request param
         $data           = json_decode(stripslashes($request->get('data')), true);
@@ -82,9 +82,44 @@ class PropertyController extends FOSRestController
      * @param $id
      * @return View
      */
-    public function deleteAction($id)
+    public function deletePropertyAction($id)
     {
         $service = $this->get('Properties');
+        $results = $service->delete($id);
+
+        return new View($results, Response::HTTP_OK);
+    }
+
+    /**
+     * Add new or update property room
+     *
+     * @Rest\Post("/api/property/room", name="new_room")
+     * @param Request $request
+     * @return View
+     */
+    public function postRoomAction(Request $request)
+    {
+        // Request param
+        $data           = json_decode(stripslashes($request->get('data')), true);
+        $data['assets'] = $request->files->get('file');
+
+        // Call service to save
+        $service = $this->get('Rooms');
+        $results = $service->save($data);
+
+        return new View($results, Response::HTTP_OK);
+    }
+
+    /**
+     * Delete room
+     *
+     * @Rest\Delete("/api/properties/rooms/{id}", name="delete_room")
+     * @param $id
+     * @return View
+     */
+    public function deleteRoomAction($id)
+    {
+        $service = $this->get('Rooms');
         $results = $service->delete($id);
 
         return new View($results, Response::HTTP_OK);

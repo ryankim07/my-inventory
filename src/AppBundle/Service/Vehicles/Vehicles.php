@@ -141,7 +141,7 @@ class Vehicles
             $msg = "Vehicle successfully {$op}.";
 
             // Save or update vehicle
-            if (!$this->_saveVehicle()) {
+            if (!$this->_save()) {
                 $msg = "Vehicle could not be {$op}.";
             };
 
@@ -197,7 +197,7 @@ class Vehicles
      *
      * @return bool
      */
-    private function _saveVehicle()
+    private function _save()
     {
         // Upload asset
         $assetFullPath = !is_null($this->assets) ? $this->fileUploader->upload($this->assets) : null;

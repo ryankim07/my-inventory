@@ -54,6 +54,7 @@ class VehicleForm extends React.Component
     // Submit
     handleFormSubmit(event) {
 		event.preventDefault();
+
 		this.props.onHandleFormSubmit(this.state.vehicle);
 	}
 

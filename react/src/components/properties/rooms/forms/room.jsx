@@ -14,12 +14,19 @@ class PropertyRoomForm extends React.Component
 			disableAddWallsBtn: true,
 		};
 
-		this.handleFormSubmit    = this.handleFormSubmit.bind(this);
-        this.onHandleFormChange  = this.onHandleFormChange.bind(this);
-		this.onHandleWallsChange = this.onHandleWallsChange.bind(this);
-		this.onHandleAddWalls    = this.onHandleAddWalls.bind(this);
-		this.onHandleRemoveWalls = this.onHandleRemoveWalls.bind(this);
+		this.handleRoomFormSubmit = this.handleRoomFormSubmit.bind(this);
+        this.onHandleFormChange   = this.onHandleFormChange.bind(this);
+		this.onHandleWallsChange  = this.onHandleWallsChange.bind(this);
+		this.onHandleAddWall      = this.onHandleAddWall.bind(this);
+		this.onHandleRemoveWall   = this.onHandleRemoveWall.bind(this);
     }
+
+	// Submit
+	handleRoomFormSubmit(event) {
+		event.preventDefault();
+
+		this.props.onHandleRoomFormSubmit(this.state.room, true);
+	}
 
 	// Handle input changes
 	onHandleFormChange(field, event) {
@@ -74,17 +81,8 @@ class PropertyRoomForm extends React.Component
 		});
 	}
 
-	// Submit
-	// Submit
-	handleFormSubmit(event) {
-		event.preventDefault();
-
-		let property = this.props.state.property;
-		this.props.onHandleFormSubmit(property.push(this.state.room));
-	}
-
 	// Add new wall div
-	onHandleAddWalls(event) {
+	onHandleAddWall(event) {
     	event.preventDefault();
 
     	let room  = this.state.room;
@@ -100,7 +98,7 @@ class PropertyRoomForm extends React.Component
 		this.setState({room: room});
 	}
 
-	onHandleRemoveWalls(index, event) {
+	onHandleRemoveWall(index, event) {
 		event.preventDefault();
 
 		let room = this.state.room;
@@ -120,7 +118,7 @@ class PropertyRoomForm extends React.Component
 						index={ wallIndex }
 						wall={ wall }
 						onHandleWallsChange={ this.onHandleWallsChange }
-						onHandleRemoveWalls={ this.onHandleRemoveWalls }
+						onHandleRemoveWall={ this.onHandleRemoveWall }
 					/>
 					<PropertyPaintsDropdown
 						index={ wallIndex }
@@ -133,7 +131,7 @@ class PropertyRoomForm extends React.Component
 		});
 
 		let roomForm =
-			<form onSubmit={ this.handleFormSubmit }>
+			<form onSubmit={ this.handleRoomFormSubmit }>
 				<NonAddedRoomsDropdown
 					room={ this.state.room }
 					nonAddedRooms={ this.props.state.property.non_added_rooms }
@@ -160,7 +158,7 @@ class PropertyRoomForm extends React.Component
 					<div className="form-group">
 						<div className="col-xs-12 col-md-12">
 							<div className="clearfix">
-								<button onClick={ this.onHandleAddWalls }><i className="fa fa-plus" aria-hidden="true" /> Add Walls</button>
+								<button onClick={ this.onHandleAddWall }><i className="fa fa-plus" aria-hidden="true" /> Add Walls</button>
 							</div>
 						</div>
 					</div> : null

@@ -60,6 +60,10 @@ services:
         class: AppBundle\Service\Vehicles\Vehicles
         arguments: ["@doctrine.orm.vehicles_entity_manager", "@Sync_Db", "@File_Uploader"]
 
+    Rooms:
+        class: AppBundle\Service\Properties\Rooms
+        arguments: ["@doctrine.orm.houses_entity_manager"]
+
     Configured_Rooms:
         class: AppBundle\Service\Configuration\Properties\Rooms
 

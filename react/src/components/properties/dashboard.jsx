@@ -42,6 +42,7 @@ class PropertiesDashboard extends React.Component
 
 		this._onChange 		   	 	= this._onChange.bind(this);
 		this.onHandleFormSubmit 	= this.onHandleFormSubmit.bind(this);
+		this.onHandleRoomFormSubmit = this.onHandleRoomFormSubmit.bind(this);
 		this.onHandleRightPanel 	= this.onHandleRightPanel.bind(this);
 		this.onHandleRightRoomPanel = this.onHandleRightRoomPanel.bind(this);
 		this.onHandleMainPanel 		= this.onHandleMainPanel.bind(this);
@@ -106,12 +107,12 @@ class PropertiesDashboard extends React.Component
 	}
 
 	// Handle submit
-	onHandleFormSubmit(property) {
-		if (!this.state.isEditingMode) {
-			PropertiesAction.addProperty(property);
-		} else {
-			PropertiesAction.updateProperty(property);
-		}
+	onHandleFormSubmit(property, editingMode) {
+		PropertiesAction.postProperty(property, editingMode);
+	}
+
+	onHandleRoomFormSubmit(room, editingMode) {
+		PropertiesAction.postPropertyRoom(room, editingMode);
 	}
 
 	// Handle delete
@@ -119,9 +120,10 @@ class PropertiesDashboard extends React.Component
 		PropertiesAction.removeProperty(id);
 	}
 
-	/*onHandleRemoveRoom(id) {
-		PropertiesAction.removeRoom(id);
-	}*/
+	// Handle delete
+	onHandleRemoveRoom(id) {
+		PropertiesAction.removePropertyRoom(id);
+	}
 
 	// Handle main panel
 	// ID will determine the state in which next panel should display
@@ -222,7 +224,7 @@ class PropertiesDashboard extends React.Component
 					<PropertyRoomsList
 						state={ this.state }
 						onHandleRightRoomPanel={ this.onHandleRightRoomPanel }
-						onHandleRemove={ this.onHandleRemove }
+						onHandleRemoveRoom={ this.onHandleRemoveRoom }
 						className="main-column"
 					/>;
 			break;
@@ -272,7 +274,7 @@ class PropertiesDashboard extends React.Component
 				rightPanelHtml =
 					<PropertyRoomForm
 						state={ this.state }
-						onHandleFormSubmit={ this.onHandleFormSubmit }
+						onHandleRoomFormSubmit={ this.onHandleRoomFormSubmit }
 						closeRightPanel={ this.closeRightPanel }
 					/>
 			break;

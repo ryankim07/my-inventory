@@ -41,30 +41,14 @@ let PropertiesAction = {
             });
     },
 
-    addProperty: function(data) {
-        Api
-            .post('http://mcs.dev/api/property', data, data.assets)
-            .then(function (property) {
-                AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.ADD_PROPERTY,
-					results: property
-                });
-            })
-            .catch(function(resp) {
-                AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.PROPERTIES_ERROR,
-					status: resp.status,
-					msg: resp.msg
-                });
-            });
-    },
-
-	updateProperty: function(data) {
+	postProperty: function(data, editingMode) {
 		Api
 			.post('http://mcs.dev/api/property', data, data.assets)
 			.then(function (property) {
+				let actionType = !editingMode ? ActionConstants.ADD_PROPERTY : ActionConstants.UPDATE_PROPERTY;
+
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.UPDATE_PROPERTY,
+					actionType: actionType,
 					results: property
 				});
 			})
@@ -93,7 +77,45 @@ let PropertiesAction = {
 					msg: resp.msg
                 });
             });
-    }
+    },
+
+	postPropertyRoom: function(data, editingMode) {
+		Api
+			.post('http://mcs.dev/api/property/room', data)
+			.then(function (room) {
+				let actionType = !editingMode ? ActionConstants.PROPERTIES_ERROR : ActionConstants.UPDATE_PROPERTY_ROOM;
+
+				AppDispatcher.handleViewAction({
+					actionType: actionType,
+					results: room
+				});
+			})
+			.catch(function(resp) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.PROPERTIES_ERROR,
+					status: resp.status,
+					msg: resp.msg
+				});
+			});
+	},
+
+	removePropertyRoom: function(id) {
+		Api
+			.delete('http://mcs.dev/api/properties/rooms/' + id)
+			.then(function (room) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.REMOVE_PROPERTY_ROOM,
+					results: room
+				});
+			})
+			.catch(function(resp) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.PROPERTIES_ERROR,
+					status: resp.status,
+					msg: resp.msg
+				});
+			});
+	}
 };
 
 export default PropertiesAction;

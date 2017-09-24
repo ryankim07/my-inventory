@@ -116,11 +116,12 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 			unfinished_area: property.unfinished_area,
 			total_area: property.total_area,
 			parcel_number: property.parcel_number,
-			assets: property.assets,
 			address: property.address,
 			features: property.features,
 			exterior_features: property.exterior_features,
-			interior_features: property.interior_features
+			interior_features: property.interior_features,
+			rooms: property.rooms,
+			assets: property.assets
 		});
 
 		_property = property;
@@ -185,7 +186,7 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		}
 
 		_.remove(_property.rooms, (myRoom) => {
-			return parseInt(results.id) == myRoom.id;
+			return parseInt(results.id) === myRoom.id;
 		});
 
 		_storeMsg = results.msg;

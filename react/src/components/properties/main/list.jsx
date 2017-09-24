@@ -55,19 +55,14 @@ class PropertiesList extends React.Component
         if (!this.props.state.loader) {
 			let properties = this.props.state.properties;
 
-			propertiesHtml = !properties  || properties.length === 0 ?
+			propertiesHtml = !properties || properties.length === 0 ?
 				<div><span>There are no saved properties.</span></div> :
-				properties.map((property) => {
-					return (
-						<PropertyAddressList
-							key={ property.id }
-							address={ property.address }
-							handleRightPanel={ this.handleRightPanel }
-							onHandleMainPanel={ this.props.onHandleMainPanel }
-							onHandleRemove={ this.props.onHandleRemove }
-						/>
-					);
-				});
+				<PropertyAddressList
+					properties={ properties }
+					handleRightPanel={ this.handleRightPanel }
+					onHandleMainPanel={ this.props.onHandleMainPanel }
+					onHandleRemove={ this.props.onHandleRemove }
+				/>
         } else {
             propertiesHtml = <div><Loader /></div>;
         }

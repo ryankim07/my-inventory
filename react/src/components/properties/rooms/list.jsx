@@ -17,7 +17,7 @@ class PropertyRoomsList extends React.Component
 						<td>{ room.description }</td>
 						<td>
 							<button onClick={ this.props.onHandleRightRoomPanel.bind(this, room.id) }><i className="fa fa-pencil" aria-hidden="true" /></button>
-							<button onClick={ this.props.onHandleRemove.bind(this, room.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
+							<button onClick={ this.props.onHandleRemoveRoom.bind(this, room.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
 						</td>
 					</tr>
 				);

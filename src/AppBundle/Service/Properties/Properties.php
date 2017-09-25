@@ -161,7 +161,7 @@ class Properties
     private function _save($data)
     {
         // Upload asset
-        $assets = $data['assets'];
+        $assets        = $data['assets'];
         $assetFullPath = !is_null($assets) ? $this->fileUploader->upload($assets) : null;
 
         if (!$this->existingProperty) {

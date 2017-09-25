@@ -146,12 +146,11 @@ class Vehicles
      */
     private function _save($data)
     {
-        $assetEntity  = !$this->existingVehicle ?
-            new AssetsEntity() : $this->em->getRepository('AppBundle\Entity\Vehicles\AssetsEntity')->findOneByVehicleId($this->entity->getId());
-
         // Upload asset
-        $assets = $data['assets'];
-        $assetFullPath = !is_null($$assets) ? $this->fileUploader->upload($$assets) : null;
+        $assets        = $data['assets'];
+        $assetFullPath = !is_null($assets) ? $this->fileUploader->upload($assets) : null;
+        $assetEntity   = !$this->existingVehicle ?
+            new AssetsEntity() : $this->em->getRepository('AppBundle\Entity\Vehicles\AssetsEntity')->findOneByVehicleId($this->entity->getId());
 
         // Vehicle entity
         $this->entity->setMfgId($data['mfg_id']);
@@ -169,11 +168,9 @@ class Vehicles
                 $assetEntity->setPath($assetFullPath);
                 $this->entity->addAsset($assetEntity);
             } else {
-                foreach($assetEntity as $asset) {
-                    $asset->setName($assets->getClientOriginalName());
-                    $asset->setPath($assetFullPath);
-                    $this->entity->addAsset($asset);
-                }
+                $assetEntity->setName($assetEntity->getName());
+                $assetEntity->setPath($assetFullPath);
+                $this->entity->addAsset($assetEntity);
             }
         }
 

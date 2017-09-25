@@ -93,8 +93,7 @@ class Rooms
 
         try {
             $this->existingRoom = $this->find($data['id']);
-
-            $this->entity = $this->existingRoom ? $this->existingRoom : new RoomsEntity();
+            $this->entity       = $this->existingRoom ? $this->existingRoom : new RoomsEntity();
 
             $op  = !$this->existingRoom ? 'added' : 'updated';
             $msg = "Room successfully {$op}.";

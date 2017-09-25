@@ -36,7 +36,6 @@ class Properties
     private $totalArea;
     private $parcelNumber;
     private $address;
-    private $features;
     private $exteriorFeatures;
     private $interiorFeatures;
     private $assets;
@@ -150,18 +149,17 @@ class Properties
         }
 
         try {
-            $id                     = (int)$data['id'];
-            $this->built            = $data['built'];
+            $id                     = $data['id'];
+            $this->floors           = (int) $data['floors'];
+            $this->beds             = (int) $data['beds'];
+            $this->built            = (int) $data['built'];
             $this->style            = $data['style'];
-            $this->floors           = (int)$data['floors'];
-            $this->beds             = (int)$data['beds'];
-            $this->baths            = $data['baths'];
+            $this->baths            = (int) $data['baths'];
             $this->finishedArea     = $data['finished_area'];
             $this->unfinishedArea   = $data['unfinished_area'];
             $this->totalArea        = $data['total_area'];
             $this->parcelNumber     = $data['parcel_number'];
             $this->address          = $data['address'];
-            $this->features         = $data['features'];
             $this->exteriorFeatures = $data['exterior_features'];
             $this->interiorFeatures = $data['interior_features'];
             $this->assets           = $data['assets'];
@@ -242,32 +240,24 @@ class Properties
         if (!$this->existingProperty) {
             $this->entity           = new PropertyEntity();
             $addressEntity          = new AddressEntity();
-            $featuresEntity         = new FeaturesEntity();
             $exteriorFeaturesEntity = new ExteriorFeaturesEntity();
             $interiorFeaturesEntity = new InteriorFeaturesEntity();
             $assetEntity            = new PropertyAssetsEntity();
         } else {
-            $addressEntity          = $this->em->getRepository('AppBundle\Entity\Properties\AddressEntity')->findOneByPropertyId($this->entity->getId());
+            $addressEntity = $this->em->getRepository('AppBundle\Entity\Properties\AddressEntity')->findOneByPropertyId($this->entity->getId());
+            $assetEntity   = $this->em->getRepository('AppBundle\Entity\Properties\PropertyAssetsEntity')->findByPropertyId($this->entity->getId());
+
             $exteriorFeaturesEntity = $this->em->getRepository('AppBundle\Entity\Properties\ExteriorFeaturesEntity')->findOneByPropertyId($this->entity->getId());
-            $featuresEntity         = $this->em->getRepository('AppBundle\Entity\Properties\FeaturesEntity')->findOneByPropertyId($this->entity->getId());
+
+            if (is_null($exteriorFeaturesEntity)) {
+                $exteriorFeaturesEntity = new ExteriorFeaturesEntity();
+            }
+
             $interiorFeaturesEntity = $this->em->getRepository('AppBundle\Entity\Properties\InteriorFeaturesEntity')->findOneByPropertyId($this->entity->getId());
-            $assetEntity            = $this->em->getRepository('AppBundle\Entity\Properties\PropertyAssetsEntity')->findByPropertyId($this->entity->getId());
 
-        }
-
-        // Existing property but new features
-        if (is_null($featuresEntity)) {
-            $featuresEntity = new FeaturesEntity();
-        }
-
-        // Existing property but new exterior features
-        if (is_null($exteriorFeaturesEntity)) {
-            $exteriorFeaturesEntity = new ExteriorFeaturesEntity();
-        }
-
-        // Existing property but new interior features
-        if (is_null($interiorFeaturesEntity)) {
-            $interiorFeaturesEntity = new InteriorFeaturesEntity();
+            if (is_null($interiorFeaturesEntity)) {
+                $interiorFeaturesEntity = new InteriorFeaturesEntity();
+            }
         }
 
         // Property entity
@@ -292,20 +282,6 @@ class Properties
             $addressEntity->setCountry($this->address['country']);
             $addressEntity->setSubdivision($this->address['subdivision']);
             $this->entity->addAddress($addressEntity);
-        }
-
-        // Features entity
-        if (!is_null($this->features)) {
-            $featuresEntity->setPropertyId($this->entity->getId());
-            $featuresEntity->setParking($this->features['parking']);
-            $featuresEntity->setMultiUnit($this->features['multi_unit']);
-            $featuresEntity->setHoa($this->features['hoa']);
-            $featuresEntity->setUtilities($this->features['utilities']);
-            $featuresEntity->setLot($this->features['lot']);
-            $featuresEntity->setCommonWalls($this->features['common_walls']);
-            $featuresEntity->setFacingDirection($this->features['facing_direction']);
-            $featuresEntity->setOthers($this->features['others']);
-            $this->entity->addFeatures($featuresEntity);
         }
 
         // Exterior features entity

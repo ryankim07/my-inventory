@@ -56,11 +56,6 @@ class Rooms
         return $this->doSelect($id);
     }
 
-    public function findByPropertyId($id)
-    {
-        return $this->repo->findByPropertyId($id);
-    }
-
     /**
      * Query and add dependencies
      *
@@ -102,8 +97,8 @@ class Rooms
         }
 
         try {
-            $id                = (int)$data['id'];
-            $this->propertyId  = (int)$data['property_id'];
+            $id                = $data['id'];
+            $this->propertyId  = $data['property_id'];
             $this->name        = $data["name"];
             $this->totalArea   = $data["total_area"];
             $this->description = $data["description"];
@@ -111,28 +106,65 @@ class Rooms
 
             $this->existingRoom = $this->find($id);
 
-            if (!$this->existingRoom) {
-                $this->entity = $this->existingRoom;
-            }
+            $this->entity = $this->existingRoom ? $this->existingRoom : new RoomsEntity();
 
-            // Save or update room
-            $this->_save();
+            $op  = !$this->existingRoom ? 'added' : 'updated';
+            $msg = "Room successfully {$op}.";
 
-            $msg = !$this->existingRoom ? 'added' : 'updated';
+            // Save or update vehicle
+            $property = $this->_save();
+
+            if (!$property) {
+                $msg = "Room could not be {$op}.";
+            };
 
             return [
-                'room' => [
-                    'id'          => $this->entity->getId(),
-                    'property_id' => $this->entity->getPropertyId(),
-                    'name'        => $this->entity->getName(),
-                    'total_area'  => $this->entity->getTotalArea(),
-                    'description' => $this->entity->getDescription()
-                ],
-                'msg'   => "Room successfully {$msg}."
+                'property' => $property,
+                'msg'      => $msg
             ];
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
         }
+    }
+
+    /**
+     * Save or update room
+     *
+     */
+    private function _save()
+    {
+        $property = $this->em->getRepository('AppBundle\Entity\Properties\PropertyEntity')->find($this->propertyId);
+
+        /*foreach($this->walls as $wall) {
+            $wallsEntity = new RoomsWallsEntity();
+
+            if (isset($wall["id"])) {
+                $wallsEntity = $this->em->getRepository('AppBundle\Entity\Properties\RoomsWallsEntity')->find($wall["id"]);
+            }
+
+            if (empty($wall["paint_id"]) && empty($wall["name"])) {
+                continue;
+            }
+
+            $wallsEntity->setRoomId($this->entity->getId());
+            $wallsEntity->setPaintId((int) $wall['paint_id']);
+            $wallsEntity->setName($wall['name']);
+            $this->entity->addWall($wallsEntity);
+        }*/
+
+        $this->entity->setPropertyId($this->propertyId);
+        $this->entity->setName($this->name);
+        $this->entity->setTotalArea($this->totalArea);
+        $this->entity->setDescription($this->description);
+        $property->addRoom($this->entity);
+
+        if (!$this->existingRoom) {
+            $this->em->persist($property);
+        }
+
+        $this->em->flush();
+
+        return $property;
     }
 
     /**
@@ -160,44 +192,5 @@ class Rooms
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
         }
-    }
-
-    /**
-     * Save or update room
-     *
-     * @return bool
-     */
-    private function _save()
-    {
-        if (!$this->existingRoom) {
-            $this->entity = new RoomsEntity();
-        }
-
-        $property = $this->em->getRepository('AppBundle\Entity\Properties\PropertyEntity')->find($this->propertyId);
-
-        $this->entity->setPropertyId($this->propertyId);
-        $this->entity->setName($this->name);
-        $this->entity->setTotalArea($this->totalArea);
-        $this->entity->setDescription($this->description);
-
-        $property->addRoom($this->entity);
-
-        foreach($this->walls as $wall) {
-            $wallsEntity = new RoomsWallsEntity();
-
-            $wallsEntity->setRoomId($this->entity->getId());
-            $wallsEntity->setPaintId((int) $wall['paint_id']);
-            $wallsEntity->setName($wall['name']);
-
-            $this->entity->addWall($wallsEntity);
-        }
-
-        if (!$this->existingRoom) {
-            $this->em->persist($property);
-        }
-
-        $this->em->flush();
-
-        return true;
     }
 }

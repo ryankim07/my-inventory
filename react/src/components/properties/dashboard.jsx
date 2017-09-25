@@ -42,7 +42,6 @@ class PropertiesDashboard extends React.Component
 
 		this._onChange 		   	 	= this._onChange.bind(this);
 		this.onHandleFormSubmit 	= this.onHandleFormSubmit.bind(this);
-		this.onHandleRoomFormSubmit = this.onHandleRoomFormSubmit.bind(this);
 		this.onHandleRightPanel 	= this.onHandleRightPanel.bind(this);
 		this.onHandleRightRoomPanel = this.onHandleRightRoomPanel.bind(this);
 		this.onHandleMainPanel 		= this.onHandleMainPanel.bind(this);
@@ -107,12 +106,8 @@ class PropertiesDashboard extends React.Component
 	}
 
 	// Handle submit
-	onHandleFormSubmit(property, editingMode) {
-		PropertiesAction.postProperty(property, editingMode);
-	}
-
-	onHandleRoomFormSubmit(room, editingMode) {
-		PropertiesAction.postPropertyRoom(room, editingMode);
+	onHandleFormSubmit(obj) {
+		PropertiesAction.postProperty(obj);
 	}
 
 	// Handle delete
@@ -228,6 +223,7 @@ class PropertiesDashboard extends React.Component
 					<PropertyRoomsList
 						state={ this.state }
 						onHandleRightRoomPanel={ this.onHandleRightRoomPanel }
+						onHandleFormSubmit={ this.onHandleFormSubmit }
 						onHandleRemoveRoom={ this.onHandleRemoveRoom }
 						className="main-column"
 					/>;
@@ -237,8 +233,8 @@ class PropertiesDashboard extends React.Component
 				mainPanelHtml =
 					<PropertiesList
 						state={ this.state }
-						onHandleRightPanel={ this.onHandleRightPanel }
 						onHandleMainPanel={ this.onHandleMainPanel }
+						onHandleRightPanel={ this.onHandleRightPanel }
 						onHandleRemove={ this.onHandleRemove }
 						className={ mainColumnClassName }
 					/>;
@@ -278,7 +274,7 @@ class PropertiesDashboard extends React.Component
 				rightPanelHtml =
 					<PropertyRoomForm
 						state={ this.state }
-						onHandleRoomFormSubmit={ this.onHandleRoomFormSubmit }
+						onHandleFormSubmit={ this.onHandleFormSubmit }
 						closeRightPanel={ this.closeRightPanel }
 					/>
 			break;

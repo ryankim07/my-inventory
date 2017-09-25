@@ -15,11 +15,11 @@ class PropertyRoomForm extends React.Component
 			isEditingMode: this.props.state.isEditingMode
 		};
 
-		this.handleRoomFormSubmit = this.handleRoomFormSubmit.bind(this);
-        this.onHandleFormChange   = this.onHandleFormChange.bind(this);
-		this.onHandleWallsChange  = this.onHandleWallsChange.bind(this);
-		this.onHandleAddWall      = this.onHandleAddWall.bind(this);
-		this.onHandleRemoveWall   = this.onHandleRemoveWall.bind(this);
+		this.handleFormSubmit    = this.handleFormSubmit.bind(this);
+        this.onHandleFormChange  = this.onHandleFormChange.bind(this);
+		this.onHandleWallsChange = this.onHandleWallsChange.bind(this);
+		this.onHandleAddWall     = this.onHandleAddWall.bind(this);
+		this.onHandleRemoveWall  = this.onHandleRemoveWall.bind(this);
     }
 
 	/*componentWillReceiveProps(nextProps) {
@@ -110,10 +110,10 @@ class PropertyRoomForm extends React.Component
 	}
 
 	// Submit
-	handleRoomFormSubmit(event) {
+	handleFormSubmit(event) {
 		event.preventDefault();
 
-		this.props.onHandleRoomFormSubmit(this.state.room, true);
+		this.props.onHandleFormSubmit(this.state.room);
 	}
 
 	render() {
@@ -167,7 +167,7 @@ class PropertyRoomForm extends React.Component
 		});
 
 		let roomForm =
-			<form onSubmit={ this.handleRoomFormSubmit }>
+			<form onSubmit={ this.handleFormSubmit }>
 				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Room Name</label>
@@ -210,8 +210,9 @@ class PropertyRoomForm extends React.Component
 							<textarea
 								ref="description"
 								rows="5"
-								className="form-control">
-							</textarea>
+								className="form-control"
+								onChange={ this.onHandleFormChange.bind(this, 'description') }
+								value={ room.description } />
 						</div>
 					</div>
 				</div>

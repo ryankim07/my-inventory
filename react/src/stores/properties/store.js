@@ -11,18 +11,6 @@ let _rightPanel = false;
 let _errStatus;
 let _storeMsg;
 
-function setProperty(property) {
-	_property = property ;
-}
-
-function setRoom(room) {
-	_property.rooms = room;
-}
-
-function setRightPanel(show) {
-	_rightPanel = show;
-}
-
 function setStoreFlashMessage(msg) {
 	_storeMsg = msg;
 }
@@ -67,64 +55,17 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		return _properties;
 	},
 
-	setProperties: function(results) {
-		if (results.err_msg) {
-			_storeMsg = results.err_msg;
-			return false;
-		} else {
-			if (results.length !== 0) {
-				_properties = results
-			}
-		}
-	},
-
 	getProperty: function() {
     	return _property;
 	},
 
-	addProperty: function (results) {
-		if (results.err_msg) {
-			_storeMsg = results.err_msg;
-			return false;
-		}
-
-		_properties.push(results.property);
-		_storeMsg = results.msg;
-		_rightPanel = false;
-	},
-
-	updateProperty: function(results) {
+	modifyProperty: function(results) {
     	if (results.err_msg) {
 			_storeMsg = results.err_msg;
 			return false;
 		}
 
-		let property = results.property;
-		let index = _.indexOf(_properties, _.find(_properties, (record) => {
-				return record.id === property.id;
-			})
-		);
-
-		_properties.splice(index, 1, {
-			id: property.id,
-			built: property.built,
-			style: property.style,
-			floors: property.floors,
-			beds: property.beds,
-			baths: property.baths,
-			finished_area: property.finished_area,
-			unfinished_area: property.unfinished_area,
-			total_area: property.total_area,
-			parcel_number: property.parcel_number,
-			address: property.address,
-			features: property.features,
-			exterior_features: property.exterior_features,
-			interior_features: property.interior_features,
-			rooms: property.rooms,
-			assets: property.assets
-		});
-
-		_property = property;
+		_property = results;
 		_storeMsg = results.msg;
 		_rightPanel = false;
 	},
@@ -140,43 +81,6 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		});
 
 		_storeMsg = results.msg;
-		_rightPanel = false;
-	},
-
-	addRoom: function (results) {
-    	if (results.err_msg) {
-			_storeMsg = results.err_msg;
-			return false;
-		}
-
-		_property.rooms.push(results.rooms);
-		_storeMsg = results.msg;
-		_rightPanel = false;
-	},
-
-	updateRoom: function(results) {
-		if (results.err_msg) {
-			_storeMsg = results.err_msg;
-			return false;
-		}
-
-		/*let rooms = _property.rooms;
-		let room  = results.room;
-		let index = _.indexOf(rooms, _.find(rooms, (record) => {
-				return record.id == parseInt(room.id);
-			})
-		);
-
-		rooms.splice(index, 1, {
-			id: room.id,
-			property_id: room.property_id,
-			name: room.name,
-			total_area: room.total_area,
-			description: room.description
-		});*/
-
-		_property   = results.property;
-		_storeMsg   = results.msg;
 		_rightPanel = false;
 	},
 
@@ -222,44 +126,16 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
 	let results = action.results;
 
     switch(action.actionType) {
-        case ActionConstants.ADD_PROPERTY:
-            PropertiesStore.addProperty(results);
-        break;
-
-        case ActionConstants.EDIT_PROPERTY:
-			setProperty(results);
-			setStoreFlashMessage('');
-			setRightPanel(true);
-        break;
-
-        case ActionConstants.UPDATE_PROPERTY:
-            PropertiesStore.updateProperty(results);
+        case ActionConstants.MODIFY_PROPERTY:
+            PropertiesStore.modifyProperty(results);
         break;
 
         case ActionConstants.REMOVE_PROPERTY:
             PropertiesStore.removeProperty(results);
         break;
 
-		case ActionConstants.RECEIVE_PROPERTIES:
-			PropertiesStore.setProperties(results);
-		break;
-
 		case ActionConstants.RECEIVE_PROPERTIES_AND_PAINTS:
 			PropertiesStore.setPropertiesAndPaints(action.properties, action.paints);
-		break;
-
-		case ActionConstants.ADD_PROPERTY_ROOM:
-			PropertiesStore.addRoom(results);
-		break;
-
-		case ActionConstants.EDIT_PROPERTY_ROOM:
-			setRoom(results);
-			setStoreFlashMessage('');
-			setRightPanel(true);
-		break;
-
-		case ActionConstants.UPDATE_PROPERTY_ROOM:
-			PropertiesStore.updateRoom(results);
 		break;
 
 		case ActionConstants.REMOVE_PROPERTY_ROOM:

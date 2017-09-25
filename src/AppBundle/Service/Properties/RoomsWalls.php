@@ -111,7 +111,7 @@ class RoomsWalls
             }
 
             // Save or update wall
-            $this->_saveWall();
+            $this->_save();
 
             $msg = !$this->existingWall ? 'added' : 'updated';
 
@@ -156,7 +156,7 @@ class RoomsWalls
      *
      * @return bool
      */
-    private function _saveWall()
+    private function _save()
     {
         if (!$this->existingWall) {
             $this->entity = new RoomsWallsEntity();

@@ -23,33 +23,13 @@ let PropertiesAction = {
 			});
 	},
 
-	getProperties: function() {
-        Api
-            .get('http://mcs.dev/api/properties')
-            .then(function (properties) {
-                AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.RECEIVE_PROPERTIES,
-                    results: properties
-                });
-            })
-            .catch(function(resp) {
-                AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.PROPERTIES_ERROR,
-                    status: resp.status,
-					msg: resp.msg
-                });
-            });
-    },
-
-	postProperty: function(data, editingMode) {
+	postProperty: function(data) {
 		Api
 			.post('http://mcs.dev/api/property', data, data.assets)
-			.then(function (property) {
-				let actionType = !editingMode ? ActionConstants.ADD_PROPERTY : ActionConstants.UPDATE_PROPERTY;
-
+			.then(function (resp) {
 				AppDispatcher.handleViewAction({
-					actionType: actionType,
-					results: property
+					actionType: ActionConstants.MODIFY_PROPERTY,
+					results: resp
 				});
 			})
 			.catch(function(resp) {
@@ -64,10 +44,10 @@ let PropertiesAction = {
     removeProperty: function(id) {
         Api
             .delete('http://mcs.dev/api/properties/' + id)
-            .then(function (property) {
+            .then(function (resp) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.REMOVE_PROPERTY,
-					results: property
+					results: resp
                 });
             })
             .catch(function(resp) {
@@ -79,33 +59,13 @@ let PropertiesAction = {
             });
     },
 
-	postPropertyRoom: function(data, editingMode) {
-		Api
-			.post('http://mcs.dev/api/property/room', data)
-			.then(function (room) {
-				let actionType = !editingMode ? ActionConstants.ADD_PROPERTY_ROOM : ActionConstants.UPDATE_PROPERTY_ROOM;
-
-				AppDispatcher.handleViewAction({
-					actionType: actionType,
-					results: room
-				});
-			})
-			.catch(function(resp) {
-				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.PROPERTIES_ERROR,
-					status: resp.status,
-					msg: resp.msg
-				});
-			});
-	},
-
 	removePropertyRoom: function(id) {
 		Api
 			.delete('http://mcs.dev/api/properties/rooms/' + id)
-			.then(function (room) {
+			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.REMOVE_PROPERTY_ROOM,
-					results: room
+					results: resp
 				});
 			})
 			.catch(function(resp) {

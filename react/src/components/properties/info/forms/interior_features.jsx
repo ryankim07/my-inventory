@@ -23,10 +23,7 @@ class PropertyInteriorFeaturesForm extends React.Component
     handleFormSubmit(event) {
 		event.preventDefault();
 
-		let property = this.props.state.property;
-		property.interior_features = this.state.interiorFeatures;
-
-		this.props.onHandleFormSubmit(property);
+		this.props.onHandleFormSubmit(this.state.interiorFeatures);
     }
 
 	render() {

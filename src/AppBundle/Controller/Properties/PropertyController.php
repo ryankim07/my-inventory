@@ -62,15 +62,28 @@ class PropertyController extends FOSRestController
      * @param Request $request
      * @return View
      */
-    public function postPropertyAction(Request $request)
+    public function postAction(Request $request)
     {
         // Request param
         $data           = json_decode(stripslashes($request->get('data')), true);
         $data['assets'] = $request->files->get('file');
 
         // Call service to save
-        $service = $this->get('Properties');
-        $results = $service->save($data);
+        switch($data['saving_type']) {
+            case 'rooms':
+                $service = $this->get('Rooms');
+                $results = $service->save($data);
+            break;
+
+            case 'features':
+                $service = $this->get('Features');
+                $results = $service->save($data);
+            break;
+
+            default:
+                $service = $this->get('Properties');
+                $results = $service->save($data);
+        }
 
         return new View($results, Response::HTTP_OK);
     }
@@ -86,26 +99,6 @@ class PropertyController extends FOSRestController
     {
         $service = $this->get('Properties');
         $results = $service->delete($id);
-
-        return new View($results, Response::HTTP_OK);
-    }
-
-    /**
-     * Add new or update property room
-     *
-     * @Rest\Post("/api/property/room", name="new_room")
-     * @param Request $request
-     * @return View
-     */
-    public function postRoomAction(Request $request)
-    {
-        // Request param
-        $data           = json_decode(stripslashes($request->get('data')), true);
-        $data['assets'] = $request->files->get('file');
-
-        // Call service to save
-        $service = $this->get('Rooms');
-        $results = $service->save($data);
 
         return new View($results, Response::HTTP_OK);
     }

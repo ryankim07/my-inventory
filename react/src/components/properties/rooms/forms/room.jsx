@@ -11,7 +11,8 @@ class PropertyRoomForm extends React.Component
 
 		this.state = {
 			room: this.props.state.room,
-			disableAddWallsBtn: true,
+			disableAddWallsBtn: !!this.props.state.isEditingMode,
+			isEditingMode: this.props.state.isEditingMode
 		};
 
 		this.handleRoomFormSubmit = this.handleRoomFormSubmit.bind(this);
@@ -21,12 +22,13 @@ class PropertyRoomForm extends React.Component
 		this.onHandleRemoveWall   = this.onHandleRemoveWall.bind(this);
     }
 
-	// Submit
-	handleRoomFormSubmit(event) {
-		event.preventDefault();
-
-		this.props.onHandleRoomFormSubmit(this.state.room, true);
-	}
+	/*componentWillReceiveProps(nextProps) {
+		if (nextProps.state.room !== this.props.state.room) {
+			this.setState({
+				room: nextProps.state.room
+			});
+		}
+	}*/
 
 	// Handle input changes
 	onHandleFormChange(field, event) {
@@ -107,36 +109,73 @@ class PropertyRoomForm extends React.Component
 		this.setState({room: room});
 	}
 
+	// Submit
+	handleRoomFormSubmit(event) {
+		event.preventDefault();
+
+		this.props.onHandleRoomFormSubmit(this.state.room, true);
+	}
+
 	render() {
     	let room 			   = this.state.room;
     	let disableAddWallsBtn = this.state.disableAddWallsBtn;
 
-    	let wallDetails = room.walls.map((wall, wallIndex) => {
+    	let roomNameField = !this.state.isEditingMode ?
+			<NonAddedRoomsDropdown
+				room={ this.state.room }
+				nonAddedRooms={ this.props.state.property.non_added_rooms }
+				onHandleFormChange={ this.onHandleFormChange }
+			/> :
+			<input type="text"
+				   ref="name"
+				   value={ this.state.room.name }
+				   className="form-control input-sm"
+				   disabled="disabled"
+			/>
+
+    	let wallDetailsFields = room.walls.map((wall, wallIndex) => {
 			return (
 				<div key={ wallIndex }>
-					<PropertyRoomWallsDropdown
-						index={ wallIndex }
-						wall={ wall }
-						onHandleWallsChange={ this.onHandleWallsChange }
-						onHandleRemoveWall={ this.onHandleRemoveWall }
-					/>
-					<PropertyPaintsDropdown
-						index={ wallIndex }
-						wall={ wall }
-						paints={ this.props.state.paints }
-						onHandleWallsChange={ this.onHandleWallsChange }
-					/>
+					<div className="form-group">
+						<div className="col-xs-12 col-md-8">
+							<label className="control-label">Wall Name</label>
+							<button onClick={ this.onHandleRemoveWall.bind(this, this.props.index) }><i className="fa fa-trash" aria-hidden="true" /></button>
+							<div className="input-group">
+								<PropertyRoomWallsDropdown
+									index={ wallIndex }
+									wall={ wall }
+									onHandleWallsChange={ this.onHandleWallsChange }
+								/>
+							</div>
+						</div>
+					</div>
+					<div className="form-group">
+						<div className="col-xs-12 col-md-8">
+							<label className="control-label">Paint Color</label>
+							<div className="input-group">
+								<PropertyPaintsDropdown
+									index={ wallIndex }
+									wall={ wall }
+									paints={ this.props.state.paints }
+									onHandleWallsChange={ this.onHandleWallsChange }
+								/>
+							</div>
+						</div>
+					</div>
 				</div>
 			);
 		});
 
 		let roomForm =
 			<form onSubmit={ this.handleRoomFormSubmit }>
-				<NonAddedRoomsDropdown
-					room={ this.state.room }
-					nonAddedRooms={ this.props.state.property.non_added_rooms }
-					onHandleFormChange={ this.onHandleFormChange }
-				/>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Room Name</label>
+						<div className="input-group">
+							{ roomNameField }
+						</div>
+					</div>
+				</div>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Total Area</label>
@@ -152,7 +191,7 @@ class PropertyRoomForm extends React.Component
 					</div>
 				</div>
 
-				{ wallDetails }
+				{ wallDetailsFields }
 
 				{ disableAddWallsBtn === false ?
 					<div className="form-group">

@@ -14,22 +14,14 @@ class PropertyRoomWallsDropdown extends React.Component
 		});
 
 		return (
-			<div className="form-group">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Wall Name</label>
-					<button onClick={ this.props.onHandleRemoveWall.bind(this, this.props.index) }><i className="fa fa-trash" aria-hidden="true" /></button>
-					<div className="input-group">
-						<select
-							ref={ refName }
-							onChange={ this.props.onHandleWallsChange.bind(this, refName) }
-							value={ this.props.wall.name }
-							className="form-control input-sm">
-							<option value="">Select One</option>
-							{ wallSidesOptions }
-						</select>
-					</div>
-				</div>
-			</div>
+			<select
+				ref={ refName }
+				onChange={ this.props.onHandleWallsChange.bind(this, refName) }
+				value={ this.props.wall.name }
+				className="form-control input-sm">
+				<option value="">Select One</option>
+				{ wallSidesOptions }
+			</select>
         );
     }
 }

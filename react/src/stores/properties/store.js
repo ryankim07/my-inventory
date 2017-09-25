@@ -7,7 +7,7 @@ import _ from 'lodash';
 let _properties = [];
 let _property = {};
 let _paints = [];
-let _showPanel = false;
+let _rightPanel = false;
 let _errStatus;
 let _storeMsg;
 
@@ -20,7 +20,7 @@ function setRoom(room) {
 }
 
 function setRightPanel(show) {
-	_showPanel = show;
+	_rightPanel = show;
 }
 
 function setStoreFlashMessage(msg) {
@@ -90,7 +90,7 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 
 		_properties.push(results.property);
 		_storeMsg = results.msg;
-		_showPanel = false;
+		_rightPanel = false;
 	},
 
 	updateProperty: function(results) {
@@ -126,7 +126,7 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 
 		_property = property;
 		_storeMsg = results.msg;
-		_showPanel = false;
+		_rightPanel = false;
 	},
 
 	removeProperty: function(results) {
@@ -140,7 +140,7 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		});
 
 		_storeMsg = results.msg;
-		_showPanel = false;
+		_rightPanel = false;
 	},
 
 	addRoom: function (results) {
@@ -151,7 +151,7 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 
 		_property.rooms.push(results.rooms);
 		_storeMsg = results.msg;
-		_showPanel = false;
+		_rightPanel = false;
 	},
 
 	updateRoom: function(results) {
@@ -160,7 +160,7 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 			return false;
 		}
 
-		let rooms = _property.rooms;
+		/*let rooms = _property.rooms;
 		let room  = results.room;
 		let index = _.indexOf(rooms, _.find(rooms, (record) => {
 				return record.id == parseInt(room.id);
@@ -173,10 +173,11 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 			name: room.name,
 			total_area: room.total_area,
 			description: room.description
-		});
+		});*/
 
-		_storeMsg = results.msg;
-		_showPanel = false;
+		_property   = results.property;
+		_storeMsg   = results.msg;
+		_rightPanel = false;
 	},
 
 	removeRoom: function(results) {
@@ -190,7 +191,7 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		});
 
 		_storeMsg = results.msg;
-		_showPanel = false;
+		_rightPanel = false;
 	},
 
 	isAuthenticated: function() {
@@ -210,7 +211,7 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 	},
 
 	showRightPanel: function() {
-		return _showPanel;
+		return _rightPanel;
 	}
 });
 

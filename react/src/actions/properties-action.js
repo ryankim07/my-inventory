@@ -83,7 +83,7 @@ let PropertiesAction = {
 		Api
 			.post('http://mcs.dev/api/property/room', data)
 			.then(function (room) {
-				let actionType = !editingMode ? ActionConstants.PROPERTIES_ERROR : ActionConstants.UPDATE_PROPERTY_ROOM;
+				let actionType = !editingMode ? ActionConstants.ADD_PROPERTY_ROOM : ActionConstants.UPDATE_PROPERTY_ROOM;
 
 				AppDispatcher.handleViewAction({
 					actionType: actionType,

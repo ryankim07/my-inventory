@@ -155,7 +155,14 @@ class PropertiesDashboard extends React.Component
 	onHandleRightRoomPanel(id) {
 		let isEditingMode = !!id;
 		let property = this.state.property;
-		let rooms	 = property.rooms
+		let rooms	 = property.rooms;
+		let wallObj  = {
+			id: '',
+			room_id: '',
+			paint_id: '',
+			name: ''
+		};
+
 		let room = isEditingMode ?
 			rooms.find(obj => obj.id === id) :
 			{
@@ -164,16 +171,13 @@ class PropertiesDashboard extends React.Component
 				name: '',
 				total_area: '',
 				description: '',
-				walls: [
-					{
-						id: '',
-						room_id: '',
-						paint_id: '',
-						name: ''
-					}
-				],
+				walls: [wallObj],
 				room_assets: []
 			}
+
+		if (isEditingMode && room.walls.length === 0) {
+			room.walls.push(wallObj);
+		}
 
 		this.setState({
 			room: room,

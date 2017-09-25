@@ -11,21 +11,14 @@ class PropertyPaintsDropdown extends React.Component
 		});
 
         return (
-			<div className="form-group">
-				<div className="col-xs-12 col-md-8">
-					<label className="control-label">Paint Color</label>
-					<div className="input-group">
-						<select
-							ref={ refName }
-							onChange={ this.props.onHandleWallsChange.bind(this, refName) }
-							value={ this.props.wall.paint_id }
-							className="form-control input-sm">
-							<option value="">Select One</option>
-							{ paintsOptions }
-						</select>
-					</div>
-				</div>
-			</div>
+			<select
+				ref={ refName }
+				onChange={ this.props.onHandleWallsChange.bind(this, refName) }
+				value={ this.props.wall.paint_id }
+				className="form-control input-sm">
+				<option value="">Select One</option>
+				{ paintsOptions }
+			</select>
         );
     }
 }

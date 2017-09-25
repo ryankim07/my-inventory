@@ -64,6 +64,18 @@ services:
         class: AppBundle\Service\Properties\Rooms
         arguments: ["@doctrine.orm.houses_entity_manager"]
 
+    Features:
+        class: AppBundle\Service\Properties\Features
+        arguments: ["@doctrine.orm.houses_entity_manager"]
+
+    Exterior_Features:
+        class: AppBundle\Service\Properties\ExteriorFeatures
+        arguments: ["@doctrine.orm.houses_entity_manager"]
+
+    Interior_Features:
+        class: AppBundle\Service\Properties\InteriorFeatures
+        arguments: ["@doctrine.orm.houses_entity_manager"]
+
     Configured_Rooms:
         class: AppBundle\Service\Configuration\Properties\Rooms
 

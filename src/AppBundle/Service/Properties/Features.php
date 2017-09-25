@@ -8,31 +8,13 @@
 
 namespace AppBundle\Service\Properties;
 
-use AppBundle\Entity\Properties\RoomsEntity;
-use AppBundle\Entity\Properties\RoomsWallsEntity;
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\Properties\PropertyEntity;
-use AppBundle\Entity\Properties\AddressEntity;
 use AppBundle\Entity\Properties\FeaturesEntity;
-use AppBundle\Entity\Properties\ExteriorFeaturesEntity;
-use AppBundle\Entity\Properties\InteriorFeaturesEntity;
-use AppBundle\Entity\Properties\PropertyAssetsEntity;
-use AppBundle\Service\FileUploader;
-use AppBundle\Service\Configuration\Properties\Rooms as ConfiguredRooms;
 
 class Features
 {
     private $em;
     private $repo;
-    private $propertyId;
-    private $parking;
-    private $multiUnit;
-    private $hoa;
-    private $utilities;
-    private $lot;
-    private $commonWalls;
-    private $facingDirection;
-    private $others;
     private $entity;
     private $existingFeatures;
 
@@ -109,18 +91,7 @@ class Features
         }
 
         try {
-            $id                    = $data['id'];
-            $this->propertyId      = $data['property_id'];
-            $this->parking         = $data['parking'];
-            $this->multiUnit       = $data['multi_unit'];
-            $this->hoa             = $data['hoa'];
-            $this->utilities       = $data['utilities'];
-            $this->lot             = $data['lot'];
-            $this->commonWalls     = $data['common_walls'];
-            $this->facingDirection = $data['facing_direction'];
-            $this->others          = $data['others'];
-
-            $this->existingFeatures = $this->find($id);
+            $this->existingFeatures = $this->find($data['id']);
 
             $this->entity = $this->existingFeatures ? $this->existingFeatures : new FeaturesEntity();
 
@@ -128,7 +99,7 @@ class Features
             $msg = "Property features successfully {$op}.";
 
             // Save or update property
-            $property = $this->_save();
+            $property = $this->_save($data);
 
             if (!$property) {
                 $msg = "Property features could not be {$op}.";
@@ -146,21 +117,22 @@ class Features
     /**
      * Save or update property features
      *
+     * @param $data
      * @return null|object
      */
-    private function _save()
+    private function _save($data)
     {
-        $property = $this->em->getRepository('AppBundle\Entity\Properties\PropertyEntity')->find($this->propertyId);
+        $property = $this->em->getRepository('AppBundle\Entity\Properties\PropertyEntity')->find($data['property_id']);
 
-        $this->entity->setPropertyId($this->entity->getId());
-        $this->entity->setParking($this->features['parking']);
-        $this->entity->setMultiUnit($this->features['multi_unit']);
-        $this->entity->setHoa($this->features['hoa']);
-        $this->entity->setUtilities($this->features['utilities']);
-        $this->entity->setLot($this->features['lot']);
-        $this->entity->setCommonWalls($this->features['common_walls']);
-        $this->entity->setFacingDirection($this->features['facing_direction']);
-        $this->entity->setOthers($this->features['others']);
+        $this->entity->setPropertyId($data['property_id']);
+        $this->entity->setParking($data['parking']);
+        $this->entity->setMultiUnit($data['multi_unit']);
+        $this->entity->setHoa($data['hoa']);
+        $this->entity->setUtilities($data['utilities']);
+        $this->entity->setLot($data['lot']);
+        $this->entity->setCommonWalls($data['common_walls']);
+        $this->entity->setFacingDirection($data['facing_direction']);
+        $this->entity->setOthers($data['others']);
         $property->addFeatures($this->entity);
 
         if (!$this->existingFeatures) {

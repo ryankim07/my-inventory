@@ -9,15 +9,14 @@
 namespace AppBundle\Service\Properties;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\Properties\RoomsEntity;
-use AppBundle\Entity\Properties\RoomsWallsEntity;
+use AppBundle\Entity\Properties\ExteriorFeaturesEntity;
 
-class Rooms
+class ExteriorFeatures
 {
     private $em;
     private $repo;
     private $entity;
-    private $existingRoom;
+    private $existingExteriorFeatures;
 
     /**
      * Constructor
@@ -27,11 +26,11 @@ class Rooms
     public function __construct(EntityManager $entityManager)
     {
         $this->em   = $entityManager;
-        $this->repo = $this->em->getRepository('AppBundle\Entity\Properties\RoomsEntity');
+        $this->repo = $this->em->getRepository('AppBundle\Entity\Properties\ExteriorFeatures');
     }
 
     /**
-     * Get all rooms
+     * Get all property exterior features
      *
      * @return mixed|string
      */
@@ -41,7 +40,7 @@ class Rooms
     }
 
     /**
-     * Find specific room
+     * Find specific property exterior features
      *
      * @param $id
      * @return mixed|null|object|string
@@ -59,7 +58,7 @@ class Rooms
      */
     private function doSelect($id = null)
     {
-        $results = !is_null($id) ? $this->repo->find($id) : $this->repo->findBy([], ['name' => 'DESC']);
+        $results = !is_null($id) ? $this->repo->find($id) : $this->repo->findBy([], ['id' => 'DESC']);
 
         if (!is_null($id)) {
             $results = $this->addDependencies($results);
@@ -72,7 +71,7 @@ class Rooms
      * Add dependencies
      *
      * @param $results
-     * @return mixed
+     * @return array
      */
     private function addDependencies($results)
     {
@@ -88,22 +87,22 @@ class Rooms
     public function save($data)
     {
         if (count($data) == 0) {
-            return ['msg' => 'Room information empty.'];
+            return ['msg' => 'Exterior features information empty.'];
         }
 
         try {
-            $this->existingRoom = $this->find($data['id']);
+            $this->existingExteriorFeatures = $this->find($data['id']);
 
-            $this->entity = $this->existingRoom ? $this->existingRoom : new RoomsEntity();
+            $this->entity = $this->existingExteriorFeatures ? $this->existingExteriorFeatures : new ExteriorFeaturesEntity();
 
-            $op  = !$this->existingRoom ? 'added' : 'updated';
-            $msg = "Room successfully {$op}.";
+            $op  = !$this->existingExteriorFeatures ? 'added' : 'updated';
+            $msg = "Property exterior features successfully {$op}.";
 
-            // Save or update vehicle
+            // Save or update property
             $property = $this->_save($data);
 
             if (!$property) {
-                $msg = "Room could not be {$op}.";
+                $msg = "Property exterior features could not be {$op}.";
             };
 
             return [
@@ -116,7 +115,7 @@ class Rooms
     }
 
     /**
-     * Save or update room
+     * Save or update property exterior features
      *
      * @param $data
      * @return null|object
@@ -125,30 +124,13 @@ class Rooms
     {
         $property = $this->em->getRepository('AppBundle\Entity\Properties\PropertyEntity')->find($data['property_id']);
 
-        /*foreach($data["walls"] as $wall) {
-            $wallsEntity = new RoomsWallsEntity();
-
-            if (isset($wall["id"])) {
-                $wallsEntity = $this->em->getRepository('AppBundle\Entity\Properties\RoomsWallsEntity')->find($wall["id"]);
-            }
-
-            if (empty($wall["paint_id"]) && empty($wall["name"])) {
-                continue;
-            }
-
-            $wallsEntity->setRoomId($this->entity->getId());
-            $wallsEntity->setPaintId((int) $wall['paint_id']);
-            $wallsEntity->setName($wall['name']);
-            $this->entity->addWall($wallsEntity);
-        }*/
-
         $this->entity->setPropertyId($data['property_id']);
-        $this->entity->setName($data["name"]);
-        $this->entity->setTotalArea($data["total_area"]);
-        $this->entity->setDescription($data["description"]);
-        $property->addRoom($this->entity);
+        $this->entity->setExterior($data['exterior']);
+        $this->entity->setFoundation($data['foundation']);
+        $this->entity->setOthers($data['others']);
+        $property->addExteriorFeatures($this->entity);
 
-        if (!$this->existingRoom) {
+        if (!$this->existingExteriorFeatures) {
             $this->em->persist($property);
         }
 
@@ -158,7 +140,7 @@ class Rooms
     }
 
     /**
-     * Delete room
+     * Delete property exterior features
      *
      * @param $id
      * @return array
@@ -166,17 +148,16 @@ class Rooms
     public function delete($id)
     {
         if (!isset($id)) {
-            return ['msg' => 'Empty ID for deleting room.'];
+            return ['msg' => 'Empty ID for deleting property exterior features.'];
         }
 
         try {
-            $room = $this->repo->find($id);
-
-            $this->em->remove($room);
+            $exteriorFeatures = $this->repo->find($id);
+            $this->em->remove($exteriorFeatures);
             $this->em->flush();
 
             return [
-                'msg' => 'Room successfully deleted.',
+                'msg' => 'Property exterior features successfully deleted.',
                 'id'  => $id
             ];
         } catch(\Exception $e) {

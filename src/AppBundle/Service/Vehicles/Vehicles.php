@@ -14,14 +14,6 @@ class Vehicles
     private $repo;
     private $syncDb;
     private $fileUploader;
-    private $modelInfo = [];
-    private $mfgId ;
-    private $modelId;
-    private $year;
-    private $color;
-    private $vin;
-    private $plate;
-    private $assets;
     private $mfg;
     private $entity;
     private $existingVehicle;
@@ -103,26 +95,19 @@ class Vehicles
         }
 
         try {
-            $id            = (int)$data['id'];
-            $this->mfgId   = (int)$data['mfg_id'];
-            $this->modelId = (int)$data['model_id'];
-            $this->year    = $data['year'];
-            $this->color   = $data['color'];
-            $this->vin     = $data['vin'];
-            $this->plate   = $data['plate'];
-            $this->assets  = $data['assets'];
+            $this->existingVehicle = $this->findByIdOrVin($data['id'], $data['vin']);
 
-            $this->existingVehicle = $this->findByIdOrVin($id, $this->vin);
+            $this->entity = $this->existingVehicle ? $this->existingVehicle : new VehicleEntity();
 
-            $this->mfg = $this->syncDb->find($this->mfgId);
+            $this->mfg = $this->syncDb->find($data['mfg_id']);
             $models    = $this->mfg->getModels();
 
             foreach($models as $model) {
                 $modelId   = $model->getModelId();
                 $modelName = $model->getModel();
 
-                if ($modelId == $this->modelId) {
-                    $this->modelInfo = [
+                if ($modelId == $data['model_id']) {
+                    $data['model_info'] = [
                         'model_id' => $modelId,
                         'model'    => $modelName
                     ];
@@ -133,15 +118,14 @@ class Vehicles
             }
 
             if ($this->existingVehicle) {
-                $this->mfgId  = $this->mfg->getId();
-                $this->entity = $this->existingVehicle;
+                $data['mfg_id'] = $this->mfg->getId();
             }
 
             $op = !$this->existingVehicle ? 'added' : 'updated';
             $msg = "Vehicle successfully {$op}.";
 
             // Save or update vehicle
-            if (!$this->_save()) {
+            if (!$this->_save($data)) {
                 $msg = "Vehicle could not be {$op}.";
             };
 
@@ -152,6 +136,54 @@ class Vehicles
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
         }
+    }
+
+    /**
+     * Save or update vehicle
+     *
+     * @param $data
+     * @return bool
+     */
+    private function _save($data)
+    {
+        $assetEntity  = !$this->existingVehicle ?
+            new AssetsEntity() : $this->em->getRepository('AppBundle\Entity\Vehicles\AssetsEntity')->findOneByVehicleId($this->entity->getId());
+
+        // Upload asset
+        $assets = $data['assets'];
+        $assetFullPath = !is_null($$assets) ? $this->fileUploader->upload($$assets) : null;
+
+        // Vehicle entity
+        $this->entity->setMfgId($data['mfg_id']);
+        $this->entity->setMfg($this->mfg->getMfg());
+        $this->entity->setModelId($data['model_info']['model_id']);
+        $this->entity->setModel($data['model_info']['model']);
+        $this->entity->setYear($data['year']);
+        $this->entity->setColor($data['color']);
+        $this->entity->setVin($data['vin']);
+        $this->entity->setPlate($data['plate']);
+
+        if (!is_null($assets)) {
+            if (!$this->existingVehicle) {
+                $assetEntity->setName($assets->getClientOriginalName());
+                $assetEntity->setPath($assetFullPath);
+                $this->entity->addAsset($assetEntity);
+            } else {
+                foreach($assetEntity as $asset) {
+                    $asset->setName($assets->getClientOriginalName());
+                    $asset->setPath($assetFullPath);
+                    $this->entity->addAsset($asset);
+                }
+            }
+        }
+
+        if (!$this->existingVehicle) {
+            $this->em->persist($this->entity);
+        }
+
+        $this->em->flush();
+
+        return true;
     }
 
     /**
@@ -190,56 +222,6 @@ class Vehicles
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
         }
-    }
-
-    /**
-     * Save or update vehicle
-     *
-     * @return bool
-     */
-    private function _save()
-    {
-        // Upload asset
-        $assetFullPath = !is_null($this->assets) ? $this->fileUploader->upload($this->assets) : null;
-
-        if (!$this->existingVehicle) {
-            $this->entity = new VehicleEntity();
-            $assetEntity  = new AssetsEntity();
-        } else {
-            $assetEntity = $this->em->getRepository('AppBundle\Entity\Vehicles\AssetsEntity')->findOneByVehicleId($this->existingVehicle->getId());
-        }
-
-        // Vehicle entity
-        $this->entity->setMfgId($this->mfgId);
-        $this->entity->setMfg($this->mfg->getMfg());
-        $this->entity->setModelId($this->modelInfo['model_id']);
-        $this->entity->setModel($this->modelInfo['model']);
-        $this->entity->setYear($this->year);
-        $this->entity->setColor($this->color);
-        $this->entity->setVin($this->vin);
-        $this->entity->setPlate($this->plate);
-
-        if (!is_null($this->assets)) {
-            if (!$this->existingVehicle) {
-                $assetEntity->setName($this->assets->getClientOriginalName());
-                $assetEntity->setPath($assetFullPath);
-                $this->entity->addAsset($assetEntity);
-            } else {
-                foreach($assetEntity as $asset) {
-                    $asset->setName($this->assets->getClientOriginalName());
-                    $asset->setPath($assetFullPath);
-                    $this->entity->addAsset($asset);
-                }
-            }
-        }
-
-        if (!$this->existingVehicle) {
-            $this->em->persist($this->entity);
-        }
-
-        $this->em->flush();
-
-        return true;
     }
 
     /**

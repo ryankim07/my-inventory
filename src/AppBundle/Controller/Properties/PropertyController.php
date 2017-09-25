@@ -69,7 +69,7 @@ class PropertyController extends FOSRestController
         $data['assets'] = $request->files->get('file');
 
         // Call service to save
-        switch($data['saving_type']) {
+        switch($data['obj_type']) {
             case 'rooms':
                 $service = $this->get('Rooms');
                 $results = $service->save($data);
@@ -77,6 +77,16 @@ class PropertyController extends FOSRestController
 
             case 'features':
                 $service = $this->get('Features');
+                $results = $service->save($data);
+            break;
+
+            case 'exterior_features':
+                $service = $this->get('ExteriorFeatures');
+                $results = $service->save($data);
+            break;
+
+            case 'interior_features':
+                $service = $this->get('InteriorFeatures');
                 $results = $service->save($data);
             break;
 

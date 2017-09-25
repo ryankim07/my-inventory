@@ -457,6 +457,41 @@ class PropertyEntity
     }
 
     /**
+     * Add features
+     *
+     * @param FeaturesEntity $features
+     */
+    public function addFeatures(FeaturesEntity $features)
+    {
+        $this->features = $features;
+        $features->setProperty($this);
+    }
+
+    /**
+     * Set features
+     *
+     * @param \AppBundle\Entity\Properties\FeaturesEntity $features
+     *
+     * @return PropertyEntity
+     */
+    public function setFeatures(FeaturesEntity $features = null)
+    {
+        $this->features = $features;
+
+        return $this;
+    }
+
+    /**
+     * Get features
+     *
+     * @return \AppBundle\Entity\Properties\FeaturesEntity
+     */
+    public function getFeatures()
+    {
+        return $this->features;
+    }
+
+    /**
      * Add exterior features
      * Need this functionality to return within the property object
      *
@@ -520,36 +555,6 @@ class PropertyEntity
     public function getInteriorFeatures()
     {
         return $this->interiorFeatures;
-    }
-
-    public function addFeatures(InteriorFeaturesEntity $features)
-    {
-        $this->features = $features;
-        $features->setProperty($this);
-    }
-
-    /**
-     * Set features
-     *
-     * @param \AppBundle\Entity\Properties\FeaturesEntity $features
-     *
-     * @return PropertyEntity
-     */
-    public function setFeatures(FeaturesEntity $features = null)
-    {
-        $this->features = $features;
-
-        return $this;
-    }
-
-    /**
-     * Get features
-     *
-     * @return \AppBundle\Entity\Properties\FeaturesEntity
-     */
-    public function getFeatures()
-    {
-        return $this->features;
     }
 
     public function addNonAddedRooms($rooms)

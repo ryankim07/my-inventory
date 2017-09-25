@@ -15,9 +15,6 @@ class RoomsWalls
 {
     private $em;
     private $repo;
-    private $roomId;
-    private $paintId;
-    private $name;
     private $entity;
     private $existingWall;
 
@@ -99,19 +96,12 @@ class RoomsWalls
         }
 
         try {
-            $id            = (int)$data['id'];
-            $this->roomId  = (int)$data['room_id'];
-            $this->paintId = (int)$data['paint_id'];
-            $this->name    = $data["name"];
+            $this->existingWall = $this->find($data['id']);
 
-            $this->existingWall = $this->find($id);
-
-            if (!$this->existingWall) {
-                $this->entity = $this->existingWall;
-            }
+            $this->entity = $this->existingWall ? $this->existingWall :  new RoomsWallsEntity();
 
             // Save or update wall
-            $this->_save();
+            $this->_save($data);
 
             $msg = !$this->existingWall ? 'added' : 'updated';
 
@@ -122,6 +112,31 @@ class RoomsWalls
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
         }
+    }
+
+    /**
+     * Save or update room walls
+     *
+     * @param $data
+     * @return bool
+     */
+    private function _save($data)
+    {
+        $room = $this->em->getRepository('AppBundle\Entity\Properties\RoomEntity')->find($data['room_id']);
+
+        $this->entity->setRoomId($data['room_id']);
+        $this->entity->setPaintId($data['paint_id']);
+        $this->entity->setName($data["name"]);
+
+        $room->addWall($this->entity);
+
+        if (!$this->existingWall) {
+            $this->em->persist($room);
+        }
+
+        $this->em->flush();
+
+        return true;
     }
 
     /**
@@ -149,33 +164,5 @@ class RoomsWalls
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
         }
-    }
-
-    /**
-     * Save or update wall
-     *
-     * @return bool
-     */
-    private function _save()
-    {
-        if (!$this->existingWall) {
-            $this->entity = new RoomsWallsEntity();
-        }
-
-        $room = $this->em->getRepository('AppBundle\Entity\Properties\RoomEntity')->find($this->roomId);
-
-        $this->entity->setRoomId($this->roomId);
-        $this->entity->setPaintId($this->paintId);
-        $this->entity->setName($this->name);
-
-        $room->addWall($this->entity);
-
-        if (!$this->existingWall) {
-            $this->em->persist($room);
-        }
-
-        $this->em->flush();
-
-        return true;
     }
 }

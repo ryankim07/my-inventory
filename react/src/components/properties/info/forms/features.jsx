@@ -23,7 +23,7 @@ class PropertyFeaturesForm extends React.Component
     handleFormSubmit(event) {
 		event.preventDefault();
 
-		this.props.onHandleFormSubmit(this.state.features);
+		this.props.onHandleFormSubmit(this.state.features, 'features');
     }
 
 	render() {

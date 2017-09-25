@@ -52,7 +52,7 @@ class PropertyForm extends React.Component
 	handleFormSubmit(event) {
 		event.preventDefault();
 
-		this.props.onHandleFormSubmit(this.state.property);
+		this.props.onHandleFormSubmit(this.state.property, 'property');
 	}
 
 	render() {

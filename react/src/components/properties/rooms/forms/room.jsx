@@ -113,7 +113,7 @@ class PropertyRoomForm extends React.Component
 	handleFormSubmit(event) {
 		event.preventDefault();
 
-		this.props.onHandleFormSubmit(this.state.room);
+		this.props.onHandleFormSubmit(this.state.room, 'rooms');
 	}
 
 	render() {

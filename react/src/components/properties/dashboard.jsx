@@ -106,7 +106,9 @@ class PropertiesDashboard extends React.Component
 	}
 
 	// Handle submit
-	onHandleFormSubmit(obj) {
+	onHandleFormSubmit(obj, type) {
+		obj.obj_type = type;
+
 		PropertiesAction.postProperty(obj);
 	}
 

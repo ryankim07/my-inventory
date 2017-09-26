@@ -72,7 +72,7 @@ class Properties
     {
         $results = !is_null($id) ? $this->repo->find($id) : $this->repo->findBy([], ['built' => 'DESC']);
 
-        if (!$results instanceof PropertyEntity) {
+        if ($results) {
             $results = $this->addDependencies($results);
         }
 
@@ -82,40 +82,23 @@ class Properties
     /**
      * Add dependencies
      *
-     * @param $properties
+     * @param $results
      * @return array
      */
-    private function addDependencies($properties)
+    private function addDependencies($results)
     {
-        // Get all the rooms available for a property
-        $configRooms = $this->configuredRoomsService->getRoomsList();
-        $results     = [];
+        $dependencies = [];
 
-        foreach($properties as $property) {
-            $rooms         = $property->getRooms();
-            $existingRooms = [];
-
-            foreach ($rooms as $room) {
-                $existingRooms[] = $room->getName();
+        if (is_array($results)) {
+            foreach ($results as $property) {
+                $rooms = $property->getRooms();
+                $diff = $this->configuredRoomsService->getRoomsDiff($rooms);
+                $property->addNonAddedRooms($diff);
+                $dependencies[] = $property;
             }
-
-            // Get the differences of what a particular property already
-            // has against all the available rooms
-            $roomsDiff = array_diff($configRooms, $existingRooms);
-
-            $diff = [];
-            foreach ($roomsDiff as $index => $value) {
-                $diff[] = [
-                    'value' => $value,
-                    'title' => ucwords($value)
-                ];
-            }
-
-            $property->addNonAddedRooms($diff);
-            $results[] = $property;
         }
 
-        return $results;
+        return $dependencies;
     }
 
     /**

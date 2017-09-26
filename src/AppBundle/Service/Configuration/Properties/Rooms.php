@@ -49,4 +49,27 @@ class Rooms
         // Return all rooms
         return $rooms;
     }
+
+    public function getRoomsDiff($rooms)
+    {
+        $existingRooms = [];
+
+        foreach ($rooms as $room) {
+            $existingRooms[] = $room->getName();
+        }
+
+        // Get the differences of what a particular property already
+        // has against all the available rooms
+        $roomsDiff = array_diff($this->getRoomsList(), $existingRooms);
+
+        $diff = [];
+        foreach ($roomsDiff as $index => $value) {
+            $diff[] = [
+                'value' => $value,
+                'title' => ucwords($value)
+            ];
+        }
+
+        return $diff;
+    }
 }

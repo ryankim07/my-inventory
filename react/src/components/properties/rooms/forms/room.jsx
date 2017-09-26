@@ -22,13 +22,14 @@ class PropertyRoomForm extends React.Component
 		this.onHandleRemoveWall  = this.onHandleRemoveWall.bind(this);
     }
 
-	/*componentWillReceiveProps(nextProps) {
-		if (nextProps.state.room !== this.props.state.room) {
+	componentWillReceiveProps(nextProps) {
+    	if (nextProps.state.room !== this.props.state.room) {
 			this.setState({
-				room: nextProps.state.room
+				room: nextProps.state.room,
+				isEditingMode: nextProps.state.room.id === "" ? false : true
 			});
 		}
-	}*/
+	}
 
 	// Handle input changes
 	onHandleFormChange(field, event) {

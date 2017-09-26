@@ -18,16 +18,20 @@ class Rooms
     private $repo;
     private $entity;
     private $existingRoom;
+    private $propertyService;
 
     /**
      * Constructor
      *
      * @param EntityManager $entityManager
+     * @param Properties $propertyService
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager,
+                                Properties $propertyService)
     {
-        $this->em   = $entityManager;
-        $this->repo = $this->em->getRepository('AppBundle\Entity\Properties\RoomsEntity');
+        $this->em              = $entityManager;
+        $this->repo            = $this->em->getRepository('AppBundle\Entity\Properties\RoomsEntity');
+        $this->propertyService = $propertyService;
     }
 
     /**
@@ -98,15 +102,15 @@ class Rooms
             $op  = !$this->existingRoom ? 'added' : 'updated';
             $msg = "Room successfully {$op}.";
 
-            // Save or update vehicle
-            $property = $this->_save($data);
+            // Save or update room
+            $results = $this->_save($data);
 
-            if (!$property) {
+            if (!$results) {
                 $msg = "Room could not be {$op}.";
             };
 
             return [
-                'property' => $property,
+                'property' => $results,
                 'msg'      => $msg
             ];
         } catch(\Exception $e) {
@@ -175,8 +179,8 @@ class Rooms
             $this->em->flush();
 
             return [
-                'msg' => 'Room successfully deleted.',
-                'id'  => $id
+                'room' => $room,
+                'msg'  => 'Room successfully deleted.'
             ];
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];

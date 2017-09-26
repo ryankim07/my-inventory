@@ -7,17 +7,9 @@ import ActionConstants from '../../constants/action-constants';
 let _vehicles = [];
 let _apiVehicles = [];
 let _vehicle = {};
-let _showPanel = false;
+let _rightPanel = false;
 let _errStatus;
 let _storeMsg;
-
-function setVehicle(vehicle) {
-	_vehicle = vehicle ;
-}
-
-function setRightPanel(show) {
-	_showPanel = show;
-}
 
 function setStoreFlashMessage(msg) {
 	_storeMsg = msg;
@@ -71,7 +63,7 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
 
 		_vehicles.push(results.vehicle);
 		_storeMsg = results.msg;
-		_showPanel = false;
+		_rightPanel = false;
 	},
 
 	updateVehicle: function(results) {
@@ -80,7 +72,7 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
 			return false;
 		}
 
-    	let vehicle = results.vehicle;
+		let vehicle = results.vehicle;
 		let index   = _.indexOf(_vehicles, _.find(_vehicles, (record) => {
 				return record.id === vehicle.id;
 			})
@@ -101,7 +93,7 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
 
 		_vehicle   = vehicle;
 		_storeMsg  = results.msg;
-		_showPanel = false;
+		_rightPanel = false;
 	},
 
 	removeVehicle: function(results) {
@@ -115,7 +107,7 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
 		});
 
 		_storeMsg = results.msg;
-		_showPanel = false;
+		_rightPanel = false;
 	},
 
 	isAuthenticated: function() {
@@ -135,7 +127,7 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
 	},
 
 	showRightPanel: function() {
-    	return _showPanel;
+    	return _rightPanel;
 	}
 });
 
@@ -150,12 +142,6 @@ VehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
         	VehiclesStore.addVehicle(results);
         break;
 
-        case ActionConstants.EDIT_VEHICLE:
-			setVehicle(results);
-			setStoreFlashMessage('');
-			setRightPanel(true);
-        break;
-
         case ActionConstants.UPDATE_VEHICLE:
 			VehiclesStore.updateVehicle(results);
         break;
@@ -163,10 +149,6 @@ VehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
         case ActionConstants.REMOVE_VEHICLE:
 			VehiclesStore.removeVehicle(results);
         break;
-
-		case ActionConstants.RECEIVE_VEHICLES:
-			VehiclesStore.setVehicles(results);
-		break;
 
 		case ActionConstants.RECEIVE_VEHICLES_AND_API_VEHICLES:
 			VehiclesStore.setVehiclesAndApiVehicles(action.vehicles, action.apiVehicles);

@@ -65,7 +65,7 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 			return false;
 		}
 
-		_property = results;
+		_property = results.property;
 		_storeMsg = results.msg;
 		_rightPanel = false;
 	},
@@ -90,10 +90,7 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 			return false;
 		}
 
-		_.remove(_property.rooms, (myRoom) => {
-			return parseInt(results.id) === myRoom.id;
-		});
-
+		_property = results.property;
 		_storeMsg = results.msg;
 		_rightPanel = false;
 	},

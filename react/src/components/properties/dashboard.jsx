@@ -118,15 +118,17 @@ class PropertiesDashboard extends React.Component
 	}
 
 	// Handle delete
-	onHandleRemoveRoom(id) {
-		PropertiesAction.removePropertyRoom(id);
+	onHandleRemoveRoom(propertyId, roomId) {
+		PropertiesAction.removePropertyRoom(propertyId, roomId);
 	}
 
 	// Handle main panel
 	// ID will determine the state in which next panel should display
 	onHandleMainPanel(id, panel) {
+		let property = this.state.properties.find(obj => obj.id === id);
+
 		this.setState({
-			property: this.state.properties.find(obj => obj.id === id),
+			property: property,
 			mainPanel: panel,
 			columnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,

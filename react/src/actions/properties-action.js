@@ -59,9 +59,9 @@ let PropertiesAction = {
             });
     },
 
-	removePropertyRoom: function(id) {
+	removePropertyRoom: function(propertyId, roomId) {
 		Api
-			.delete('http://mcs.dev/api/properties/rooms/' + id)
+			.delete('http://mcs.dev/api/properties/' + propertyId + '/rooms/' + roomId)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.REMOVE_PROPERTY_ROOM,

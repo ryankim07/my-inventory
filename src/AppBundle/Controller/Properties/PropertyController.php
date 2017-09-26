@@ -68,31 +68,28 @@ class PropertyController extends FOSRestController
         $data           = json_decode(stripslashes($request->get('data')), true);
         $data['assets'] = $request->files->get('file');
 
+        $service = $this->get('Properties');
+
         // Call service to save
         switch($data['obj_type']) {
             case 'rooms':
-                $service = $this->get('Rooms');
-                $results = $service->save($data);
+                $results = $service->saveRoom($data);
             break;
 
             case 'features':
-                $service = $this->get('Features');
                 $results = $service->save($data);
             break;
 
             case 'exterior_features':
-                $service = $this->get('ExteriorFeatures');
                 $results = $service->save($data);
             break;
 
             case 'interior_features':
-                $service = $this->get('InteriorFeatures');
                 $results = $service->save($data);
             break;
 
             default:
-                $service = $this->get('Properties');
-                $results = $service->save($data);
+                $results = $service->saveProperty($data);
         }
 
         return new View($results, Response::HTTP_OK);
@@ -116,14 +113,15 @@ class PropertyController extends FOSRestController
     /**
      * Delete room
      *
-     * @Rest\Delete("/api/properties/rooms/{id}", name="delete_room")
-     * @param $id
+     * @Rest\Delete("/api/properties/{propertyId}/rooms/{roomId}", name="delete_room")
+     * @param $propertyId
+     * @param $roomId
      * @return View
      */
-    public function deleteRoomAction($id)
+    public function deleteRoomAction($propertyId, $roomId)
     {
-        $service = $this->get('Rooms');
-        $results = $service->delete($id);
+        $service = $this->get('Properties');
+        $results = $service->deleteRoom($propertyId, $roomId);
 
         return new View($results, Response::HTTP_OK);
     }

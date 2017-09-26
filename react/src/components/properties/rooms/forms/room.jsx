@@ -11,7 +11,7 @@ class PropertyRoomForm extends React.Component
 
 		this.state = {
 			room: this.props.state.room,
-			disableAddWallsBtn: !!this.props.state.isEditingMode,
+			disableAddWallsBtn: this.props.state.isEditingMode,
 			isEditingMode: this.props.state.isEditingMode
 		};
 
@@ -22,11 +22,27 @@ class PropertyRoomForm extends React.Component
 		this.onHandleRemoveWall  = this.onHandleRemoveWall.bind(this);
     }
 
+    componentWillMount() {
+		let walls = this.state.room.walls;
+		let filledFields = this.checkFilledWalls(walls);
+
+		this.setState({
+			disableAddWallsBtn: filledFields === walls.length ? true : false
+		});
+	}
+
 	componentWillReceiveProps(nextProps) {
-    	if (nextProps.state.room !== this.props.state.room) {
+    	let clickedRoom = nextProps.state.room;
+    	let currRoom    = this.props.state.room;
+
+    	if (clickedRoom !== currRoom) {
+			let walls = clickedRoom.walls;
+			let filledFields = this.checkFilledWalls(walls);
+
 			this.setState({
-				room: nextProps.state.room,
-				isEditingMode: nextProps.state.room.id === "" ? false : true
+				room: clickedRoom,
+				isEditingMode: clickedRoom.id === "" ? false : true,
+				disableAddWallsBtn: filledFields === walls.length ? true : false
 			});
 		}
 	}
@@ -58,7 +74,6 @@ class PropertyRoomForm extends React.Component
 		let chosenValue  = event.target.value;
 		let id			 = propertyName.match(/\d+$/)[0];
 		let field 		 = propertyName.split(/_(.*)/)[0];
-		let filledFields = 0;
 
 		switch (field) {
 			case 'wall':
@@ -70,17 +85,11 @@ class PropertyRoomForm extends React.Component
 				break;
 		}
 
-		walls.map((wall, index) => {
-			if (wall.name === "all" || index === 4) {
-				filledFields = 0;
-			} else if (wall.name !== "" && wall.paint_id !== "") {
-				filledFields++;
-			}
-		});
+		let filledFields = this.checkFilledWalls(walls);
 
 		this.setState({
 			room: room,
-			disableAddWallsBtn: filledFields === walls.length ? false : true
+			disableAddWallsBtn: filledFields === walls.length ? true : false
 		});
 	}
 
@@ -88,8 +97,8 @@ class PropertyRoomForm extends React.Component
 	onHandleAddWall(event) {
     	event.preventDefault();
 
-    	let room  = this.state.room;
-		let newWall   = {
+    	let room  	= this.state.room;
+		let newWall = {
 			id: '',
 			room_id: '',
 			paint_id: '',
@@ -117,6 +126,20 @@ class PropertyRoomForm extends React.Component
 		this.props.onHandleFormSubmit(this.state.room, 'rooms');
 	}
 
+	checkFilledWalls(walls) {
+		let filledFields = 0;
+
+		walls.map((wall, index) => {
+			if (wall.name === "all" || index === 4) {
+				filledFields = 0;
+			} else if (wall.name !== "" && wall.paint_id !== "") {
+				filledFields++;
+			}
+		});
+
+		return filledFields;
+	}
+
 	render() {
     	let room 			   = this.state.room;
     	let disableAddWallsBtn = this.state.disableAddWallsBtn;
@@ -140,7 +163,7 @@ class PropertyRoomForm extends React.Component
 					<div className="form-group">
 						<div className="col-xs-12 col-md-8">
 							<label className="control-label">Wall Name</label>
-							<button onClick={ this.onHandleRemoveWall.bind(this, this.props.index) }><i className="fa fa-trash" aria-hidden="true" /></button>
+							<button onClick={ this.onHandleRemoveWall.bind(this, wallIndex) }><i className="fa fa-trash" aria-hidden="true" /></button>
 							<div className="input-group">
 								<PropertyRoomWallsDropdown
 									index={ wallIndex }
@@ -194,7 +217,7 @@ class PropertyRoomForm extends React.Component
 
 				{ wallDetailsFields }
 
-				{ disableAddWallsBtn === false ?
+				{ disableAddWallsBtn ?
 					<div className="form-group">
 						<div className="col-xs-12 col-md-12">
 							<div className="clearfix">

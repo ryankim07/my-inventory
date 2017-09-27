@@ -1,6 +1,8 @@
 import React from 'react';
 import VehiclesAction from '../../actions/vehicles-action';
 import VehiclesStore from '../../stores/vehicles/store';
+import VehiclesMainPanel from './main_panel';
+import VehiclesRightPanel from './right_panel';
 import VehicleForm from './main/forms/vehicle';
 import VehiclesList from './main/list';
 import FlashMessage from '../helper/flash-message';
@@ -153,19 +155,27 @@ class VehiclesDashboard extends React.Component
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success" />}
 
-				<VehiclesList
-					state={ this.state }
-					onHandleRightPanel={ this.onHandleRightPanel }
-					onHandleRemove={ this.onHandleRemove }
-					className={ mainColumnClassName }
-				/>
+				<VehiclesMainPanel columnCss={ this.state.columnCss } className={ mainColumnClassName }>
+					<VehiclesList
+						loader={ this.state.loader }
+						vehicles={ this.state.vehicles }
+						onHandleRightPanel={ this.onHandleRightPanel }
+						onHandleRemove={ this.onHandleRemove }
+					/>
+				</VehiclesMainPanel>
+
 				{
 					this.state.showRightPanel ?
-						<VehicleForm
-							state={ this.state }
-							onHandleFormSubmit={ this.onHandleFormSubmit }
-							closeRightPanel={ this.closeRightPanel }
-						/> : null
+						<VehiclesRightPanel>
+							<VehicleForm
+								state={ this.state }
+								vehicle={ this.state.vehicle }
+								apiVehicles={ this.state.apiVehicles }
+								isEditingMode={ this.state.isEditingMode }
+								onHandleFormSubmit={ this.onHandleFormSubmit }
+								closeRightPanel={ this.closeRightPanel }
+							/>
+						</VehiclesRightPanel> : null
 				}
 			</div>
 		)
@@ -175,6 +185,5 @@ class VehiclesDashboard extends React.Component
 VehiclesDashboard.contextTypes = {
 	router: React.PropTypes.object.isRequired
 }
-
 
 export default VehiclesDashboard;

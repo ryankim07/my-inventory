@@ -7,7 +7,7 @@ class VehicleForm extends React.Component
         super(props);
 
         this.state = {
-			vehicle: this.props.state.vehicle
+			vehicle: this.props.vehicle
 		}
 
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
@@ -15,7 +15,7 @@ class VehicleForm extends React.Component
     }
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.state.vehicle !== this.props.state.vehicle) {
+		if (nextProps.state.vehicle !== this.props.vehicle) {
 			this.setState({
 				vehicle: nextProps.state.vehicle
 			});
@@ -24,7 +24,7 @@ class VehicleForm extends React.Component
 
     // Handle input changes
     onHandleFormChange(propertyName, event) {
-    	let vehicle 	= this.props.state.vehicle;
+    	let vehicle 	= this.state.vehicle;
         let chosenValue = propertyName === 'assets' ? event : event.target.value;
 
         switch (propertyName) {
@@ -59,7 +59,7 @@ class VehicleForm extends React.Component
 	}
 
     render() {
-    	let apiVehicles  = this.props.state.apiVehicles;
+    	let apiVehicles  = this.props.apiVehicles;
 		let vehicle      = this.state.vehicle;
 		let defaultMfgId = parseInt(vehicle.mfg_id);
 		let yearsOptions = [];
@@ -99,7 +99,7 @@ class VehicleForm extends React.Component
 						<div className="input-group">
 							<Uploader
 								onHandleFormChange={ this.onHandleFormChange }
-								isEditingMode={ this.props.state.isEditingMode }
+								isEditingMode={ this.props.isEditingMode }
 								assets={ vehicle.assets }
 							/>
 						</div>
@@ -215,25 +215,23 @@ class VehicleForm extends React.Component
 			</form>
 
         return (
-            <div className="col-xs-4 col-md-4" id="vehicle-add">
-                <div className="row">
-                    <div className="panel panel-info">
-                        <div className="panel-heading">
-                            <div className="row">
-                                <div className="col-xs-10 col-md-10">
-                                    <span>Vehicle</span>
-                                </div>
-                                <div className="col-xs-2 col-md-2">
-                                    <button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true" /></button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="panel-body">
-                            { vehicleForm }
-                        </div>
-                    </div>
-                </div>
-            </div>
+			<div className="row" id="vehicle-add">
+				<div className="panel panel-info">
+					<div className="panel-heading">
+						<div className="row">
+							<div className="col-xs-10 col-md-10">
+								<span>Vehicle</span>
+							</div>
+							<div className="col-xs-2 col-md-2">
+								<button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true" /></button>
+							</div>
+						</div>
+					</div>
+					<div className="panel-body">
+						{ vehicleForm }
+					</div>
+				</div>
+			</div>
         );
     }
 }

@@ -14,8 +14,8 @@ class Login extends React.Component
 			flashMessage: null
 		}
 
-		this._onChange = this._onChange.bind(this);
-		this.handleFormSubmit = this.handleFormSubmit.bind(this);
+		this._onChange 			= this._onChange.bind(this);
+		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
 	}
 
 	componentWillMount() {
@@ -27,7 +27,7 @@ class Login extends React.Component
 	}
 
 	_onChange() {
-		let flashMsg = AuthStore.getStoreFlashMessage();
+		let flashMsg 		= AuthStore.getStoreFlashMessage();
 		let isAuthenticated = AuthStore.isAuthenticated();
 
 		if (isAuthenticated){
@@ -44,7 +44,7 @@ class Login extends React.Component
 	}
 
 	// Submit
-	handleFormSubmit(event) {
+	onHandleFormSubmit(event) {
 		event.preventDefault();
 
 		AuthAction.login({
@@ -71,6 +71,7 @@ class Login extends React.Component
 							<label className="control-label">Username</label>
 							<div className="input-group">
 								<input
+									ref="username"
 									type="text"
 									className="form-control input-sm"
 									required="required"
@@ -83,6 +84,7 @@ class Login extends React.Component
 							<label className="control-label">Password</label>
 							<div className="input-group">
 								<input
+									ref="password"
 									type="password"
 									className="form-control input-sm"
 									required="required"
@@ -102,8 +104,9 @@ class Login extends React.Component
 		}
 		return (
 			<div className="row">
-				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage} alertType="alert-danger" />}
-				<form onSubmit={this.handleFormSubmit}>
+				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-danger" />}
+
+				<form onSubmit={ this.onHandleFormSubmit }>
 					 <div className="col-xs-12 col-md-12" id="auth">
 						 <div className="row">
 							 { loginForm }

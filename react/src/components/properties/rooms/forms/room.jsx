@@ -15,11 +15,8 @@ class PropertyRoomForm extends React.Component
 			isEditingMode: this.props.state.isEditingMode
 		};
 
-		this.handleFormSubmit    = this.handleFormSubmit.bind(this);
-        this.onHandleFormChange  = this.onHandleFormChange.bind(this);
-		this.onHandleWallsChange = this.onHandleWallsChange.bind(this);
-		this.onHandleAddWall     = this.onHandleAddWall.bind(this);
-		this.onHandleRemoveWall  = this.onHandleRemoveWall.bind(this);
+		this.handleFormSubmit   = this.handleFormSubmit.bind(this);
+        this.onHandleFormChange = this.onHandleFormChange.bind(this);
     }
 
     componentWillMount() {

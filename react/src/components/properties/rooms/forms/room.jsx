@@ -143,13 +143,13 @@ class PropertyRoomForm extends React.Component
 
     	let roomNameField = !this.state.isEditingMode ?
 			<NonAddedRoomsDropdown
-				room={ this.state.room }
+				room={ room }
 				nonAddedRooms={ this.props.state.property.non_added_rooms }
 				onHandleFormChange={ this.onHandleFormChange }
 			/> :
 			<input type="text"
 				   ref="name"
-				   value={ this.state.room.name }
+				   value={ room.name }
 				   className="form-control input-sm"
 				   disabled="disabled"
 			/>

@@ -147,11 +147,10 @@ class PropertyRoomForm extends React.Component
 				nonAddedRooms={ this.props.state.property.non_added_rooms }
 				onHandleFormChange={ this.onHandleFormChange }
 			/> :
-			<input type="text"
-				   ref="name"
-				   value={ room.name }
-				   className="form-control input-sm"
-				   disabled="disabled"
+			<input
+				type="text" value={ room.name }
+				className="form-control input-sm"
+				disabled="disabled"
 			/>
 
     	let wallDetailsFields = room.walls.map((wall, wallIndex) => {
@@ -203,7 +202,6 @@ class PropertyRoomForm extends React.Component
 						<div className="input-group">
 							<input
 								type="text"
-								ref="total_area"
 								onChange={ this.onHandleFormChange.bind(this, 'total_area') }
 								value={ room.total_area }
 								className="form-control input-sm"
@@ -229,7 +227,6 @@ class PropertyRoomForm extends React.Component
 						<label className="control-label">Description</label>
 						<div className="input-group">
 							<textarea
-								ref="description"
 								rows="5"
 								className="form-control"
 								onChange={ this.onHandleFormChange.bind(this, 'description') }
@@ -240,7 +237,7 @@ class PropertyRoomForm extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input type="hidden" ref="id" value={ room.id } />
+							<input type="hidden" value={ room.id } />
 						</div>
 					</div>
 				</div>

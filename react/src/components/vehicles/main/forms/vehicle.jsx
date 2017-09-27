@@ -109,11 +109,11 @@ class VehicleForm extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Year</label>
 						<div className="input-group">
-							<select ref="year"
-									onChange={ this.onHandleFormChange.bind(this, 'year') }
-									value={ vehicle.year }
-									className="form-control input-sm"
-									required="required">
+							<select
+								onChange={ this.onHandleFormChange.bind(this, 'year') }
+								value={ vehicle.year }
+								className="form-control input-sm"
+								required="required">
 								<option value="">Select One</option>
 								{yearsOptions}
 							</select>
@@ -125,11 +125,11 @@ class VehicleForm extends React.Component
 						<div className="col-xs-12 col-md-8">
 							<label className="control-label">Manufacturer</label>
 							<div className="input-group">
-								<select ref="mfg_id"
-										onChange={ this.onHandleFormChange.bind(this, 'mfg_id') }
-										value={ vehicle.mfg_id }
-										className="form-control input-sm"
-										required="required">
+								<select
+									onChange={ this.onHandleFormChange.bind(this, 'mfg_id') }
+									value={ vehicle.mfg_id }
+									className="form-control input-sm"
+									required="required">
 									<option value="">Select One</option>
 									{ apiMfgsOptions }
 								</select>
@@ -140,11 +140,11 @@ class VehicleForm extends React.Component
 						<div className="col-xs-12 col-md-8">
 							<label className="control-label">Model</label>
 							<div className="input-group">
-								<select ref="model_id"
-										onChange={ this.onHandleFormChange.bind(this, 'model_id') }
-										value={ vehicle.model_id }
-										className="form-control input-sm"
-										required="required">
+								<select
+									onChange={ this.onHandleFormChange.bind(this, 'model_id') }
+									value={ vehicle.model_id }
+									className="form-control input-sm"
+									required="required">
 									<option value="">Select One</option>
 									{ apiModelsOptions }
 								</select>
@@ -156,11 +156,11 @@ class VehicleForm extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Color</label>
 						<div className="input-group">
-							<select ref="color"
-									onChange={ this.onHandleFormChange.bind(this, 'color') }
-									value={vehicle.color}
-									className="form-control input-sm"
-									required="required">
+							<select
+								onChange={ this.onHandleFormChange.bind(this, 'color') }
+								value={vehicle.color}
+								className="form-control input-sm"
+								required="required">
 								<option value="">Select One</option>
 								<option value="white">White</option>
 								<option value="black">Black</option>
@@ -177,7 +177,7 @@ class VehicleForm extends React.Component
 						<label className="control-label">VIN</label>
 						<div className="input-group">
 							<input type="text"
-								   ref="vin"
+
 								   onChange={ this.onHandleFormChange.bind(this, 'vin') }
 								   value={ vehicle.vin }
 								   className="form-control input-sm"
@@ -189,9 +189,7 @@ class VehicleForm extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Plate</label>
 						<div className="input-group">
-							<input type="text"
-								   ref="plate"
-								   onChange={ this.onHandleFormChange.bind(this, 'plate') }
+							<input type="text" onChange={ this.onHandleFormChange.bind(this, 'plate') }
 								   value={ vehicle.plate }
 								   className="form-control input-sm"
 								   required="required"/>
@@ -201,9 +199,9 @@ class VehicleForm extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input type="hidden" ref="id" value={ vehicle.id }/>
-							<input type="hidden" ref="mfg" value={ vehicle.mfg }/>
-							<input type="hidden" ref="model" value={ vehicle.model }/>
+							<input type="hidden" value={ vehicle.id }/>
+							<input type="hidden" value={ vehicle.mfg }/>
+							<input type="hidden" value={ vehicle.model }/>
 						</div>
 					</div>
 				</div>

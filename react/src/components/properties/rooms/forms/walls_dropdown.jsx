@@ -15,7 +15,6 @@ class PropertyRoomWallsDropdown extends React.Component
 
 		return (
 			<select
-				ref={ refName }
 				onChange={ this.props.onHandleWallsChange.bind(this, refName) }
 				value={ this.props.wall.name }
 				className="form-control input-sm">

@@ -109,7 +109,6 @@ class PropertyForm extends React.Component
 						<label className="control-label">Built</label>
 						<div className="input-group">
 							<select
-								ref="built"
 								onChange={ this.onHandleFormChange.bind(this, 'built') }
 								value={ property.built }
 								className="form-control input-sm"
@@ -125,7 +124,6 @@ class PropertyForm extends React.Component
 						<label className="control-label">Style</label>
 						<div className="input-group">
 							<select
-								ref="style"
 								onChange={ this.onHandleFormChange.bind(this, 'style') }
 								value={ property.style }
 								className="form-control input-sm"
@@ -145,7 +143,6 @@ class PropertyForm extends React.Component
 						<label className="control-label">Floors</label>
 						<div className="input-group">
 							<select
-								ref="baths"
 								onChange={ this.onHandleFormChange.bind(this, 'floors') }
 								value={ property.floors }
 								className="form-control input-sm"
@@ -161,7 +158,6 @@ class PropertyForm extends React.Component
 						<label className="control-label">Beds</label>
 						<div className="input-group">
 							<select
-								ref="beds"
 								onChange={ this.onHandleFormChange.bind(this, 'beds') }
 								value={ property.beds }
 								className="form-control input-sm"
@@ -177,7 +173,6 @@ class PropertyForm extends React.Component
 						<label className="control-label">Baths</label>
 						<div className="input-group">
 							<select
-								ref="baths"
 								onChange={ this.onHandleFormChange.bind(this, 'baths') }
 								value={ property.baths }
 								className="form-control input-sm"
@@ -194,7 +189,6 @@ class PropertyForm extends React.Component
 						<div className="input-group">
 							<input
 								type="text"
-								ref="finished_area"
 								onChange={ this.onHandleFormChange.bind(this, 'finished_area') }
 								value={ property.finished_area }
 								className="form-control input-sm"/>
@@ -207,7 +201,6 @@ class PropertyForm extends React.Component
 						<div className="input-group">
 							<input
 								type="text"
-								ref="unfinished_area"
 								onChange={ this.onHandleFormChange.bind(this, 'unfinished_area') }
 								value={ property.unfinished_area }
 								className="form-control input-sm"/>
@@ -220,7 +213,6 @@ class PropertyForm extends React.Component
 						<div className="input-group">
 							<input
 								type="text"
-								ref="total_area"
 								onChange={ this.onHandleFormChange.bind(this, 'total_area') }
 								value={ property.total_area }
 								className="form-control input-sm"
@@ -234,7 +226,6 @@ class PropertyForm extends React.Component
 						<div className="input-group">
 							<input
 								type="text"
-								ref="total_area"
 								onChange={ this.onHandleFormChange.bind(this, 'parcel_number') }
 								value={ property.parcel_number }
 								className="form-control input-sm"/>
@@ -256,7 +247,6 @@ class PropertyForm extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
 							<input
-								ref="id"
 								type="hidden"
 								value={ property.id } />
 						</div>

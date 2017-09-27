@@ -11,7 +11,6 @@ class NonAddedRoomsDropdown extends React.Component
 
         return (
 			<select
-				ref="name"
 				onChange={ this.props.onHandleFormChange.bind(this, 'name') }
 				value={ this.props.room.name }
 				className="form-control input-sm"

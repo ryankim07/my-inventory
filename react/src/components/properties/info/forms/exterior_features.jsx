@@ -36,7 +36,7 @@ class PropertyExteriorFeaturesForm extends React.Component
 						<label className="control-label">Exterior</label>
 						<div className="input-group">
 								<textarea
-									ref="exterior"
+
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'exterior') }
@@ -49,7 +49,7 @@ class PropertyExteriorFeaturesForm extends React.Component
 						<label className="control-label">Foundation</label>
 						<div className="input-group">
 								<textarea
-									ref="foundation"
+
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'foundation') }
@@ -62,7 +62,7 @@ class PropertyExteriorFeaturesForm extends React.Component
 						<label className="control-label">Others</label>
 						<div className="input-group">
 								<textarea
-									ref="others"
+
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'others') }
@@ -73,24 +73,15 @@ class PropertyExteriorFeaturesForm extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input
-								type="hidden"
-								ref="id"
-								value={ exteriorFeatures.id } />
-							<input
-								type="hidden"
-								ref="property_id"
-								value={ exteriorFeatures.property_id } />
+							<input type="hidden" value={ exteriorFeatures.id } />
+							<input type="hidden" value={ exteriorFeatures.property_id } />
 						</div>
 					</div>
 				</div>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-12">
 						<div className="clearfix">
-							<input
-								type="submit"
-								value="Submit"
-								className="btn"/>
+							<input type="submit" value="Submit" className="btn"/>
 						</div>
 					</div>
 				</div>

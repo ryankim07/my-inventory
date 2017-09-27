@@ -36,7 +36,6 @@ class PropertyFeaturesForm extends React.Component
 						<label className="control-label">Parking</label>
 						<div className="input-group">
 								<textarea
-									ref="exterior"
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'parking') }
@@ -49,7 +48,6 @@ class PropertyFeaturesForm extends React.Component
 						<label className="control-label">Multi Unit</label>
 						<div className="input-group">
 								<textarea
-									ref="foundation"
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'multi_unit') }
@@ -62,7 +60,6 @@ class PropertyFeaturesForm extends React.Component
 						<label className="control-label">Hoa</label>
 						<div className="input-group">
 								<textarea
-									ref="others"
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'hoa') }
@@ -75,7 +72,6 @@ class PropertyFeaturesForm extends React.Component
 						<label className="control-label">Utilities</label>
 						<div className="input-group">
 								<textarea
-									ref="others"
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'utilities') }
@@ -88,7 +84,6 @@ class PropertyFeaturesForm extends React.Component
 						<label className="control-label">Lot</label>
 						<div className="input-group">
 								<textarea
-									ref="others"
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'lot') }
@@ -101,7 +96,6 @@ class PropertyFeaturesForm extends React.Component
 						<label className="control-label">Common Walls</label>
 						<div className="input-group">
 								<textarea
-									ref="others"
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'common_walls') }
@@ -114,7 +108,6 @@ class PropertyFeaturesForm extends React.Component
 						<label className="control-label">Facing Direction</label>
 						<div className="input-group">
 								<textarea
-									ref="others"
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'facing_direction') }
@@ -127,7 +120,6 @@ class PropertyFeaturesForm extends React.Component
 						<label className="control-label">Others</label>
 						<div className="input-group">
 								<textarea
-									ref="others"
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'others') }
@@ -140,11 +132,9 @@ class PropertyFeaturesForm extends React.Component
 						<div className="input-group">
 							<input
 								type="hidden"
-								ref="id"
 								value={ features.id } />
 							<input
 								type="hidden"
-								ref="property_id"
 								value={ features.property_id } />
 						</div>
 					</div>

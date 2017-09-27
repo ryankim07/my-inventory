@@ -33,7 +33,6 @@ class PropertyAddressForm extends React.Component
 						<label className="control-label">Street</label>
 						<div className="input-group">
 							<input type="text"
-								   ref="street"
 								   onChange={ this.handleFormChange.bind(this, 'street') }
 								   value={ address.street }
 								   className="form-control input-sm"
@@ -46,7 +45,6 @@ class PropertyAddressForm extends React.Component
 						<label className="control-label">City</label>
 						<div className="input-group">
 							<input type="text"
-								   ref="city"
 								   onChange={ this.handleFormChange.bind(this, 'city') }
 								   value={ address.city }
 								   className="form-control input-sm"
@@ -74,7 +72,6 @@ class PropertyAddressForm extends React.Component
 						<label className="control-label">Zip</label>
 						<div className="input-group">
 							<input type="text"
-								   ref="zip"
 								   onChange={ this.handleFormChange.bind(this, 'zip') }
 								   value={ address.zip }
 								   className="form-control input-sm"
@@ -86,7 +83,7 @@ class PropertyAddressForm extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">County</label>
 						<div className="input-group">
-							<select ref="county"
+							<select
 									onChange={ this.handleFormChange.bind(this, 'county') }
 									value={ address.county }
 									className="form-control input-sm">
@@ -101,7 +98,7 @@ class PropertyAddressForm extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Country</label>
 						<div className="input-group">
-							<select ref="country"
+							<select
 									onChange={ this.handleFormChange.bind(this, 'country') }
 									value={ address.country }
 									className="form-control input-sm">
@@ -116,7 +113,6 @@ class PropertyAddressForm extends React.Component
 						<label className="control-label">Subdivision</label>
 						<div className="input-group">
 							<input type="text"
-								   ref="subdivision"
 								   onChange={ this.handleFormChange.bind(this, 'subdivision') }
 								   value={ address.subdivision }
 								   className="form-control input-sm"/>
@@ -126,7 +122,7 @@ class PropertyAddressForm extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input type="hidden" ref="id" value={ address.id } />
+							<input type="hidden" value={ address.id } />
 						</div>
 					</div>
 				</div>

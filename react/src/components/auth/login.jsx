@@ -70,11 +70,11 @@ class Login extends React.Component
 						<div className="col-xs-12 col-md-8">
 							<label className="control-label">Username</label>
 							<div className="input-group">
-								<input type="text"
-									   ref="username"
-									   className="form-control input-sm"
-									   required="required"
-									   defaultValue="rkim07"/>
+								<input
+									type="text"
+									className="form-control input-sm"
+									required="required"
+									defaultValue="admin"/>
 							</div>
 						</div>
 					</div>
@@ -82,11 +82,11 @@ class Login extends React.Component
 						<div className="col-xs-12 col-md-8">
 							<label className="control-label">Password</label>
 							<div className="input-group">
-								<input type="password"
-									   ref="password"
-									   className="form-control input-sm"
-									   required="required"
-									   defaultValue="123"/>
+								<input
+									type="password"
+									className="form-control input-sm"
+									required="required"
+									defaultValue="123"/>
 							</div>
 						</div>
 					</div>

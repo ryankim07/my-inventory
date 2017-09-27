@@ -108,7 +108,7 @@ class Signup extends React.Component
 						<div className="col-xs-12 col-md-8">
 							<label className="control-label">Role</label>
 							<div className="input-group">
-								<select ref="role"
+								<select
 										onChange={this.handleFormChange.bind(this, 'role')}
 										value={this.state.user.role}
 										className="form-control input-sm"
@@ -124,12 +124,13 @@ class Signup extends React.Component
 						<div className="col-xs-12 col-md-12">
 							<label className="control-label">Email</label>
 							<div className="input-group">
-								<input type="email"
-										ref="email"
-										className="form-control input-sm"
-										required="required"
-										value={this.state.user.email}
-										onChange={this.handleFormChange.bind(this, 'email')} />
+								<input
+									type="email"
+									className="form-control input-sm"
+									required="required"
+									value={this.state.user.email}
+									onChange={this.handleFormChange.bind(this, 'email')}
+								/>
 							</div>
 						</div>
 					</div>
@@ -137,12 +138,13 @@ class Signup extends React.Component
 						<div className="col-xs-12 col-md-12">
 							<label className="control-label">Username</label>
 							<div className="input-group">
-								<input type="text"
-										ref="username"
-										className="form-control input-sm"
-										required="required"
-										value={this.state.user.username}
-										onChange={this.handleFormChange.bind(this, 'username')} />
+								<input
+									type="text"
+									className="form-control input-sm"
+									required="required"
+									value={this.state.user.username}
+									onChange={this.handleFormChange.bind(this, 'username')}
+								/>
 							</div>
 						</div>
 					</div>
@@ -150,10 +152,11 @@ class Signup extends React.Component
 						<div className="col-xs-12 col-md-8">
 							<label className="control-label">Password</label>
 							<div className="input-group">
-								<input type="password"
-									   ref="password"
-									   className="form-control input-sm"
-									   required="required" />
+								<input
+									type="password"
+									className="form-control input-sm"
+									required="required"
+								/>
 							</div>
 						</div>
 					</div>
@@ -161,10 +164,11 @@ class Signup extends React.Component
 						<div className="col-xs-12 col-md-8">
 							<label className="control-label">Confirm Password</label>
 							<div className="input-group">
-								<input type="password"
-									   ref="confirm_password"
-									   className="form-control input-sm"
-									   required="required" />
+								<input
+									type="password"
+									className="form-control input-sm"
+									required="required"
+								/>
 							</div>
 						</div>
 					</div>

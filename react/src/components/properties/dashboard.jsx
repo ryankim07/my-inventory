@@ -26,7 +26,6 @@ class PropertiesDashboard extends React.Component
 		this.state = {
 			property: {},
 			room: {},
-			origProperty: {},
 			properties: [],
 			paints: [],
 			isEditingMode: false,
@@ -128,13 +127,8 @@ class PropertiesDashboard extends React.Component
 	onHandleMainPanel(id, panel) {
 		let property = this.state.properties.find(obj => obj.id === id);
 
-		// Clone property here so it could be referenced later whenever rooms are toggled
-		// without saving
-		let origProperty = panel === 'info' ? JSON.parse(JSON.stringify(property)) : this.state.origProperty;
-
 		this.setState({
 			property: property,
-			origProperty: origProperty,
 			mainPanel: panel,
 			columnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
@@ -160,8 +154,10 @@ class PropertiesDashboard extends React.Component
 	// Handle add and edit from rooms list
 	onHandleRightRoomPanel(id) {
 		let isEditingMode = !!id;
-		let property = this.state.origProperty;
-		let rooms	 = property.rooms;
+
+		// Need to clone here to stop object referencing to the original object
+		let rooms = JSON.parse(JSON.stringify(this.state.property.rooms));
+
 		let wallObj  = {
 			id: '',
 			room_id: '',

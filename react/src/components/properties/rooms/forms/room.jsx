@@ -10,9 +10,9 @@ class PropertyRoomForm extends React.Component
         super(props);
 
 		this.state = {
-			room: this.props.state.room,
-			disableAddWallsBtn: this.props.state.isEditingMode,
-			isEditingMode: this.props.state.isEditingMode
+			room: this.props.room,
+			disableAddWallsBtn: this.props.isEditingMode,
+			isEditingMode: this.props.isEditingMode
 		};
 
 		this.handleFormSubmit   = this.handleFormSubmit.bind(this);
@@ -20,7 +20,7 @@ class PropertyRoomForm extends React.Component
     }
 
     componentWillMount() {
-		let walls = this.state.room.walls;
+		let walls 		 = this.state.room.walls;
 		let filledFields = this.checkFilledWalls(walls);
 
 		this.setState({
@@ -29,16 +29,13 @@ class PropertyRoomForm extends React.Component
 	}
 
 	componentWillReceiveProps(nextProps) {
-    	let clickedRoom = nextProps.state.room;
-    	let currRoom    = this.props.state.room;
-
-    	if (clickedRoom !== currRoom) {
-			let walls = clickedRoom.walls;
+    	if (nextProps.room !== this.props.room) {
+			let walls 		 = nextProps.room.walls;
 			let filledFields = this.checkFilledWalls(walls);
 
 			this.setState({
-				room: clickedRoom,
-				isEditingMode: clickedRoom.id === "" ? false : true,
+				room: nextProps.room,
+				isEditingMode: nextProps.room.id === "" ? false : true,
 				disableAddWallsBtn: filledFields === walls.length ? true : false
 			});
 		}
@@ -66,11 +63,11 @@ class PropertyRoomForm extends React.Component
 	}
 
 	onHandleWallsChange(propertyName, event) {
-		let room         = this.state.room;
-		let walls        = room.walls
-		let chosenValue  = event.target.value;
-		let id			 = propertyName.match(/\d+$/)[0];
-		let field 		 = propertyName.split(/_(.*)/)[0];
+		let room        = this.state.room;
+		let walls       = room.walls
+		let chosenValue = event.target.value;
+		let id			= propertyName.match(/\d+$/)[0];
+		let field 		= propertyName.split(/_(.*)/)[0];
 
 		switch (field) {
 			case 'wall':
@@ -144,7 +141,7 @@ class PropertyRoomForm extends React.Component
     	let roomNameField = !this.state.isEditingMode ?
 			<NonAddedRoomsDropdown
 				room={ room }
-				nonAddedRooms={ this.props.state.property.non_added_rooms }
+				nonAddedRooms={ this.props.nonAddedRooms }
 				onHandleFormChange={ this.onHandleFormChange }
 			/> :
 			<input
@@ -176,7 +173,7 @@ class PropertyRoomForm extends React.Component
 								<PropertyPaintsDropdown
 									index={ wallIndex }
 									wall={ wall }
-									paints={ this.props.state.paints }
+									paints={ this.props.paints }
 									onHandleWallsChange={ this.onHandleWallsChange }
 								/>
 							</div>

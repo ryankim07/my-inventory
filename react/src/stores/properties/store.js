@@ -59,6 +59,10 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
     	return _property;
 	},
 
+	getPropertyById: function (id) {
+		return _properties.find(obj => obj.id === id);
+	},
+
 	modifyProperty: function(results) {
     	if (results.err_msg) {
 			_storeMsg = results.err_msg;

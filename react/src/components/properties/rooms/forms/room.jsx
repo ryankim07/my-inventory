@@ -15,28 +15,24 @@ class PropertyRoomForm extends React.Component
 			isEditingMode: this.props.isEditingMode
 		};
 
-		this.handleFormSubmit   = this.handleFormSubmit.bind(this);
-        this.onHandleFormChange = this.onHandleFormChange.bind(this);
+		this.handleFormSubmit    = this.handleFormSubmit.bind(this);
+        this.onHandleFormChange  = this.onHandleFormChange.bind(this);
+        this.onHandleWallsChange = this.onHandleWallsChange.bind(this);
+        this.onHandleAddWall     = this.onHandleAddWall.bind(this);
     }
 
     componentWillMount() {
-		let walls 		 = this.state.room.walls;
-		let filledFields = this.checkFilledWalls(walls);
-
 		this.setState({
-			disableAddWallsBtn: filledFields === walls.length ? true : false
+			disableAddWallsBtn: this.shouldDisableAddWallBtn(this.state.room.walls)
 		});
 	}
 
 	componentWillReceiveProps(nextProps) {
     	if (nextProps.room !== this.props.room) {
-			let walls 		 = nextProps.room.walls;
-			let filledFields = this.checkFilledWalls(walls);
-
 			this.setState({
 				room: nextProps.room,
 				isEditingMode: nextProps.room.id === "" ? false : true,
-				disableAddWallsBtn: filledFields === walls.length ? true : false
+				disableAddWallsBtn: this.shouldDisableAddWallBtn(nextProps.room.walls)
 			});
 		}
 	}
@@ -79,11 +75,9 @@ class PropertyRoomForm extends React.Component
 				break;
 		}
 
-		let filledFields = this.checkFilledWalls(walls);
-
 		this.setState({
 			room: room,
-			disableAddWallsBtn: filledFields === walls.length ? true : false
+			disableAddWallsBtn: this.shouldDisableAddWallBtn(walls)
 		});
 	}
 
@@ -101,7 +95,10 @@ class PropertyRoomForm extends React.Component
 
 		room.walls.push(newWall);
 
-		this.setState({room: room});
+		this.setState({
+			room: room,
+			disableAddWallsBtn: this.shouldDisableAddWallBtn(room.walls)
+		});
 	}
 
 	onHandleRemoveWall(index, event) {
@@ -110,7 +107,10 @@ class PropertyRoomForm extends React.Component
 		let room = this.state.room;
 		room.walls.splice(index, 1);
 
-		this.setState({room: room});
+		this.setState({
+			room: room,
+			disableAddWallsBtn: this.shouldDisableAddWallBtn(room.walls)
+		});
 	}
 
 	// Submit
@@ -120,18 +120,23 @@ class PropertyRoomForm extends React.Component
 		this.props.onHandleFormSubmit(this.state.room, 'rooms');
 	}
 
-	checkFilledWalls(walls) {
-		let filledFields = 0;
+	// Disable add walls button if one of the wall dropdowns
+	// has already "All" selected or if all fields are empty
+	shouldDisableAddWallBtn(walls) {
+		let disable = false;
 
-		walls.map((wall, index) => {
-			if (wall.name === "all" || index === 4) {
-				filledFields = 0;
-			} else if (wall.name !== "" && wall.paint_id !== "") {
-				filledFields++;
+		walls.map((wall) => {
+			if (wall.name === "all" ||
+				wall.length === 0 ) {
+				disable = true;
+			} else if (wall.paint_id === "" && wall.room_id === "") {
+				disable = true;
+			} else {
+				disable = false;
 			}
 		});
 
-		return filledFields;
+		return disable;
 	}
 
 	render() {
@@ -209,7 +214,7 @@ class PropertyRoomForm extends React.Component
 
 				{ wallDetailsFields }
 
-				{ disableAddWallsBtn ?
+				{ !disableAddWallsBtn ?
 					<div className="form-group">
 						<div className="col-xs-12 col-md-12">
 							<div className="clearfix">

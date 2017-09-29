@@ -258,6 +258,7 @@ class PropertiesDashboard extends React.Component
 
 		// Right panel
 		let rightPanelHtml = '';
+
 		switch (this.state.rightPanel) {
 			case 'features':
 				rightPanelHtml =
@@ -319,7 +320,7 @@ class PropertiesDashboard extends React.Component
 				{
 					this.state.showRightPanel ?
 						<PropertiesRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
-							rightPanelHtml
+							{ rightPanelHtml }
 						</PropertiesRightPanel> : null
 				}
 			</div>

@@ -2,7 +2,8 @@ import React from 'react';
 import NonAddedRoomsDropdown from '../../rooms/forms/non_added_rooms_dropdown';
 import PropertyRoomWallsDropdown from '../../rooms/forms/walls_dropdown';
 import PropertyPaintsDropdown from '../../rooms/forms/paints_dropdown';
-import { numberFormat } from "../../../helper/utils"
+import { numberFormat } from "../../../helper/utils";
+import { upperFirstLetter } from "../../../helper/utils";
 
 class PropertyRoomForm extends React.Component
 {
@@ -150,10 +151,11 @@ class PropertyRoomForm extends React.Component
 				onHandleFormChange={ this.onHandleFormChange }
 			/> :
 			<input
-				type="text" value={ room.name }
+				type="text"
+				value={ upperFirstLetter(room.name) }
 				className="form-control input-sm"
 				disabled="disabled"
-			/>
+			/>;
 
     	let wallDetailsFields = room.walls.map((wall, wallIndex) => {
 			return (

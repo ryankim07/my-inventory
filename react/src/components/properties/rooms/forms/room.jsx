@@ -2,8 +2,7 @@ import React from 'react';
 import NonAddedRoomsDropdown from '../../rooms/forms/non_added_rooms_dropdown';
 import PropertyRoomWallsDropdown from '../../rooms/forms/walls_dropdown';
 import PropertyPaintsDropdown from '../../rooms/forms/paints_dropdown';
-import { numberFormat } from "../../../helper/utils";
-import { upperFirstLetter } from "../../../helper/utils";
+import { numberFormat, upperFirstLetter } from "../../../helper/utils";
 
 class PropertyRoomForm extends React.Component
 {
@@ -86,7 +85,7 @@ class PropertyRoomForm extends React.Component
 	onHandleAddWall(event) {
     	event.preventDefault();
 
-    	let room  	= this.state.room;
+    	let room    = this.state.room;
 		let newWall = {
 			id: '',
 			room_id: '',
@@ -168,6 +167,7 @@ class PropertyRoomForm extends React.Component
 								<PropertyRoomWallsDropdown
 									index={ wallIndex }
 									wall={ wall }
+									existingWalls={ room.walls }
 									onHandleWallsChange={ this.onHandleWallsChange }
 								/>
 							</div>

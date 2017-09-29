@@ -1,5 +1,6 @@
 import React from 'react';
 import Previous from '../../helper/previous';
+import { upperFirstLetter } from "../../helper/utils";
 
 class PropertyRoomsList extends React.Component
 {
@@ -13,7 +14,7 @@ class PropertyRoomsList extends React.Component
 			rooms.map((room) => {
 				return (
 					<tr key={ room.id }>
-						<td>{ room.name }</td>
+						<td>{ upperFirstLetter(room.name) }</td>
 						<td>{ room.total_area }</td>
 						<td>{ room.description }</td>
 						<td>

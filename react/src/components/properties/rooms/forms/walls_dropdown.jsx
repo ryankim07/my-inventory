@@ -1,14 +1,14 @@
 import React from 'react';
-import { upperFirstLetter, arrayDiff } from "../../../helper/utils";
+import { upperFirstLetter } from "../../../helper/utils";
 
 class PropertyRoomWallsDropdown extends React.Component
 {
 	render() {
-		let wallSides = ["left", "right", "front", "back", "ceiling", "all"];
+		//let wallSides = ["left", "right", "front", "back", "ceiling", "all"];
 		let refName   = 'wall_' + this.props.index;
 		let wallName  = this.props.wall.name;
 
-		if (wallName === '') {
+		/*if (wallName === '') {
 			let currentWalls = [];
 			this.props.existingWalls.map((wall) => {
 				if (wall.name !== '') {
@@ -17,9 +17,9 @@ class PropertyRoomWallsDropdown extends React.Component
 			});
 
 			wallSides = arrayDiff(currentWalls, wallSides.filter(function(e) { return e !== 'all' }));
-		}
+		}*/
 
-		let wallSidesOptions = wallSides.map((name, wallIndex) => {
+		let wallSidesOptions = this.props.wallSides.map((name, wallIndex) => {
 			return (
 				<option key={ wallIndex } value={ name }>{ upperFirstLetter(name) }</option>
 			);

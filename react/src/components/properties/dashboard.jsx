@@ -155,7 +155,9 @@ class PropertiesDashboard extends React.Component
 	onHandleRightRoomPanel(id) {
 		let isEditingMode = !!id;
 
-		// Need to clone here to stop object referencing to the original object
+		// If a particular room is edited without submit and user selects
+		// a new room to edit, we need to restore old room values.  Therefore,
+		// we need to clone object to stop js original object reference
 		let rooms = JSON.parse(JSON.stringify(this.state.property.rooms));
 
 		let wallObj  = {
@@ -165,6 +167,7 @@ class PropertiesDashboard extends React.Component
 			name: ''
 		};
 
+		// Instantiate new object or load existing object if found
 		let room = isEditingMode ?
 			rooms.find(obj => obj.id === id) :
 			{

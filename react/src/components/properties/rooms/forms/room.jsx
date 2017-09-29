@@ -2,7 +2,7 @@ import React from 'react';
 import NonAddedRoomsDropdown from '../../rooms/forms/non_added_rooms_dropdown';
 import PropertyRoomWallsDropdown from '../../rooms/forms/walls_dropdown';
 import PropertyPaintsDropdown from '../../rooms/forms/paints_dropdown';
-import { numberFormat, upperFirstLetter } from "../../../helper/utils";
+import { numberFormat, upperFirstLetter, arrayDiff } from "../../../helper/utils";
 
 class PropertyRoomForm extends React.Component
 {
@@ -12,7 +12,9 @@ class PropertyRoomForm extends React.Component
 		this.state = {
 			room: this.props.room,
 			disableAddWallsBtn: this.props.isEditingMode,
-			isEditingMode: this.props.isEditingMode
+			isEditingMode: this.props.isEditingMode,
+			allWallSides: ["left", "right", "front", "back", "ceiling", "all"],
+			wallSides: []
 		};
 
 		this.handleFormSubmit    = this.handleFormSubmit.bind(this);
@@ -83,21 +85,43 @@ class PropertyRoomForm extends React.Component
 
 	// Add new wall div
 	onHandleAddWall(event) {
-    	event.preventDefault();
+		event.preventDefault();
 
-    	let room    = this.state.room;
 		let newWall = {
 			id: '',
 			room_id: '',
 			paint_id: '',
 			name: ''
 		};
+		let room = this.state.room;
+		let walls = room.walls;
+		let allWallSides = this.state.allWallSides;
+		let wallSides = [];
 
-		room.walls.push(newWall);
+		// All walls were selected
+		if (walls.length === 0) {
+			walls.push(newWall);
+			wallSides = allWallSides;
+		} else {
+			let currentWalls = [];
+			walls.map((wall) => {
+				if (wall.name !== '') {
+					currentWalls.push(wall.name);
+				}
+			});
+
+			// Remove all option
+			wallSides = arrayDiff(currentWalls, allWallSides.filter(function (e) {
+				return e !== 'all'
+			}));
+
+			walls.push(newWall);
+		}
 
 		this.setState({
 			room: room,
-			disableAddWallsBtn: this.shouldDisableAddWallBtn(room.walls)
+			disableAddWallsBtn: true,
+			wallSides: wallSides
 		});
 	}
 
@@ -125,16 +149,22 @@ class PropertyRoomForm extends React.Component
 	shouldDisableAddWallBtn(walls) {
 		let disable = false;
 
-		walls.map((wall) => {
-			if (wall.name === "all" ||
-				wall.length === 0 ) {
-				disable = true;
-			} else if (wall.paint_id === "" && wall.room_id === "") {
-				disable = true;
-			} else {
-				disable = false;
-			}
-		});
+		// If all walls are filled up, no need to add additional walls
+		// Needs to subtract 1 from all wall sides due to "all" option
+		if (walls.length === this.state.allWallSides.length - 1) {
+			disable = true;
+		} else {
+			walls.map((wall) => {
+				if (wall.name === "all" ||
+					wall.length === 0) {
+					disable = true;
+				} else if (wall.paint_id === "" && wall.room_id === "") {
+					disable = true;
+				} else {
+					disable = false;
+				}
+			});
+		}
 
 		return disable;
 	}
@@ -143,6 +173,7 @@ class PropertyRoomForm extends React.Component
     	let room 			   = this.state.room;
     	let disableAddWallsBtn = this.state.disableAddWallsBtn;
 
+    	// Only show dropdown when entering new room
     	let roomNameField = !this.state.isEditingMode ?
 			<NonAddedRoomsDropdown
 				room={ room }
@@ -158,19 +189,17 @@ class PropertyRoomForm extends React.Component
 
     	let wallDetailsFields = room.walls.map((wall, wallIndex) => {
 			return (
-				<div key={ wallIndex }>
+				<div key={ wallIndex } className="walls-group">
 					<div className="form-group">
 						<div className="col-xs-12 col-md-8">
 							<label className="control-label">Wall Name</label>
 							<button onClick={ this.onHandleRemoveWall.bind(this, wallIndex) }><i className="fa fa-trash" aria-hidden="true" /></button>
-							<div className="input-group">
-								<PropertyRoomWallsDropdown
-									index={ wallIndex }
-									wall={ wall }
-									existingWalls={ room.walls }
-									onHandleWallsChange={ this.onHandleWallsChange }
-								/>
-							</div>
+							<PropertyRoomWallsDropdown
+								index={ wallIndex }
+								wall={ wall }
+								wallSides={ this.state.wallSides }
+								onHandleWallsChange={ this.onHandleWallsChange }
+							/>
 						</div>
 					</div>
 					<div className="form-group">

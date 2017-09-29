@@ -13,14 +13,25 @@ class PropertyRoomWallsDropdown extends React.Component
 			);
 		});
 
-		return (
+		let wallDropDown = this.props.wall.name !== '' ?
+			<input
+				type="text"
+				value={ upperFirstLetter(this.props.wall.name) }
+				className="form-control input-sm"
+				disabled="disabled"
+			/> :
 			<select
 				onChange={ this.props.onHandleWallsChange.bind(this, refName) }
 				value={ this.props.wall.name }
 				className="form-control input-sm">
 				<option value="">Select One</option>
 				{ wallSidesOptions }
-			</select>
+			</select>;
+
+		return (
+			<div className="input-group">
+				{ wallDropDown }
+			</div>
         );
     }
 }

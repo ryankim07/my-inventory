@@ -1,6 +1,8 @@
 import React from 'react';
 import PropertiesAction from '../../actions/properties-action';
 import PropertiesStore from '../../stores/properties/store';
+import PropertiesMainPanel from './main_panel';
+import PropertiesRightPanel from './right_panel';
 import PropertyForm from './main/forms/property';
 import PropertiesList from './main/list';
 import PropertyInfoView from './info/view';
@@ -217,6 +219,7 @@ class PropertiesDashboard extends React.Component
 	render() {
 		// Main panel
 		let mainPanelHtml = '';
+
 		switch (this.state.mainPanel) {
 			case 'info':
 				mainPanelHtml =
@@ -224,7 +227,6 @@ class PropertiesDashboard extends React.Component
 						state={ this.state }
 						onHandleRightPanel={ this.onHandleRightPanel }
 						onHandleMainPanel={ this.onHandleMainPanel }
-						className={ mainColumnClassName }
 					/>;
 			break;
 
@@ -235,7 +237,6 @@ class PropertiesDashboard extends React.Component
 						onHandleRightRoomPanel={ this.onHandleRightRoomPanel }
 						onHandleFormSubmit={ this.onHandleFormSubmit }
 						onHandleRemoveRoom={ this.onHandleRemoveRoom }
-						className="main-column"
 					/>;
 			break;
 
@@ -246,7 +247,6 @@ class PropertiesDashboard extends React.Component
 						onHandleMainPanel={ this.onHandleMainPanel }
 						onHandleRightPanel={ this.onHandleRightPanel }
 						onHandleRemove={ this.onHandleRemove }
-						className={ mainColumnClassName }
 					/>;
 		}
 
@@ -305,8 +305,17 @@ class PropertiesDashboard extends React.Component
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage } alertType="alert-success" />}
-				{ mainPanelHtml }
-				{ this.state.showRightPanel ? rightPanelHtml : null }
+
+				<PropertiesMainPanel columnCss={ this.state.columnCss } className={ mainColumnClassName }>
+					{ mainPanelHtml }
+				</PropertiesMainPanel>
+
+				{
+					this.state.showRightPanel ?
+						<PropertiesRightPanel>
+							rightPanelHtml
+						</PropertiesRightPanel> : null
+				}
 			</div>
 		)
 	}

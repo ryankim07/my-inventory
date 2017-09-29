@@ -88,25 +88,23 @@ class PropertyExteriorFeaturesForm extends React.Component
 			</form>
 
         return (
-            <div className="col-xs-4 col-md-4" id="exterior-features-add">
-                <div className="row">
-                    <div className="panel panel-info">
-                        <div className="panel-heading">
-                            <div className="row">
-                                <div className="col-xs-10 col-md-10">
-                                    <span>Add Exterior Features</span>
-                                </div>
-                                <div className="col-xs-2 col-md-2">
-									<button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true" /></button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="panel-body">
-                            { exteriorFeaturesForm }
-                        </div>
-                    </div>
-                </div>
-            </div>
+			<div className="row" id="exterior-features-add">
+				<div className="panel panel-info">
+					<div className="panel-heading">
+						<div className="row">
+							<div className="col-xs-10 col-md-10">
+								<span>Add Exterior Features</span>
+							</div>
+							<div className="col-xs-2 col-md-2">
+								<button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true" /></button>
+							</div>
+						</div>
+					</div>
+					<div className="panel-body">
+						{ exteriorFeaturesForm }
+					</div>
+				</div>
+			</div>
         );
     }
 }

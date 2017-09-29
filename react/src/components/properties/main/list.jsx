@@ -68,25 +68,23 @@ class PropertiesList extends React.Component
         }
 
         return (
-            <div className={ [columnCss.mobileWidth, columnCss.desktopWidth, this.props.className].join(' ') } id="properties-main">
-                <div className="row">
-                    <div className="panel panel-info">
-                        <div className="panel-heading">
-                            <div className="row">
-                                <div className="col-xs-10 col-md-10">
-                                    <span>Properties List</span>
-                                </div>
-                                <div className="col-xs-2 col-md-2">
-									<button onClick={ this.handleRightPanel.bind(this, false) }><i className="fa fa-plus" aria-hidden="true" /></button>
-								</div>
-                            </div>
-                        </div>
-                        <div className="panel-body">
-							{ propertiesHtml }
-                        </div>
-                    </div>
-                </div>
-            </div>
+			<div className="row" id="properties-main">
+				<div className="panel panel-info">
+					<div className="panel-heading">
+						<div className="row">
+							<div className="col-xs-10 col-md-10">
+								<span>Properties List</span>
+							</div>
+							<div className="col-xs-2 col-md-2">
+								<button onClick={ this.handleRightPanel.bind(this, false) }><i className="fa fa-plus" aria-hidden="true" /></button>
+							</div>
+						</div>
+					</div>
+					<div className="panel-body">
+						{ propertiesHtml }
+					</div>
+				</div>
+			</div>
         )
     }
 }

@@ -293,37 +293,35 @@ class PropertyInfoView extends React.Component
 			</div> : null;
 
 		return (
-            <div className={ [columnCss.mobileWidth, columnCss.desktopWidth, this.props.className].join(' ') } id="property-view">
-                <div className="row">
-                    <div className="panel panel-info">
-                        <div className="panel-heading">
-                            <div className="row">
-                                <div className="col-xs-10 col-md-10">
-                                    <span>Property Information</span>
-                                </div>
-								<div className="col-xs-2 col-md-2">
-									<Previous route="/properties"/>
-								</div>
-                            </div>
-                        </div>
-                        <div className="panel-body">
-							<div>
-								<div>
-									{ propertyFeaturesBtn }
-									{ exteriorFeaturesBtn }
-									{ interiorFeaturesBtn }
-								</div>
-
-								{ addressHtml }
-								{ detailsHtml }
-								{ featuresHtml }
-								{ exteriorFeaturesHtml }
-								{ interiorFeaturesHtml }
+			<div className="row" id="property-view">
+				<div className="panel panel-info">
+					<div className="panel-heading">
+						<div className="row">
+							<div className="col-xs-10 col-md-10">
+								<span>Property Information</span>
 							</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+							<div className="col-xs-2 col-md-2">
+								<Previous route="/properties"/>
+							</div>
+						</div>
+					</div>
+					<div className="panel-body">
+						<div>
+							<div>
+								{ propertyFeaturesBtn }
+								{ exteriorFeaturesBtn }
+								{ interiorFeaturesBtn }
+							</div>
+
+							{ addressHtml }
+							{ detailsHtml }
+							{ featuresHtml }
+							{ exteriorFeaturesHtml }
+							{ interiorFeaturesHtml }
+						</div>
+					</div>
+				</div>
+			</div>
         );
     }
 }

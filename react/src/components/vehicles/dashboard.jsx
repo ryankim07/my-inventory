@@ -11,6 +11,8 @@ let mainDefaultMobileColumnWidth = 'col-xs-12';
 let mainDefaultDesktopColumnWidth = 'col-md-12';
 let mainShrinkedMobileColumnWidth = 'col-xs-8';
 let mainShrinkedDesktopColumnWidth = 'col-md-8';
+let rightPanelMobileColumnWidth = 'col-xs-4';
+let rightPanelDesktopColumnWidth = 'col-md-4';
 let mainColumnClassName = 'main-column';
 
 class VehiclesDashboard extends React.Component
@@ -26,9 +28,13 @@ class VehiclesDashboard extends React.Component
 			loader: true,
 			showRightPanel: false,
 			flashMessage: null,
-			columnCss: {
+			mainPanelColumnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
+			},
+			rightPanelColumnCss: {
+				'mobileWidth': rightPanelMobileColumnWidth,
+				'desktopWidth': rightPanelDesktopColumnWidth
 			}
 		};
 
@@ -56,7 +62,7 @@ class VehiclesDashboard extends React.Component
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.location.action !== 'POP') {
 			this.setState({
-				columnCss: {
+				mainPanelColumnCss: {
 					'mobileWidth': mainDefaultMobileColumnWidth,
 					'desktopWidth': mainDefaultDesktopColumnWidth
 				},
@@ -84,7 +90,7 @@ class VehiclesDashboard extends React.Component
 			showRightPanel: !!openRightPanel,
 			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,
-			columnCss: {
+			mainPanelColumnCss: {
 				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
 				'desktopWidth': openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
 			}
@@ -122,7 +128,7 @@ class VehiclesDashboard extends React.Component
 			vehicle: vehicle,
 			isEditingMode: isEditingMode,
 			showRightPanel: true,
-			columnCss: {
+			mainPanelColumnCss: {
 				'mobileWidth': mainShrinkedMobileColumnWidth,
 				'desktopWidth': mainShrinkedDesktopColumnWidth
 			}
@@ -143,7 +149,7 @@ class VehiclesDashboard extends React.Component
 	closeRightPanel() {
 		this.setState({
 			showRightPanel: false,
-			columnCss: {
+			mainPanelColumnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
 			}
@@ -155,7 +161,7 @@ class VehiclesDashboard extends React.Component
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success" />}
 
-				<VehiclesMainPanel columnCss={ this.state.columnCss } className={ mainColumnClassName }>
+				<VehiclesMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss } className={ mainColumnClassName }>
 					<VehiclesList
 						loader={ this.state.loader }
 						vehicles={ this.state.vehicles }
@@ -166,7 +172,7 @@ class VehiclesDashboard extends React.Component
 
 				{
 					this.state.showRightPanel ?
-						<VehiclesRightPanel>
+						<VehiclesRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
 							<VehicleForm
 								state={ this.state }
 								vehicle={ this.state.vehicle }

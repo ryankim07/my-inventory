@@ -48,8 +48,7 @@ class PropertiesList extends React.Component
 	}
 
 	render() {
-		let columnCss = this.props.state.columnCss;
-        let propertiesHtml = '';
+		let propertiesHtml = '';
 
 		// If loading is complete
         if (!this.props.state.loader) {

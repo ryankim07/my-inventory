@@ -18,6 +18,8 @@ let mainDefaultMobileColumnWidth = 'col-xs-12';
 let mainDefaultDesktopColumnWidth = 'col-md-12';
 let mainShrinkedMobileColumnWidth = 'col-xs-8';
 let mainShrinkedDesktopColumnWidth = 'col-md-8';
+let rightPanelMobileColumnWidth = 'col-xs-4';
+let rightPanelDesktopColumnWidth = 'col-md-4';
 let mainColumnClassName = 'main-column';
 
 class PropertiesDashboard extends React.Component
@@ -36,10 +38,14 @@ class PropertiesDashboard extends React.Component
 			rightPanel: null,
 			showRightPanel: false,
 			flashMessage: null,
-			columnCss: {
+			mainPanelColumnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
 			},
+			rightPanelColumnCss: {
+				'mobileWidth': rightPanelMobileColumnWidth,
+				'desktopWidth': rightPanelDesktopColumnWidth
+			}
 		};
 
 		this._onChange 		   	 	= this._onChange.bind(this);
@@ -71,7 +77,7 @@ class PropertiesDashboard extends React.Component
 				mainPanel: this.state.mainPanel,
 				showRightPanel: false,
 				flashMessage: null,
-				columnCss: {
+				mainPanelColumnCss: {
 					'mobileWidth': mainDefaultMobileColumnWidth,
 					'desktopWidth': mainDefaultDesktopColumnWidth
 				}
@@ -100,7 +106,7 @@ class PropertiesDashboard extends React.Component
 			showRightPanel: !!openRightPanel,
 			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,
-			columnCss: {
+			mainPanelColumnCss: {
 				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
 				'desktopWidth': openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
 			},
@@ -132,7 +138,7 @@ class PropertiesDashboard extends React.Component
 		this.setState({
 			property: property,
 			mainPanel: panel,
-			columnCss: {
+			mainPanelColumnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
 			}
@@ -146,7 +152,7 @@ class PropertiesDashboard extends React.Component
 			rightPanel: rightPanel,
 			isEditingMode: isEditingMode,
 			showRightPanel: true,
-			columnCss: {
+			mainPanelColumnCss: {
 				'mobileWidth': mainShrinkedMobileColumnWidth,
 				'desktopWidth': mainShrinkedDesktopColumnWidth
 			}
@@ -191,7 +197,7 @@ class PropertiesDashboard extends React.Component
 			rightPanel: 'room',
 			isEditingMode: isEditingMode,
 			showRightPanel: true,
-			columnCss: {
+			mainPanelColumnCss: {
 				'mobileWidth': mainShrinkedMobileColumnWidth,
 				'desktopWidth': mainShrinkedDesktopColumnWidth
 			}
@@ -203,7 +209,7 @@ class PropertiesDashboard extends React.Component
 		this.setState({
 			mainPanel: this.state.mainPanel,
 			showRightPanel: false,
-			columnCss: {
+			mainPanelColumnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
 			}
@@ -306,13 +312,13 @@ class PropertiesDashboard extends React.Component
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage } alertType="alert-success" />}
 
-				<PropertiesMainPanel columnCss={ this.state.columnCss } className={ mainColumnClassName }>
+				<PropertiesMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss } className={ mainColumnClassName }>
 					{ mainPanelHtml }
 				</PropertiesMainPanel>
 
 				{
 					this.state.showRightPanel ?
-						<PropertiesRightPanel>
+						<PropertiesRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
 							rightPanelHtml
 						</PropertiesRightPanel> : null
 				}

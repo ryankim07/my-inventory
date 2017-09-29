@@ -1,7 +1,7 @@
 import React from 'react';
 import PropertyAddressForm from './../../address/forms/address';
 import Uploader from '../../../helper/uploader';
-import { numberFormat } from "../../../helper/utils"
+import { numberFormat } from "../../../helper/utils";
 
 class PropertyForm extends React.Component
 {

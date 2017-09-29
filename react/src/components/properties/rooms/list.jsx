@@ -5,9 +5,8 @@ import { upperFirstLetter } from "../../helper/utils";
 class PropertyRoomsList extends React.Component
 {
 	render() {
-		let columnCss = this.props.state.columnCss;
 		let propertyId = this.props.state.property.id;
-        let rooms     = this.props.state.property.rooms;
+        let rooms      = this.props.state.property.rooms;
 
 		let roomsHtml = !rooms || rooms.length === 0 ?
 			<tr><td>There are no saved rooms.</td></tr> :

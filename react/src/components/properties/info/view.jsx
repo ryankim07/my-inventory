@@ -89,7 +89,6 @@ class PropertyInfoView extends React.Component
 	}
 
 	render() {
-		let columnCss 		 = this.props.state.columnCss;
 		let property 		 = this.state.property;
 		let address  		 = property.address === undefined || Object.keys(property.address).length === 0 ? null : property.address;
 		let features		 = property.features === undefined || property.features.id === "" ? null : property.features;

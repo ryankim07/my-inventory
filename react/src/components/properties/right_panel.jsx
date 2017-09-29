@@ -4,7 +4,7 @@ class PropertiesRightPanel extends React.Component
 {
 	render() {
 		return (
-			<div className="col-xs-4 col-md-4" id="right-panel">
+			<div className={ [this.props.rightPanelColumnCss.mobileWidth, this.props.rightPanelColumnCss.desktopWidth].join(' ') } id="right-panel">
 				{ this.props.children }
 			</div>
 		)

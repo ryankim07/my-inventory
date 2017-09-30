@@ -1,7 +1,7 @@
 import React from 'react';
 import Previous from '../../helper/previous';
 
-let featuresRightPanel 	 	  = 'features';
+let featuresRightPanel 	 	   = 'features';
 let exteriorFeaturesRightPanel = 'exterior-features';
 let interiorFeaturesRightPanel = 'interior-features';
 
@@ -25,61 +25,60 @@ class PropertyInfoView extends React.Component
 	}
 
 	// Toggle panel for add or edit
-	handleRightPanel(id, rightPanel) {
+	handleRightPanel(obj, rightPanel) {
 		let property 	  = this.state.property;
-		let properties    = this.props.state.properties;
-		let isEditingMode = !!id;
+		let isEditingMode = !!obj;
 		let features 	  = null;
 
 		switch (rightPanel) {
 			case featuresRightPanel:
 				features = isEditingMode ?
-				properties.features.find(obj => obj.id === id) :
-				{
-					id: '',
-					property_id: this.props.state.property.id,
-					parking: '',
-					multi_unit: '',
-					hoa: '',
-					utilities: '',
-					lot: '',
-					common_walls: '',
-					facing_direction: '',
-					others: ''
-				}
+					obj :
+					{
+						id: '',
+						property_id: this.props.state.property.id,
+						parking: '',
+						multi_unit: '',
+						hoa: '',
+						utilities: '',
+						lot: '',
+						common_walls: '',
+						facing_direction: '',
+						others: ''
+					}
 
 				property.features = features;
 			break;
 
 			case exteriorFeaturesRightPanel:
 				features = isEditingMode ?
-				properties.exterior_features.find(obj => obj.id === id) :
-				{
-					id: '',
-					property_id: this.props.state.property.id,
-					exterior: '',
-					foundation: '',
-					others: ''
-				}
+					obj :
+					{
+						id: '',
+						property_id: this.props.state.property.id,
+						exterior: '',
+						foundation: '',
+						others: ''
+					}
 
 				property.exterior_features = features;
 			break;
 
 			case interiorFeaturesRightPanel:
 				features = isEditingMode ?
-				properties.interior_features.find(obj => obj.id === id) :
-				{
-					id: '',
-					property_id: this.props.state.property.id,
-					laundry: '',
-					kitchen: '',
-					bathroom: '',
-					cooling: '',
-					heating: '',
-					fireplace: '',
-					flooring: '',
-					others: ''
-				}
+					obj :
+					{
+						id: '',
+						property_id: this.props.state.property.id,
+						laundry: '',
+						kitchen: '',
+						bathroom: '',
+						cooling: '',
+						heating: '',
+						fireplace: '',
+						flooring: '',
+						others: ''
+					}
 
 				property.interior_features = features;
 			break;
@@ -189,7 +188,7 @@ class PropertyInfoView extends React.Component
 			<div>
 				<h4>Property Features</h4>
 				<div>
-					<button onClick={ this.handleRightPanel.bind(this, features.id, featuresRightPanel) }><i className="fa fa-pencil" aria-hidden="true"/> Edit exterior features</button>
+					<button onClick={ this.handleRightPanel.bind(this, features, featuresRightPanel) }><i className="fa fa-pencil" aria-hidden="true"/> Edit property features</button>
 				</div>
 				<ul>
 					<li>
@@ -231,7 +230,7 @@ class PropertyInfoView extends React.Component
 			<div>
 				<h4>Exterior Features</h4>
 				<div>
-					<button onClick={ this.handleRightPanel.bind(this, exteriorFeatures.id, exteriorFeaturesRightPanel) }><i className="fa fa-pencil" aria-hidden="true"/> Edit exterior features</button>
+					<button onClick={ this.handleRightPanel.bind(this, exteriorFeatures, exteriorFeaturesRightPanel) }><i className="fa fa-pencil" aria-hidden="true"/> Edit exterior features</button>
 				</div>
 				<ul>
 					<li>
@@ -253,7 +252,7 @@ class PropertyInfoView extends React.Component
 			<div>
 				<h4>Interior Features</h4>
 				<div>
-					<button onClick={ this.handleRightPanel.bind(this, interiorFeatures.id, interiorFeaturesRightPanel) }><i className="fa fa-pencil" aria-hidden="true"/> Edit exterior features</button>
+					<button onClick={ this.handleRightPanel.bind(this, interiorFeatures, interiorFeaturesRightPanel) }><i className="fa fa-pencil" aria-hidden="true"/> Edit interior features</button>
 				</div>
 				<ul>
 					<li>

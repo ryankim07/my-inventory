@@ -110,6 +110,7 @@ class PropertyEntity
 
     /**
      * Non mapped property
+     *
      * @var ArrayCollection
      */
     private $nonAddedRooms;
@@ -504,7 +505,7 @@ class PropertyEntity
     }
 
     /**
-     * Set exteriorFeatures
+     * Set exterior features
      *
      * @param \AppBundle\Entity\Properties\ExteriorFeaturesEntity $exteriorFeatures
      *
@@ -518,7 +519,7 @@ class PropertyEntity
     }
 
     /**
-     * Get exteriorFeatures
+     * Get exterior features
      *
      * @return \AppBundle\Entity\Properties\ExteriorFeaturesEntity
      */
@@ -527,6 +528,11 @@ class PropertyEntity
         return $this->exteriorFeatures;
     }
 
+    /**
+     * Add interior features
+     *
+     * @param InteriorFeaturesEntity $interiorFeatures
+     */
     public function addInteriorFeatures(InteriorFeaturesEntity $interiorFeatures)
     {
         $this->interiorFeatures = $interiorFeatures;
@@ -534,7 +540,7 @@ class PropertyEntity
     }
 
     /**
-     * Set interiorFeatures
+     * Set interior features
      *
      * @param \AppBundle\Entity\Properties\InteriorFeaturesEntity $interiorFeatures
      *
@@ -548,7 +554,7 @@ class PropertyEntity
     }
 
     /**
-     * Get interiorFeatures
+     * Get interior features
      *
      * @return \AppBundle\Entity\Properties\InteriorFeaturesEntity
      */
@@ -557,6 +563,11 @@ class PropertyEntity
         return $this->interiorFeatures;
     }
 
+    /**
+     * Difference generated from added rooms with configured rooms
+     *
+     * @param $rooms
+     */
     public function addNonAddedRooms($rooms)
     {
         $this->nonAddedRooms = $rooms;

@@ -4,6 +4,10 @@ import { upperFirstLetter } from "../../helper/utils";
 
 class PropertyRoomsList extends React.Component
 {
+	shouldComponentUpdate(nextProps, nextState) {
+		return nextProps.state.property !== this.props.state.property;
+	}
+
 	render() {
 		let propertyId = this.props.state.property.id;
         let rooms      = this.props.state.property.rooms;

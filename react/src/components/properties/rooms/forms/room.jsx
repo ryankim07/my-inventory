@@ -25,7 +25,8 @@ class PropertyRoomForm extends React.Component
 
     componentWillMount() {
 		this.setState({
-			disableAddWallsBtn: this.shouldDisableAddWallBtn(this.state.room.walls)
+			disableAddWallsBtn: this.shouldDisableAddWallBtn(this.state.room.walls),
+			wallSides: this.state.room.id === '' ? this.state.allWallSides : this.state.wallSides
 		});
 	}
 

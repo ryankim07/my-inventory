@@ -197,6 +197,7 @@ class PropertiesDashboard extends React.Component
 			rightPanel: 'room',
 			isEditingMode: isEditingMode,
 			showRightPanel: true,
+			flashMessage: null,
 			mainPanelColumnCss: {
 				'mobileWidth': mainShrinkedMobileColumnWidth,
 				'desktopWidth': mainShrinkedDesktopColumnWidth

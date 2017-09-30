@@ -274,65 +274,55 @@ class Properties
             $msg = "Room successfully {$op}.";
 
             // Save or update room
-            $results = $this->_saveRoom($data);
+            $property      = $this->find($data['property_id']);
+            $existingWalls = $this->entity->getWalls();
 
-            if (!$results) {
+            foreach($data["walls"] as $wall) {
+                if (empty($wall["paint_id"]) && empty($wall["name"])) {
+                    continue;
+                }
+
+                foreach($existingWalls as $existingWall) {
+                    if ($existingWall->getId() != $wall['id']) {
+                        $this->em->remove($existingWall);
+                    }
+                }
+
+                $wallsEntity = !empty($wall["id"]) ?
+                    $this->em->getRepository('AppBundle\Entity\Properties\RoomsWallsEntity')->find($wall["id"]) : new RoomsWallsEntity();
+
+                $wallsEntity->setRoomId($this->entity->getId());
+                $wallsEntity->setPaintId((int) $wall['paint_id']);
+                $wallsEntity->setName($wall['name']);
+                $this->entity->addWall($wallsEntity);
+            }
+
+            $this->entity->setPropertyId($data['property_id']);
+            $this->entity->setName($data["name"]);
+            $this->entity->setTotalArea($data["total_area"]);
+            $this->entity->setDescription($data["description"]);
+            $property->addRoom($this->entity);
+
+            if (!$this->existingRoom) {
+                $this->em->persist($property);
+            }
+
+            $this->em->flush();
+
+            // Include non added rooms object
+            $property = $this->addDependencies($property);
+
+            if (!$property) {
                 $msg = "Room could not be {$op}.";
             };
 
             return [
-                'property' => $results,
+                'property' => $property,
                 'msg'      => $msg
             ];
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
         }
-    }
-
-    /**
-     * Save or update room
-     *
-     * @param $data
-     * @return null|object
-     */
-    private function _saveRoom($data)
-    {
-        $property      = $this->find($data['property_id']);
-        $existingWalls = $this->existingRoom->getWalls();
-
-        foreach($data["walls"] as $wall) {
-            if (empty($wall["paint_id"]) && empty($wall["name"])) {
-                continue;
-            }
-
-            foreach($existingWalls as $existingWall) {
-                if ($existingWall->getId() != $wall['id']) {
-                    $this->em->remove($existingWall);
-                }
-            }
-
-            $wallsEntity = !empty($wall["id"]) ?
-                $this->em->getRepository('AppBundle\Entity\Properties\RoomsWallsEntity')->find($wall["id"]) : new RoomsWallsEntity();
-
-            $wallsEntity->setRoomId($this->entity->getId());
-            $wallsEntity->setPaintId((int) $wall['paint_id']);
-            $wallsEntity->setName($wall['name']);
-            $this->entity->addWall($wallsEntity);
-        }
-
-        $this->entity->setPropertyId($data['property_id']);
-        $this->entity->setName($data["name"]);
-        $this->entity->setTotalArea($data["total_area"]);
-        $this->entity->setDescription($data["description"]);
-        $property->addRoom($this->entity);
-
-        if (!$this->existingRoom) {
-            $this->em->persist($property);
-        }
-
-        $this->em->flush();
-
-        return $property;
     }
 
     /**
@@ -356,6 +346,7 @@ class Properties
 
             $this->em->flush();
 
+            // Include non added rooms object
             $property = $this->addDependencies($property);
 
             return [
@@ -387,7 +378,24 @@ class Properties
             $msg = "Property features successfully {$op}.";
 
             // Save or update property
-            $property = $this->_saveFeatures($data);
+            $property = $this->find($data['property_id']);
+
+            $this->entity->setPropertyId($data['property_id']);
+            $this->entity->setParking($data['parking']);
+            $this->entity->setMultiUnit($data['multi_unit']);
+            $this->entity->setHoa($data['hoa']);
+            $this->entity->setUtilities($data['utilities']);
+            $this->entity->setLot($data['lot']);
+            $this->entity->setCommonWalls($data['common_walls']);
+            $this->entity->setFacingDirection($data['facing_direction']);
+            $this->entity->setOthers($data['others']);
+            $property->addFeatures($this->entity);
+
+            if (!$this->existingFeatures) {
+                $this->em->persist($property);
+            }
+
+            $this->em->flush();
 
             if (!$property) {
                 $msg = "Property features could not be {$op}.";
@@ -400,36 +408,6 @@ class Properties
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
         }
-    }
-
-    /**
-     * Save or update property features
-     *
-     * @param $data
-     * @return null|object
-     */
-    private function _saveFeatures($data)
-    {
-        $property = $this->find($data['property_id']);
-
-        $this->entity->setPropertyId($data['property_id']);
-        $this->entity->setParking($data['parking']);
-        $this->entity->setMultiUnit($data['multi_unit']);
-        $this->entity->setHoa($data['hoa']);
-        $this->entity->setUtilities($data['utilities']);
-        $this->entity->setLot($data['lot']);
-        $this->entity->setCommonWalls($data['common_walls']);
-        $this->entity->setFacingDirection($data['facing_direction']);
-        $this->entity->setOthers($data['others']);
-        $property->addFeatures($this->entity);
-
-        if (!$this->existingFeatures) {
-            $this->em->persist($property);
-        }
-
-        $this->em->flush();
-
-        return $property;
     }
 
     /**
@@ -478,7 +456,19 @@ class Properties
             $msg = "Property exterior features successfully {$op}.";
 
             // Save or update property
-            $property = $this->_saveExteriorFeatures($data);
+            $property = $this->find($data['property_id']);
+
+            $this->entity->setPropertyId($data['property_id']);
+            $this->entity->setExterior($data['exterior']);
+            $this->entity->setFoundation($data['foundation']);
+            $this->entity->setOthers($data['others']);
+            $property->addExteriorFeatures($this->entity);
+
+            if (!$this->existingExteriorFeatures) {
+                $this->em->persist($property);
+            }
+
+            $this->em->flush();
 
             if (!$property) {
                 $msg = "Property exterior features could not be {$op}.";
@@ -491,31 +481,6 @@ class Properties
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
         }
-    }
-
-    /**
-     * Save or update property exterior features
-     *
-     * @param $data
-     * @return null|object
-     */
-    private function _saveExteriorFeatures($data)
-    {
-        $property = $this->find($data['property_id']);
-
-        $this->entity->setPropertyId($data['property_id']);
-        $this->entity->setExterior($data['exterior']);
-        $this->entity->setFoundation($data['foundation']);
-        $this->entity->setOthers($data['others']);
-        $property->addExteriorFeatures($this->entity);
-
-        if (!$this->existingExteriorFeatures) {
-            $this->em->persist($property);
-        }
-
-        $this->em->flush();
-
-        return $property;
     }
 
     /**
@@ -564,7 +529,24 @@ class Properties
             $msg = "Property interior features successfully {$op}.";
 
             // Save or update property
-            $property = $this->_saveInteriorFeatures($data);
+            $property = $this->find($data['property_id']);
+
+            $this->entity->setPropertyId($data['property_id']);
+            $this->entity->setKitchen($data['kitchen']);
+            $this->entity->setBathroom($data['bathroom']);
+            $this->entity->setLaundry($data['laundry']);
+            $this->entity->setCooling($data['cooling']);
+            $this->entity->setHeating($data['heating']);
+            $this->entity->setFireplace($data['fireplace']);
+            $this->entity->setFlooring($data['flooring']);
+            $this->entity->setOthers($data['others']);
+            $property->addInteriorFeatures($this->entity);
+
+            if (!$this->existingInteriorFeatures) {
+                $this->em->persist($property);
+            }
+
+            $this->em->flush();
 
             if (!$property) {
                 $msg = "Property interior features could not be {$op}.";
@@ -577,36 +559,6 @@ class Properties
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
         }
-    }
-
-    /**
-     * Save or update property interior features
-     *
-     * @param $data
-     * @return mixed
-     */
-    private function _saveInteriorFeatures($data)
-    {
-        $property = $this->find($data['property_id']);
-
-        $this->entity->setPropertyId($data['property_id']);
-        $this->entity->setKitchen($data['kitchen']);
-        $this->entity->setBathroom($data['bathroom']);
-        $this->entity->setLaundry($data['laundry']);
-        $this->entity->setCooling($data['cooling']);
-        $this->entity->setHeating($data['heating']);
-        $this->entity->setFireplace($data['fireplace']);
-        $this->entity->setFlooring($data['flooring']);
-        $this->entity->setOthers($data['others']);
-        $property->addInteriorFeatures($this->entity);
-
-        if (!$this->existingInteriorFeatures) {
-            $this->em->persist($property);
-        }
-
-        $this->em->flush();
-
-        return $property;
     }
 
     /**

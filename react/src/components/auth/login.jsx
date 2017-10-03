@@ -1,4 +1,5 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import AuthStore from '../../stores/auth/store';
 import AuthAction from '../../actions/auth-action';
 import FlashMessage from '../helper/flash-message';
@@ -119,7 +120,7 @@ class Login extends React.Component
 }
 
 Login.contextTypes = {
-	router: React.PropTypes.object.isRequired
+	router: PropTypes.object.isRequired
 }
 
 export default Login;

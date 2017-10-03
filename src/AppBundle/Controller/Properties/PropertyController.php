@@ -77,15 +77,15 @@ class PropertyController extends FOSRestController
             break;
 
             case 'features':
-                $results = $service->save($data);
+                $results = $service->saveFeatures($data);
             break;
 
             case 'exterior_features':
-                $results = $service->save($data);
+                $results = $service->saveExteriorFeatures($data);
             break;
 
             case 'interior_features':
-                $results = $service->save($data);
+                $results = $service->saveInteriorFeatures($data);
             break;
 
             default:
@@ -105,7 +105,7 @@ class PropertyController extends FOSRestController
     public function deletePropertyAction($id)
     {
         $service = $this->get('Properties');
-        $results = $service->delete($id);
+        $results = $service->deleteProperty($id);
 
         return new View($results, Response::HTTP_OK);
     }

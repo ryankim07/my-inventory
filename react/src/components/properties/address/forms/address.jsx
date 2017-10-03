@@ -59,7 +59,7 @@ class PropertyAddressForm extends React.Component
 
 						<StatesDropdown
 							state={ address.state }
-							handleFormChange={ this.handleFormChange.bind(this, 'state') }
+							handleFormChange={ this.handleFormChange }
 							className="form-control input-sm"
 							required="required"
 						/>

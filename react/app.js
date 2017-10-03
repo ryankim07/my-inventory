@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, IndexRoute, hashHistory } from 'react-router';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import AuthStore from './src/stores/auth/store';
 import Main from './src/components/main';
 import Home from './src/components/home';
@@ -31,7 +31,7 @@ function requireAuth(nextState, replace)
 }
 
 ReactDOM.render(
-    <Router history={hashHistory}>
+    <Router history={ browserHistory }>
         <Route path="/auth/login" component={ Login } />
 		<Route path="/auth/logout" component={ Logout } />
         <Route component={ Main} onEnter={ requireAuth }>

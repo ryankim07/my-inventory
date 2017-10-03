@@ -134,8 +134,65 @@ class Properties
             $op = !$this->existingProperty ? 'added' : 'updated';
             $msg = "Property successfully {$op}.";
 
+            // Upload asset
+            $assets        = $data['assets'];
+            $assetFullPath = !is_null($assets) ? $this->fileUploader->upload($assets) : null;
+
+            if (!$this->existingProperty) {
+                $addressEntity = new AddressEntity();
+                $assetEntity   = new PropertyAssetsEntity();
+            } else {
+                $addressEntity = $this->em->getRepository('AppBundle\Entity\Properties\AddressEntity')->findOneByPropertyId($this->entity->getId());
+                $assetEntity   = $this->em->getRepository('AppBundle\Entity\Properties\PropertyAssetsEntity')->findByPropertyId($this->entity->getId());
+            }
+
+            // Property entity
+            $this->entity->setBuilt($data['built']);
+            $this->entity->setStyle($data['style']);
+            $this->entity->setFloors($data['floors']);
+            $this->entity->setBeds($data['beds']);
+            $this->entity->setBaths($data['baths']);
+            $this->entity->setFinishedArea($data['finished_area']);
+            $this->entity->setUnfinishedArea($data['unfinished_area']);
+            $this->entity->setTotalArea($data['total_area']);
+            $this->entity->setParcelNumber($data['parcel_number']);
+
+            // Address entity
+            if (!is_null($data['address'])) {
+                $addressEntity->setPropertyId($this->entity->getId());
+                $addressEntity->setStreet($data['address']['street']);
+                $addressEntity->setCity($data['address']['city']);
+                $addressEntity->setState($data['address']['state']);
+                $addressEntity->setZip($data['address']['zip']);
+                $addressEntity->setCounty($data['address']['county']);
+                $addressEntity->setCountry($data['address']['country']);
+                $addressEntity->setSubdivision($data['address']['subdivision']);
+                $this->entity->addAddress($addressEntity);
+            }
+
+            // Assets entity
+            if (!is_null($assets)) {
+                if (!$this->existingProperty) {
+                    $assetEntity->setName($assets->getClientOriginalName());
+                    $assetEntity->setPath($assetFullPath);
+                    $this->entity->addAsset($assetEntity);
+                } else {
+                    foreach($assetEntity as $asset) {
+                        $asset->setName($assets->getClientOriginalName());
+                        $asset->setPath($assetFullPath);
+                        $this->entity->addAsset($asset);
+                    }
+                }
+            }
+
+            if (!$this->existingProperty) {
+                $this->em->persist($this->entity);
+            }
+
+            $this->em->flush();
+
             // Save or update property
-            if (!$this->_saveProperty($data)) {
+            if (!$this->entity) {
                 $msg = "Property could not be {$op}.";
             };
 
@@ -146,74 +203,6 @@ class Properties
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
         }
-    }
-
-    /**
-     *  Save or update property
-     *
-     * @param $data
-     * @return bool
-     */
-    private function _saveProperty($data)
-    {
-        // Upload asset
-        $assets        = $data['assets'];
-        $assetFullPath = !is_null($assets) ? $this->fileUploader->upload($assets) : null;
-
-        if (!$this->existingProperty) {
-            $addressEntity = new AddressEntity();
-            $assetEntity   = new PropertyAssetsEntity();
-        } else {
-            $addressEntity = $this->em->getRepository('AppBundle\Entity\Properties\AddressEntity')->findOneByPropertyId($this->entity->getId());
-            $assetEntity   = $this->em->getRepository('AppBundle\Entity\Properties\PropertyAssetsEntity')->findByPropertyId($this->entity->getId());
-        }
-
-        // Property entity
-        $this->entity->setBuilt($data['built']);
-        $this->entity->setStyle($data['style']);
-        $this->entity->setFloors($data['floors']);
-        $this->entity->setBeds($data['beds']);
-        $this->entity->setBaths($data['baths']);
-        $this->entity->setFinishedArea($data['finished_area']);
-        $this->entity->setUnfinishedArea($data['unfinished_area']);
-        $this->entity->setTotalArea($data['total_area']);
-        $this->entity->setParcelNumber($data['parcel_number']);
-
-        // Address entity
-        if (!is_null($data['address'])) {
-            $addressEntity->setPropertyId($this->entity->getId());
-            $addressEntity->setStreet($data['address']['street']);
-            $addressEntity->setCity($data['address']['city']);
-            $addressEntity->setState($data['address']['state']);
-            $addressEntity->setZip($data['address']['zip']);
-            $addressEntity->setCounty($data['address']['county']);
-            $addressEntity->setCountry($data['address']['country']);
-            $addressEntity->setSubdivision($data['address']['subdivision']);
-            $this->entity->addAddress($addressEntity);
-        }
-
-        // Assets entity
-        if (!is_null($assets)) {
-            if (!$this->existingProperty) {
-                $assetEntity->setName($assets->getClientOriginalName());
-                $assetEntity->setPath($assetFullPath);
-                $this->entity->addAsset($assetEntity);
-            } else {
-                foreach($assetEntity as $asset) {
-                    $asset->setName($assets->getClientOriginalName());
-                    $asset->setPath($assetFullPath);
-                    $this->entity->addAsset($asset);
-                }
-            }
-        }
-
-        if (!$this->existingProperty) {
-            $this->em->persist($this->entity);
-        }
-
-        $this->em->flush();
-
-        return true;
     }
 
     /**
@@ -449,7 +438,7 @@ class Properties
         }
 
         try {
-            $this->existingExteriorFeatures = $this->em->getRepository('AppBundle\Entity\Properties\ExteriorFeatures')->find($data['id']);
+            $this->existingExteriorFeatures = $this->em->getRepository('AppBundle\Entity\Properties\ExteriorFeaturesEntity')->find($data['id']);
             $this->entity                   = $this->existingExteriorFeatures ? $this->existingExteriorFeatures : new ExteriorFeaturesEntity();
 
             $op  = !$this->existingExteriorFeatures ? 'added' : 'updated';

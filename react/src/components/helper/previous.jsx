@@ -1,7 +1,12 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 
 class Previous extends React.Component
 {
+	constructor(props) {
+		super(props);
+	}
+
 	goBack(route) {
 		this.context.router.push(route);
 	}
@@ -14,7 +19,7 @@ class Previous extends React.Component
 }
 
 Previous.contextTypes = {
-	router: React.PropTypes.object.isRequired
+	router: PropTypes.object
 }
 
 export default Previous;

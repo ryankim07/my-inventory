@@ -1,4 +1,5 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import AuthStore from '../../stores/auth/store';
 import UsersStore from '../../stores/auth/users-store';
 import UsersAction from '../../actions/users-action';
@@ -186,7 +187,7 @@ class Signup extends React.Component
 }
 
 Signup.contextTypes = {
-	router: React.PropTypes.object.isRequired
+	router: PropTypes.object.isRequired
 }
 
 export default Signup;

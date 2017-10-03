@@ -1,4 +1,5 @@
 import React from 'react';
+import { PropTypes } from 'prop-types'
 import AppDispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
 
@@ -15,7 +16,7 @@ class Logout extends React.Component
 }
 
 Logout.contextTypes = {
-	router: React.PropTypes.object.isRequired
+	router: PropTypes.object.isRequired
 }
 
 export default Logout;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import VehiclesAction from '../../actions/vehicles-action';
 import VehiclesStore from '../../stores/vehicles/store';
 import VehiclesMainPanel from './main_panel';
@@ -189,7 +190,7 @@ class VehiclesDashboard extends React.Component
 }
 
 VehiclesDashboard.contextTypes = {
-	router: React.PropTypes.object.isRequired
+	router: PropTypes.object.isRequired
 }
 
 export default VehiclesDashboard;

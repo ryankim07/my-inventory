@@ -1,4 +1,5 @@
 import React from 'react';
+import { PropTypes } from 'prop-types'
 import PropertiesAction from '../../actions/properties-action';
 import PropertiesStore from '../../stores/properties/store';
 import PropertiesMainPanel from './main_panel';
@@ -72,9 +73,17 @@ class PropertiesDashboard extends React.Component
 
 	// When component from same route are unmounting and need to remount
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.location.action !== 'POP' || nextProps.location.action !== 'PUSH') {
+		if (nextProps.location.action === 'REPLACE' || nextProps.location.action === 'PUSH') {
+			let mainPanel = null;
+
+			switch (nextProps.location.pathname) {
+				case '/properties/info/view':
+					mainPanel = 'info';
+				break;
+			}
+
 			this.setState({
-				mainPanel: this.state.mainPanel,
+				mainPanel: mainPanel,
 				showRightPanel: false,
 				flashMessage: null,
 				mainPanelColumnCss: {
@@ -330,7 +339,7 @@ class PropertiesDashboard extends React.Component
 }
 
 PropertiesDashboard.contextTypes = {
-	router: React.PropTypes.object.isRequired
+	router: PropTypes.object.isRequired
 }
 
 export default PropertiesDashboard;

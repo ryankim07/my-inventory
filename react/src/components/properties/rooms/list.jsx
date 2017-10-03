@@ -14,9 +14,9 @@ class PropertyRoomsList extends React.Component
 
 		let roomsHtml = !rooms || rooms.length === 0 ?
 			<tr><td>There are no saved rooms.</td></tr> :
-			rooms.map((room) => {
+			rooms.map((room, roomIndex) => {
 				return (
-					<tr key={ room.id }>
+					<tr key={ roomIndex }>
 						<td>{ upperFirstLetter(room.name) }</td>
 						<td>{ room.total_area }</td>
 						<td>{ room.description }</td>

@@ -4,6 +4,12 @@ import { upperFirstLetter } from '../../../helper/utils';
 
 class PropertyAddressForm extends React.Component
 {
+	constructor(props) {
+		super(props);
+
+		this.handleFormChange = this.handleFormChange.bind(this);
+	}
+
 	// Handle input changes
     handleFormChange(propertyName, event) {
         let address     = this.props.address;

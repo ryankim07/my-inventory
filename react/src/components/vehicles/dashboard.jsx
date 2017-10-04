@@ -14,7 +14,6 @@ let mainShrinkedMobileColumnWidth = 'col-xs-8';
 let mainShrinkedDesktopColumnWidth = 'col-md-8';
 let rightPanelMobileColumnWidth = 'col-xs-4';
 let rightPanelDesktopColumnWidth = 'col-md-4';
-let mainColumnClassName = 'main-column';
 
 class VehiclesDashboard extends React.Component
 {
@@ -162,7 +161,7 @@ class VehiclesDashboard extends React.Component
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success" />}
 
-				<VehiclesMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss } className={ mainColumnClassName }>
+				<VehiclesMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					<VehiclesList
 						loader={ this.state.loader }
 						vehicles={ this.state.vehicles }

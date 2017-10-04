@@ -21,7 +21,6 @@ let mainShrinkedMobileColumnWidth = 'col-xs-8';
 let mainShrinkedDesktopColumnWidth = 'col-md-8';
 let rightPanelMobileColumnWidth = 'col-xs-4';
 let rightPanelDesktopColumnWidth = 'col-md-4';
-let mainColumnClassName = 'main-column';
 
 class PropertiesDashboard extends React.Component
 {
@@ -324,7 +323,7 @@ class PropertiesDashboard extends React.Component
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage } alertType="alert-success" />}
 
-				<PropertiesMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss } className={ mainColumnClassName }>
+				<PropertiesMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }
 				</PropertiesMainPanel>
 

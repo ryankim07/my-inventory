@@ -19,6 +19,8 @@ import PropertyExteriorFeaturesForm from './src/components/properties/info/forms
 import PropertyInteriorFeaturesForm from './src/components/properties/info/forms/interior_features';
 import PropertyRoomForm from "./src/components/properties/rooms/forms/room";
 import PropertyRoomsList from './src/components/properties/rooms/list';
+import ConfigurationDashboard from './src/components/configuration/dashboard';
+import ConfigurationVehiclesApiList from './src/components/configuration/vehicles/api/list';
 
 function requireAuth(nextState, replace)
 {
@@ -39,12 +41,12 @@ ReactDOM.render(
             <Route path="/" component={ Home } />
 			<Route path="/auth/signup" component={ Signup } />
 
-            <Route path="/vehicles/dashboard" component={ VehicleDashboard } >
+            <Route path="/vehicles/dashboard" component={ VehicleDashboard }>
                 <Route path="/vehicle/vehicle" component={ VehicleForm } />
                 <Route path="/vehicles" component={ VehiclesList } />
             </Route>
 
-			<Route path="/properties/dashboard" component={ PropertiesDashboard } >
+			<Route path="/properties/dashboard" component={ PropertiesDashboard }>
 				<Route path="/properties" component={ PropertiesList } />
 				<Route path="/properties/forms/property" component={ PropertyForm } />
 				<Route path="/properties/info/view" component={ PropertyInfoView } />
@@ -53,6 +55,10 @@ ReactDOM.render(
 				<Route path="/property/info/forms/interior_features" component={ PropertyInteriorFeaturesForm } />
 				<Route path="/property/rooms/forms/room" component={ PropertyRoomForm } />
 				<Route path="/properties/rooms" component={ PropertyRoomsList } />
+			</Route>
+
+			<Route exact path="/configuration/dashboard/:section" component={ ConfigurationDashboard }>
+				<Route path="/configuration/vehicles/api/list" component={ ConfigurationVehiclesApiList } />
 			</Route>
         </Route>
     </Router>,

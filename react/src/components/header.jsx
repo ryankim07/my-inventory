@@ -7,7 +7,7 @@ class Header extends React.Component
         let isAuthenticated = this.props.isAuthenticated();
 
         return (
-            <nav className="navbar navbar-inverse navbar-fixed-top">
+            <div className="navbar navbar-inverse navbar-fixed-top">
                 <div className="container-fluid">
                     <div className="navbar-header">
                         <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -46,6 +46,18 @@ class Header extends React.Component
                                     </li>
                                 </ul>
                             </li>
+                            <li className="dropdown">
+                                <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Configuration <span className="caret"/></a>
+                                <ul className="dropdown-menu" role="menu">
+                                    <li class="dropdown">
+                                        <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">API Vehicles <span className="caret"></span></a>
+                                        <ul className="dropdown-menu" role="menu">
+                                            <li><Link to="/configuration/dashboard/vehicles-api-home" className="menu-link"><i className="fa fa-list-alt menu-link-icon" aria-hidden="true" /> List</Link></li>
+                                            <li><Link to="/configuration/dashboard/vehicles-api-home" className="menu-link"><i className="fa fa-list-alt menu-link-icon" aria-hidden="true" /> Sync</Link></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
                         <ul className="nav navbar-nav navbar-right">
                             <li className="dropdown">
@@ -59,7 +71,7 @@ class Header extends React.Component
                         </ul>
                     </div>
                 </div>
-            </nav>
+            </div>
         );
     }
 }

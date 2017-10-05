@@ -22,11 +22,11 @@ let PaintsStore = assign({}, EventEmitter.prototype, {
         this.removeListener('change', callback);
 	},
 
-	getPropertyPaints: function () {
+	getPaints: function () {
 		return _paints;
 	},
 
-	setPropertyPaints: function (results) {
+	setPaints: function (results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
 			return false;
@@ -62,7 +62,7 @@ PaintsStore.dispatchToken = Dispatcher.register(function(payload) {
 
     switch(action.actionType) {
         case ActionConstants.RECEIVE_PROPERTY_PAINTS:
-			PaintsStore.setPropertyPaints(results);
+			PaintsStore.setPaints(results);
         break;
 
         default:

@@ -52,12 +52,20 @@ class Header extends React.Component
                                     <li className="dropdown dropdown-submenu">
                                         <a href="#" className="dropdown-toggle" data-toggle="dropdown">API Vehicles</a>
                                         <ul className="dropdown-menu">
-                                            <li><Link to="/configuration/dashboard/vehicles-api-list"><i className="fa fa-list-alt menu-link-icon" aria-hidden="true" /> List</Link></li>
-                                            <li><Link to="/configuration/dashboard/vehicles-api-sync"><i className="fa fa-list-alt menu-link-icon" aria-hidden="true" /> Sync</Link></li>
+                                            <li><Link to="/configuration/vehicles/dashboard/vehicles-api-list"><i className="fa fa-list-alt menu-link-icon" aria-hidden="true" /> List</Link></li>
+                                            <li><Link to="/configuration/vehicles/api-sync"><i className="fa fa-list-alt menu-link-icon" aria-hidden="true" /> Sync</Link></li>
                                         </ul>
                                     </li>
-                                    <li>
-                                        <a>Test</a>
+                                    <li className="dropdown dropdown-submenu">
+                                        <a href="#" className="dropdown-toggle" data-toggle="dropdown">Properties</a>
+                                        <ul className="dropdown-menu">
+                                            <li className="dropdown dropdown-submenu">
+                                                <a href="#" className="dropdown-toggle" data-toggle="dropdown">Paints</a>
+                                                <ul className="dropdown-menu">
+                                                    <li><Link to="/configuration/properties/dashboard/paint-list"><i className="fa fa-list-alt menu-link-icon" aria-hidden="true" /> List</Link></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
                                     </li>
                                 </ul>
                             </li>

@@ -36,7 +36,6 @@ class PropertyExteriorFeaturesForm extends React.Component
 						<label className="control-label">Exterior</label>
 						<div className="input-group">
 								<textarea
-
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'exterior') }
@@ -49,7 +48,6 @@ class PropertyExteriorFeaturesForm extends React.Component
 						<label className="control-label">Foundation</label>
 						<div className="input-group">
 								<textarea
-
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'foundation') }
@@ -62,7 +60,6 @@ class PropertyExteriorFeaturesForm extends React.Component
 						<label className="control-label">Others</label>
 						<div className="input-group">
 								<textarea
-
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'others') }

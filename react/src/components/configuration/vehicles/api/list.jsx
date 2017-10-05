@@ -49,6 +49,12 @@ class ConfigurationVehiclesApiList extends React.Component
 		this.setState({apiVehicles: searchText === "" || searchText === undefined ? vehicles : results});
 	}
 
+	// Sync API
+	onHandleSync(e) {
+		e.preventDefault();
+		ApiVehiclesAction.sync();
+	}
+
 	handleMouseOver(e) {
 		this.setState({ isHidden: !this.state.isHidden });
 	}
@@ -86,7 +92,9 @@ class ConfigurationVehiclesApiList extends React.Component
 							<div className="col-xs-10 col-md-10">
 								<span>API Vehicle List</span>
 							</div>
-							<div className="col-xs-2 col-md-2" />
+							<div className="col-xs-2 col-md-2">
+								<button onClick={ this.onHandleSync.bind(this) }><i className="fa fa-cloud-download" aria-hidden="true" /> Sync</button>
+							</div>
 						</div>
 					</div>
 					<div className="panel-body">

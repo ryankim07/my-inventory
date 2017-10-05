@@ -38,7 +38,7 @@ class ApiVehicleModelsEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="ApiVehicleEntity", inversedBy="models")
-     * @ORM\JoinColumn(name="mfg_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="api_vehicle_id", referencedColumnName="id")
      */
     private $apiVehicles;
 
@@ -122,6 +122,16 @@ class ApiVehicleModelsEntity
     }
 
     /**
+     * Get apiVehicles
+     *
+     * @return mixed
+     */
+    public function getApiVehicles()
+    {
+        return $this->apiVehicles;
+    }
+
+    /**
      * Set apiVehicles
      *
      * @param ApiVehicleEntity|null $apiVehicles
@@ -132,15 +142,5 @@ class ApiVehicleModelsEntity
         $this->apiVehicles = $apiVehicles;
 
         return $this;
-    }
-
-    /**
-     * Get apiVehicles
-     *
-     * @return mixed
-     */
-    public function getApiVehicles()
-    {
-        return $this->apiVehicles;
     }
 }

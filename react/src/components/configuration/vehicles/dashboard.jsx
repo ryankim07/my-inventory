@@ -3,7 +3,6 @@ import { PropTypes } from 'prop-types';
 import ConfigurationMainPanel from './../main_panel';
 import ConfigurationRightPanel from './../right_panel';
 import ConfigurationVehiclesApiList from './../vehicles/api/list';
-import ConfigurationVehiclesApiSync from './../vehicles/api/sync';
 import FlashMessage from '../../helper/flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -119,11 +118,6 @@ class ConfigurationVehiclesDashboard extends React.Component
 			case 'api-list':
 				mainPanelHtml =
 					<ConfigurationVehiclesApiList />;
-			break;
-
-			case 'api-sync':
-				mainPanelHtml =
-					<ConfigurationVehiclesApiSync />;
 			break;
 		}
 

@@ -32,7 +32,7 @@ class ApiVehicleEntity
     private $mfg;
 
     /**
-     * @ORM\OneToMany(targetEntity="ApiVehicleModelsEntity", mappedBy="apiVehicles")
+     * @ORM\OneToMany(targetEntity="ApiVehicleModelsEntity", mappedBy="apiVehicles", cascade={"persist", "remove"})
      * @ORM\OrderBy({"model" = "ASC"})
      */
     private $models;

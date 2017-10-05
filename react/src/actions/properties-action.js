@@ -3,7 +3,6 @@ import ActionConstants from '../constants/action-constants';
 import Api from '../services/Api';
 
 let PropertiesAction = {
-
 	getPropertiesAndPaints: function() {
 		Api
 			.getMultiple('http://mcs.dev/api/properties', 'http://mcs.dev/api/paints')

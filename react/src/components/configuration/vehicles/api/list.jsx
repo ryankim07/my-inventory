@@ -1,23 +1,74 @@
 import React from 'react';
+import ApiVehiclesAction from '../../../../actions/api-vehicles-action';
+import ApiVehiclesStore from '../../../../stores/vehicles/api-store';
 import Loader from '../../../helper/loader';
 
-class VehiclesApiList extends React.Component
+class ConfigurationVehiclesApiList extends React.Component
 {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			apiVehicles: [],
+			loader: true
+		};
+
+		this._onChange = this._onChange.bind(this);
+	}
+
+	componentWillMount() {
+		ApiVehiclesStore.addChangeListener(this._onChange);
+		ApiVehiclesStore.unsetStoreFlashMessage();
+	}
+
+	componentDidMount() {
+		ApiVehiclesAction.getApiVehicles();
+	}
+
+	componentWillUnmount() {
+		ApiVehiclesStore.removeChangeListener(this._onChange);
+	}
+
+	_onChange() {
+		let apiVehicles = ApiVehiclesStore.getApiVehicles();
+
+		this.setState({
+			apiVehicles: apiVehicles,
+			loader: false,
+		});
+	}
+
+	// Handle input changes
+	onHandleFormChange(propertyName, event) {
+		let vehicles   = this.state.apiVehicles;
+		let searchText = event.target.value;
+		let results    = vehicles.filter(function(vehicle) {
+			return vehicle.mfg.match(new RegExp( searchText , 'gi' ));
+		});
+
+		this.setState({apiVehicles: searchText === "" || searchText === undefined ? vehicles : results});
+	}
+
+	handleMouseOver(e) {
+		this.setState({ isHidden: !this.state.isHidden });
+	}
+
 	render() {
         let apiVehiclesHtml = '';
 
 		// If loading is complete
-        if (!this.props.loader) {
-        	let apiVehicles  = this.props.apiVehicles;
+        if (!this.state.loader) {
+        	let vehicles = this.state.apiVehicles;
 
-        	if (!apiVehicles || apiVehicles.length === 0) {
+        	if (!vehicles || vehicles.length === 0) {
 				apiVehiclesHtml = <tr><td><span>There are no saved API vehicles.</span></td></tr>;
 			} else {
-				apiVehiclesHtml = apiVehicles.map((vehicle, vehicleIndex) => {
+				apiVehiclesHtml = vehicles.map((vehicle, vehicleIndex) => {
 					return (
-						<tr key={ vehicleIndex }>
+						<tr key={ vehicleIndex } onMouseOver={ this.handleMouseOver.bind(this) }>
 							<td>{ vehicle.mfg }</td>
-							<td>
+							<td ref={ 'action-' + vehicleIndex } className="deactive">
+								{ !this.state.isHidden && <h1>actions</h1> }
 							</td>
 						</tr>
 					);
@@ -39,15 +90,25 @@ class VehiclesApiList extends React.Component
 						</div>
 					</div>
 					<div className="panel-body">
+						<div className="form-group">
+							<div className="col-xs-12 col-lg-12">
+								<div className="input-group col-lg-12">
+									<input
+										type="text"
+										onChange={ this.onHandleFormChange.bind(this, 'search') }
+										className="form-control"/>
+								</div>
+							</div>
+						</div>
 						<table className="table">
 							<thead>
 							<tr>
 								<th>Manufacturer</th>
-								<th>Actions</th>
+								<th />
 							</tr>
 							</thead>
 							<tbody>
-							{ apiVehiclesHtml }
+								{ apiVehiclesHtml }
 							</tbody>
 						</table>
 					</div>
@@ -57,4 +118,4 @@ class VehiclesApiList extends React.Component
     }
 }
 
-export default VehiclesApiList;
+export default ConfigurationVehiclesApiList;

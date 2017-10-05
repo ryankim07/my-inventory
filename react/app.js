@@ -21,6 +21,7 @@ import PropertyRoomForm from "./src/components/properties/rooms/forms/room";
 import PropertyRoomsList from './src/components/properties/rooms/list';
 import ConfigurationVehiclesDashboard from './src/components/configuration/vehicles/dashboard';
 import ConfigurationVehiclesApiList from './src/components/configuration/vehicles/api/list';
+import ConfigurationVehiclesApiSync from './src/components/configuration/vehicles/api/sync';
 import ConfigurationPropertiesDashboard from './src/components/configuration/properties/dashboard';
 import ConfigurationPropertiesPaintList from './src/components/configuration/properties/paints/list';
 
@@ -61,6 +62,7 @@ ReactDOM.render(
 
 			<Route exact path="/configuration/vehicles/dashboard/:section" component={ ConfigurationVehiclesDashboard }>
 				<Route path="/configuration/vehicles/api/list" component={ ConfigurationVehiclesApiList } />
+				<Route path="/configuration/vehicles/api/sync" component={ ConfigurationVehiclesApiSync } />
 			</Route>
 
 			<Route exact path="/configuration/properties/dashboard/:section" component={ ConfigurationPropertiesDashboard }>

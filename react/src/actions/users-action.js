@@ -6,10 +6,10 @@ let UsersAction = {
 	getUsers: function() {
 		User
 			.get('http://mcs.dev/api/users')
-			.then(function (results) {
+			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.RECEIVE_USERS,
-					results: results
+					results: resp
 				});
 			})
 			.catch(function(resp) {
@@ -24,10 +24,10 @@ let UsersAction = {
 	addUser: function(data) {
 		User
 			.post('http://mcs.dev/api/user', data)
-			.then(function (results) {
+			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.ADD_NEW_USER,
-					results: results
+					results: resp
 				});
 			})
 			.catch(function(resp) {
@@ -42,10 +42,10 @@ let UsersAction = {
 	updateUser: function(data) {
 		User
 			.post('http://mcs.dev/api/user', data, data.assets)
-			.then(function (results) {
+			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.UPDATE_USER,
-					results: results
+					results: resp
 				});
 			})
 			.catch(function(resp) {
@@ -60,10 +60,10 @@ let UsersAction = {
 	removeUser: function(id) {
 		User
 			.delete('http://mcs.dev/api/users/' + id)
-			.then(function (results) {
+			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.REMOVE_USER,
-					results: results
+					results: resp
 				});
 			})
 			.catch(function(resp) {
@@ -73,7 +73,7 @@ let UsersAction = {
 					msg: resp.msg
 				});
 			});
-	},
+	}
 };
 
 export default UsersAction;

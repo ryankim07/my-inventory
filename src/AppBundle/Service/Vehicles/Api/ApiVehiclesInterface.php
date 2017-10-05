@@ -2,7 +2,7 @@
 
 namespace AppBundle\Service\Vehicles\Api;
 
-interface SyncInterface
+interface ApiVehiclesInterface
 {
     /**
      * Contract API call method

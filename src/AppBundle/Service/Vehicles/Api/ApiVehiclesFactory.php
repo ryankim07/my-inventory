@@ -4,7 +4,7 @@ namespace AppBundle\Service\Vehicles\Api;
 
 use Doctrine\ORM\EntityManager;
 
-class SyncFactory
+class ApiVehiclesFactory
 {
     public static function get(EntityManager $entityManager, $type)
     {

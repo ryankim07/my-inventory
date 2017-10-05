@@ -18,47 +18,30 @@ services:
         arguments: ["@security.password_encoder"]
         public: false
 
-    # Factories
-    Sync_Factory:
-        class: AppBundle\Service\Vehicles\Api\SyncFactory
+    # Sync Factory
+    Api_Vehicles_Factory:
+        class: AppBundle\Service\Vehicles\Api\ApiVehiclesFactory
         arguments: ["@doctrine.orm.vehicles_entity_manager", "%vehicle_api_type%"]
 
-    # Services
-    Sync_Abstract:
-        class: AppBundle\Service\Vehicles\Api\SyncAbstract
-        abstract: true
-        arguments: ["@doctrine.orm.vehicles_entity_manager"]
-        calls:
-            - [syncApiVehiclesToDb, ['mfgs']]
-
-    Nhtsa_Api:
-        class: AppBundle\Service\Vehicles\Api\Nhtsa
-        parent: Sync_Abstract
-
-    Edmunds_Api:
-        class: AppBundle\Service\Vehicles\Api\Edmunds
-        parent: Sync_Abstract
-
-    Sync_Api:
-      class: AppBundle\Service\Vehicles\Api\SyncInterface
-      factory: ["@Sync_Factory", get]
+    # Sync Interface
+    Api_Vehicles_Interface:
+      class: AppBundle\Service\Vehicles\Api\ApiVehiclesInterface
+      factory: ["@Api_Vehicles_Factory", get]
       arguments: ["@doctrine.orm.vehicles_entity_manager", "%vehicle_api_type%"]
 
-    Sync_Db:
-      class: AppBundle\Service\Vehicles\Api\SyncDb
-      arguments: ["@doctrine.orm.vehicles_entity_manager"]
+    # Api Vehicles Service
+    Api_Vehicles:
+        class: AppBundle\Service\Vehicles\Api\ApiVehicles
+        arguments: ["@doctrine.orm.vehicles_entity_manager"]
 
-    File_Uploader:
-        class: AppBundle\Service\FileUploader
-        arguments: ["%assets_dir%"]
+    # Vehicles Service
+    Vehicles:
+        class: AppBundle\Service\Vehicles\Vehicles
+        arguments: ["@doctrine.orm.vehicles_entity_manager", "@Api_Vehicles", "@File_Uploader"]
 
     Assets:
         class: AppBundle\Service\Vehicles\Assets
         arguments: ["@doctrine.orm.vehicles_entity_manager", "@File_Uploader"]
-
-    Vehicles:
-        class: AppBundle\Service\Vehicles\Vehicles
-        arguments: ["@doctrine.orm.vehicles_entity_manager", "@Sync_Db", "@File_Uploader"]
 
     Rooms:
         class: AppBundle\Service\Properties\Rooms
@@ -86,3 +69,7 @@ services:
     Paints:
         class: AppBundle\Service\Paints\Paints
         arguments: ["@doctrine.orm.houses_entity_manager"]
+
+    File_Uploader:
+        class: AppBundle\Service\FileUploader
+        arguments: ["%assets_dir%"]

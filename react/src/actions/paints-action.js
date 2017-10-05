@@ -3,14 +3,13 @@ import ActionConstants from '../constants/action-constants';
 import Api from '../services/Api';
 
 let PaintsAction = {
-
 	getPaints: function() {
 		Api
 			.get('http://mcs.dev/api/paints')
-			.then(function(results) {
+			.then(function(resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.RECEIVE_PAINTS,
-					results: results
+					results: resp
 				});
 			})
 			.catch(function(resp) {
@@ -20,7 +19,7 @@ let PaintsAction = {
 					msg: resp.msg
 				});
 			});
-	},
+	}
 };
 
 export default PaintsAction;

@@ -1,10 +1,9 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import ApiVehiclesAction from '../../../actions/api-vehicles-action';
-import ApiVehiclesStore from '../../../stores/vehicles/api-store';
 import ConfigurationMainPanel from './../main_panel';
 import ConfigurationRightPanel from './../right_panel';
-import VehiclesApiList from './../vehicles/api/list';
+import ConfigurationVehiclesApiList from './../vehicles/api/list';
+import ConfigurationVehiclesApiSync from './../vehicles/api/sync';
 import FlashMessage from '../../helper/flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -20,9 +19,7 @@ class ConfigurationVehiclesDashboard extends React.Component
 		super(props);
 
 		this.state = {
-			apiVehicles: [],
 			isEditingMode: false,
-			loader: true,
 			mainPanel: this.props.params.section,
 			showRightPanel: false,
 			flashMessage: null,
@@ -36,52 +33,23 @@ class ConfigurationVehiclesDashboard extends React.Component
 			}
 		};
 
-		this._onChange 			= this._onChange.bind(this);
-		this.setFlashMessage  	= this.setFlashMessage.bind(this);
-		this.closeRightPanel  	= this.closeRightPanel.bind(this);
-	}
-
-	componentWillMount() {
-		ApiVehiclesStore.addChangeListener(this._onChange);
-		ApiVehiclesStore.unsetStoreFlashMessage();
-	}
-
-	componentDidMount() {
-		ApiVehiclesAction.getApiVehicles();
+		this.setFlashMessage = this.setFlashMessage.bind(this);
+		this.closeRightPanel = this.closeRightPanel.bind(this);
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.location.action === 'REPLACE') {
-			this.setState({mainPanel: nextProps.params.section});
+		if (nextProps.location.action !== 'POP') {
+			this.setState({
+				mainPanelColumnCss: {
+					'mobileWidth': mainDefaultMobileColumnWidth,
+					'desktopWidth': mainDefaultDesktopColumnWidth
+				},
+				showRightPanel: false,
+				flashMessage: null
+			});
 		}
 	}
 
-	componentWillUnmount() {
-		ApiVehiclesStore.removeChangeListener(this._onChange);
-	}
-
-	_onChange() {
-		let apiVehicles		= ApiVehiclesStore.getApiVehicles();
-		let flashMessage 	= ApiVehiclesStore.getStoreFlashMessage();
-		let isAuthenticated = ApiVehiclesStore.isAuthenticated();
-		let openRightPanel  = ApiVehiclesStore.showRightPanel();
-
-		if (!isAuthenticated){
-			this.context.router.push("/auth/login");
-			return false;
-		}
-
-		this.setState({
-			apiVehicles: apiVehicles,
-			showRightPanel: !!openRightPanel,
-			flashMessage: flashMessage !== undefined ? flashMessage : null,
-			loader: false,
-			mainPanelColumnCss: {
-				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
-				'desktopWidth': openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
-			}
-		});
-	}
 	/*
 		// Handle submit
 		onHandleFormSubmit(vehicle) {
@@ -148,21 +116,15 @@ class ConfigurationVehiclesDashboard extends React.Component
 		let mainPanelHtml = '';
 
 		switch (this.state.mainPanel) {
-			case 'vehicles-api-list':
+			case 'api-list':
 				mainPanelHtml =
-					<VehiclesApiList
-						apiVehicles={ this.state.apiVehicles }
-						loader={ this.state.loader }
-					/>;
+					<ConfigurationVehiclesApiList />;
 			break;
-		}
 
-		// Right panel
-		let rightPanelHtml = '';
-
-		switch (this.state.rightPanel) {
-			default:
-				rightPanelHtml = '';
+			case 'api-sync':
+				mainPanelHtml =
+					<ConfigurationVehiclesApiSync />;
+			break;
 		}
 
 		return (
@@ -176,7 +138,6 @@ class ConfigurationVehiclesDashboard extends React.Component
 				{
 					this.state.showRightPanel ?
 						<ConfigurationRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
-							{ rightPanelHtml }
 						</ConfigurationRightPanel> : null
 				}
 			</div>

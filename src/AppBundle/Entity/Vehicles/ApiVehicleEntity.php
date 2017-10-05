@@ -8,9 +8,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\Vehicles\Api\VehiclesRepository")
- * @ORM\Table(name="vehicle_mfgs")
+ * @ORM\Table(name="api_vehicles")
  */
-class VehicleMfgsApiEntity
+class ApiVehicleEntity
 {
     /**
      * @ORM\Column(type="integer")
@@ -32,7 +32,7 @@ class VehicleMfgsApiEntity
     private $mfg;
 
     /**
-     * @ORM\OneToMany(targetEntity="VehicleModelsApiEntity", mappedBy="manufacturers")
+     * @ORM\OneToMany(targetEntity="ApiVehicleModelsEntity", mappedBy="apiVehicles")
      * @ORM\OrderBy({"model" = "ASC"})
      */
     private $models;
@@ -105,13 +105,13 @@ class VehicleMfgsApiEntity
     /**
      * Add model
      *
-     * @param \AppBundle\Entity\VehicleModelsApiEntity $model
-     *
-     * @return VehicleMfgsApiEntity
+     * @param ApiVehicleModelsEntity $model
+     * @return $this
      */
-    public function addModel(VehicleModelsApiEntity $model)
+    public function addModel(ApiVehicleModelsEntity $model)
     {
-        $this->models[] = $model;
+        $this->models = $model;
+        $model->setApiVehicles($this);
 
         return $this;
     }
@@ -119,9 +119,9 @@ class VehicleMfgsApiEntity
     /**
      * Remove model
      *
-     * @param \AppBundle\Entity\VehicleModelsApiEntity $model
+     * @param ApiVehicleModelsEntity $model
      */
-    public function removeModel(VehicleModelsApiEntity $model)
+    public function removeModel(ApiVehicleModelsEntity $model)
     {
         $this->models->removeElement($model);
     }

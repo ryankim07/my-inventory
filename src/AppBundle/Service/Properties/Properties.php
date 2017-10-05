@@ -195,14 +195,14 @@ class Properties
             if (!$this->entity) {
                 $msg = "Property could not be {$op}.";
             };
-
-            return [
-                'property' => $this->entity,
-                'msg'      => $msg
-            ];
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
         }
+
+        return [
+            'property' => $this->entity,
+            'msg'      => $msg
+        ];
     }
 
     /**

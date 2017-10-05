@@ -6,12 +6,10 @@ let AuthAction = {
 	login: function(data)  {
 		Auth
 			.post('http://mcs.dev/login', data)
-			.then(function (results) {
-				let token = results.token;
-
+			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.LOGIN_USER,
-					token: token
+					token: resp.token
 				});
 			})
 			.catch(function(resp) {

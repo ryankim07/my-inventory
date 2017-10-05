@@ -2,7 +2,7 @@
 
 namespace AppBundle\Service\Vehicles\Api;
 
-class Edmunds extends SyncAbstract
+class Edmunds implements ApiVehiclesInterface
 {
     const API_KEY = "8z5gs5zedbpdadhnzdqbmvdk";
 

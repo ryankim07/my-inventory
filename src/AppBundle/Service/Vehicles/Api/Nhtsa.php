@@ -2,7 +2,7 @@
 
 namespace AppBundle\Service\Vehicles\Api;
 
-class Nhtsa extends SyncAbstract
+class Nhtsa implements ApiVehiclesInterface
 {
     /**
      * Call NHTSA API
@@ -19,22 +19,22 @@ class Nhtsa extends SyncAbstract
             1824, 1755, 1683, 1532, 1498, 1393, 1288, 1151, 1146, 1142, 1104, 1034, 1075, 1292, 5122
         ];
 
-        $mfgData = json_decode(file_get_contents("https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json"));
-        $mfgs    = $mfgData->Results;
+        $apiData = json_decode(file_get_contents("https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json"));
+        $vehicles    = $apiData->Results;
 
         $results = [];
-        foreach($mfgs as $mfg) {
-            $mfgId = $mfg->MakeId;
+        foreach($vehicles as $vehicle) {
+            $vehicleId = $vehicle->MakeId;
 
-            if (in_array($mfgId, $blacklist)) {
+            if (in_array($vehicleId, $blacklist)) {
                 continue;
             }
 
-            $modelData = $this->getApiModelsByMfg($mfgId);
+            $modelData = $this->getApiModelsByMfg($vehicleId);
 
             $results[] = [
-                'mfg_id' => $mfgId,
-                'mfg'    => $mfg->MakeName,
+                'mfg_id' => $vehicleId,
+                'mfg'    => $vehicle->MakeName,
                 'models' => $modelData
             ];
         }
@@ -45,16 +45,16 @@ class Nhtsa extends SyncAbstract
     /**
      * Get models by manufacturer ID from API
      *
-     * @param $mfgId
+     * @param $apiVehicleId
      * @return array|bool
      */
-    private function getApiModelsByMfg($mfgId)
+    private function getApiModelsByMfg($apiVehicleId)
     {
-        if (!isset($mfgId)) {
+        if (!isset($apiVehicleId)) {
             return false;
         }
 
-        $modelData = json_decode(file_get_contents("https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeId/{$mfgId}?format=json"));
+        $modelData = json_decode(file_get_contents("https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeId/{$apiVehicleId}?format=json"));
         $allModels = $modelData->Results;
 
         $results = [];

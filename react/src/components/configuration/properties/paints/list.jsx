@@ -1,7 +1,7 @@
 import React from 'react';
 import Loader from '../../../helper/loader';
 
-class PropertiesPaintList extends React.Component
+class ConfigurationPropertiesPaintList extends React.Component
 {
 	render() {
         let paintsHtml = '';
@@ -66,4 +66,4 @@ class PropertiesPaintList extends React.Component
     }
 }
 
-export default PropertiesPaintList;
+export default ConfigurationPropertiesPaintList;

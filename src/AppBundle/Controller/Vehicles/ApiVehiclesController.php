@@ -13,40 +13,7 @@ use FOS\RestBundle\View\View;
 class ApiVehiclesController extends FOSRestController
 {
     /**
-     * Sync from external API to DB
-     *
-     * @Rest\Get("/api/sync", name="api_sync")
-     */
-    public function syncAction()
-    {
-        $services = $this->get('Sync_Api');
-        $mfgs     = $services->getApiVehicles();
-        $results  = $services->save($mfgs);
-
-        $msg = !is_bool($results) && !empty($results) ? $results : 'Sync completed successfully.';
-
-        return new Response($msg, Response::HTTP_OK);
-    }
-
-    /**
-     * Get all manufacturers vehicles
-     *
-     * @Rest\Get("/api/api-vehicles", name="api_vehicles_list")
-     */
-    public function getListAction()
-    {
-        $service = $this->get('Sync_Db');
-        $results = $service->findAll();
-
-        if (is_null($results)) {
-            return new View("Manufacturers not found.", Response::HTTP_NOT_FOUND);
-        }
-
-        return $results;
-    }
-
-    /**
-     * Get manufacturers vehicle by ID
+     * Get api vehicle by ID
      *
      * @Rest\Get("/api/api-vehicles/{id}", name="api_vehicle")
      * @param $id
@@ -54,13 +21,38 @@ class ApiVehiclesController extends FOSRestController
      */
     public function getAction($id)
     {
-        $service = $this->get('Sync_Db');
+        $service = $this->get('Api_Vehicles');
         $results = $service->find($id);
 
-        if ($results === null) {
-            return new View("Manufacturer models not found", Response::HTTP_NOT_FOUND);
-        }
+        return $results;
+    }
+
+    /**
+     * Get all api vehicles
+     *
+     * @Rest\Get("/api/api-vehicles", name="api_vehicles_list")
+     */
+    public function getListAction()
+    {
+        $service = $this->get('Api_Vehicles');
+        $results = $service->findAll();
 
         return $results;
+    }
+
+    /**
+     * Sync from external API to DB
+     *
+     * @Rest\Get("/api/api-vehicles/sync", name="api_sync")
+     */
+    public function syncAction()
+    {
+        $services = $this->get('Api_Vehicles');
+        $vehicles = $services->getApiVehicles();
+        $results  = $services->save($vehicles);
+
+        $msg = !is_bool($results) && !empty($results) ? $results : 'Sync completed successfully.';
+
+        return new Response($msg, Response::HTTP_OK);
     }
 }

@@ -3,7 +3,6 @@ import ActionConstants from '../constants/action-constants';
 import Api from '../services/Api';
 
 let VehiclesAction = {
-
 	getVehiclesAndApiVehicles: function() {
 		Api
 			.getMultiple('http://mcs.dev/api/vehicles', 'http://mcs.dev/api/api-vehicles')
@@ -26,10 +25,10 @@ let VehiclesAction = {
 	addVehicle: function(data) {
 		Api
 			.post('http://mcs.dev/api/vehicle', data, data.assets)
-			.then(function (vehicle) {
+			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.ADD_VEHICLE,
-					results: vehicle
+					results: resp
 				});
 			})
 			.catch(function(resp) {
@@ -44,10 +43,10 @@ let VehiclesAction = {
 	updateVehicle: function(data) {
 		Api
 			.post('http://mcs.dev/api/vehicle', data, data.assets)
-			.then(function (vehicle) {
+			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.UPDATE_VEHICLE,
-					results: vehicle
+					results: resp
 				});
 			})
 			.catch(function(resp) {

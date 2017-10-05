@@ -4,7 +4,7 @@ import PaintsAction from '../../../actions/paints-action';
 import PaintsStore from '../../../stores/paints/store';
 import ConfigurationMainPanel from './../main_panel';
 import ConfigurationRightPanel from './../right_panel';
-import PropertiesPaintList from './../paints/list';
+import ConfigurationPropertiesPaintList from './paints/list';
 import FlashMessage from '../../helper/flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -72,7 +72,7 @@ class ConfigurationPropertiesDashboard extends React.Component
 		}
 
 		this.setState({
-			apiVehicles: apiVehicles,
+			paints: paints,
 			showRightPanel: !!openRightPanel,
 			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,
@@ -150,7 +150,7 @@ class ConfigurationPropertiesDashboard extends React.Component
 		switch (this.state.mainPanel) {
 			case 'paints-list':
 				mainPanelHtml =
-					<PropertiesPaintList
+					<ConfigurationPropertiesPaintList
 						paints={ this.state.paints }
 						loader={ this.state.loader }
 					/>;

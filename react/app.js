@@ -19,7 +19,7 @@ import PropertyExteriorFeaturesForm from './src/components/properties/info/forms
 import PropertyInteriorFeaturesForm from './src/components/properties/info/forms/interior_features';
 import PropertyRoomForm from "./src/components/properties/rooms/forms/room";
 import PropertyRoomsList from './src/components/properties/rooms/list';
-import ConfigurationDashboard from './src/components/configuration/dashboard';
+import ConfigurationVehiclesDashboard from './src/components/configuration/vehicles/dashboard';
 import ConfigurationVehiclesApiList from './src/components/configuration/vehicles/api/list';
 
 function requireAuth(nextState, replace)
@@ -57,7 +57,7 @@ ReactDOM.render(
 				<Route path="/properties/rooms" component={ PropertyRoomsList } />
 			</Route>
 
-			<Route exact path="/configuration/dashboard/:section" component={ ConfigurationDashboard }>
+			<Route exact path="/configuration/dashboard/:section" component={ ConfigurationVehiclesDashboard }>
 				<Route path="/configuration/vehicles/api/list" component={ ConfigurationVehiclesApiList } />
 			</Route>
         </Route>

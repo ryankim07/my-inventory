@@ -6,7 +6,7 @@ let VehiclesAction = {
 
 	getVehiclesAndApiVehicles: function() {
 		Api
-			.getMultiple('http://mcs.dev/api/vehicles', 'http://mcs.dev/api/sync/list')
+			.getMultiple('http://mcs.dev/api/vehicles', 'http://mcs.dev/api/api-vehicles')
 			.then(function ([vehicles, apiVehicles])  {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.RECEIVE_VEHICLES_AND_API_VEHICLES,

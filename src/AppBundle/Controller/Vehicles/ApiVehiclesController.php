@@ -31,7 +31,7 @@ class ApiVehiclesController extends FOSRestController
     /**
      * Get all manufacturers vehicles
      *
-     * @Rest\Get("/api/sync/list", name="api_sync_list")
+     * @Rest\Get("/api/api-vehicles", name="api_vehicles_list")
      */
     public function getListAction()
     {
@@ -48,7 +48,7 @@ class ApiVehiclesController extends FOSRestController
     /**
      * Get manufacturers vehicle by ID
      *
-     * @Rest\Get("/api/sync/list/{id}", name="api_vehicle")
+     * @Rest\Get("/api/api-vehicles/{id}", name="api_vehicle")
      * @param $id
      * @return View
      */

@@ -4,6 +4,7 @@ import Dispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
 
 let _apiVehicles = [];
+let _rightPanel = false;
 let _errStatus;
 let _storeMsg;
 
@@ -41,10 +42,6 @@ let ApiVehiclesStore = assign({}, EventEmitter.prototype, {
         this.removeListener('change', callback);
     },
 
-    getApiVehicles: function () {
-		return _apiVehicles;
-	},
-
 	setApiVehicles: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
@@ -54,6 +51,30 @@ let ApiVehiclesStore = assign({}, EventEmitter.prototype, {
 				_apiVehicles = results;
 			}
 		}
+	},
+
+    getApiVehicles: function () {
+		return _apiVehicles;
+	},
+
+	isAuthenticated: function() {
+		if (localStorage.getItem('id_token') === null) {
+			return false;
+		}
+
+		return true;
+	},
+
+	getStoreFlashMessage: function() {
+		return _storeMsg;
+	},
+
+	unsetStoreFlashMessage: function() {
+		_storeMsg = '';
+	},
+
+	showRightPanel: function() {
+		return _rightPanel;
 	}
 });
 

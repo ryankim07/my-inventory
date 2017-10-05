@@ -3,9 +3,10 @@ import ActionConstants from '../constants/action-constants';
 import Api from '../services/Api';
 
 let ApiVehiclesAction = {
+
     getApiVehicles: function() {
         Api
-            .get('http://mcs.dev/api/sync/list')
+            .get('http://mcs.dev/api/api-vehicles')
             .then(function(manufacturers) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.RECEIVE_API_VEHICLES,
@@ -20,6 +21,7 @@ let ApiVehiclesAction = {
                 });
             });
     }
+
 };
 
 export default ApiVehiclesAction;

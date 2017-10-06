@@ -8,13 +8,15 @@ class ConfigurationVehicleModels extends React.Component
 
 		this.state = {
 			models: this.props.apiVehicle.models,
+			searchText: ''
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.apiVehicle.models !== this.props.apiVehicle.models) {
 			this.setState({
-				models: nextProps.apiVehicle.models
+				models: nextProps.apiVehicle.models,
+				searchText: ''
 			});
 		}
 	}
@@ -28,7 +30,8 @@ class ConfigurationVehicleModels extends React.Component
 		});
 
 		this.setState({
-			models: searchText === "" || searchText === undefined ? models : results
+			models: searchText === "" || searchText === undefined ? models : results,
+			searchText: searchText
 		});
 	}
 
@@ -68,6 +71,7 @@ class ConfigurationVehicleModels extends React.Component
 								<div className="input-group col-lg-12">
 									<input
 										type="text"
+										value={ this.state.searchText }
 										onChange={ this.onHandleFormChange.bind(this, 'search') }
 										className="form-control"/>
 								</div>

@@ -158,7 +158,7 @@ class VehicleForm extends React.Component
 						<div className="input-group">
 							<select
 								onChange={ this.onHandleFormChange.bind(this, 'color') }
-								value={vehicle.color}
+								value={ vehicle.color }
 								className="form-control input-sm"
 								required="required">
 								<option value="">Select One</option>
@@ -177,11 +177,10 @@ class VehicleForm extends React.Component
 						<label className="control-label">VIN</label>
 						<div className="input-group">
 							<input type="text"
-
-								   onChange={ this.onHandleFormChange.bind(this, 'vin') }
-								   value={ vehicle.vin }
-								   className="form-control input-sm"
-								   required="required"/>
+								onChange={ this.onHandleFormChange.bind(this, 'vin') }
+								value={ vehicle.vin }
+								className="form-control input-sm"
+								required="required"/>
 						</div>
 					</div>
 				</div>
@@ -189,10 +188,12 @@ class VehicleForm extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Plate</label>
 						<div className="input-group">
-							<input type="text" onChange={ this.onHandleFormChange.bind(this, 'plate') }
-								   value={ vehicle.plate }
-								   className="form-control input-sm"
-								   required="required"/>
+							<input
+								type="text"
+								onChange={ this.onHandleFormChange.bind(this, 'plate') }
+								value={ vehicle.plate }
+								className="form-control input-sm"
+								required="required"/>
 						</div>
 					</div>
 				</div>

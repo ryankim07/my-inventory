@@ -1,8 +1,11 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import ApiVehiclesAction from '../../../actions/api-vehicles-action';
+import ApiVehiclesStore from '../../../stores/vehicles/api-store';
 import ConfigurationMainPanel from './../main_panel';
 import ConfigurationRightPanel from './../right_panel';
 import ConfigurationVehiclesApiList from './../vehicles/api/list';
+import ConfigurationVehicleModels from './../vehicles/api/models';
 import FlashMessage from '../../helper/flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -18,6 +21,10 @@ class ConfigurationVehiclesDashboard extends React.Component
 		super(props);
 
 		this.state = {
+			apiVehicles: [],
+			apiVehicle: {},
+			selectedVehicle: null,
+			loader: true,
 			isEditingMode: false,
 			mainPanel: this.props.params.section,
 			showRightPanel: false,
@@ -32,21 +39,50 @@ class ConfigurationVehiclesDashboard extends React.Component
 			}
 		};
 
+		this._onChange 		 = this._onChange.bind(this);
+		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.setFlashMessage = this.setFlashMessage.bind(this);
 		this.closeRightPanel = this.closeRightPanel.bind(this);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.location.action !== 'POP') {
-			this.setState({
-				mainPanelColumnCss: {
-					'mobileWidth': mainDefaultMobileColumnWidth,
-					'desktopWidth': mainDefaultDesktopColumnWidth
-				},
-				showRightPanel: false,
-				flashMessage: null
-			});
-		}
+	componentWillMount() {
+		ApiVehiclesStore.addChangeListener(this._onChange);
+		ApiVehiclesStore.unsetStoreFlashMessage();
+	}
+
+	componentDidMount() {
+		ApiVehiclesAction.getApiVehicles();
+	}
+
+	componentWillUnmount() {
+		ApiVehiclesStore.removeChangeListener(this._onChange);
+	}
+
+	_onChange() {
+		let apiVehicles = ApiVehiclesStore.getApiVehicles();
+
+		this.setState({
+			apiVehicles: apiVehicles,
+			loader: false,
+			/*mainPanelColumnCss: {
+				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
+				'desktopWidth': openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
+			}*/
+		});
+	}
+
+	// Handle right panel
+	onHandleRightPanel(id) {
+		let apiVehicle = this.state.apiVehicles.find(obj => obj.id === id);
+
+		this.setState({
+			apiVehicle: apiVehicle,
+			showRightPanel: true,
+			mainPanelColumnCss: {
+				'mobileWidth': mainShrinkedMobileColumnWidth,
+				'desktopWidth': mainShrinkedDesktopColumnWidth
+			}
+		});
 	}
 
 	/*
@@ -59,40 +95,23 @@ class ConfigurationVehiclesDashboard extends React.Component
 			}
 		}
 
-		// Handle right panel
-		onHandleRightPanel(id) {
-			let isEditingMode = !!id;
-			let vehicle = isEditingMode ?
-				this.state.vehicles.find(obj => obj.id === id) :
-				{
-					id: '',
-					mfg_id: '',
-					mfg: '',
-					model_id: '',
-					model: '',
-					year: '',
-					color: '',
-					vin: '',
-					plate: '',
-					assets: []
-				}
 
-			this.setState({
-				vehicle: vehicle,
-				isEditingMode: isEditingMode,
-				showRightPanel: true,
-				mainPanelColumnCss: {
-					'mobileWidth': mainShrinkedMobileColumnWidth,
-					'desktopWidth': mainShrinkedDesktopColumnWidth
-				}
-			});
-		}
 
 		// Handle delete
 		onHandleRemove(id) {
 			VehiclesAction.removeVehicle(id);
 		}
 		*/
+
+
+	// Sync API
+	onHandleSync() {
+		ApiVehiclesAction.sync();
+	}
+
+	onHandleClick(id) {
+		console.log(id);
+	}
 
 	// Set flash message
 	setFlashMessage(msg) {
@@ -117,7 +136,13 @@ class ConfigurationVehiclesDashboard extends React.Component
 		switch (this.state.mainPanel) {
 			case 'api-list':
 				mainPanelHtml =
-					<ConfigurationVehiclesApiList />;
+					<ConfigurationVehiclesApiList
+						loader={ this.state.loader }
+						apiVehicles={ this.state.apiVehicles }
+						selectedVehicle={ this.state.selectedVehicle }
+						onHandleSync={ this.onHandleSync }
+						onHandleRightPanel={ this.onHandleRightPanel }
+					/>;
 			break;
 		}
 
@@ -132,6 +157,10 @@ class ConfigurationVehiclesDashboard extends React.Component
 				{
 					this.state.showRightPanel ?
 						<ConfigurationRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
+							<ConfigurationVehicleModels
+								apiVehicle={ this.state.apiVehicle }
+								onHandleClick={ this.onHandleClick }
+							/>
 						</ConfigurationRightPanel> : null
 				}
 			</div>

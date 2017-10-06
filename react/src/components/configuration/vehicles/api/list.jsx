@@ -1,6 +1,5 @@
 import React from 'react';
-import ApiVehiclesAction from '../../../../actions/api-vehicles-action';
-import ApiVehiclesStore from '../../../../stores/vehicles/api-store';
+import ConfigurationVehiclesApiListItem from './item';
 import Loader from '../../../helper/loader';
 
 class ConfigurationVehiclesApiList extends React.Component
@@ -9,33 +8,16 @@ class ConfigurationVehiclesApiList extends React.Component
 		super(props);
 
 		this.state = {
-			apiVehicles: [],
-			loader: true
-		};
-
-		this._onChange = this._onChange.bind(this);
+			apiVehicles: this.props.apiVehicles,
+		}
 	}
 
-	componentWillMount() {
-		ApiVehiclesStore.addChangeListener(this._onChange);
-		ApiVehiclesStore.unsetStoreFlashMessage();
-	}
-
-	componentDidMount() {
-		ApiVehiclesAction.getApiVehicles();
-	}
-
-	componentWillUnmount() {
-		ApiVehiclesStore.removeChangeListener(this._onChange);
-	}
-
-	_onChange() {
-		let apiVehicles = ApiVehiclesStore.getApiVehicles();
-
-		this.setState({
-			apiVehicles: apiVehicles,
-			loader: false,
-		});
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.apiVehicles !== this.props.apiVehicles) {
+			this.setState({
+				apiVehicles: nextProps.apiVehicles
+			});
+		}
 	}
 
 	// Handle input changes
@@ -46,37 +28,30 @@ class ConfigurationVehiclesApiList extends React.Component
 			return vehicle.mfg.match(new RegExp( searchText , 'gi' ));
 		});
 
-		this.setState({apiVehicles: searchText === "" || searchText === undefined ? vehicles : results});
-	}
-
-	// Sync API
-	onHandleSync(e) {
-		e.preventDefault();
-		ApiVehiclesAction.sync();
-	}
-
-	handleMouseOver(e) {
-		this.setState({ isHidden: !this.state.isHidden });
+		this.setState({
+			apiVehicles: searchText === "" || searchText === undefined ? vehicles : results
+		});
 	}
 
 	render() {
         let apiVehiclesHtml = '';
 
 		// If loading is complete
-        if (!this.state.loader) {
-        	let vehicles = this.state.apiVehicles;
+        if (!this.props.loader) {
+        	let vehicles 		= this.state.apiVehicles;
+			let selectedVehicle = this.props.selectedVehicle ;
 
         	if (!vehicles || vehicles.length === 0) {
 				apiVehiclesHtml = <tr><td><span>There are no saved API vehicles.</span></td></tr>;
 			} else {
 				apiVehiclesHtml = vehicles.map((vehicle, vehicleIndex) => {
 					return (
-						<tr key={ vehicleIndex } onMouseOver={ this.handleMouseOver.bind(this) }>
-							<td>{ vehicle.mfg }</td>
-							<td ref={ 'action-' + vehicleIndex } className="deactive">
-								{ !this.state.isHidden && <h1>actions</h1> }
-							</td>
-						</tr>
+						<ConfigurationVehiclesApiListItem
+							key={ vehicleIndex }
+							selectedVehicle={ selectedVehicle === vehicle.id }
+							mfg={ vehicle.mfg }
+							onHandleClick={ this.props.onHandleRightPanel.bind(this, vehicle.id) }
+						/>
 					);
 				});
 			}
@@ -93,7 +68,7 @@ class ConfigurationVehiclesApiList extends React.Component
 								<span>API Vehicle List</span>
 							</div>
 							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.onHandleSync.bind(this) }><i className="fa fa-cloud-download" aria-hidden="true" /> Sync</button>
+								<button onClick={ this.props.onHandleSync.bind(this) }><i className="fa fa-cloud-download" aria-hidden="true" /> Sync</button>
 							</div>
 						</div>
 					</div>

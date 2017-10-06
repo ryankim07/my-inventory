@@ -39,10 +39,11 @@ class ConfigurationVehiclesDashboard extends React.Component
 			}
 		};
 
-		this._onChange 		 = this._onChange.bind(this);
+		this._onChange 		 	= this._onChange.bind(this);
+		this.onHandleMainPanel 	= this.onHandleMainPanel.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
-		this.setFlashMessage = this.setFlashMessage.bind(this);
-		this.closeRightPanel = this.closeRightPanel.bind(this);
+		this.setFlashMessage 	= this.setFlashMessage.bind(this);
+		this.closeRightPanel 	= this.closeRightPanel.bind(this);
 	}
 
 	componentWillMount() {
@@ -71,20 +72,6 @@ class ConfigurationVehiclesDashboard extends React.Component
 		});
 	}
 
-	// Handle right panel
-	onHandleRightPanel(id) {
-		let apiVehicle = this.state.apiVehicles.find(obj => obj.id === id);
-
-		this.setState({
-			apiVehicle: apiVehicle,
-			showRightPanel: true,
-			mainPanelColumnCss: {
-				'mobileWidth': mainShrinkedMobileColumnWidth,
-				'desktopWidth': mainShrinkedDesktopColumnWidth
-			}
-		});
-	}
-
 	/*
 		// Handle submit
 		onHandleFormSubmit(vehicle) {
@@ -109,13 +96,22 @@ class ConfigurationVehiclesDashboard extends React.Component
 		ApiVehiclesAction.sync();
 	}
 
-	onHandleClick(id) {
-		console.log(id);
+	onHandleMainPanel(id, panel) {
+		console.log('ID: ' + id + ' Panel: ' + panel);
 	}
 
-	// Set flash message
-	setFlashMessage(msg) {
-		this.setState({flashMessage: msg});
+	// Handle right panel
+	onHandleRightPanel(id) {
+		let apiVehicle = this.state.apiVehicles.find(obj => obj.id === id);
+
+		this.setState({
+			apiVehicle: apiVehicle,
+			showRightPanel: true,
+			mainPanelColumnCss: {
+				'mobileWidth': mainShrinkedMobileColumnWidth,
+				'desktopWidth': mainShrinkedDesktopColumnWidth
+			}
+		});
 	}
 
 	// Close right panel
@@ -127,6 +123,11 @@ class ConfigurationVehiclesDashboard extends React.Component
 				'desktopWidth': mainDefaultDesktopColumnWidth
 			}
 		});
+	}
+
+	// Set flash message
+	setFlashMessage(msg) {
+		this.setState({flashMessage: msg});
 	}
 
 	render() {
@@ -159,10 +160,12 @@ class ConfigurationVehiclesDashboard extends React.Component
 						<ConfigurationRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
 							<ConfigurationVehicleModels
 								apiVehicle={ this.state.apiVehicle }
-								onHandleClick={ this.onHandleClick }
+								onHandleMainPanel={ this.onHandleMainPanel }
+								closeRightPanel={ this.closeRightPanel }
 							/>
 						</ConfigurationRightPanel> : null
 				}
+
 			</div>
 		)
 	}

@@ -1,5 +1,5 @@
 import React from 'react';
-import ConfigurationVehicleModelItems from './model_items';
+import TogglingRows from '../../../helper/table/toggling_rows';
 
 class ConfigurationVehicleModels extends React.Component
 {
@@ -44,11 +44,13 @@ class ConfigurationVehicleModels extends React.Component
 		} else {
 			modelsHtml = models.map((model, modelIndex) => {
 				return (
-					<ConfigurationVehicleModelItems
+					<TogglingRows
 						key={ modelIndex }
-						modelName={ model.model }
-						selectedModel=""
-						onHandleClick={ this.props.onHandleClick.bind(this, model.id) }
+						columnValues={ [model.model] }
+						addViewBtn={ true }
+						addEditBtn={ false }
+						addRemoveBtn={ false }
+						onHandleMainPanel={ this.props.onHandleMainPanel.bind(this, model.id, 'api-list') }
 					/>
 				);
 			});
@@ -62,7 +64,9 @@ class ConfigurationVehicleModels extends React.Component
 							<div className="col-xs-10 col-md-10">
 								<span>{ this.props.apiVehicle.mfg } Models List</span>
 							</div>
-							<div className="col-xs-2 col-md-2"/>
+							<div className="col-xs-2 col-md-2">
+								<button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true" /></button>
+							</div>
 						</div>
 					</div>
 					<div className="panel-body">

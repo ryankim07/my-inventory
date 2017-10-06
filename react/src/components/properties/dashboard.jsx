@@ -174,7 +174,7 @@ class PropertiesDashboard extends React.Component
 
 		// If a particular room is edited without submit and user selects
 		// a new room to edit, we need to restore old room values.  Therefore,
-		// we need to clone object to stop js original object reference
+		// we need to clone object to stop js original object referencing
 		let rooms = JSON.parse(JSON.stringify(this.state.property.rooms));
 
 		let wallObj  = {

@@ -9,36 +9,58 @@ class ConfigurationManufacturerModels extends React.Component
 
 		this.state = {
 			models: this.props.models,
-			searchText: ''
+			clonedModels: JSON.parse(JSON.stringify(this.props.models)),
+			searchText: '',
+			isSearch: false
 		}
+
+		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.models !== this.state.models) {
 			this.setState({
 				models: nextProps.models,
-				searchText: ''
+				clonedModels: JSON.parse(JSON.stringify(nextProps.models)),
+				searchText: '',
+				isSearch: false
 			});
 		}
 	}
 
 	// Handle input changes
-	onHandleFormChange(results, searchText) {
+	onHandleFormChange(event) {
+		let searchText = event.target.value;
+		let models     = this.state.clonedModels;
+		let results = models.filter(function (list) {
+			return list.model.match(new RegExp(searchText, 'gi'));
+		});
+
 		this.setState({
-			models: results,
-			searchText: searchText
+			models: searchText.replace(/\s/g, '').length ? results : models,
+			searchText: searchText,
+			isSearch: true
 		});
 	}
 
 	render() {
-		console.log('models');
-		let modelsHtml = '';
+		let modelsHtml = [];
 		let models = this.state.models;
 
 		if (!models || models.length === 0) {
-			modelsHtml = <tr><td><span>There are no saved models.</span></td></tr>;
+			let msg = !this.state.isSearch ? 'There are no saved models.' : 'Found no matches.';
+
+			modelsHtml.push(
+				<tr key="a">
+					<td><span>{ msg }</span></td>
+				</tr>)
+			;
 		} else {
-			modelsHtml = models.map((model, modelIndex) => {
+			if (this.state.isSearch && this.state.searchText !== '') {
+				modelsHtml.push(<tr key="b"><td><span>Found { this.state.models.length } matches</span></td></tr>);
+			}
+
+			let allModels = models.map((model, modelIndex) => {
 				return (
 					<TogglingRows
 						key={ modelIndex }
@@ -51,6 +73,8 @@ class ConfigurationManufacturerModels extends React.Component
 					/>
 				);
 			});
+
+			modelsHtml.push(allModels);
 		}
 
         return (
@@ -74,7 +98,7 @@ class ConfigurationManufacturerModels extends React.Component
 									objKey="model"
 									searchType="models"
 									searchText={ this.state.searchText }
-									onHandleFormChange={ this.onHandleFormChange.bind(this) }
+									onHandleFormChange={ this.onHandleFormChange }
 								/>
 							</div>
 						</div>

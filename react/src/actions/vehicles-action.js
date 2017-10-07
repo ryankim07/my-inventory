@@ -3,14 +3,14 @@ import ActionConstants from '../constants/action-constants';
 import Api from '../services/Api';
 
 let VehiclesAction = {
-	getVehiclesAndApiVehicles: function() {
+	getVehiclesAndManufacturers: function() {
 		Api
-			.getMultiple('http://mcs.dev/api/vehicles', 'http://mcs.dev/api/api-vehicles')
-			.then(function ([vehicles, apiVehicles])  {
+			.getMultiple('http://mcs.dev/api/vehicles', 'http://mcs.dev/api/manufacturers')
+			.then(function ([vehicles, manufacturers])  {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.RECEIVE_VEHICLES_AND_API_VEHICLES,
+					actionType: ActionConstants.RECEIVE_VEHICLES_AND_MANUFACTURERS,
 					vehicles: vehicles,
-					apiVehicles: apiVehicles
+					manufacturers: manufacturers
 				});
 			})
 			.catch(function(resp) {

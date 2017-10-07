@@ -50,12 +50,6 @@ class ConfigurationPropertiesDashboard extends React.Component
 		PaintsAction.getPaints();
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.location.action === 'REPLACE') {
-			this.setState({mainPanel: nextProps.params.section});
-		}
-	}
-
 	componentWillUnmount() {
 		PaintsStore.removeChangeListener(this._onChange);
 	}
@@ -151,8 +145,8 @@ class ConfigurationPropertiesDashboard extends React.Component
 			case 'paints-list':
 				mainPanelHtml =
 					<ConfigurationPropertiesPaintList
-						paints={ this.state.paints }
 						loader={ this.state.loader }
+						paints={ this.state.paints }
 					/>;
 			break;
 		}

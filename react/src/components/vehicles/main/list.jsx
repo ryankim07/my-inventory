@@ -11,7 +11,7 @@ class VehiclesList extends React.Component
         	let vehicles  = this.props.vehicles;
 
         	if (!vehicles || vehicles.length === 0) {
-				vehiclesHtml = <tr><td><span>There are no saved vehicles.</span></td></tr>;
+				vehiclesHtml = <tr><td><span>Empty list.</span></td></tr>;
 			} else {
 				vehiclesHtml = vehicles.map((vehicle) => {
 					return (

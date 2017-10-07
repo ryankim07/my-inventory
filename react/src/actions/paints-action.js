@@ -14,7 +14,7 @@ let PaintsAction = {
 			})
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.RECEIVE_ERROR,
+					actionType: ActionConstants.PAINTS_ERROR,
 					status: resp.status,
 					msg: resp.msg
 				});

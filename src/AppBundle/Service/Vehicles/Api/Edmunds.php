@@ -2,7 +2,7 @@
 
 namespace AppBundle\Service\Vehicles\Api;
 
-class Edmunds implements ApiVehiclesInterface
+class Edmunds implements ManufacturersInterface
 {
     const API_KEY = "8z5gs5zedbpdadhnzdqbmvdk";
 
@@ -11,7 +11,7 @@ class Edmunds implements ApiVehiclesInterface
      *
      * @return array
      */
-    public function getApiVehicles()
+    public function getManufacturers()
     {
         $mfgData = json_decode(file_get_contents('http://api.edmunds.com/api/vehicle/v2/makes?fmt=json&api_key=' . self::API_KEY));
         $results = [];

@@ -48,7 +48,7 @@ class ConfigurationManufacturerModels extends React.Component
 		let models = this.state.models;
 
 		if (!models || models.length === 0) {
-			let msg = !this.state.isSearch ? 'There are no saved models.' : 'Found no matches.';
+			let msg = !this.state.isSearch ? 'Empty list.' : 'Found no matches.';
 
 			modelsHtml.push(
 				<tr key="a">
@@ -78,7 +78,7 @@ class ConfigurationManufacturerModels extends React.Component
 		}
 
         return (
-			<div className="row" id="api-vehicles-models-list">
+			<div className="row" id="manufacturers-models-list">
 				<div className="panel panel-info">
 					<div className="panel-heading">
 						<div className="row">

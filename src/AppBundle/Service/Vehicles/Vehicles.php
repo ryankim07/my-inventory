@@ -5,14 +5,14 @@ namespace AppBundle\Service\Vehicles;
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Vehicles\VehicleEntity;
 use AppBundle\Entity\Vehicles\AssetsEntity;
-use AppBundle\Service\Vehicles\Api\ApiVehicles;
+use AppBundle\Service\Vehicles\Api\Manufacturers;
 use AppBundle\Service\FileUploader;
 
 class Vehicles
 {
     private $em;
     private $repo;
-    private $apiVehiclesService;
+    private $mfgsService;
     private $fileUploader;
     private $mfg;
     private $entity;
@@ -22,15 +22,15 @@ class Vehicles
      * Constructor
      *
      * @param EntityManager $entityManager
-     * @param ApiVehicles $apiVehiclesService
+     * @param Manufacturers $mfgsService
      * @param FileUploader $fileUploader
      */
-    public function __construct(EntityManager $entityManager, ApiVehicles $apiVehiclesService, FileUploader $fileUploader)
+    public function __construct(EntityManager $entityManager, Manufacturers $mfgsService, FileUploader $fileUploader)
     {
-        $this->em                 = $entityManager;
-        $this->repo               = $this->em->getRepository('AppBundle\Entity\Vehicles\VehicleEntity');
-        $this->apiVehiclesService = $apiVehiclesService;
-        $this->fileUploader       = $fileUploader;
+        $this->em           = $entityManager;
+        $this->repo         = $this->em->getRepository('AppBundle\Entity\Vehicles\VehicleEntity');
+        $this->mfgsService  = $mfgsService;
+        $this->fileUploader = $fileUploader;
     }
 
     /**
@@ -99,7 +99,7 @@ class Vehicles
 
             $this->entity = $this->existingVehicle ? $this->existingVehicle : new VehicleEntity();
 
-            $this->mfg = $this->apiVehiclesService->find($data['mfg_id']);
+            $this->mfg = $this->mfgsService->find($data['mfg_id']);
             $models    = $this->mfg->getModels();
 
             foreach($models as $model) {

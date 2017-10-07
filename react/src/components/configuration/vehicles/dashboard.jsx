@@ -1,7 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import ApiVehiclesAction from '../../../actions/api-vehicles-action';
-import ApiVehiclesStore from '../../../stores/vehicles/api-store';
+import ManufacturersAction from '../../../actions/manufacturers-action';
+import ManufacturersStore from '../../../stores/vehicles/mfgs-store';
 import ConfigurationMainPanel from './../main_panel';
 import ConfigurationRightPanel from './../right_panel';
 import ConfigurationManufacturers from './../vehicles/api/manufacturers';
@@ -47,20 +47,20 @@ class ConfigurationVehiclesDashboard extends React.Component
 	}
 
 	componentWillMount() {
-		ApiVehiclesStore.addChangeListener(this._onChange);
-		ApiVehiclesStore.unsetStoreFlashMessage();
+		ManufacturersStore.addChangeListener(this._onChange);
+		ManufacturersStore.unsetStoreFlashMessage();
 	}
 
 	componentDidMount() {
-		ApiVehiclesAction.getApiVehicles();
+		ManufacturersAction.getManufacturers();
 	}
 
 	componentWillUnmount() {
-		ApiVehiclesStore.removeChangeListener(this._onChange);
+		ManufacturersStore.removeChangeListener(this._onChange);
 	}
 
 	_onChange() {
-		let manufacturers = ApiVehiclesStore.getApiVehicles();
+		let manufacturers = ManufacturersStore.getManufacturers();
 
 		this.setState({
 			manufacturers: manufacturers,
@@ -74,7 +74,7 @@ class ConfigurationVehiclesDashboard extends React.Component
 
 	// Sync API
 	onHandleSync() {
-		ApiVehiclesAction.sync();
+		ManufacturersAction.sync();
 	}
 
 	// Handle main panel

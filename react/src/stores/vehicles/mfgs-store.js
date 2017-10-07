@@ -3,7 +3,7 @@ import assign from 'object-assign';
 import Dispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
 
-let _apiVehicles = [];
+let _manufacturers = [];
 let _rightPanel = false;
 let _errStatus;
 let _storeMsg;
@@ -20,7 +20,7 @@ function removeToken() {
 	localStorage.removeItem('id_token');
 }
 
-let ApiVehiclesStore = assign({}, EventEmitter.prototype, {
+let ManufacturersStore = assign({}, EventEmitter.prototype, {
     // Emit Change event
     emitChange: function(){
         this.emit('change');
@@ -42,19 +42,19 @@ let ApiVehiclesStore = assign({}, EventEmitter.prototype, {
         this.removeListener('change', callback);
     },
 
-	setApiVehicles: function(results) {
+	setManufacturers: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
 			return false;
 		} else {
 			if (results.length !== 0) {
-				_apiVehicles = results;
+				_manufacturers = results;
 			}
 		}
 	},
 
-    getApiVehicles: function () {
-		return _apiVehicles;
+    getManufacturers: function () {
+		return _manufacturers;
 	},
 
 	isAuthenticated: function() {
@@ -79,14 +79,14 @@ let ApiVehiclesStore = assign({}, EventEmitter.prototype, {
 });
 
 // Register callback with AppDispatcher
-ApiVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
+ManufacturersStore.dispatchToken = Dispatcher.register(function(payload) {
 
     let action  = payload.action;
     let results = action.results;
 
     switch(action.actionType) {
         case ActionConstants.RECEIVE_API_VEHICLES:
-			ApiVehiclesStore.setApiVehicles(results);
+			ManufacturersStore.setManufacturers(results);
         break;
 
 		case ActionConstants.API_VEHICLES_ERROR:
@@ -100,10 +100,10 @@ ApiVehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
     }
 
     // If action was responded to, emit change event
-    ApiVehiclesStore.emitChange();
+    ManufacturersStore.emitChange();
 
     return true;
 
 });
 
-export default ApiVehiclesStore;
+export default ManufacturersStore;

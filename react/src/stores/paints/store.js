@@ -5,8 +5,21 @@ import ActionConstants from '../../constants/action-constants';
 import _ from 'lodash';
 
 let _paints = [];
+let _rightPanel = false;
 let _errStatus;
 let _storeMsg;
+
+function setStoreFlashMessage(msg) {
+	_storeMsg = msg;
+}
+
+function setErrorStatus(status) {
+	_errStatus = status;
+}
+
+function removeToken() {
+	localStorage.removeItem('id_token');
+}
 
 let PaintsStore = assign({}, EventEmitter.prototype, {
     // Emit Change event
@@ -32,7 +45,7 @@ let PaintsStore = assign({}, EventEmitter.prototype, {
 			return false;
 		} else {
 			if (results.length !== 0) {
-				_properties = results;
+				_paints = results;
 			}
 		}
 	},
@@ -51,19 +64,28 @@ let PaintsStore = assign({}, EventEmitter.prototype, {
 
 	unsetStoreFlashMessage: function() {
 		_storeMsg = '';
+	},
+
+	showRightPanel: function() {
+		return _rightPanel;
 	}
 });
 
 // Register callback with AppDispatcher
 PaintsStore.dispatchToken = Dispatcher.register(function(payload) {
-
     let action  = payload.action;
 	let results = action.results;
 
     switch(action.actionType) {
-        case ActionConstants.RECEIVE_PROPERTY_PAINTS:
+        case ActionConstants.RECEIVE_PAINTS:
 			PaintsStore.setPaints(results);
         break;
+
+		case ActionConstants.PAINTS_ERROR:
+			setStoreFlashMessage(action.msg);
+			setErrorStatus(action.status);
+			removeToken();
+		break;
 
         default:
             return true;

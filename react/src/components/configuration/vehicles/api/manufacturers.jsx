@@ -52,11 +52,11 @@ class ConfigurationManufacturers extends React.Component
         	let manufacturers = this.state.manufacturers;
 
         	if (!manufacturers || manufacturers.length === 0) {
-				let msg = !this.state.isSearch ? 'There are no saved manufacturers.' : 'Found no matches.';
+				let msg = !this.state.isSearch ? 'Empty list.' : 'Found no matches.';
 
 				mfgsHtml.push(
 					<tr>
-						<td><span>There are no saved manufacturers.</span></td>
+						<td><span>Empty list.</span></td>
 					</tr>
 				);
 

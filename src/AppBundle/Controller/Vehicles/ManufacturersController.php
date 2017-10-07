@@ -10,18 +10,18 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 
-class ApiVehiclesController extends FOSRestController
+class ManufacturersController extends FOSRestController
 {
     /**
      * Get api vehicle by ID
      *
-     * @Rest\Get("/api/api-vehicles/{id}", name="api_vehicle")
+     * @Rest\Get("/api/manufacturers/{id}", name="manufacturers")
      * @param $id
      * @return View
      */
     public function getAction($id)
     {
-        $service = $this->get('Api_Vehicles');
+        $service = $this->get('Manufacturers');
         $results = $service->find($id);
 
         return $results;
@@ -30,11 +30,11 @@ class ApiVehiclesController extends FOSRestController
     /**
      * Get all api vehicles
      *
-     * @Rest\Get("/api/api-vehicles", name="api_vehicles_list")
+     * @Rest\Get("/api/manufacturers", name="manufacturers_list")
      */
     public function getListAction()
     {
-        $service = $this->get('Api_Vehicles');
+        $service = $this->get('Manufacturers');
         $results = $service->findAll();
 
         return $results;
@@ -43,12 +43,12 @@ class ApiVehiclesController extends FOSRestController
     /**
      * Sync from external API to DB
      *
-     * @Rest\Get("/api/api-vehicles/sync", name="api_sync")
+     * @Rest\Get("/api/manufacturers/sync", name="api_sync")
      */
     public function syncAction()
     {
-        $services = $this->get('Api_Vehicles');
-        $vehicles = $services->getApiVehicles();
+        $services = $this->get('Manufacturers');
+        $vehicles = $services->getManufacturers();
         $results  = $services->save($vehicles);
 
         $msg = !is_bool($results) && !empty($results) ? $results : 'Sync completed successfully.';

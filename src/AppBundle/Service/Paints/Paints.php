@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: kimr234z
@@ -103,13 +104,13 @@ class Paints
         }
 
         try {
-            $id             = (int)$data['id'];
-            $this->vendorId = (int)$data['vendor_id'];
+            $id             = (int) $data['id'];
+            $this->vendorId = (int) $data['vendor_id'];
             $this->name     = $data["name"];
             $this->number   = $data["total_area"];
             $this->color    = $data["description"];
             $this->hex      = $data["hex"];
-            $this->rgb      =  $data["rgb"];
+            $this->rgb      = $data["rgb"];
             $this->notes    = $data["notes"];
 
             $this->existingPaint = $this->find($id);

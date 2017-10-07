@@ -2,10 +2,10 @@
 namespace AppBundle\Service\Vehicles\Api;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\Vehicles\ApiVehicleEntity;
-use AppBundle\Entity\Vehicles\ApiVehicleModelsEntity;
+use AppBundle\Entity\Vehicles\ManufacturersEntity;
+use AppBundle\Entity\Vehicles\ManufacturerModelsEntity;
 
-class ApiVehicles
+class Manufacturers
 {
     protected $em;
     protected $repo;
@@ -18,7 +18,7 @@ class ApiVehicles
     public function __construct(EntityManager $entityManager)
     {
         $this->em = $entityManager;
-        $this->repo = $this->em->getRepository('AppBundle\Entity\Vehicles\ApiVehicleEntity');
+        $this->repo = $this->em->getRepository('AppBundle\Entity\Vehicles\ManufacturersEntity');
     }
 
     /**
@@ -91,34 +91,34 @@ class ApiVehicles
             $msg    = '';
 
             foreach($mfgs as $mfg) {
-                $mfgId               = $mfg['mfg_id'];
-                $mfgName             = $mfg['mfg'];
-                $existingApiVehicles = $this->repo->findOneByMfgId($mfgId);
-                $entity              = $existingApiVehicles ? $existingApiVehicles : new ApiVehicleEntity();
+                $nhtsaId      = $mfg['nhtsa_id'];
+                $mfgName      = $mfg['mfg'];
+                $existingMfgs = $this->repo->findOneByNhtsaId($nhtsaId);
+                $entity       = $existingMfgs ? $existingMfgs : new ManufacturersEntity();
 
-                $op   = !$existingApiVehicles ? 'added' : 'updated';
+                $op   = !$existingMfgs ? 'added' : 'updated';
                 $msg .= "Api vehicle successfully {$op}.";
 
                 // Set api manufacturers
-                $entity->setMfgId($mfgId);
+                $entity->setNhtsaId($nhtsaId);
                 $entity->setMfg($mfgName);
 
                 // Set each manufacturer's models
                 foreach ($mfg['models'] as $model) {
                     $modelId       = $model['model_id'];
                     $modelName     = $model['model'];
-                    $existingModel = $this->em->getRepository('AppBundle\Entity\Vehicles\ApiVehicleModelsEntity')->findOneBy(
+                    $existingModel = $this->em->getRepository('AppBundle\Entity\Vehicles\ManufacturerModelsEntity')->findOneBy(
                         array('modelId' => $modelId, 'model' => $modelName)
                     );
 
-                    $modelEntity = $existingModel ? $existingModel : new ApiVehicleModelsEntity();
+                    $modelEntity = $existingModel ? $existingModel : new ManufacturerModelsEntity();
                     $modelEntity->setApiVehicleId($entity->getId());
                     $modelEntity->setModelId($modelId);
                     $modelEntity->setModel($modelName);
                     $entity->addModel($modelEntity);
                 }
 
-                if (!$existingApiVehicles) {
+                if (!$existingMfgs) {
                     $this->em->persist($entity);
                 }
 
@@ -130,12 +130,12 @@ class ApiVehicles
                 };
             }
         } catch (\Exception $e) {
-            return ['err_msg' => 'Failed to save vehicles manufacturers from external API.'];
+            return ['err_msg' => 'Failed to save manufacturers from external API.'];
         }
 
         return [
-            'api_vehicles' => $entity,
-            'msg'          => $msg
+            'manufacturers' => $entity,
+            'msg'           => $msg
         ];
     }
 }

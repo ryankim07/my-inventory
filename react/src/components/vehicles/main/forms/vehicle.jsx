@@ -59,7 +59,7 @@ class VehicleForm extends React.Component
 	}
 
     render() {
-    	let apiVehicles  = this.props.apiVehicles;
+    	let manufacturers  = this.props.manufacturers;
 		let vehicle      = this.state.vehicle;
 		let defaultMfgId = parseInt(vehicle.mfg_id);
 		let yearsOptions = [];
@@ -70,23 +70,23 @@ class VehicleForm extends React.Component
 		}
 
 		// Get api vehicles list
-		let apiMfgsOptions = apiVehicles.map((mfgs, mfgIndex) => {
+		let apiMfgsOptions = manufacturers.map((mfgs, mfgIndex) => {
 			return (
 				<option key={ mfgIndex } value={ mfgs.id }>{ mfgs.mfg }</option>
 			);
 		});
 
 		// Get selected choice from api vehicles dropdown
-		let selectedMfg = apiVehicles.filter(apiVehicle => {
-			return apiVehicle.id === defaultMfgId
+		let selectedMfg = manufacturers.filter(manufacturer => {
+			return manufacturer.id === defaultMfgId
 		});
 
 		// Models options by ID
 		let apiModelsOptions = '';
 		if (selectedMfg.length !== 0) {
-			apiModelsOptions = selectedMfg[0].models.map((apiVehicle, modelIndex) => {
+			apiModelsOptions = selectedMfg[0].models.map((manufacturer, modelIndex) => {
 				return (
-					<option key={ modelIndex } value={ apiVehicle.model_id }>{ apiVehicle.model }</option>
+					<option key={ modelIndex } value={ manufacturer.model_id }>{ manufacturer.model }</option>
 				);
 			});
 		}

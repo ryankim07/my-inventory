@@ -5,7 +5,7 @@ import Dispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
 
 let _vehicles = [];
-let _apiVehicles = [];
+let _manufacturers = [];
 let _vehicle = {};
 let _rightPanel = false;
 let _errStatus;
@@ -37,18 +37,18 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
         this.removeListener('change', callback);
 	},
 
-	setVehiclesAndApiVehicles: function(vehicles, apiVehicles) {
+	setVehiclesAndManufacturers: function(vehicles, manufacturers) {
 		if (vehicles.length !== 0) {
 			_vehicles = vehicles;
 		}
 
-		if (apiVehicles.length !== 0) {
-			_apiVehicles = apiVehicles;
+		if (manufacturers.length !== 0) {
+			_manufacturers = manufacturers;
 		}
 	},
 
-	getApiVehicles: function() {
-		return _apiVehicles;
+	getManufacturers: function() {
+		return _manufacturers;
 	},
 
 	getVehicles: function() {
@@ -150,8 +150,8 @@ VehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
 			VehiclesStore.removeVehicle(results);
         break;
 
-		case ActionConstants.RECEIVE_VEHICLES_AND_API_VEHICLES:
-			VehiclesStore.setVehiclesAndApiVehicles(action.vehicles, action.apiVehicles);
+		case ActionConstants.RECEIVE_VEHICLES_AND_MANUFACTURERS:
+			VehiclesStore.setVehiclesAndManufacturers(action.vehicles, action.manufacturers);
 		break;
 
 		case ActionConstants.VEHICLES_ERROR:

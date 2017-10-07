@@ -2,14 +2,14 @@
 
 namespace AppBundle\Service\Vehicles\Api;
 
-class Nhtsa implements ApiVehiclesInterface
+class Nhtsa implements ManufacturersInterface
 {
     /**
      * Call NHTSA API
      *
      * @return array
      */
-    public function getApiVehicles()
+    public function getManufacturers()
     {
         $blacklist = [
             992, 986, 972, 847, 667, 629, 606, 539, 519, 497, 470,
@@ -33,9 +33,9 @@ class Nhtsa implements ApiVehiclesInterface
             $modelData = $this->getApiModelsByMfg($vehicleId);
 
             $results[] = [
-                'mfg_id' => $vehicleId,
-                'mfg'    => $vehicle->MakeName,
-                'models' => $modelData
+                'nhtsa_id' => $vehicleId,
+                'mfg'      => $vehicle->MakeName,
+                'models'   => $modelData
             ];
         }
 
@@ -45,16 +45,16 @@ class Nhtsa implements ApiVehiclesInterface
     /**
      * Get models by manufacturer ID from API
      *
-     * @param $apiVehicleId
+     * @param $nhtsaId
      * @return array|bool
      */
-    private function getApiModelsByMfg($apiVehicleId)
+    private function getApiModelsByMfg($nhtsaId)
     {
-        if (!isset($apiVehicleId)) {
+        if (!isset($nhtsaId)) {
             return false;
         }
 
-        $modelData = json_decode(file_get_contents("https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeId/{$apiVehicleId}?format=json"));
+        $modelData = json_decode(file_get_contents("https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeId/{$nhtsaId}?format=json"));
         $allModels = $modelData->Results;
 
         $results = [];

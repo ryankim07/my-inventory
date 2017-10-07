@@ -23,7 +23,7 @@ class VehiclesDashboard extends React.Component
 		this.state = {
 			vehicle: {},
 			vehicles: [],
-			apiVehicles: [],
+			manufacturers: [],
 			isEditingMode: false,
 			loader: true,
 			showRightPanel: false,
@@ -52,7 +52,7 @@ class VehiclesDashboard extends React.Component
 	}
 
 	componentDidMount() {
-		VehiclesAction.getVehiclesAndApiVehicles();
+		VehiclesAction.getVehiclesAndManufacturers();
 	}
 
 	componentWillUnmount() {
@@ -74,7 +74,7 @@ class VehiclesDashboard extends React.Component
 
 	_onChange() {
 		let vehicles 		= VehiclesStore.getVehicles();
-		let apiVehicles		= VehiclesStore.getApiVehicles();
+		let manufacturers		= VehiclesStore.getManufacturers();
 		let flashMessage 	= VehiclesStore.getStoreFlashMessage();
 		let isAuthenticated = VehiclesStore.isAuthenticated();
 		let openRightPanel  = VehiclesStore.showRightPanel();
@@ -86,7 +86,7 @@ class VehiclesDashboard extends React.Component
 
 		this.setState({
 			vehicles: vehicles,
-			apiVehicles: apiVehicles,
+			manufacturers: manufacturers,
 			showRightPanel: !!openRightPanel,
 			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,
@@ -176,7 +176,7 @@ class VehiclesDashboard extends React.Component
 							<VehicleForm
 								state={ this.state }
 								vehicle={ this.state.vehicle }
-								apiVehicles={ this.state.apiVehicles }
+								manufacturers={ this.state.manufacturers }
 								isEditingMode={ this.state.isEditingMode }
 								onHandleFormSubmit={ this.onHandleFormSubmit }
 								closeRightPanel={ this.closeRightPanel }

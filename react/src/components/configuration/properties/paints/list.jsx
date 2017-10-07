@@ -11,7 +11,7 @@ class ConfigurationPropertiesPaintList extends React.Component
         	let paints  = this.props.paints;
 
         	if (!paints || paints.length === 0) {
-				paintsHtml = <tr><td><span>There are no saved API vehicles.</span></td></tr>;
+				paintsHtml = <tr><td><span>Empty list.</span></td></tr>;
 			} else {
 				paintsHtml = paints.map((paint, paintIndex) => {
 					return (
@@ -56,7 +56,7 @@ class ConfigurationPropertiesPaintList extends React.Component
 							</tr>
 							</thead>
 							<tbody>
-							{ paintsHtml }
+								{ paintsHtml }
 							</tbody>
 						</table>
 					</div>

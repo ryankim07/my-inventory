@@ -2,10 +2,10 @@ import AppDispatcher from '../dispatcher/app-dispatcher';
 import ActionConstants from '../constants/action-constants';
 import Api from '../services/Api';
 
-let ApiVehiclesAction = {
-    getApiVehicles: function() {
+let ManufacturersAction = {
+    getManufacturers: function() {
         Api
-            .get('http://mcs.dev/api/api-vehicles')
+            .get('http://mcs.dev/api/manufacturers')
             .then(function(resp) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.RECEIVE_API_VEHICLES,
@@ -23,7 +23,7 @@ let ApiVehiclesAction = {
 
 	sync: function() {
 		Api
-			.get('http://mcs.dev/api/api-vehicles/sync')
+			.get('http://mcs.dev/api/manufacturers/sync')
 			.then(function(resp) {
 				/*AppDispatcher.handleViewAction({
 					actionType: ActionConstants.SYNC_API_VEHICLES,
@@ -40,4 +40,4 @@ let ApiVehiclesAction = {
 	}
 };
 
-export default ApiVehiclesAction;
+export default ManufacturersAction;

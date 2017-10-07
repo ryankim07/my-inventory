@@ -55,7 +55,7 @@ class PropertiesList extends React.Component
 			let properties = this.props.state.properties;
 
 			propertiesHtml = !properties || properties.length === 0 ?
-				<div><span>There are no saved properties.</span></div> :
+				<div><span>Empty list.</span></div> :
 				<PropertyAddressList
 					properties={ properties }
 					handleRightPanel={ this.handleRightPanel }

@@ -8,9 +8,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\Vehicles\Api\VehiclesRepository")
- * @ORM\Table(name="api_vehicles")
+ * @ORM\Table(name="manufacturers")
  */
-class ApiVehicleEntity
+class ManufacturersEntity
 {
     /**
      * @ORM\Column(type="integer")
@@ -23,7 +23,7 @@ class ApiVehicleEntity
      * @ORM\Column(type="integer")
      * @Assert\NotBlank()
      */
-    private $mfgId;
+    private $nhtsaId;
 
     /**
      * @ORM\Column(type="string", length=30)
@@ -32,7 +32,7 @@ class ApiVehicleEntity
     private $mfg;
 
     /**
-     * @ORM\OneToMany(targetEntity="ApiVehicleModelsEntity", mappedBy="apiVehicles", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="ManufacturerModelsEntity", mappedBy="manufacturers", cascade={"persist", "remove"})
      * @ORM\OrderBy({"model" = "ASC"})
      */
     private $models;
@@ -56,24 +56,24 @@ class ApiVehicleEntity
     }
 
     /**
-     * Get manufacturer ID
+     * Get nhtsa ID
      *
      * @return integer
      */
-    public function getMfgId()
+    public function getNhtsaId()
     {
-        return $this->mfgId;
+        return $this->nhtsaId;
     }
 
     /**
-     * Set manufacturer ID
+     * Set nhtsa ID
      *
-     * @param $mfgId
+     * @param $nhtsaId
      * @return $this
      */
-    public function setMfgId($mfgId)
+    public function setNhtsaId($nhtsaId)
     {
-        $this->mfgId = $mfgId;
+        $this->nhtsaId = $nhtsaId;
 
         return $this;
     }
@@ -105,13 +105,13 @@ class ApiVehicleEntity
     /**
      * Add model
      *
-     * @param ApiVehicleModelsEntity $model
+     * @param ManufacturerModelsEntity $model
      * @return $this
      */
-    public function addModel(ApiVehicleModelsEntity $model)
+    public function addModel(ManufacturerModelsEntity $model)
     {
         $this->models = $model;
-        $model->setApiVehicles($this);
+        $model->setManufacturers($this);
 
         return $this;
     }
@@ -119,9 +119,9 @@ class ApiVehicleEntity
     /**
      * Remove model
      *
-     * @param ApiVehicleModelsEntity $model
+     * @param ManufacturerModelsEntity $model
      */
-    public function removeModel(ApiVehicleModelsEntity $model)
+    public function removeModel(ManufacturerModelsEntity $model)
     {
         $this->models->removeElement($model);
     }

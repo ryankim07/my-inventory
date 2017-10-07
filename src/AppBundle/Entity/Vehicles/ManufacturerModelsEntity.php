@@ -7,9 +7,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="api_vehicles_models")
+ * @ORM\Table(name="manufacturer_models")
  */
-class ApiVehicleModelsEntity
+class ManufacturerModelsEntity
 {
     /**
      * @ORM\Column(type="integer")
@@ -22,7 +22,7 @@ class ApiVehicleModelsEntity
      * @ORM\Column(type="integer")
      * @Assert\NotBlank()
      */
-    private $apiVehicleId;
+    private $mfgId;
 
     /**
      * @ORM\Column(type="integer")
@@ -37,10 +37,10 @@ class ApiVehicleModelsEntity
     private $model;
 
     /**
-     * @ORM\ManyToOne(targetEntity="ApiVehicleEntity", inversedBy="models")
-     * @ORM\JoinColumn(name="api_vehicle_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="ManufacturersEntity", inversedBy="models")
+     * @ORM\JoinColumn(name="mfg_id", referencedColumnName="id")
      */
-    private $apiVehicles;
+    private $manufacturers;
 
     /**
      * Get ID
@@ -53,24 +53,24 @@ class ApiVehicleModelsEntity
     }
 
     /**
-     * Get API vehicle ID
+     * Get manufacturer ID
      *
      * @return integer
      */
-    public function getApiVehicleId()
+    public function getMfgId()
     {
-        return $this->apiVehicleId;
+        return $this->mfgId;
     }
 
     /**
-     * Set API vehicle ID
+     * Set manufacturer ID
      *
-     * @param $apiVehicleId
+     * @param $mfgId
      * @return $this
      */
-    public function setApiVehicleId($apiVehicleId)
+    public function setMfgId($mfgId)
     {
-        $this->apiVehicleId = $apiVehicleId;
+        $this->mfgId = $mfgId;
 
         return $this;
     }
@@ -122,24 +122,24 @@ class ApiVehicleModelsEntity
     }
 
     /**
-     * Get apiVehicles
+     * Get manufacturers
      *
      * @return mixed
      */
-    public function getApiVehicles()
+    public function getManufacturers()
     {
-        return $this->apiVehicles;
+        return $this->manufacturers;
     }
 
     /**
-     * Set apiVehicles
+     * Set manufacturers
      *
-     * @param ApiVehicleEntity|null $apiVehicles
+     * @param ManufacturersEntity|null $manufacturers
      * @return $this
      */
-    public function setApiVehicles(ApiVehicleEntity $apiVehicles = null)
+    public function setManufacturers(ManufacturersEntity $manufacturers = null)
     {
-        $this->apiVehicles = $apiVehicles;
+        $this->manufacturers = $manufacturers;
 
         return $this;
     }

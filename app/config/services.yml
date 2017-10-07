@@ -19,25 +19,25 @@ services:
         public: false
 
     # Sync Factory
-    Api_Vehicles_Factory:
-        class: AppBundle\Service\Vehicles\Api\ApiVehiclesFactory
+    Manufacturers_Factory:
+        class: AppBundle\Service\Vehicles\Api\ManufacturersFactory
         arguments: ["@doctrine.orm.vehicles_entity_manager", "%vehicle_api_type%"]
 
     # Sync Interface
-    Api_Vehicles_Interface:
-      class: AppBundle\Service\Vehicles\Api\ApiVehiclesInterface
-      factory: ["@Api_Vehicles_Factory", get]
+    Manufacturers_Interface:
+      class: AppBundle\Service\Vehicles\Api\ManufacturersInterface
+      factory: ["@Manufacturers_Factory", get]
       arguments: ["@doctrine.orm.vehicles_entity_manager", "%vehicle_api_type%"]
 
     # Api Vehicles Service
-    Api_Vehicles:
-        class: AppBundle\Service\Vehicles\Api\ApiVehicles
+    Manufacturers:
+        class: AppBundle\Service\Vehicles\Api\Manufacturers
         arguments: ["@doctrine.orm.vehicles_entity_manager"]
 
     # Vehicles Service
     Vehicles:
         class: AppBundle\Service\Vehicles\Vehicles
-        arguments: ["@doctrine.orm.vehicles_entity_manager", "@Api_Vehicles", "@File_Uploader"]
+        arguments: ["@doctrine.orm.vehicles_entity_manager", "@Manufacturers", "@File_Uploader"]
 
     Assets:
         class: AppBundle\Service\Vehicles\Assets

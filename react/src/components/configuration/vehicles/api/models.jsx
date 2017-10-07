@@ -1,41 +1,37 @@
 import React from 'react';
+import SearchField from '../../../helper/search_field';
 import TogglingRows from '../../../helper/table/toggling_rows';
 
-class ConfigurationVehicleModels extends React.Component
+class ConfigurationManufacturerModels extends React.Component
 {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			models: this.props.apiVehicle.models,
+			models: this.props.models,
 			searchText: ''
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.apiVehicle.models !== this.props.apiVehicle.models) {
+		if (nextProps.models !== this.state.models) {
 			this.setState({
-				models: nextProps.apiVehicle.models,
+				models: nextProps.models,
 				searchText: ''
 			});
 		}
 	}
 
 	// Handle input changes
-	onHandleFormChange(propertyName, event) {
-		let models     = this.state.models;
-		let searchText = event.target.value;
-		let results    = models.filter(function(m) {
-			return m.model.match(new RegExp( searchText , 'gi' ));
-		});
-
+	onHandleFormChange(results, searchText) {
 		this.setState({
-			models: searchText === "" || searchText === undefined ? models : results,
+			models: results,
 			searchText: searchText
 		});
 	}
 
 	render() {
+		console.log('models');
 		let modelsHtml = '';
 		let models = this.state.models;
 
@@ -46,11 +42,12 @@ class ConfigurationVehicleModels extends React.Component
 				return (
 					<TogglingRows
 						key={ modelIndex }
+						selectedItem={ this.props.selectedModel.id === model.id }
 						columnValues={ [model.model] }
 						addViewBtn={ true }
 						addEditBtn={ false }
 						addRemoveBtn={ false }
-						onHandleMainPanel={ this.props.onHandleMainPanel.bind(this, model.id, 'api-list') }
+						handleViewPanel={ this.props.onHandleRightPanel.bind(this, model.id) }
 					/>
 				);
 			});
@@ -62,7 +59,7 @@ class ConfigurationVehicleModels extends React.Component
 					<div className="panel-heading">
 						<div className="row">
 							<div className="col-xs-10 col-md-10">
-								<span>{ this.props.apiVehicle.mfg } Models List</span>
+								<span>{ this.props.mfg } Models List</span>
 							</div>
 							<div className="col-xs-2 col-md-2">
 								<button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true" /></button>
@@ -72,13 +69,13 @@ class ConfigurationVehicleModels extends React.Component
 					<div className="panel-body">
 						<div className="form-group">
 							<div className="col-xs-12 col-lg-12">
-								<div className="input-group col-lg-12">
-									<input
-										type="text"
-										value={ this.state.searchText }
-										onChange={ this.onHandleFormChange.bind(this, 'search') }
-										className="form-control"/>
-								</div>
+								<SearchField
+									objs={ this.state.models }
+									objKey="model"
+									searchType="models"
+									searchText={ this.state.searchText }
+									onHandleFormChange={ this.onHandleFormChange.bind(this) }
+								/>
 							</div>
 						</div>
 						<table className="table">
@@ -99,4 +96,4 @@ class ConfigurationVehicleModels extends React.Component
     }
 }
 
-export default ConfigurationVehicleModels;
+export default ConfigurationManufacturerModels;

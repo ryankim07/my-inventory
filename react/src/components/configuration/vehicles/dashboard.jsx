@@ -4,8 +4,8 @@ import ApiVehiclesAction from '../../../actions/api-vehicles-action';
 import ApiVehiclesStore from '../../../stores/vehicles/api-store';
 import ConfigurationMainPanel from './../main_panel';
 import ConfigurationRightPanel from './../right_panel';
-import ConfigurationVehiclesApiList from './../vehicles/api/list';
-import ConfigurationVehicleModels from './../vehicles/api/models';
+import ConfigurationManufacturers from './../vehicles/api/manufacturers';
+import ConfigurationManufacturerModels from './../vehicles/api/models';
 import FlashMessage from '../../helper/flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -21,9 +21,9 @@ class ConfigurationVehiclesDashboard extends React.Component
 		super(props);
 
 		this.state = {
-			apiVehicles: [],
-			apiVehicle: {},
-			selectedVehicle: null,
+			manufacturers: [],
+			selectedMfg: {},
+			selectedModel: {},
 			loader: true,
 			isEditingMode: false,
 			mainPanel: this.props.params.section,
@@ -60,10 +60,10 @@ class ConfigurationVehiclesDashboard extends React.Component
 	}
 
 	_onChange() {
-		let apiVehicles = ApiVehiclesStore.getApiVehicles();
+		let manufacturers = ApiVehiclesStore.getApiVehicles();
 
 		this.setState({
-			apiVehicles: apiVehicles,
+			manufacturers: manufacturers,
 			loader: false,
 			/*mainPanelColumnCss: {
 				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
@@ -72,40 +72,30 @@ class ConfigurationVehiclesDashboard extends React.Component
 		});
 	}
 
-	/*
-		// Handle submit
-		onHandleFormSubmit(vehicle) {
-			if (!this.state.isEditingMode) {
-				VehiclesAction.addVehicle(vehicle);
-			} else {
-				VehiclesAction.updateVehicle(vehicle);
-			}
-		}
-
-
-
-		// Handle delete
-		onHandleRemove(id) {
-			VehiclesAction.removeVehicle(id);
-		}
-		*/
-
-
 	// Sync API
 	onHandleSync() {
 		ApiVehiclesAction.sync();
 	}
 
-	onHandleMainPanel(id, panel) {
-		console.log('ID: ' + id + ' Panel: ' + panel);
+	// Handle main panel
+	onHandleMainPanel(id) {
+		this.setState({
+			selectedMfg: this.state.manufacturers.find(obj => obj.id === id),
+			showRightPanel: true,
+			mainPanelColumnCss: {
+				'mobileWidth': mainShrinkedMobileColumnWidth,
+				'desktopWidth': mainShrinkedDesktopColumnWidth
+			}
+		});
 	}
 
 	// Handle right panel
 	onHandleRightPanel(id) {
-		let apiVehicle = this.state.apiVehicles.find(obj => obj.id === id);
+		let mfg   = this.state.selectedMfg;
+		let model = mfg.models.find(obj => obj.id === id);
 
 		this.setState({
-			apiVehicle: apiVehicle,
+			selectedModel: model,
 			showRightPanel: true,
 			mainPanelColumnCss: {
 				'mobileWidth': mainShrinkedMobileColumnWidth,
@@ -132,17 +122,18 @@ class ConfigurationVehiclesDashboard extends React.Component
 
 	render() {
 		// Main panel
+		console.log('vehicles dashboard');
 		let mainPanelHtml = '';
 
 		switch (this.state.mainPanel) {
-			case 'api-list':
+			case 'manufacturers':
 				mainPanelHtml =
-					<ConfigurationVehiclesApiList
+					<ConfigurationManufacturers
 						loader={ this.state.loader }
-						apiVehicles={ this.state.apiVehicles }
-						selectedVehicle={ this.state.selectedVehicle }
+						manufacturers={ this.state.manufacturers }
+						selectedMfg={ this.state.selectedMfg }
 						onHandleSync={ this.onHandleSync }
-						onHandleRightPanel={ this.onHandleRightPanel }
+						onHandleMainPanel={ this.onHandleMainPanel }
 					/>;
 			break;
 		}
@@ -158,14 +149,15 @@ class ConfigurationVehiclesDashboard extends React.Component
 				{
 					this.state.showRightPanel ?
 						<ConfigurationRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
-							<ConfigurationVehicleModels
-								apiVehicle={ this.state.apiVehicle }
-								onHandleMainPanel={ this.onHandleMainPanel }
+							<ConfigurationManufacturerModels
+								mfg={ this.state.selectedMfg.mfg }
+								models={ this.state.selectedMfg.models }
+								selectedModel={ this.state.selectedModel }
+								onHandleRightPanel={ this.onHandleRightPanel }
 								closeRightPanel={ this.closeRightPanel }
 							/>
 						</ConfigurationRightPanel> : null
 				}
-
 			</div>
 		)
 	}

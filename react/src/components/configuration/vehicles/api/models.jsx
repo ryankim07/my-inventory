@@ -53,8 +53,8 @@ class ConfigurationManufacturerModels extends React.Component
 			modelsHtml.push(
 				<tr key="a">
 					<td><span>{ msg }</span></td>
-				</tr>)
-			;
+				</tr>
+			);
 		} else {
 			if (this.state.isSearch && this.state.searchText !== '') {
 				modelsHtml.push(<tr key="b"><td><span>Found { this.state.models.length } matches</span></td></tr>);

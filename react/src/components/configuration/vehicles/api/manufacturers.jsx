@@ -10,43 +10,66 @@ class ConfigurationManufacturers extends React.Component
 
 		this.state = {
 			manufacturers: this.props.manufacturers,
-			searchText: ''
+			clonedMfgs: JSON.parse(JSON.stringify(this.props.manufacturers)),
+			searchText: '',
+			isSearch: false
 		}
+
+		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.manufacturers !== this.props.manufacturers) {
+		if (nextProps.manufacturers !== this.state.manufacturers) {
 			this.setState({
 				manufacturers: nextProps.manufacturers,
-				searchText: ''
+				clonedMfgs: JSON.parse(JSON.stringify(nextProps.manufacturers)),
+				searchText: '',
+				isSearch: false
 			});
 		}
 	}
 
-	/*shouldComponentUpdate(nextProps, nextState) {
-		return this.state.manufacturers !== nextState.manufacturers;
-	}*/
-
 	// Handle input changes
-	onHandleFormChange(results, searchText) {
+	onHandleFormChange(event) {
+		let searchText = event.target.value;
+		let mfgs    = this.state.clonedMfgs;
+		let results = mfgs.filter(function (list) {
+			return list.mfg.match(new RegExp(searchText, 'gi'));
+		});
+
 		this.setState({
-			models: results,
-			searchText: searchText
+			manufacturers: searchText.replace(/\s/g, '').length ? results : mfgs,
+			searchText: searchText,
+			isSearch: true
 		});
 	}
 
 	render() {
-		console.log('mfgs');
-        let mfgsHtml = '';
+        let mfgsHtml = [];
 
 		// If loading is complete
         if (!this.props.loader) {
         	let manufacturers = this.state.manufacturers;
 
         	if (!manufacturers || manufacturers.length === 0) {
-				mfgsHtml = <tr><td><span>There are no saved manufacturers.</span></td></tr>;
+				let msg = !this.state.isSearch ? 'There are no saved manufacturers.' : 'Found no matches.';
+
+				mfgsHtml.push(
+					<tr>
+						<td><span>There are no saved manufacturers.</span></td>
+					</tr>
+				);
+
 			} else {
-				mfgsHtml = manufacturers.map((vehicle, vehicleIndex) => {
+				if (this.state.isSearch && this.state.searchText !== '') {
+					mfgsHtml.push(
+						<tr key="b">
+							<td><span>Found { this.state.manufacturers.length } matches</span></td>
+						</tr>
+					);
+				}
+
+				let allMfgs = manufacturers.map((vehicle, vehicleIndex) => {
 					return (
 						<TogglingRows
 							key={ vehicleIndex }
@@ -59,9 +82,11 @@ class ConfigurationManufacturers extends React.Component
 						/>
 					);
 				});
+
+				mfgsHtml.push(allMfgs);
 			}
         } else {
-            mfgsHtml = <tr><td><Loader /></td></tr>;
+			mfgsHtml.push(<tr key="l" ><td><Loader /></td></tr>);
         }
 
         return (
@@ -85,7 +110,7 @@ class ConfigurationManufacturers extends React.Component
 									objKey="mfg"
 									searchType="manufacturers"
 									searchText={ this.state.searchText }
-									onHandleFormChange={ this.onHandleFormChange.bind(this) }
+									onHandleFormChange={ this.onHandleFormChange }
 								/>
 							</div>
 						</div>

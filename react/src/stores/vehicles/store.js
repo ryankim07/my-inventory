@@ -5,18 +5,13 @@ import Dispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
 
 let _vehicles = [];
-let _manufacturers = [];
 let _vehicle = {};
+let _manufacturers = [];
 let _rightPanel = false;
-let _errStatus;
 let _storeMsg;
 
 function setStoreFlashMessage(msg) {
 	_storeMsg = msg;
-}
-
-function setErrorStatus(status) {
-	_errStatus = status;
 }
 
 function removeToken() {
@@ -37,7 +32,7 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
         this.removeListener('change', callback);
 	},
 
-	setVehiclesAndManufacturers: function(vehicles, manufacturers) {
+	setVehiclesAndMfgs: function(vehicles, manufacturers) {
 		if (vehicles.length !== 0) {
 			_vehicles = vehicles;
 		}
@@ -72,27 +67,8 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
 			return false;
 		}
 
-		let vehicle = results.vehicle;
-		let index   = _.indexOf(_vehicles, _.find(_vehicles, (record) => {
-				return record.id === vehicle.id;
-			})
-		);
-
-		_vehicles.splice(index, 1, {
-			id: vehicle.id,
-			mfg: vehicle.mfg,
-			mfg_id: vehicle.mfg_id,
-			model_id: vehicle.model_id,
-			model: vehicle.model,
-			year: vehicle.year,
-			color: vehicle.color,
-			vin: vehicle.vin,
-			plate: vehicle.plate,
-			assets: vehicle.assets
-		});
-
-		_vehicle   = vehicle;
-		_storeMsg  = results.msg;
+		_vehicle = results.vehicle;
+		_storeMsg = results.msg;
 		_rightPanel = false;
 	},
 
@@ -151,12 +127,11 @@ VehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
         break;
 
 		case ActionConstants.RECEIVE_VEHICLES_AND_MANUFACTURERS:
-			VehiclesStore.setVehiclesAndManufacturers(action.vehicles, action.manufacturers);
+			VehiclesStore.setVehiclesAndMfgs(action.vehicles, action.manufacturers);
 		break;
 
 		case ActionConstants.VEHICLES_ERROR:
 			setStoreFlashMessage(msg);
-			setErrorStatus(status);
 			removeToken();
 		break;
 

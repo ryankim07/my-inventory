@@ -5,15 +5,10 @@ import ActionConstants from '../../constants/action-constants';
 
 let _manufacturers = [];
 let _rightPanel = false;
-let _errStatus;
 let _storeMsg;
 
 function setStoreFlashMessage(msg) {
 	_storeMsg = msg;
-}
-
-function setErrorStatus(status) {
-	_errStatus = status;
 }
 
 function removeToken() {
@@ -85,13 +80,12 @@ ManufacturersStore.dispatchToken = Dispatcher.register(function(payload) {
     let results = action.results;
 
     switch(action.actionType) {
-        case ActionConstants.RECEIVE_API_VEHICLES:
+        case ActionConstants.RECEIVE_MANUFACTURERS:
 			ManufacturersStore.setManufacturers(results);
         break;
 
-		case ActionConstants.API_VEHICLES_ERROR:
+		case ActionConstants.MANUFACTURERS_ERROR:
 			setStoreFlashMessage(msg);
-			setErrorStatus(status);
 			removeToken();
 		break;
 

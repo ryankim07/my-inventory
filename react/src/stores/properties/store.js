@@ -8,15 +8,10 @@ let _properties = [];
 let _property = {};
 let _paints = [];
 let _rightPanel = false;
-let _errStatus;
 let _storeMsg;
 
 function setStoreFlashMessage(msg) {
 	_storeMsg = msg;
-}
-
-function setErrorStatus(status) {
-	_errStatus = status;
 }
 
 function removeToken() {
@@ -63,7 +58,7 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		return _properties.find(obj => obj.id === id);
 	},
 
-	modifyProperty: function(results) {
+	updateProperty: function(results) {
     	if (results.err_msg) {
 			_storeMsg = results.err_msg;
 			return false;
@@ -128,7 +123,7 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
 
     switch(action.actionType) {
         case ActionConstants.MODIFY_PROPERTY:
-            PropertiesStore.modifyProperty(results);
+            PropertiesStore.updateProperty(results);
         break;
 
         case ActionConstants.REMOVE_PROPERTY:
@@ -144,8 +139,7 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
 		break;
 
 		case ActionConstants.PROPERTIES_ERROR:
-			setStoreFlashMessage(action.msg);
-			setErrorStatus(action.status);
+			setStoreFlashMessage(msg);
 			removeToken();
 		break;
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import Uploader from '../../../helper/uploader';
+import { upperFirstLetter } from "../../../helper/utils";
 
 class VehicleForm extends React.Component
 {
@@ -45,7 +46,7 @@ class VehicleForm extends React.Component
 			break;
 
             default:
-                vehicle[propertyName] = chosenValue.toUpperCase();
+                vehicle[propertyName] = upperFirstLetter(chosenValue);
         }
 
         this.setState({vehicle: vehicle});

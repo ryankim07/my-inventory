@@ -8,15 +8,14 @@ let ManufacturersAction = {
             .get('http://mcs.dev/api/manufacturers')
             .then(function(resp) {
                 AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.RECEIVE_API_VEHICLES,
+                    actionType: ActionConstants.RECEIVE_MANUFACTURERS,
                     results: resp
                 });
             })
             .catch(function(resp) {
                 AppDispatcher.handleViewAction({
-                    actionType: ActionConstants.API_VEHICLES_ERROR,
-					status: resp.status,
-					msg: resp.msg
+                    actionType: ActionConstants.MANUFACTURERS_ERROR,
+					results: resp.status + ' : ' + resp.msg
                 });
             });
     },
@@ -32,9 +31,8 @@ let ManufacturersAction = {
 			})
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.API_VEHICLES_ERROR,
-					status: resp.status,
-					msg: resp.msg
+					actionType: ActionConstants.MANUFACTURERS_ERROR,
+					results: resp.status + ' : ' + resp.msg
 				});
 			});
 	}

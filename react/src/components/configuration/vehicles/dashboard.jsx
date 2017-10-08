@@ -4,8 +4,8 @@ import ManufacturersAction from '../../../actions/manufacturers-action';
 import ManufacturersStore from '../../../stores/vehicles/mfgs-store';
 import ConfigurationMainPanel from './../main_panel';
 import ConfigurationRightPanel from './../right_panel';
-import ConfigurationManufacturers from './../vehicles/api/manufacturers';
-import ConfigurationManufacturerModels from './../vehicles/api/models';
+import ConfigurationManufacturersList from './../vehicles/api/manufacturers';
+import ConfigurationManufacturerModelsList from './../vehicles/api/models';
 import FlashMessage from '../../helper/flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -128,7 +128,7 @@ class ConfigurationVehiclesDashboard extends React.Component
 		switch (this.state.mainPanel) {
 			case 'manufacturers':
 				mainPanelHtml =
-					<ConfigurationManufacturers
+					<ConfigurationManufacturersList
 						loader={ this.state.loader }
 						manufacturers={ this.state.manufacturers }
 						selectedMfg={ this.state.selectedMfg }
@@ -149,7 +149,7 @@ class ConfigurationVehiclesDashboard extends React.Component
 				{
 					this.state.showRightPanel ?
 						<ConfigurationRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
-							<ConfigurationManufacturerModels
+							<ConfigurationManufacturerModelsList
 								mfg={ this.state.selectedMfg.mfg }
 								models={ this.state.selectedMfg.models }
 								selectedModel={ this.state.selectedModel }

@@ -8,7 +8,6 @@ let _users = [];
 let _user = {};
 let _userAdded = false;
 let _showPanel = false;
-let _errStatus;
 let _storeMsg;
 
 function setAllUsers(vehicles) {
@@ -29,10 +28,6 @@ function openRightPanel(show) {
 
 function setStoreFlashMessage(msg) {
 	_storeMsg = msg;
-}
-
-function setErrorStatus(status) {
-	_errStatus = status;
 }
 
 function removeToken() {
@@ -177,8 +172,7 @@ UsersStore.dispatchToken = Dispatcher.register(function(payload)
         break;
 
 		case ActionConstants.RECEIVE_ERROR:
-			setStoreFlashMessage(action.msg);
-			setErrorStatus(action.status);
+			setStoreFlashMessage(msg);
 			removeToken();
 		break;
 

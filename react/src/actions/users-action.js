@@ -15,8 +15,7 @@ let UsersAction = {
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.RECEIVE_ERROR,
-					status: resp.status,
-					msg: resp.msg
+					results: resp.status + ' : ' + resp.msg
 				});
 			});
 	},
@@ -33,8 +32,7 @@ let UsersAction = {
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.RECEIVE_ERROR,
-					status: resp.status,
-					msg: resp.msg
+					results: resp.status + ' : ' + resp.msg
 				});
 			});
 	},
@@ -51,8 +49,7 @@ let UsersAction = {
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.RECEIVE_ERROR,
-					status: resp.status,
-					msg: resp.msg
+					results: resp.status + ' : ' + resp.msg
 				});
 			});
 	},
@@ -69,8 +66,7 @@ let UsersAction = {
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.RECEIVE_ERROR,
-					status: resp.status,
-					msg: resp.msg
+					results: resp.status + ' : ' + resp.msg
 				});
 			});
 	}

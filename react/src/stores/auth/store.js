@@ -3,7 +3,6 @@ import assign from 'object-assign';
 import Dispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
 
-let _errStatus;
 let _storeMsg;
 
 function setToken(token) {
@@ -18,10 +17,6 @@ function removeToken() {
 
 function setStoreFlashMessage(msg) {
 	_storeMsg = msg;
-}
-
-function setErrorStatus(status) {
-	_errStatus = status;
 }
 
 let AuthStore = assign({}, EventEmitter.prototype, {

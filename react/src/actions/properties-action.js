@@ -16,8 +16,7 @@ let PropertiesAction = {
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.PROPERTIES_ERROR,
-					status: resp.status,
-					msg: resp.msg
+					results: resp.status + ' : ' + resp.msg
 				});
 			});
 	},
@@ -34,8 +33,7 @@ let PropertiesAction = {
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.PROPERTIES_ERROR,
-					status: resp.status,
-					msg: resp.msg
+					results: resp.status + ' : ' + resp.msg
 				});
 			});
 	},
@@ -52,8 +50,7 @@ let PropertiesAction = {
             .catch(function(resp) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.PROPERTIES_ERROR,
-					status: resp.status,
-					msg: resp.msg
+					results: resp.status + ' : ' + resp.msg
                 });
             });
     },
@@ -70,8 +67,7 @@ let PropertiesAction = {
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.PROPERTIES_ERROR,
-					status: resp.status,
-					msg: resp.msg
+					results: resp.status + ' : ' + resp.msg
 				});
 			});
 	}

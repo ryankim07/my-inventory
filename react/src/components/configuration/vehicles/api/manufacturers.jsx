@@ -3,7 +3,7 @@ import SearchField from '../../../helper/search_field';
 import TogglingRows from '../../../helper/table/toggling_rows';
 import Loader from '../../../helper/loader';
 
-class ConfigurationManufacturers extends React.Component
+class ConfigurationManufacturersList extends React.Component
 {
 	constructor(props) {
 		super(props);
@@ -132,4 +132,4 @@ class ConfigurationManufacturers extends React.Component
     }
 }
 
-export default ConfigurationManufacturers;
+export default ConfigurationManufacturersList;

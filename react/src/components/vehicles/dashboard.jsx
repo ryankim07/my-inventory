@@ -74,7 +74,7 @@ class VehiclesDashboard extends React.Component
 
 	_onChange() {
 		let vehicles 		= VehiclesStore.getVehicles();
-		let manufacturers		= VehiclesStore.getManufacturers();
+		let manufacturers	= VehiclesStore.getManufacturers();
 		let flashMessage 	= VehiclesStore.getStoreFlashMessage();
 		let isAuthenticated = VehiclesStore.isAuthenticated();
 		let openRightPanel  = VehiclesStore.showRightPanel();

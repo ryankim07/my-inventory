@@ -20,9 +20,9 @@ import PropertyInteriorFeaturesForm from './src/components/properties/info/forms
 import PropertyRoomForm from "./src/components/properties/rooms/forms/room";
 import PropertyRoomsList from './src/components/properties/rooms/list';
 import ConfigurationVehiclesDashboard from './src/components/configuration/vehicles/dashboard';
-import ConfigurationManufacturers from './src/components/configuration/vehicles/api/manufacturers';
+import ConfigurationManufacturersList from './src/components/configuration/vehicles/api/manufacturers';
 import ConfigurationPropertiesDashboard from './src/components/configuration/properties/dashboard';
-import ConfigurationPropertiesPaintList from './src/components/configuration/properties/paints/list';
+import ConfigurationPaintsList from './src/components/configuration/properties/paints/list';
 
 function requireAuth(nextState, replace)
 {
@@ -60,11 +60,11 @@ ReactDOM.render(
 			</Route>
 
 			<Route exact path="/configuration/vehicles/dashboard/:section" component={ ConfigurationVehiclesDashboard }>
-				<Route path="/configuration/vehicles/api/manufacturers" component={ ConfigurationManufacturers } />
+				<Route path="/configuration/vehicles/api/manufacturers" component={ ConfigurationManufacturersList } />
 			</Route>
 
 			<Route exact path="/configuration/properties/dashboard/:section" component={ ConfigurationPropertiesDashboard }>
-				<Route path="/configuration/properties/paints/list" component={ ConfigurationPropertiesPaintList } />
+				<Route path="/configuration/properties/paints/list" component={ ConfigurationPaintsList } />
 			</Route>
         </Route>
     </Router>,

@@ -56,15 +56,13 @@ class TogglingRows extends React.Component
 				<button onClick={ this.props.handleRemove }><i className="fa fa-trash" aria-hidden="true" /> Remove</button> : null;
 		}
 
-		let columns = this.props.columnValues.map((column) => {
-			return (column);
+		let columns = this.props.columnValues.map((column, cellIndex) => {
+			return (<td key={ cellIndex }>{ column }</td>);
 		});
 
 		return (
 			<tr onMouseEnter={ this.onHandleHover.bind(this) } onMouseLeave={ this.onHandleHover.bind(this) } style={ rowCss }>
-				<td>
-					{ columns }
-				</td>
+				{ columns }
 				<td>
 					{ viewBtn }
 					{ editBtn }

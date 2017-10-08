@@ -4,7 +4,8 @@ import PaintsAction from '../../../actions/paints-action';
 import PaintsStore from '../../../stores/paints/store';
 import ConfigurationMainPanel from './../main_panel';
 import ConfigurationRightPanel from './../right_panel';
-import ConfigurationPropertiesPaintList from './paints/list';
+import ConfigurationPaintsList from './paints/list';
+import ConfigurationPaint from './paints/forms/paint';
 import FlashMessage from '../../helper/flash-message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -21,6 +22,7 @@ class ConfigurationPropertiesDashboard extends React.Component
 
 		this.state = {
 			paints: [],
+			selectedPaint: {},
 			isEditingMode: false,
 			loader: true,
 			mainPanel: this.props.params.section,
@@ -36,9 +38,12 @@ class ConfigurationPropertiesDashboard extends React.Component
 			}
 		};
 
-		this._onChange 			= this._onChange.bind(this);
-		this.setFlashMessage  	= this.setFlashMessage.bind(this);
-		this.closeRightPanel  	= this.closeRightPanel.bind(this);
+		this._onChange 		 	= this._onChange.bind(this);
+		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
+		this.onHandleMainPanel 	= this.onHandleMainPanel.bind(this);
+		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
+		this.setFlashMessage 	= this.setFlashMessage.bind(this);
+		this.closeRightPanel 	= this.closeRightPanel.bind(this);
 	}
 
 	componentWillMount() {
@@ -76,50 +81,54 @@ class ConfigurationPropertiesDashboard extends React.Component
 			}
 		});
 	}
-	/*
-		// Handle submit
-		onHandleFormSubmit(vehicle) {
-			if (!this.state.isEditingMode) {
-				VehiclesAction.addVehicle(vehicle);
-			} else {
-				VehiclesAction.updateVehicle(vehicle);
+
+	// Handle submit
+	onHandleFormSubmit(paint) {
+		if (!this.state.isEditingMode) {
+			PaintsAction.addPaint(paint);
+		} else {
+			PaintsAction.updatePaint(paint);
+		}
+	}
+
+	// Handle main panel
+	onHandleMainPanel(id) {
+		this.setState({
+			selectedPaint: this.state.paints.find(obj => obj.id === id),
+			showRightPanel: true,
+			mainPanelColumnCss: {
+				'mobileWidth': mainShrinkedMobileColumnWidth,
+				'desktopWidth': mainShrinkedDesktopColumnWidth
 			}
-		}
+		});
+	}
 
-		// Handle right panel
-		onHandleRightPanel(id) {
-			let isEditingMode = !!id;
-			let vehicle = isEditingMode ?
-				this.state.vehicles.find(obj => obj.id === id) :
-				{
-					id: '',
-					mfg_id: '',
-					mfg: '',
-					model_id: '',
-					model: '',
-					year: '',
-					color: '',
-					vin: '',
-					plate: '',
-					assets: []
-				}
+	// Handle right panel
+	onHandleRightPanel(id) {
+		let isEditingMode = !!id;
+		let paint = isEditingMode ?
+			this.state.paints.find(obj => obj.id === id) :
+			{
+				id: '',
+				vendor_id: '',
+				name: '',
+				number: '',
+				color: '',
+				hex: '',
+				rgb: '',
+				notes: ''
+			}
 
-			this.setState({
-				vehicle: vehicle,
-				isEditingMode: isEditingMode,
-				showRightPanel: true,
-				mainPanelColumnCss: {
-					'mobileWidth': mainShrinkedMobileColumnWidth,
-					'desktopWidth': mainShrinkedDesktopColumnWidth
-				}
-			});
-		}
-
-		// Handle delete
-		onHandleRemove(id) {
-			VehiclesAction.removeVehicle(id);
-		}
-		*/
+		this.setState({
+			selectedPaint: paint,
+			isEditingMode: isEditingMode,
+			showRightPanel: true,
+			mainPanelColumnCss: {
+				'mobileWidth': mainShrinkedMobileColumnWidth,
+				'desktopWidth': mainShrinkedDesktopColumnWidth
+			}
+		});
+	}
 
 	// Set flash message
 	setFlashMessage(msg) {
@@ -144,9 +153,12 @@ class ConfigurationPropertiesDashboard extends React.Component
 		switch (this.state.mainPanel) {
 			case 'paints-list':
 				mainPanelHtml =
-					<ConfigurationPropertiesPaintList
+					<ConfigurationPaintsList
 						loader={ this.state.loader }
 						paints={ this.state.paints }
+						selectedPaint={ this.state.selectedPaint }
+						onHandleMainPanel={ this.onHandleMainPanel }
+						onHandleRightPanel={ this.onHandleRightPanel }
 					/>;
 			break;
 		}
@@ -156,7 +168,13 @@ class ConfigurationPropertiesDashboard extends React.Component
 
 		switch (this.state.rightPanel) {
 			default:
-				rightPanelHtml = '';
+				rightPanelHtml =
+					<ConfigurationPaint
+						paint={ this.state.selectedPaint }
+						isEditingMode={ this.state.isEditingMode }
+						onHandleFormSubmit={ this.onHandleFormSubmit }
+						closeRightPanel={ this.closeRightPanel }
+					/>;
 		}
 
 		return (

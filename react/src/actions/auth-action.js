@@ -15,8 +15,7 @@ let AuthAction = {
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.LOGIN_USER_ERROR,
-					status: resp.status,
-					msg: resp.msg
+					results: resp.status + ' : ' + resp.msg
 				});
 			});
 	}

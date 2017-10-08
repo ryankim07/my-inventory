@@ -5,16 +5,12 @@ import ActionConstants from '../../constants/action-constants';
 import _ from 'lodash';
 
 let _paints = [];
+let _paint = {};
 let _rightPanel = false;
-let _errStatus;
 let _storeMsg;
 
 function setStoreFlashMessage(msg) {
 	_storeMsg = msg;
-}
-
-function setErrorStatus(status) {
-	_errStatus = status;
 }
 
 function removeToken() {
@@ -50,6 +46,42 @@ let PaintsStore = assign({}, EventEmitter.prototype, {
 		}
 	},
 
+	addPaint: function(results) {
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
+		}
+
+		_paints.push(results.paint);
+		_storeMsg = results.msg;
+		_rightPanel = false;
+	},
+
+	updatePaint: function(results) {
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
+		}
+
+		_paint = results.paint;
+		_storeMsg = results.msg;
+		_rightPanel = false;
+	},
+
+	removePaint: function(results) {
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
+		}
+
+		_.remove(_paints, (myPaint) => {
+			return parseInt(results.id) == myPaint.id;
+		});
+
+		_storeMsg = results.msg;
+		_rightPanel = false;
+	},
+
 	isAuthenticated: function() {
 		if (localStorage.getItem('id_token') === null) {
 			return false;
@@ -77,13 +109,24 @@ PaintsStore.dispatchToken = Dispatcher.register(function(payload) {
 	let results = action.results;
 
     switch(action.actionType) {
+		case ActionConstants.ADD_PAINT:
+			PaintsStore.addPaint(results);
+		break;
+
+		case ActionConstants.UPDATE_PAINT:
+			PaintsStore.updatePaint(results);
+		break;
+
+		case ActionConstants.REMOVE_PAINT:
+			PaintsStore.removePaint(results);
+		break;
+
         case ActionConstants.RECEIVE_PAINTS:
 			PaintsStore.setPaints(results);
         break;
 
 		case ActionConstants.PAINTS_ERROR:
-			setStoreFlashMessage(action.msg);
-			setErrorStatus(action.status);
+			setStoreFlashMessage(msg);
 			removeToken();
 		break;
 

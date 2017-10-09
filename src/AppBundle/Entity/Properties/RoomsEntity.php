@@ -9,8 +9,8 @@
 namespace AppBundle\Entity\Properties;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -182,7 +182,7 @@ class RoomsEntity
     /**
      * Set property
      *
-     * @param \AppBundle\Entity\Properties\PropertyEntity $property
+     * @param PropertyEntity $property
      *
      * @return RoomsEntity
      */
@@ -196,7 +196,7 @@ class RoomsEntity
     /**
      * Get property
      *
-     * @return \AppBundle\Entity\Properties\PropertyEntity
+     * @return PropertyEntity
      */
     public function getProperty()
     {
@@ -206,7 +206,7 @@ class RoomsEntity
     /**
      * Add wall
      *
-     * @param \AppBundle\Entity\Properties\RoomsWallsEntity $wall
+     * @param RoomsWallsEntity $wall
      *
      * @return RoomsEntity
      */
@@ -221,7 +221,7 @@ class RoomsEntity
     /**
      * Remove wall
      *
-     * @param \AppBundle\Entity\Properties\RoomsWallsEntity $wall
+     * @param RoomsWallsEntity $wall
      */
     public function removeWall(RoomsWallsEntity $wall)
     {
@@ -241,11 +241,11 @@ class RoomsEntity
     /**
      * Set property
      *
-     * @param \AppBundle\Entity\Properties\PropertyEntity $property
+     * @param PropertyEntity $property
      *
      * @return RoomsEntity
      */
-    public function setProperty(\AppBundle\Entity\Properties\PropertyEntity $property = null)
+    public function setProperty(PropertyEntity $property = null)
     {
         $this->property = $property;
 
@@ -255,11 +255,11 @@ class RoomsEntity
     /**
      * Add roomAsset
      *
-     * @param \AppBundle\Entity\Properties\RoomAssetsEntity $roomAsset
+     * @param RoomAssetsEntity $roomAsset
      *
      * @return RoomsEntity
      */
-    public function addRoomAsset(\AppBundle\Entity\Properties\RoomAssetsEntity $roomAsset)
+    public function addRoomAsset(RoomAssetsEntity $roomAsset)
     {
         $this->roomAssets[] = $roomAsset;
         $roomAsset->setRooms($this);
@@ -270,9 +270,9 @@ class RoomsEntity
     /**
      * Remove roomAsset
      *
-     * @param \AppBundle\Entity\Properties\RoomAssetsEntity $roomAsset
+     * @param RoomAssetsEntity $roomAsset
      */
-    public function removeRoomAsset(\AppBundle\Entity\Properties\RoomAssetsEntity $roomAsset)
+    public function removeRoomAsset(RoomAssetsEntity $roomAsset)
     {
         $this->roomAssets->removeElement($roomAsset);
     }

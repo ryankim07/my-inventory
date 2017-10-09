@@ -2,7 +2,9 @@
 
 namespace AppBundle\Entity\Vendors;
 
+use AppBundle\Entity\Paints\PaintsEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -83,6 +85,20 @@ class VendorsEntity
      * @Assert\Blank()
      */
     private $notes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Vendors\VendorsEntity", mappedBy="vendor", cascade={"persist", "remove"})
+     */
+    private $paints;
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->paints = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -356,5 +372,40 @@ class VendorsEntity
     public function getNotes()
     {
         return $this->notes;
+    }
+
+    /**
+     * Add paint
+     *
+     * @param PaintsEntity $paint
+     *
+     * @return VendorsEntity
+     */
+    public function addPaint(PaintsEntity $paint)
+    {
+        $this->paints[] = $paint;
+        $paint->setVendor($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove paint
+     *
+     * @param PaintsEntity $paint
+     */
+    public function removePaint(PaintsEntity $paint)
+    {
+        $this->paints->removeElement($paint);
+    }
+
+    /**
+     * Get paints
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPaints()
+    {
+        return $this->paints;
     }
 }

@@ -10,7 +10,6 @@ namespace AppBundle\Entity\Properties;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use AppBundle\Entity\Properties\PropertyEntity;
 
 /**
  * @ORM\Entity
@@ -161,7 +160,7 @@ class ExteriorFeaturesEntity
     /**
      * Set property
      *
-     * @param \AppBundle\Entity\Properties\PropertyEntity $property
+     * @param PropertyEntity $property
      *
      * @return PropertyExteriorFeatures
      */
@@ -175,7 +174,7 @@ class ExteriorFeaturesEntity
     /**
      * Get property
      *
-     * @return \AppBundle\Entity\Properties\PropertyEntity
+     * @return PropertyEntity
      */
     public function getProperty()
     {

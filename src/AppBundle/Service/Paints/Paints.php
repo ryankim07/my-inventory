@@ -16,13 +16,6 @@ class Paints
 {
     private $em;
     private $repo;
-    private $vendorId;
-    private $name;
-    private $number;
-    private $color;
-    private $hex;
-    private $rgb;
-    private $notes;
     private $entity;
     private $existingPaint;
 
@@ -104,29 +97,24 @@ class Paints
         }
 
         try {
-            $id             = (int) $data['id'];
-            $this->vendorId = (int) $data['vendor_id'];
-            $this->name     = $data["name"];
-            $this->number   = $data["total_area"];
-            $this->color    = $data["description"];
-            $this->hex      = $data["hex"];
-            $this->rgb      = $data["rgb"];
-            $this->notes    = $data["notes"];
+            $this->existingPaint = $this->find($data['id']);
 
-            $this->existingPaint = $this->find($id);
+            $this->entity = $this->existingPaint ? $this->existingPaint : new PaintsEntity();
 
-            if (!$this->existingPaint) {
-                $this->entity = $this->existingPaint;
-            }
+            $op = !$this->existingVehicle ? 'added' : 'updated';
+            $msg = "Paint successfully {$op}.";
 
-            // Save or update room
-            $this->_savePaint();
+            // Save or update paint
+            $this->_save($data);
 
-            $msg = !$this->existingPaint ? 'added' : 'updated';
+            // Save or update paint
+            if (!$this->_save($data)) {
+                $msg = "Paint could not be {$op}.";
+            };
 
             return [
-                'property' => $this->entity,
-                'msg'      => "Paint color successfully {$msg}."
+                'paint' => $this->entity,
+                'msg'   =>$msg
             ];
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
@@ -134,7 +122,33 @@ class Paints
     }
 
     /**
-     * Delete room
+     * Save or update paint
+     *
+     * @param $data
+     * @return bool
+     */
+    private function _save($data)
+    {
+        $this->entity->setVendorId($data['vendor_id']);
+        $this->entity->setBrand($data['brand']);
+        $this->entity->setName($data['name']);
+        $this->entity->setNumber($data['number']);
+        $this->entity->setColor($data['color']);
+        $this->entity->setHex($data['hex']);
+        $this->entity->setRgb($data['rgb']);
+        $this->entity->setNotes($data['notes']);
+
+        if (!$this->existingPaint) {
+            $this->em->persist($this->entity);
+        }
+
+        $this->em->flush();
+
+        return true;
+    }
+
+    /**
+     * Delete paint
      *
      * @param $id
      * @return array
@@ -158,34 +172,5 @@ class Paints
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
         }
-    }
-
-    /**
-     * Save or update paint
-     *
-     * @return bool
-     */
-    private function _savePaint()
-    {
-        if (!$this->existingPaint) {
-            $this->entity = new PaintsEntity();
-        }
-
-        $property = $this->em->getRepository('AppBundle\Entity\Properties\PropertyEntity')->find($this->propertyId);
-
-        $this->entity->setPropertyId($this->propertyId);
-        $this->entity->setName($this->name);
-        $this->entity->setTotalArea($this->totalArea);
-        $this->entity->setDescription($this->description);
-
-        $property->addRoom($this->entity);
-
-        if (!$this->existingPaint) {
-            $this->em->persist($property);
-        }
-
-        $this->em->flush();
-
-        return true;
     }
 }

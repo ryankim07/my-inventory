@@ -9,8 +9,8 @@
 namespace AppBundle\Entity\Properties;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -388,7 +388,7 @@ class PropertyEntity
     /**
      * Set address
      *
-     * @param \AppBundle\Entity\Properties\AddressEntity $address
+     * @param AddressEntity $address
      *
      * @return PropertyEntity
      */
@@ -411,7 +411,7 @@ class PropertyEntity
     /**
      * Set address
      *
-     * @param \AppBundle\Entity\Properties\AddressEntity $address
+     * @param AddressEntity $address
      *
      * @return PropertyEntity
      */
@@ -425,7 +425,7 @@ class PropertyEntity
     /**
      * Add room
      *
-     * @param \AppBundle\Entity\Properties\RoomsEntity $room
+     * @param RoomsEntity $room
      *
      * @return PropertyEntity
      */
@@ -440,7 +440,7 @@ class PropertyEntity
     /**
      * Remove room
      *
-     * @param \AppBundle\Entity\Properties\RoomsEntity $room
+     * @param RoomsEntity $room
      */
     public function removeRoom(RoomsEntity $room)
     {
@@ -471,7 +471,7 @@ class PropertyEntity
     /**
      * Set features
      *
-     * @param \AppBundle\Entity\Properties\FeaturesEntity $features
+     * @param FeaturesEntity $features
      *
      * @return PropertyEntity
      */
@@ -485,7 +485,7 @@ class PropertyEntity
     /**
      * Get features
      *
-     * @return \AppBundle\Entity\Properties\FeaturesEntity
+     * @return FeaturesEntity
      */
     public function getFeatures()
     {
@@ -507,7 +507,7 @@ class PropertyEntity
     /**
      * Set exterior features
      *
-     * @param \AppBundle\Entity\Properties\ExteriorFeaturesEntity $exteriorFeatures
+     * @param ExteriorFeaturesEntity $exteriorFeatures
      *
      * @return PropertyEntity
      */
@@ -521,7 +521,7 @@ class PropertyEntity
     /**
      * Get exterior features
      *
-     * @return \AppBundle\Entity\Properties\ExteriorFeaturesEntity
+     * @return ExteriorFeaturesEntity
      */
     public function getExteriorFeatures()
     {
@@ -542,7 +542,7 @@ class PropertyEntity
     /**
      * Set interior features
      *
-     * @param \AppBundle\Entity\Properties\InteriorFeaturesEntity $interiorFeatures
+     * @param InteriorFeaturesEntity $interiorFeatures
      *
      * @return PropertyEntity
      */
@@ -556,7 +556,7 @@ class PropertyEntity
     /**
      * Get interior features
      *
-     * @return \AppBundle\Entity\Properties\InteriorFeaturesEntity
+     * @return InteriorFeaturesEntity
      */
     public function getInteriorFeatures()
     {

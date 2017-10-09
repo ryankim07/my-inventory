@@ -10,7 +10,6 @@ namespace AppBundle\Entity\Properties;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use AppBundle\Entity\Properties\PropertyEntity;
 
 /**
  * @ORM\Entity
@@ -306,11 +305,11 @@ class FeaturesEntity
     /**
      * Set property
      *
-     * @param \AppBundle\Entity\Properties\PropertyEntity $property
+     * @param PropertyEntity $property
      *
      * @return FeaturesEntity
      */
-    public function setProperty(\AppBundle\Entity\Properties\PropertyEntity $property = null)
+    public function setProperty(PropertyEntity $property = null)
     {
         $this->property = $property;
 
@@ -320,7 +319,7 @@ class FeaturesEntity
     /**
      * Get property
      *
-     * @return \AppBundle\Entity\Properties\PropertyEntity
+     * @return PropertyEntity
      */
     public function getProperty()
     {

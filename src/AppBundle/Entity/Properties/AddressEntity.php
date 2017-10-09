@@ -10,7 +10,6 @@ namespace AppBundle\Entity\Properties;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use AppBundle\Entity\Properties\PropertyEntity;
 
 /**
  * @ORM\Entity

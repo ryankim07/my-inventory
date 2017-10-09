@@ -8,6 +8,7 @@
 
 namespace AppBundle\Entity\Paints;
 
+use AppBundle\Entity\Vendors\VendorsEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -26,9 +27,14 @@ class PaintsEntity
 
     /**
      * @ORM\Column(type="integer", length=11)
-     * @Assert\Blank()
      */
     private $vendorId;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank()
+     */
+    private $brand;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -38,6 +44,7 @@ class PaintsEntity
 
     /**
      * @ORM\Column(type="integer", length=10)
+     * @Assert\NotBlank()
      */
     private $number;
 
@@ -58,9 +65,14 @@ class PaintsEntity
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\Blank()
      */
     private $notes;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vendors\VendorsEntity", inversedBy="paints")
+     * @ORM\JoinColumn(name="vendor_id", referencedColumnName="id")
+     */
+    private $vendor;
 
     /**
      * Get id
@@ -94,6 +106,30 @@ class PaintsEntity
     public function getVendorId()
     {
         return $this->vendorId;
+    }
+
+    /**
+     * Set brand
+     *
+     * @param string $brand
+     *
+     * @return PaintsEntity
+     */
+    public function setBrand($brand)
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    /**
+     * Get brand
+     *
+     * @return string
+     */
+    public function getBrand()
+    {
+        return $this->brand;
     }
 
     /**
@@ -238,5 +274,29 @@ class PaintsEntity
     public function getNotes()
     {
         return $this->notes;
+    }
+
+    /**
+     * Set vendors
+     *
+     * @param VendorsEntity $vendor
+     *
+     * @return PaintsEntity
+     */
+    public function setVendor(VendorsEntity $vendor = null)
+    {
+        $this->vendor = $vendor;
+
+        return $this;
+    }
+
+    /**
+     * Get vendors
+     *
+     * @return VendorsEntity
+     */
+    public function getVendor()
+    {
+        return $this->vendor;
     }
 }

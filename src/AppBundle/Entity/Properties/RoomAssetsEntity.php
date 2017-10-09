@@ -4,8 +4,6 @@ namespace AppBundle\Entity\Properties;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;
-use AppBundle\Entity\Properties\PropertyEntity;
 
 /**
  * @ORM\Entity
@@ -173,11 +171,11 @@ class RoomAssetsEntity
     /**
      * Set rooms
      *
-     * @param \AppBundle\Entity\Properties\RoomsEntity $rooms
+     * @param RoomsEntity $rooms
      *
      * @return RoomAssetsEntity
      */
-    public function setRooms(\AppBundle\Entity\Properties\RoomsEntity $rooms = null)
+    public function setRooms(RoomsEntity $rooms = null)
     {
         $this->rooms = $rooms;
 
@@ -187,7 +185,7 @@ class RoomAssetsEntity
     /**
      * Get rooms
      *
-     * @return \AppBundle\Entity\Properties\RoomsEntity
+     * @return RoomsEntity
      */
     public function getRooms()
     {

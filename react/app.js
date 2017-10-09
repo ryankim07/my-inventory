@@ -23,6 +23,8 @@ import ConfigurationVehiclesDashboard from './src/components/configuration/vehic
 import ConfigurationManufacturersList from './src/components/configuration/vehicles/api/manufacturers';
 import ConfigurationPropertiesDashboard from './src/components/configuration/properties/dashboard';
 import ConfigurationPaintsList from './src/components/configuration/properties/paints/list';
+import ConfigurationVendorsDashboard from './src/components/configuration/vendors/dashboard';
+import ConfigurationVendorsList from './src/components/configuration/vendors/list';
 
 function requireAuth(nextState, replace)
 {
@@ -65,6 +67,10 @@ ReactDOM.render(
 
 			<Route exact path="/configuration/properties/dashboard/:section" component={ ConfigurationPropertiesDashboard }>
 				<Route path="/configuration/properties/paints/list" component={ ConfigurationPaintsList } />
+			</Route>
+
+			<Route exact path="/configuration/vendors/dashboard/:section" component={ ConfigurationVendorsDashboard }>
+				<Route path="/configuration/vendors/list" component={ ConfigurationVendorsList } />
 			</Route>
         </Route>
     </Router>,

@@ -12,7 +12,7 @@ import PropertyExteriorFeaturesForm from './info/forms/exterior_features';
 import PropertyInteriorFeaturesForm from './info/forms/interior_features';
 import PropertyRoomsList from './rooms/list';
 import PropertyRoomForm from './rooms/forms/room';
-import FlashMessage from '../helper/flash-message';
+import FlashMessage from '../helper/flash_message';
 
 // Global properties
 let mainDefaultMobileColumnWidth = 'col-xs-12';

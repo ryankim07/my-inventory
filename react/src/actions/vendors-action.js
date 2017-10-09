@@ -1,75 +1,75 @@
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import ActionConstants from '../constants/action-constants';
-import User from '../services/User';
+import Api from '../services/Api';
 
-let UsersAction = {
-	getUsers: function() {
-		User
-			.get('http://mcs.dev/api/users')
-			.then(function (resp) {
+let VendorsAction = {
+	getVendors: function() {
+		Api
+			.get('http://mcs.dev/api/vendors')
+			.then(function(resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.RECEIVE_USERS,
+					actionType: ActionConstants.RECEIVE_VENDORS,
 					results: resp
 				});
 			})
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.USERS_ERROR,
+					actionType: ActionConstants.VENDORS_ERROR,
 					results: resp.status + ' : ' + resp.msg
 				});
 			});
 	},
 
-	addUser: function(data) {
-		User
-			.post('http://mcs.dev/api/user', data)
+	addVendor: function(data) {
+		Api
+			.post('http://mcs.dev/api/paint', data, data.assets)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.ADD_NEW_USER,
+					actionType: ActionConstants.ADD_VENDOR,
 					results: resp
 				});
 			})
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.USERS_ERROR,
+					actionType: ActionConstants.VENDORS_ERROR,
 					results: resp.status + ' : ' + resp.msg
 				});
 			});
 	},
 
-	updateUser: function(data) {
-		User
-			.post('http://mcs.dev/api/user', data, data.assets)
+	updateVendor: function(data) {
+		Api
+			.post('http://mcs.dev/api/paint', data, data.assets)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.UPDATE_USER,
+					actionType: ActionConstants.UPDATE_VENDOR,
 					results: resp
 				});
 			})
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.USERS_ERROR,
+					actionType: ActionConstants.VENDORS_ERROR,
 					results: resp.status + ' : ' + resp.msg
 				});
 			});
 	},
 
-	removeUser: function(id) {
-		User
-			.delete('http://mcs.dev/api/users/' + id)
+	removeVendor: function(id) {
+		Api
+			.delete('http://mcs.dev/api/vendors/' + id)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.REMOVE_USER,
+					actionType: ActionConstants.REMOVE_VENDOR,
 					results: resp
 				});
 			})
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.USERS_ERROR,
+					actionType: ActionConstants.VENDORS_ERROR,
 					results: resp.status + ' : ' + resp.msg
 				});
 			});
 	}
 };
 
-export default UsersAction;
+export default VendorsAction;

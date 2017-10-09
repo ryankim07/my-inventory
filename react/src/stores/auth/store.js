@@ -65,7 +65,8 @@ let AuthStore = assign({}, EventEmitter.prototype, {
 // Register callback with AppDispatcher
 AuthStore.dispatchToken = Dispatcher.register(function(payload)
 {
-	let action = payload.action;
+	let action  = payload.action;
+	let results = action.results;
 
 	switch(action.actionType) {
 		case ActionConstants.LOGIN_USER:
@@ -77,7 +78,7 @@ AuthStore.dispatchToken = Dispatcher.register(function(payload)
 		break;
 
 		case ActionConstants.LOGIN_USER_ERROR:
-			setStoreFlashMessage(msg);
+			setStoreFlashMessage(results);
 			removeToken();
 		break;
 	}

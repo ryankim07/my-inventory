@@ -30,6 +30,7 @@ class ConfigurationPaint extends React.Component
 
         switch (propertyName) {
             case 'name':
+			case 'brand':
 				paint[propertyName] = upperFirstLetter(chosenValue);
             break;
 
@@ -60,6 +61,32 @@ class ConfigurationPaint extends React.Component
 
 		let paintForm =
 			<form onSubmit={ this.handleFormSubmit }>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Vendor</label>
+						<div className="input-group">
+							<select
+								onChange={ this.handleFormChange.bind(this, 'country') }
+								value={ address.country }
+								className="form-control input-sm">
+							</select>
+						</div>
+					</div>
+				</div>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Brand</label>
+						<div className="input-group">
+							<input
+								type="text"
+								onChange={ this.onHandleFormChange.bind(this, 'brand') }
+								value={ paint.brand }
+								className="form-control input-sm"
+								required="required"
+							/>
+						</div>
+					</div>
+				</div>
 				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Name</label>
@@ -69,7 +96,8 @@ class ConfigurationPaint extends React.Component
 								onChange={ this.onHandleFormChange.bind(this, 'name') }
 								value={ paint.name }
 								className="form-control input-sm"
-								required="required"/>
+								required="required"
+							/>
 						</div>
 					</div>
 				</div>
@@ -83,7 +111,8 @@ class ConfigurationPaint extends React.Component
 									onChange={ this.onHandleFormChange.bind(this, 'number') }
 									value={ paint.number }
 									className="form-control input-sm"
-									required="required"/>
+									required="required"
+								/>
 							</div>
 						</div>
 					</div>
@@ -97,7 +126,8 @@ class ConfigurationPaint extends React.Component
 									type="text"
 									onChange={ this.onHandleFormChange.bind(this, 'color') }
 									value={ paint.color }
-									className="form-control input-sm"/>
+									className="form-control input-sm"
+								/>
 							</div>
 						</div>
 					</div>
@@ -111,7 +141,8 @@ class ConfigurationPaint extends React.Component
 									type="text"
 									onChange={ this.onHandleFormChange.bind(this, 'hex') }
 									value={ paint.hex }
-									className="form-control input-sm"/>
+									className="form-control input-sm"
+								/>
 							</div>
 						</div>
 					</div>
@@ -125,7 +156,8 @@ class ConfigurationPaint extends React.Component
 									type="text"
 									onChange={ this.onHandleFormChange.bind(this, 'rgb') }
 									value={ paint.rgb }
-									className="form-control input-sm"/>
+									className="form-control input-sm"
+								/>
 							</div>
 						</div>
 					</div>
@@ -138,7 +170,8 @@ class ConfigurationPaint extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.onHandleFormChange.bind(this, 'notes') }
-									value={ paint.notes } />
+									value={ paint.notes }
+								/>
 						</div>
 					</div>
 				</div>

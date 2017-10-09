@@ -1,7 +1,7 @@
 import React from 'react';
-import SearchField from '../../../helper/search_field';
-import TogglingRows from '../../../helper/table/toggling_rows';
-import Loader from '../../../helper/loader';
+import SearchField from '../../helper/search_field';
+import TogglingRows from '../../helper/table/toggling_rows';
+import Loader from '../../helper/loader';
 
 class ConfigurationPaintsList extends React.Component
 {
@@ -9,8 +9,8 @@ class ConfigurationPaintsList extends React.Component
 		super(props);
 
 		this.state = {
-			paints: this.props.paints,
-			clonedPaints: JSON.parse(JSON.stringify(this.props.paints)),
+			vendors: this.props.vendors,
+			clonedVendors: JSON.parse(JSON.stringify(this.props.vendors)),
 			searchText: '',
 			isSearch: false,
 		};
@@ -19,10 +19,10 @@ class ConfigurationPaintsList extends React.Component
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.paints !== this.state.paints) {
+		if (nextProps.vendors !== this.state.vendors) {
 			this.setState({
-				manufacturers: nextProps.paints,
-				clonedPaints: JSON.parse(JSON.stringify(nextProps.paints)),
+				manufacturers: nextProps.vendors,
+				clonedVendors: JSON.parse(JSON.stringify(nextProps.vendors)),
 				searchText: '',
 				isSearch: false
 			});
@@ -32,56 +32,59 @@ class ConfigurationPaintsList extends React.Component
 	// Handle input changes
 	onHandleFormChange(event) {
 		let searchText = event.target.value;
-		let paints     = this.state.clonedPaints;
-		let results = paints.filter(function (list) {
+		let vendors     = this.state.clonedVendors;
+		let results = vendors.filter(function (list) {
 			return list.name.match(new RegExp(searchText, 'gi'));
 		});
 
 		this.setState({
-			paints: searchText.replace(/\s/g, '').length ? results : paints,
+			vendors: searchText.replace(/\s/g, '').length ? results : vendors,
 			searchText: searchText,
 			isSearch: true
 		});
 	}
 
 	render() {
-        let paintsHtml = '';
+        let vendorsHtml = '';
 
 		// If loading is complete
         if (!this.props.loader) {
-        	let paints = this.props.paints;
+        	let vendors = this.state.vendors;
 
-        	if (!paints || paints.length === 0) {
-				paintsHtml = <tr><td><span>Empty list.</span></td></tr>;
+        	if (!vendors || vendors.length === 0) {
+				vendorsHtml = <tr><td><span>Empty list.</span></td></tr>;
 			} else {
-				paintsHtml = paints.map((paint, paintIndex) => {
+				vendorsHtml = vendors.map((vendor, vendorIndex) => {
 					return (
 						<TogglingRows
-							key={ paintIndex }
-							selectedItem={ this.props.selectedPaint.id === paint.id }
+							key={ vendorIndex }
+							selectedItem={ this.props.selectedVendor.id === vendor.id }
 							columnValues={ [
-								paint.brand,
-								paint.name,
-								paint.number,
-								paint.color,
-								paint.hex,
-								paint.rgb,
-								paint.notes
+								vendor.company,
+								vendor.street,
+								vendor.city,
+								vendor.state,
+								vendor.zip,
+								vendor.phone,
+								vendor.contact,
+								vendor.country,
+								vendor.url,
+								vendor.notes
 							] }
 							addViewBtn={ true }
 							addEditBtn={ true }
 							addRemoveBtn={ true }
-							handleViewPanel={ this.props.onHandleMainPanel.bind(this, paint.id) }
+							handleViewPanel={ this.props.onHandleMainPanel.bind(this, vendor.id) }
 						/>
 					);
 				});
 			}
         } else {
-			paintsHtml = <tr><td><Loader /></td></tr>;
+			vendorsHtml = <tr><td><Loader /></td></tr>;
         }
 
         return (
-			<div className="row" id="paints-list">
+			<div className="row" id="vendors-list">
 				<div className="panel panel-info">
 					<div className="panel-heading">
 						<div className="row">
@@ -97,9 +100,9 @@ class ConfigurationPaintsList extends React.Component
 						<div className="form-group">
 							<div className="col-xs-12 col-lg-12">
 								<SearchField
-									objs={ this.state.paints }
+									objs={ this.state.vendors }
 									objKey="name"
-									searchType="paints"
+									searchType="vendors"
 									searchText={ this.state.searchText }
 									onHandleFormChange={ this.onHandleFormChange }
 								/>
@@ -108,19 +111,21 @@ class ConfigurationPaintsList extends React.Component
 						<table className="table">
 							<thead>
 							<tr>
-								<th>Name</th>
-								<th>Brand</th>
-								<th>Number</th>
-								<th>Color</th>
-								<th>HEX</th>
-								<th>RGB</th>
-								<th>Actions</th>
+								<th>Company</th>
+								<th>Street</th>
+								<th>City</th>
+								<th>State</th>
+								<th>Zip</th>
+								<th>Phone</th>
+								<th>Contact</th>
+								<th>Country</th>
+								<th>Url</th>
 								<th>Notes</th>
 								<th/>
 							</tr>
 							</thead>
 							<tbody>
-								{ paintsHtml }
+								{ vendorsHtml }
 							</tbody>
 						</table>
 					</div>

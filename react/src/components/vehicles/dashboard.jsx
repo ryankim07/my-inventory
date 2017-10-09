@@ -6,7 +6,7 @@ import VehiclesMainPanel from './main_panel';
 import VehiclesRightPanel from './right_panel';
 import VehicleForm from './main/forms/vehicle';
 import VehiclesList from './main/list';
-import FlashMessage from '../helper/flash-message';
+import FlashMessage from '../helper/flash_message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
 let mainDefaultDesktopColumnWidth = 'col-md-12';

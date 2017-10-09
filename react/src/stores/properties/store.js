@@ -75,8 +75,8 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 			return false;
 		}
 
-		_.remove(_properties, (myProperty) => {
-			return parseInt(results.id) == myProperty.id;
+		_.remove(_properties, (storeProperty) => {
+			return parseInt(results.id) === storeProperty.id;
 		});
 
 		_storeMsg = results.msg;
@@ -139,7 +139,7 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
 		break;
 
 		case ActionConstants.PROPERTIES_ERROR:
-			setStoreFlashMessage(msg);
+			setStoreFlashMessage(results);
 			removeToken();
 		break;
 

@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import AuthStore from '../../stores/auth/store';
 import UsersStore from '../../stores/auth/users-store';
 import UsersAction from '../../actions/users-action';
-import FlashMessage from '../helper/flash-message';
+import FlashMessage from '../helper/flash_message';
 
 class Signup extends React.Component
 {

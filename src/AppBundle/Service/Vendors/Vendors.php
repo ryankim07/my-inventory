@@ -7,17 +7,17 @@
  * Time: 10:28 AM
  */
 
-namespace AppBundle\Service\Paints;
+namespace AppBundle\Service\Vendors;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\Paints\PaintsEntity;
+use AppBundle\Entity\Vendors\VendorsEntity;
 
-class Paints
+class Vendors
 {
     private $em;
     private $repo;
     private $entity;
-    private $existingPaint;
+    private $existingVendor;
 
     /**
      * Constructor
@@ -27,7 +27,7 @@ class Paints
     public function __construct(EntityManager $entityManager)
     {
         $this->em   = $entityManager;
-        $this->repo = $this->em->getRepository('AppBundle\Entity\Paints\PaintsEntity');
+        $this->repo = $this->em->getRepository('AppBundle\Entity\Vendors\VendorsEntity');
     }
 
     /**
@@ -64,7 +64,7 @@ class Paints
      */
     private function doSelect($id = null)
     {
-        $results = !is_null($id) ? $this->repo->find($id) : $this->repo->findBy([], ['name' => 'DESC']);
+        $results = !is_null($id) ? $this->repo->find($id) : $this->repo->findBy([], ['company' => 'DESC']);
 
         if (!is_null($id)) {
             $results = $this->addDependencies($results);
@@ -93,28 +93,28 @@ class Paints
     public function save($data)
     {
         if (count($data) == 0) {
-            return ['msg' => 'Paint information empty.'];
+            return ['msg' => 'Vendor information empty.'];
         }
 
         try {
-            $this->existingPaint = $this->find($data['id']);
+            $this->existingVendor = $this->find($data['id']);
 
-            $this->entity = $this->existingPaint ? $this->existingPaint : new PaintsEntity();
+            $this->entity = $this->existingVendor ? $this->existingVendor : new VendorsEntity();
 
             $op = !$this->existingVehicle ? 'added' : 'updated';
-            $msg = "Paint successfully {$op}.";
+            $msg = "Vendor successfully {$op}.";
 
-            // Save or update paint
+            // Save or update vendor
             $this->_save($data);
 
-            // Save or update paint
+            // Save or update vendor
             if (!$this->_save($data)) {
-                $msg = "Paint could not be {$op}.";
+                $msg = "Vendor could not be {$op}.";
             };
 
             return [
-                'paint' => $this->entity,
-                'msg'   => $msg
+                'vendor' => $this->entity,
+                'msg'    => $msg
             ];
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
@@ -122,23 +122,26 @@ class Paints
     }
 
     /**
-     * Save or update paint
+     * Save or update vendor
      *
      * @param $data
      * @return bool
      */
     private function _save($data)
     {
-        $this->entity->setVendorId($data['vendor_id']);
-        $this->entity->setBrand($data['brand']);
-        $this->entity->setName($data['name']);
-        $this->entity->setNumber($data['number']);
-        $this->entity->setColor($data['color']);
-        $this->entity->setHex($data['hex']);
-        $this->entity->setRgb($data['rgb']);
+        $this->entity->setCategoryId($data['vendor_id']);
+        $this->entity->setCompany($data['brand']);
+        $this->entity->setStreet($data['street']);
+        $this->entity->setCity($data['city']);
+        $this->entity->setState($data['state']);
+        $this->entity->setZip($data['zip']);
+        $this->entity->setCounty($data['company']);
+        $this->entity->setPhone($data['phone']);
+        $this->entity->setUrl($data['url']);
+        $this->entity->setContact($data['contact']);
         $this->entity->setNotes($data['notes']);
 
-        if (!$this->existingPaint) {
+        if (!$this->existingVendor) {
             $this->em->persist($this->entity);
         }
 
@@ -148,7 +151,7 @@ class Paints
     }
 
     /**
-     * Delete paint
+     * Delete vendor
      *
      * @param $id
      * @return array
@@ -156,17 +159,17 @@ class Paints
     public function delete($id)
     {
         if (!isset($id)) {
-            return ['msg' => 'Empty ID for deleting paint.'];
+            return ['msg' => 'Empty ID for deleting vendor.'];
         }
 
         try {
-            $paint = $this->repo->find($id);
+            $vendor = $this->repo->find($id);
 
-            $this->em->remove($paint);
+            $this->em->remove($vendor);
             $this->em->flush();
 
             return [
-                'msg' => 'Paint color successfully deleted.',
+                'msg' => 'Vendor color successfully deleted.',
                 'id'  => $id
             ];
         } catch(\Exception $e) {

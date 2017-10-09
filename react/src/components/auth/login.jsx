@@ -2,7 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import AuthStore from '../../stores/auth/store';
 import AuthAction from '../../actions/auth-action';
-import FlashMessage from '../helper/flash-message';
+import FlashMessage from '../helper/flash_message';
 
 class Login extends React.Component
 {

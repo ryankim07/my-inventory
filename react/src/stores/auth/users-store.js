@@ -7,7 +7,7 @@ import _ from 'lodash';
 let _users = [];
 let _user = {};
 let _userAdded = false;
-let _showPanel = false;
+let _rightPanel = false;
 let _storeMsg;
 
 function setAllUsers(vehicles) {
@@ -23,7 +23,7 @@ function flagNewUser() {
 }
 
 function openRightPanel(show) {
-	_showPanel = show;
+	_rightPanel = show;
 }
 
 function setStoreFlashMessage(msg) {
@@ -60,9 +60,15 @@ let UsersStore = assign({}, EventEmitter.prototype, {
 		}
 	},
 
-	addUser: function (msg) {
-		setStoreFlashMessage(msg);
-		flagNewUser();
+	addUser: function (results) {
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
+		}
+
+		_users.push(results.user);
+		_storeMsg = results.msg;
+		_rightPanel = false;
 	},
 
 	editUser: function (user) {
@@ -86,41 +92,29 @@ let UsersStore = assign({}, EventEmitter.prototype, {
 		return _userAdded = false;
 	},
 
-	updateUser: function(data) {
-		let user = data.user;
-		let index = _.indexOf(_users, _.find(_users, (record) => {
-				return record.id == user.id;
-			})
-		);
+	updateUser: function(results) {
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
+		}
 
-		_users.splice(index, 1, {
-			color: user.color.charAt(0).toUpperCase() + vehicle.color.slice(1),
-			id: vehicle.id,
-			mfg: vehicle.mfg,
-			mfg_id: vehicle.mfg_id,
-			model: vehicle.model,
-			model_id: vehicle.model_id,
-			plate: vehicle.plate,
-			vin: vehicle.vin,
-			year: vehicle.year,
-			assets: vehicle.assets
-		});
-
-		openRightPanel(false);
-		setStoreFlashMessage(data.msg);
+		_user = results.user;
+		_storeMsg = results.msg;
+		_rightPanel = false;
 	},
 
-	removeUser: function(user) {
-		let users = _users;
+	removeUser: function(results) {
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
+		}
 
 		_.remove(users, (storeUser) => {
-			return user.id == storeUser.id;
+			return parseInt(user.id) == storeUser.id;
 		});
 
-		_users = users;
-
-		openRightPanel(false);
-		setStoreFlashMessage(user.msg);
+		_storeMsg = results.msg;
+		_rightPanel = false;
 	},
 
 	isAuthenticated: function() {
@@ -131,31 +125,28 @@ let UsersStore = assign({}, EventEmitter.prototype, {
 		return true;
 	},
 
-	openRightPanel: function() {
-    	return _showPanel;
-	},
-
 	getStoreFlashMessage: function() {
 		return _storeMsg;
 	},
 
 	unsetStoreFlashMessage: function() {
 		_storeMsg = '';
+	},
+
+	showRightPanel: function() {
+		return _rightPanel;
 	}
 });
 
 // Register callback with AppDispatcher
 UsersStore.dispatchToken = Dispatcher.register(function(payload)
 {
-	let action = payload.action;
+	let action  = payload.action;
+	let results = action.results
 
 	switch(action.actionType) {
-        case ActionConstants.RECEIVE_USERS:
-			UsersStore.setUsers(action.users);
-		break;
-
         case ActionConstants.ADD_NEW_USER:
-            UsersStore.addUser(action.results.msg);
+            UsersStore.addUser(results.msg);
 		break;
 
         case ActionConstants.EDIT_USER:
@@ -164,15 +155,19 @@ UsersStore.dispatchToken = Dispatcher.register(function(payload)
 		break;
 
         case ActionConstants.UPDATE_USER:
-            UsersStore.updateUser(action.results);
+            UsersStore.updateUser(results);
         break;
 
-        case ActionConstants.RECEIVE_USERS:
-            UsersStore.removeUser(action.results);
+        case ActionConstants.REMOVE_USER:
+            UsersStore.removeUser(results);
         break;
 
-		case ActionConstants.RECEIVE_ERROR:
-			setStoreFlashMessage(msg);
+		case ActionConstants.RECEIVE_USERS:
+			UsersStore.setUsers(action.users);
+		break;
+
+		case ActionConstants.USERS_ERROR:
+			setStoreFlashMessage(results);
 			removeToken();
 		break;
 

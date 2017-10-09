@@ -66,6 +66,12 @@ class Header extends React.Component
                                             </li>
                                         </ul>
                                     </li>
+                                    <li className="dropdown dropdown-submenu">
+                                        <a href="#" className="dropdown-toggle" data-toggle="dropdown">Vendors</a>
+                                        <ul className="dropdown-menu">
+                                            <li><Link to="/configuration/vendors/dashboard/vendors"><i className="fa fa-list-alt menu-link-icon" aria-hidden="true" /> List</Link></li>
+                                        </ul>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>

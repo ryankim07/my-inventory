@@ -1,11 +1,10 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import ManufacturersAction from '../../../actions/manufacturers-action';
-import ManufacturersStore from '../../../stores/vehicles/mfgs-store';
+import VendorsAction from '../../../actions/vendors-action';
+import VendorsStore from '../../../stores/vendors/store';
 import ConfigurationMainPanel from './../main_panel';
 import ConfigurationRightPanel from './../right_panel';
-import ConfigurationManufacturersList from './../vehicles/api/manufacturers';
-import ConfigurationManufacturerModelsList from './../vehicles/api/models';
+import ConfigurationVendorsList from './../vendors/list';
 import FlashMessage from '../../helper/flash_message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -15,14 +14,14 @@ let mainShrinkedDesktopColumnWidth = 'col-md-8';
 let rightPanelMobileColumnWidth = 'col-xs-4';
 let rightPanelDesktopColumnWidth = 'col-md-4';
 
-class ConfigurationVehiclesDashboard extends React.Component
+class ConfigurationVendorsDashboard extends React.Component
 {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			manufacturers: [],
-			selectedMfg: {},
+			vendors: [],
+			selectedVendor: {},
 			selectedModel: {},
 			loader: true,
 			isEditingMode: false,
@@ -47,23 +46,23 @@ class ConfigurationVehiclesDashboard extends React.Component
 	}
 
 	componentWillMount() {
-		ManufacturersStore.addChangeListener(this._onChange);
-		ManufacturersStore.unsetStoreFlashMessage();
+		VendorsStore.addChangeListener(this._onChange);
+		VendorsStore.unsetStoreFlashMessage();
 	}
 
 	componentDidMount() {
-		ManufacturersAction.getManufacturers();
+		VendorsAction.getVendors();
 	}
 
 	componentWillUnmount() {
-		ManufacturersStore.removeChangeListener(this._onChange);
+		VendorsStore.removeChangeListener(this._onChange);
 	}
 
 	_onChange() {
-		let manufacturers = ManufacturersStore.getManufacturers();
+		let vendors = VendorsStore.getVendors();
 
 		this.setState({
-			manufacturers: manufacturers,
+			vendors: vendors,
 			loader: false,
 			/*mainPanelColumnCss: {
 				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
@@ -72,15 +71,10 @@ class ConfigurationVehiclesDashboard extends React.Component
 		});
 	}
 
-	// Sync API
-	onHandleSync() {
-		ManufacturersAction.sync();
-	}
-
 	// Handle main panel
 	onHandleMainPanel(id) {
 		this.setState({
-			selectedMfg: this.state.manufacturers.find(obj => obj.id === id),
+			selectedVendor: this.state.vendors.find(obj => obj.id === id),
 			showRightPanel: true,
 			mainPanelColumnCss: {
 				'mobileWidth': mainShrinkedMobileColumnWidth,
@@ -91,11 +85,10 @@ class ConfigurationVehiclesDashboard extends React.Component
 
 	// Handle right panel
 	onHandleRightPanel(id) {
-		let mfg   = this.state.selectedMfg;
-		let model = mfg.models.find(obj => obj.id === id);
+		let vendor = this.state.vendors.find(obj => obj.id === id);
 
 		this.setState({
-			selectedModel: model,
+			selectedModel: vendor,
 			showRightPanel: true,
 			mainPanelColumnCss: {
 				'mobileWidth': mainShrinkedMobileColumnWidth,
@@ -126,13 +119,12 @@ class ConfigurationVehiclesDashboard extends React.Component
 		let mainPanelHtml = '';
 
 		switch (this.state.mainPanel) {
-			case 'manufacturers':
+			case 'vendors':
 				mainPanelHtml =
-					<ConfigurationManufacturersList
+					<ConfigurationVendorsList
 						loader={ this.state.loader }
-						manufacturers={ this.state.manufacturers }
-						selectedMfg={ this.state.selectedMfg }
-						onHandleSync={ this.onHandleSync }
+						vendors={ this.state.vendors }
+						selectedVendor={ this.state.selectedVendor }
 						onHandleMainPanel={ this.onHandleMainPanel }
 					/>;
 			break;
@@ -149,9 +141,9 @@ class ConfigurationVehiclesDashboard extends React.Component
 				{
 					this.state.showRightPanel ?
 						<ConfigurationRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
-							<ConfigurationManufacturerModelsList
-								mfg={ this.state.selectedMfg.mfg }
-								models={ this.state.selectedMfg.models }
+							<ConfigurationVendorsList
+								vendor={ this.state.selectedVendor.company }
+								models={ this.state.vendors }
 								selectedModel={ this.state.selectedModel }
 								onHandleRightPanel={ this.onHandleRightPanel }
 								closeRightPanel={ this.closeRightPanel }
@@ -163,8 +155,8 @@ class ConfigurationVehiclesDashboard extends React.Component
 	}
 }
 
-ConfigurationVehiclesDashboard.contextTypes = {
+ConfigurationVendorsDashboard.contextTypes = {
 	router: PropTypes.object.isRequired
 }
 
-export default ConfigurationVehiclesDashboard;
+export default ConfigurationVendorsDashboard;

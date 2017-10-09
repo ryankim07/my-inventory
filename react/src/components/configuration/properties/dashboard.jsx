@@ -6,7 +6,7 @@ import ConfigurationMainPanel from './../main_panel';
 import ConfigurationRightPanel from './../right_panel';
 import ConfigurationPaintsList from './paints/list';
 import ConfigurationPaint from './paints/forms/paint';
-import FlashMessage from '../../helper/flash-message';
+import FlashMessage from '../../helper/flash_message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
 let mainDefaultDesktopColumnWidth = 'col-md-12';

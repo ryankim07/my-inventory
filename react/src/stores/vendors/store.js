@@ -1,12 +1,11 @@
 import {EventEmitter} from 'events';
 import assign from 'object-assign';
-import _ from 'lodash';
 import Dispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
+import _ from 'lodash';
 
-let _vehicles = [];
-let _vehicle = {};
-let _manufacturers = [];
+let _vendors = [];
+let _vendor = {};
 let _rightPanel = false;
 let _storeMsg;
 
@@ -18,9 +17,9 @@ function removeToken() {
 	localStorage.removeItem('id_token');
 }
 
-let VehiclesStore = assign({}, EventEmitter.prototype, {
+let VendorsStore = assign({}, EventEmitter.prototype, {
     // Emit Change event
-    emitChange: function() {
+    emitChange: function(){
         this.emit('change');
     },
 
@@ -32,54 +31,51 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
         this.removeListener('change', callback);
 	},
 
-	setVehiclesAndMfgs: function(vehicles, manufacturers) {
-		if (vehicles.length !== 0) {
-			_vehicles = vehicles;
+	getVendorss: function () {
+		return _vendors;
+	},
+
+	setVendorss: function (results) {
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
+		} else {
+			if (results.length !== 0) {
+				_vendors = results;
+			}
 		}
-
-		if (manufacturers.length !== 0) {
-			_manufacturers = manufacturers;
-		}
 	},
 
-	getManufacturers: function() {
-		return _manufacturers;
-	},
-
-	getVehicles: function() {
-		return _vehicles;
-	},
-
-	addVehicle: function(results) {
+	addVendors: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
 			return false;
 		}
 
-		_vehicles.push(results.vehicle);
+		_vendors.push(results.vendor);
 		_storeMsg = results.msg;
 		_rightPanel = false;
 	},
 
-	updateVehicle: function(results) {
+	updateVendors: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
 			return false;
 		}
 
-		_vehicle = results.vehicle;
+		_vendor = results.vendor;
 		_storeMsg = results.msg;
 		_rightPanel = false;
 	},
 
-	removeVehicle: function(results) {
+	removeVendors: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
 			return false;
 		}
 
-		_.remove(_vehicles, (storeVehicle) => {
-			return parseInt(results.id) === storeVehicle.id;
+		_.remove(_vendors, (storeVendors) => {
+			return parseInt(results.id) == storeVendors.id;
 		});
 
 		_storeMsg = results.msg;
@@ -103,34 +99,33 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
 	},
 
 	showRightPanel: function() {
-    	return _rightPanel;
+		return _rightPanel;
 	}
 });
 
 // Register callback with AppDispatcher
-VehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
-
+VendorsStore.dispatchToken = Dispatcher.register(function(payload) {
     let action  = payload.action;
-    let results = action.results;
+	let results = action.results;
 
     switch(action.actionType) {
-        case ActionConstants.ADD_VEHICLE:
-        	VehiclesStore.addVehicle(results);
-        break;
-
-        case ActionConstants.UPDATE_VEHICLE:
-			VehiclesStore.updateVehicle(results);
-        break;
-
-        case ActionConstants.REMOVE_VEHICLE:
-			VehiclesStore.removeVehicle(results);
-        break;
-
-		case ActionConstants.RECEIVE_VEHICLES_AND_MANUFACTURERS:
-			VehiclesStore.setVehiclesAndMfgs(action.vehicles, action.manufacturers);
+		case ActionConstants.ADD_VENDOR:
+			VendorsStore.addVendors(results);
 		break;
 
-		case ActionConstants.VEHICLES_ERROR:
+		case ActionConstants.UPDATE_VENDOR:
+			VendorsStore.updateVendors(results);
+		break;
+
+		case ActionConstants.REMOVE_VENDOR:
+			VendorsStore.removeVendors(results);
+		break;
+
+        case ActionConstants.RECEIVE_VENDORS:
+			VendorsStore.setVendors(results);
+        break;
+
+		case ActionConstants.VENDORS_ERROR:
 			setStoreFlashMessage(results);
 			removeToken();
 		break;
@@ -140,9 +135,9 @@ VehiclesStore.dispatchToken = Dispatcher.register(function(payload) {
     }
 
     // If action was responded to, emit change event
-    VehiclesStore.emitChange();
+    VendorsStore.emitChange();
 
     return true;
 });
 
-export default VehiclesStore;
+export default VendorsStore;

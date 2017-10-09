@@ -74,8 +74,8 @@ let PaintsStore = assign({}, EventEmitter.prototype, {
 			return false;
 		}
 
-		_.remove(_paints, (myPaint) => {
-			return parseInt(results.id) == myPaint.id;
+		_.remove(_paints, (storePaint) => {
+			return parseInt(results.id) == storePaint.id;
 		});
 
 		_storeMsg = results.msg;
@@ -126,7 +126,7 @@ PaintsStore.dispatchToken = Dispatcher.register(function(payload) {
         break;
 
 		case ActionConstants.PAINTS_ERROR:
-			setStoreFlashMessage(msg);
+			setStoreFlashMessage(results);
 			removeToken();
 		break;
 

@@ -277,7 +277,7 @@ class PaintsEntity
     }
 
     /**
-     * Set vendors
+     * Set vendor
      *
      * @param VendorsEntity $vendor
      *
@@ -291,7 +291,7 @@ class PaintsEntity
     }
 
     /**
-     * Get vendors
+     * Get vendor
      *
      * @return VendorsEntity
      */

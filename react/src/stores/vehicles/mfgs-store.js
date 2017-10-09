@@ -85,7 +85,7 @@ ManufacturersStore.dispatchToken = Dispatcher.register(function(payload) {
         break;
 
 		case ActionConstants.MANUFACTURERS_ERROR:
-			setStoreFlashMessage(msg);
+			setStoreFlashMessage(results);
 			removeToken();
 		break;
 

@@ -87,7 +87,7 @@ class VendorsEntity
     private $notes;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Vendors\VendorsEntity", mappedBy="vendor", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Paints\PaintsEntity", mappedBy="vendor", cascade={"persist", "remove"})
      */
     private $paints;
 

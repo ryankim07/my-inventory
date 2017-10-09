@@ -70,6 +70,10 @@ services:
         class: AppBundle\Service\Paints\Paints
         arguments: ["@doctrine.orm.houses_entity_manager"]
 
+    Vendors:
+        class: AppBundle\Service\Vendors\Vendors
+        arguments: ["@doctrine.orm.houses_entity_manager"]
+
     File_Uploader:
         class: AppBundle\Service\FileUploader
         arguments: ["%assets_dir%"]

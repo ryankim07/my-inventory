@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Vehicles;
+namespace AppBundle\Controller\Paints;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -10,58 +10,60 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use AppBundle\Entity\VehicleEntity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Security("is_granted(['ROLE_USER','ROLE_ADMIN'])")
  */
-class VehicleController extends FOSRestController
+class PaintsController extends FOSRestController
 {
     /**
-     * Get vehicles
+     * Get paints
      *
-     * @Rest\Get("/api/vehicles", name="get_all_vehicles")
+     * @Rest\Get("/api/paints", name="get_all_paints")
      * @return mixed|string
      */
     public function getListAction()
     {
-        $service = $this->get('Vehicles');
+        $service = $this->get('Paints');
         $results = $service->findAll();
+
+        if ($results === null) {
+            return new View("Paints not found", Response::HTTP_NOT_FOUND);
+        }
 
         return $results;
     }
 
     /**
-     * Add new vehicle
+     * Add new paint
      *
-     * @Rest\Post("/api/vehicle", name="new_vehicle")
+     * @Rest\Post("/api/paint", name="new_paint")
      * @param Request $request
      * @return View
      */
     public function postAction(Request $request)
     {
         // Request param
-        $data           = json_decode(stripslashes($request->get('data')), true);
-        $data['assets'] = $request->files->get('file');
+        $data = json_decode(stripslashes($request->get('data')), true);
 
         // Call service to save
-        $service = $this->get('Vehicles');
+        $service = $this->get('Paints');
         $results = $service->save($data);
 
         return new View($results, Response::HTTP_OK);
     }
 
     /**
-     * Delete vehicle
+     * Delete paint
      *
-     * @Rest\Delete("/api/vehicles/{id}", name="delete_vehicle")
+     * @Rest\Delete("/api/paints/{id}", name="delete_paint")
      * @param $id
      * @return View
      */
     public function deleteAction($id)
     {
-        $service = $this->get('Vehicles');
+        $service = $this->get('Paints');
         $results = $service->delete($id);
 
         return new View($results, Response::HTTP_OK);

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Paints;
+namespace AppBundle\Controller\Vendors;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -10,35 +10,55 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use AppBundle\Entity\VendorsEntity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Security("is_granted(['ROLE_USER','ROLE_ADMIN'])")
  */
-class PaintController extends FOSRestController
+class VendorsController extends FOSRestController
 {
     /**
-     * Get paints
+     * Get vendor by ID
      *
-     * @Rest\Get("/api/paints", name="get_all_paints")
-     * @return mixed|string
+     * @Rest\Get("/api/vendors/{id}", name="get_vendor")
+     * @param $id
+     * @return View
      */
-    public function getListAction()
+    public function getAction($id)
     {
-        $service = $this->get('Paints');
-        $results = $service->findAll();
+        $service = $this->get('Vendors');
+        $results = $service->find($id);
 
         if ($results === null) {
-            return new View("Paints not found", Response::HTTP_NOT_FOUND);
+            return new View("Vendor not found", Response::HTTP_NOT_FOUND);
         }
 
         return $results;
     }
 
     /**
-     * Add new paint
+     * Get vendors
      *
-     * @Rest\Post("/api/paint", name="new_paint")
+     * @Rest\Get("/api/vendors", name="get_all_vendors")
+     * @return mixed|string
+     */
+    public function getListAction()
+    {
+        $service = $this->get('Vendors');
+        $results = $service->findAll();
+
+        if ($results === null) {
+            return new View("Vendors not found", Response::HTTP_NOT_FOUND);
+        }
+
+        return $results;
+    }
+
+    /**
+     * Add new or update vendor
+     *
+     * @Rest\Post("/api/vendor", name="new_vendor")
      * @param Request $request
      * @return View
      */
@@ -55,15 +75,15 @@ class PaintController extends FOSRestController
     }
 
     /**
-     * Delete paint
+     * Delete vendor
      *
-     * @Rest\Delete("/api/paints/{id}", name="delete_paint")
+     * @Rest\Delete("/api/vendors/{id}", name="delete_vendor")
      * @param $id
      * @return View
      */
-    public function deleteAction($id)
+    public function deletePropertyAction($id)
     {
-        $service = $this->get('Paints');
+        $service = $this->get('Vendors');
         $results = $service->delete($id);
 
         return new View($results, Response::HTTP_OK);

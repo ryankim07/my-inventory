@@ -16,7 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
  * @Security("is_granted(['ROLE_USER','ROLE_ADMIN'])")
  */
-class PropertyController extends FOSRestController
+class PropertiesController extends FOSRestController
 {
     /**
      * Get property by ID

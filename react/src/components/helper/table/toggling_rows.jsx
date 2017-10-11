@@ -1,6 +1,7 @@
 /**
  * Required props
  *
+ * key: unique identifier for each row
  * selectedItem: current selected item
  * columnValues: array values for each column/s
  * defaultBackground: optional
@@ -61,7 +62,7 @@ class TogglingRows extends React.Component
 		});
 
 		return (
-			<tr onMouseEnter={ this.onHandleHover.bind(this) } onMouseLeave={ this.onHandleHover.bind(this) } style={ rowCss }>
+			<tr key={ this.props.key } onMouseEnter={ this.onHandleHover.bind(this) } onMouseLeave={ this.onHandleHover.bind(this) } style={ rowCss }>
 				{ columns }
 				<td>
 					{ viewBtn }

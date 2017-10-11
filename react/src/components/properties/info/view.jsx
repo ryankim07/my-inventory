@@ -11,13 +11,13 @@ class PropertyInfoView extends React.Component
 		super(props);
 
 		this.state = {
-			property: this.props.state.property
+			property: this.props.property
 		};
 	}
 
 	// When component from same route are unmounting and need to remount
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.state.property !== this.props.state.property) {
+		if (nextProps.state.property !== this.state.property) {
 			this.setState({
 				property: nextProps.state.property
 			});
@@ -36,7 +36,7 @@ class PropertyInfoView extends React.Component
 					obj :
 					{
 						id: '',
-						property_id: this.props.state.property.id,
+						property_id: this.state.property.id,
 						parking: '',
 						multi_unit: '',
 						hoa: '',
@@ -55,7 +55,7 @@ class PropertyInfoView extends React.Component
 					obj :
 					{
 						id: '',
-						property_id: this.props.state.property.id,
+						property_id: this.state.property.id,
 						exterior: '',
 						foundation: '',
 						others: ''
@@ -69,7 +69,7 @@ class PropertyInfoView extends React.Component
 					obj :
 					{
 						id: '',
-						property_id: this.props.state.property.id,
+						property_id: this.state.property.id,
 						laundry: '',
 						kitchen: '',
 						bathroom: '',

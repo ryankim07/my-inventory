@@ -9,7 +9,7 @@ class PropertyForm extends React.Component
         super(props);
 
 		this.state = {
-			property: this.props.state.property
+			property: this.props.property
 		}
 
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
@@ -98,7 +98,7 @@ class PropertyForm extends React.Component
 						<div className="input-group">
 							<Uploader
 								onHandleFormChange={ this.onHandleFormChange }
-								isEditingMode={ this.props.state.isEditingMode }
+								isEditingMode={ this.props.isEditingMode }
 								assets={ property.assets }
 							/>
 						</div>

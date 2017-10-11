@@ -6,7 +6,7 @@ class PropertyFeaturesForm extends React.Component
         super(props);
 
         this.state = {
-			features: this.props.state.property.features
+			features: this.props.property.features
         };
 
 		this.handleFormChange = this.handleFormChange.bind(this);

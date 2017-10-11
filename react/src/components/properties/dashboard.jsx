@@ -28,9 +28,11 @@ class PropertiesDashboard extends React.Component
 		super(props);
 
 		this.state = {
-			property: {},
-			room: {},
 			properties: [],
+			property: {
+				address: {}
+			},
+			room: {},
 			paints: [],
 			isEditingMode: false,
 			loader: true,
@@ -95,7 +97,6 @@ class PropertiesDashboard extends React.Component
 
 	// State changes
 	_onChange() {
-		let property		= PropertiesStore.getProperty();
 		let properties		= PropertiesStore.getProperties();
 		let paints          = PropertiesStore.getPaints();
 		let flashMessage 	= PropertiesStore.getStoreFlashMessage();
@@ -108,7 +109,6 @@ class PropertiesDashboard extends React.Component
 		}
 
 		this.setState({
-			property: property,
 			properties: properties,
 			paints: paints,
 			showRightPanel: !!openRightPanel,
@@ -240,7 +240,7 @@ class PropertiesDashboard extends React.Component
 			case 'info':
 				mainPanelHtml =
 					<PropertyInfoView
-						state={ this.state }
+						property={ this.state.property }
 						onHandleRightPanel={ this.onHandleRightPanel }
 						onHandleMainPanel={ this.onHandleMainPanel }
 					/>;
@@ -249,7 +249,7 @@ class PropertiesDashboard extends React.Component
 			case 'rooms-list':
 				mainPanelHtml =
 					<PropertyRoomsList
-						state={ this.state }
+						property={ this.state.property }
 						onHandleRightRoomPanel={ this.onHandleRightRoomPanel }
 						onHandleFormSubmit={ this.onHandleFormSubmit }
 						onHandleRemoveRoom={ this.onHandleRemoveRoom }
@@ -275,7 +275,7 @@ class PropertiesDashboard extends React.Component
 			case 'features':
 				rightPanelHtml =
 					<PropertyFeaturesForm
-						state={ this.state }
+						property={ this.state.property }
 						onHandleFormSubmit={ this.onHandleFormSubmit }
 						closeRightPanel={ this.closeRightPanel }
 					/>;
@@ -284,7 +284,7 @@ class PropertiesDashboard extends React.Component
 			case 'exterior-features':
 				rightPanelHtml =
 					<PropertyExteriorFeaturesForm
-						state={ this.state }
+						property={ this.state.property }
 						onHandleFormSubmit={ this.onHandleFormSubmit }
 						closeRightPanel={ this.closeRightPanel }
 					/>;
@@ -293,7 +293,7 @@ class PropertiesDashboard extends React.Component
 			case 'interior-features':
 				rightPanelHtml =
 					<PropertyInteriorFeaturesForm
-						state={ this.state }
+						property={ this.state.property }
 						onHandleFormSubmit={ this.onHandleFormSubmit }
 						closeRightPanel={ this.closeRightPanel }
 					/>;
@@ -315,7 +315,8 @@ class PropertiesDashboard extends React.Component
 			default:
 				rightPanelHtml =
 					<PropertyForm
-						state={ this.state }
+						property={ this.state.property }
+						isEditingMode={ this.state.isEditingMode }
 						onHandleFormSubmit={ this.onHandleFormSubmit }
 						closeRightPanel={ this.closeRightPanel }
 					/>;

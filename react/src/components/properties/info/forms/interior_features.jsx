@@ -6,7 +6,7 @@ class PropertyInteriorFeaturesForm extends React.Component
         super(props);
 
         this.state = {
-			interiorFeatures: this.props.state.property.interior_features
+			interiorFeatures: this.props.property.interior_features
         };
 
 		this.handleFormChange = this.handleFormChange.bind(this);

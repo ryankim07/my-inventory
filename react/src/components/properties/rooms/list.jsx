@@ -5,12 +5,12 @@ import { upperFirstLetter } from "../../helper/utils";
 class PropertyRoomsList extends React.Component
 {
 	shouldComponentUpdate(nextProps, nextState) {
-		return nextProps.state.property !== this.props.state.property;
+		return nextProps.state.property !== this.props.property;
 	}
 
 	render() {
-		let propertyId = this.props.state.property.id;
-        let rooms      = this.props.state.property.rooms;
+		let propertyId = this.props.property.id;
+        let rooms      = this.props.property.rooms;
 
 		let roomsHtml = !rooms || rooms.length === 0 ?
 			<tr><td>Empty list.</td></tr> :

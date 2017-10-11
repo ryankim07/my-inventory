@@ -21,8 +21,8 @@ class VehiclesDashboard extends React.Component
 		super(props);
 
 		this.state = {
-			vehicle: {},
 			vehicles: [],
+			vehicle: {},
 			manufacturers: [],
 			isEditingMode: false,
 			loader: true,

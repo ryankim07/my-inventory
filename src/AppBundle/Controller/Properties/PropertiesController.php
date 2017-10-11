@@ -10,7 +10,6 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use AppBundle\Entity\PropertyEntity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**

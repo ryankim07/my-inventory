@@ -3,6 +3,24 @@ import ActionConstants from '../constants/action-constants';
 import Api from '../services/Api';
 
 let VendorsAction = {
+	getVendorsAndCategories: function() {
+		Api
+			.getMultiple('http://mcs.dev/api/vendors', 'http://mcs.dev/api/vendor/categories')
+			.then(function ([vendors, categories])  {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.RECEIVE_VENDORS_AND_CATEGORIES,
+					vendors: vendors,
+					categories: categories
+				});
+			})
+			.catch(function(resp) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.PAINTS_ERROR,
+					results: resp.status + ' : ' + resp.msg
+				});
+			});
+	},
+
 	getVendors: function() {
 		Api
 			.get('http://mcs.dev/api/vendors')

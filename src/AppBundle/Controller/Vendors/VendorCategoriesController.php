@@ -15,49 +15,49 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
  * @Security("is_granted(['ROLE_USER','ROLE_ADMIN'])")
  */
-class VendorsController extends FOSRestController
+class VendorCategoriesController extends FOSRestController
 {
     /**
-     * Get vendor by ID
+     * Get vendor category by ID
      *
-     * @Rest\Get("/api/vendors/{id}", name="get_vendor")
+     * @Rest\Get("/api/vendor/categories/{id}", name="get_vendor_categories")
      * @param $id
      * @return View
      */
     public function getAction($id)
     {
-        $service = $this->get('Vendors');
+        $service = $this->get('Vendor_Categories');
         $results = $service->find($id);
 
         if ($results === null) {
-            return new View("Vendor not found", Response::HTTP_NOT_FOUND);
+            return new View("Vendor category not found", Response::HTTP_NOT_FOUND);
         }
 
         return $results;
     }
 
     /**
-     * Get vendors
+     * Get vendor categories
      *
-     * @Rest\Get("/api/vendors", name="get_all_vendors")
+     * @Rest\Get("/api/vendor/categories", name="get_all_vendor_categories")
      * @return mixed|string
      */
     public function getListAction()
     {
-        $service = $this->get('Vendors');
+        $service = $this->get('Vendor_Categories');
         $results = $service->findAll();
 
         if ($results === null) {
-            return new View("Vendors not found", Response::HTTP_NOT_FOUND);
+            return new View("Vendor categories not found", Response::HTTP_NOT_FOUND);
         }
 
         return $results;
     }
 
     /**
-     * Add new or update vendor
+     * Add new or update vendor category
      *
-     * @Rest\Post("/api/vendor", name="new_vendor")
+     * @Rest\Post("/api/vendor/category", name="new_category")
      * @param Request $request
      * @return View
      */
@@ -67,22 +67,22 @@ class VendorsController extends FOSRestController
         $data = json_decode(stripslashes($request->get('data')), true);
 
         // Call service to save
-        $service = $this->get('Paints');
+        $service = $this->get('Vendor_Categories');
         $results = $service->save($data);
 
         return new View($results, Response::HTTP_OK);
     }
 
     /**
-     * Delete vendor
+     * Delete vendor category
      *
-     * @Rest\Delete("/api/vendors/{id}", name="delete_vendor")
+     * @Rest\Delete("/api/vendor/category/{id}", name="delete_vendor_category")
      * @param $id
      * @return View
      */
-    public function deletePropertyAction($id)
+    public function deleteVendorCategoryAction($id)
     {
-        $service = $this->get('Vendors');
+        $service = $this->get('Vendor_Categories');
         $results = $service->delete($id);
 
         return new View($results, Response::HTTP_OK);

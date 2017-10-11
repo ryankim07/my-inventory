@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\Vendors;
 
 use AppBundle\Entity\Paints\PaintsEntity;
+use AppBundle\Entity\Vendors\VendorCategoriesEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -91,6 +92,11 @@ class VendorsEntity
      */
     private $paints;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vendors\VendorCategoriesEntity", inversedBy="vendors")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     */
+    private $category;
 
     /**
      * Constructor
@@ -407,5 +413,28 @@ class VendorsEntity
     public function getPaints()
     {
         return $this->paints;
+    }
+
+    /**
+     * Set category
+     *
+     * @param VendorCategoriesEntity $category
+     * @return $this
+     */
+    public function setCategory(VendorCategoriesEntity $category = null)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return VendorsEntity
+     */
+    public function getCategory()
+    {
+        return $this->category;
     }
 }

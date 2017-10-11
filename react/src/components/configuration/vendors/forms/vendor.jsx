@@ -54,18 +54,27 @@ class ConfigurationVendor extends React.Component
     render() {
 		let vendor = this.state.vendor;
 
+		// Get api vehicles list
+		let categoryOptions = this.props.categories.map((cat, catIndex) => {
+			return (
+				<option key={ catIndex } value={ cat.id }>{ cat.name }</option>
+			);
+		});
+
 		let vendorForm =
 			<form onSubmit={ this.handleFormSubmit }>
-				<div className="form-group">
+				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Category</label>
 						<div className="input-group">
-							<input
-								type="text"
-								onChange={ this.onHandleFormChange.bind(this, 'category') }
+							<select
+								onChange={ this.onHandleFormChange.bind(this, 'category_id') }
 								value={ vendor.category_id }
 								className="form-control input-sm"
-							/>
+								required="required">
+								<option value="">Select One</option>
+								{ categoryOptions }
+							</select>
 						</div>
 					</div>
 				</div>

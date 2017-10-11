@@ -51,11 +51,6 @@ class Vendors
         return $this->doSelect($id);
     }
 
-    public function findByVendorId($id)
-    {
-        return $this->repo->findByVendorId($id);
-    }
-
     /**
      * Query and add dependencies
      *
@@ -129,7 +124,7 @@ class Vendors
      */
     private function _save($data)
     {
-        $this->entity->setCategoryId($data['vendor_id']);
+        $this->entity->setCategoryId($data['category_id']);
         $this->entity->setCompany($data['brand']);
         $this->entity->setStreet($data['street']);
         $this->entity->setCity($data['city']);

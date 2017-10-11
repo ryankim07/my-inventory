@@ -6,6 +6,7 @@ import _ from 'lodash';
 
 let _vendors = [];
 let _vendor = {};
+let _categories = [];
 let _rightPanel = false;
 let _storeMsg;
 
@@ -31,6 +32,20 @@ let VendorsStore = assign({}, EventEmitter.prototype, {
         this.removeListener('change', callback);
 	},
 
+	setVendorsAndCategories: function(vendors, categories) {
+		if (vendors.length !== 0) {
+			_vendors = vendors;
+		}
+
+		if (categories.length !== 0) {
+			_categories = categories;
+		}
+	},
+
+	getCategories: function() {
+    	return _categories;
+	},
+
 	getVendors: function () {
 		return _vendors;
 	},
@@ -46,7 +61,7 @@ let VendorsStore = assign({}, EventEmitter.prototype, {
 		}
 	},
 
-	addVendors: function(results) {
+	addVendor: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
 			return false;
@@ -57,7 +72,7 @@ let VendorsStore = assign({}, EventEmitter.prototype, {
 		_rightPanel = false;
 	},
 
-	updateVendors: function(results) {
+	updateVendor: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
 			return false;
@@ -68,14 +83,14 @@ let VendorsStore = assign({}, EventEmitter.prototype, {
 		_rightPanel = false;
 	},
 
-	removeVendors: function(results) {
+	removeVendor: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
 			return false;
 		}
 
-		_.remove(_vendors, (storeVendors) => {
-			return parseInt(results.id) == storeVendors.id;
+		_.remove(_vendors, (storeVendor) => {
+			return parseInt(results.id) == storeVendor.id;
 		});
 
 		_storeMsg = results.msg;
@@ -110,20 +125,24 @@ VendorsStore.dispatchToken = Dispatcher.register(function(payload) {
 
     switch(action.actionType) {
 		case ActionConstants.ADD_VENDOR:
-			VendorsStore.addVendors(results);
+			VendorsStore.addVendor(results);
 		break;
 
 		case ActionConstants.UPDATE_VENDOR:
-			VendorsStore.updateVendors(results);
+			VendorsStore.updateVendor(results);
 		break;
 
 		case ActionConstants.REMOVE_VENDOR:
-			VendorsStore.removeVendors(results);
+			VendorsStore.removeVendor(results);
 		break;
 
         case ActionConstants.RECEIVE_VENDORS:
 			VendorsStore.setVendors(results);
         break;
+
+		case ActionConstants.RECEIVE_VENDORS_AND_CATEGORIES:
+			VendorsStore.setVendorsAndCategories(action.vendors, action.categories);
+		break;
 
 		case ActionConstants.VENDORS_ERROR:
 			setStoreFlashMessage(results);

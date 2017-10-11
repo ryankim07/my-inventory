@@ -7,17 +7,17 @@
  * Time: 10:28 AM
  */
 
-namespace AppBundle\Service\Paints;
+namespace AppBundle\Service\Vendors;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\Paints\PaintsEntity;
+use AppBundle\Entity\Vendors\VendorCategoriesEntity;
 
-class Paints
+class VendorCategories
 {
     private $em;
     private $repo;
     private $entity;
-    private $existingPaint;
+    private $existingCategory;
 
     /**
      * Constructor
@@ -27,7 +27,7 @@ class Paints
     public function __construct(EntityManager $entityManager)
     {
         $this->em   = $entityManager;
-        $this->repo = $this->em->getRepository('AppBundle\Entity\Paints\PaintsEntity');
+        $this->repo = $this->em->getRepository('AppBundle\Entity\Vendors\VendorCategoriesEntity');
     }
 
     /**
@@ -88,28 +88,28 @@ class Paints
     public function save($data)
     {
         if (count($data) == 0) {
-            return ['msg' => 'Paint information empty.'];
+            return ['msg' => 'Category information empty.'];
         }
 
         try {
-            $this->existingPaint = $this->find($data['id']);
+            $this->existingCategory = $this->find($data['id']);
 
-            $this->entity = $this->existingPaint ? $this->existingPaint : new PaintsEntity();
+            $this->entity = $this->existingCategory ? $this->existingCategory : new VendorCategoriesEntity();
 
-            $op = !$this->existingPaint ? 'added' : 'updated';
-            $msg = "Paint successfully {$op}.";
+            $op = !$this->existingCategory ? 'added' : 'updated';
+            $msg = "Category successfully {$op}.";
 
-            // Save or update paint
+            // Save or update category
             $this->_save($data);
 
-            // Save or update paint
+            // Save or update category
             if (!$this->_save($data)) {
-                $msg = "Paint could not be {$op}.";
+                $msg = "Category could not be {$op}.";
             };
 
             return [
-                'paint' => $this->entity,
-                'msg'   => $msg
+                'category' => $this->entity,
+                'msg'      => $msg
             ];
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
@@ -117,23 +117,16 @@ class Paints
     }
 
     /**
-     * Save or update paint
+     * Save or update category
      *
      * @param $data
      * @return bool
      */
     private function _save($data)
     {
-        $this->entity->setVendorId($data['vendor_id']);
-        $this->entity->setBrand($data['brand']);
         $this->entity->setName($data['name']);
-        $this->entity->setNumber($data['number']);
-        $this->entity->setColor($data['color']);
-        $this->entity->setHex($data['hex']);
-        $this->entity->setRgb($data['rgb']);
-        $this->entity->setNotes($data['notes']);
 
-        if (!$this->existingPaint) {
+        if (!$this->existingCategory) {
             $this->em->persist($this->entity);
         }
 
@@ -143,7 +136,7 @@ class Paints
     }
 
     /**
-     * Delete paint
+     * Delete category
      *
      * @param $id
      * @return array
@@ -151,17 +144,17 @@ class Paints
     public function delete($id)
     {
         if (!isset($id)) {
-            return ['msg' => 'Empty ID for deleting paint.'];
+            return ['msg' => 'Empty ID for deleting category.'];
         }
 
         try {
-            $paint = $this->repo->find($id);
+            $category = $this->repo->find($id);
 
-            $this->em->remove($paint);
+            $this->em->remove($category);
             $this->em->flush();
 
             return [
-                'msg' => 'Paint color successfully deleted.',
+                'msg' => 'Category successfully deleted.',
                 'id'  => $id
             ];
         } catch(\Exception $e) {

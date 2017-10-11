@@ -23,6 +23,7 @@ class ConfigurationVendorsDashboard extends React.Component
 		this.state = {
 			vendors: [],
 			vendor: {},
+			categories: [],
 			loader: true,
 			isEditingMode: false,
 			mainPanel: this.props.params.section,
@@ -52,7 +53,7 @@ class ConfigurationVendorsDashboard extends React.Component
 	}
 
 	componentDidMount() {
-		VendorsAction.getVendors();
+		VendorsAction.getVendorsAndCategories();
 	}
 
 	componentWillUnmount() {
@@ -61,6 +62,7 @@ class ConfigurationVendorsDashboard extends React.Component
 
 	_onChange() {
 		let vendors 		= VendorsStore.getVendors();
+		let categories		= VendorsStore.getCategories();
 		let flashMessage 	= VendorsStore.getStoreFlashMessage();
 		let isAuthenticated = VendorsStore.isAuthenticated();
 		let openRightPanel  = VendorsStore.showRightPanel();
@@ -72,7 +74,7 @@ class ConfigurationVendorsDashboard extends React.Component
 
 		this.setState({
 			vendors: vendors,
-			loader: false,
+			categories: categories,
 			showRightPanel: !!openRightPanel,
 			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,
@@ -164,6 +166,7 @@ class ConfigurationVendorsDashboard extends React.Component
 						<ConfigurationRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
 							<ConfigurationVendor
 								vendor={ this.state.vendor }
+								categories={ this.state.categories }
 								onHandleFormSubmit={ this.onHandleFormSubmit }
 								closeRightPanel={ this.closeRightPanel }
 							/>

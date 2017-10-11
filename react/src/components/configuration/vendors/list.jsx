@@ -3,7 +3,7 @@ import SearchField from '../../helper/search_field';
 import TogglingRows from '../../helper/table/toggling_rows';
 import Loader from '../../helper/loader';
 
-class ConfigurationPaintsList extends React.Component
+class ConfigurationVendorsList extends React.Component
 {
 	constructor(props) {
 		super(props);
@@ -21,7 +21,7 @@ class ConfigurationPaintsList extends React.Component
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.vendors !== this.state.vendors) {
 			this.setState({
-				manufacturers: nextProps.vendors,
+				vendors: nextProps.vendors,
 				clonedVendors: JSON.parse(JSON.stringify(nextProps.vendors)),
 				searchText: '',
 				isSearch: false
@@ -32,9 +32,9 @@ class ConfigurationPaintsList extends React.Component
 	// Handle input changes
 	onHandleFormChange(event) {
 		let searchText = event.target.value;
-		let vendors     = this.state.clonedVendors;
+		let vendors    = this.state.clonedVendors;
 		let results = vendors.filter(function (list) {
-			return list.name.match(new RegExp(searchText, 'gi'));
+			return list.company.match(new RegExp(searchText, 'gi'));
 		});
 
 		this.setState({
@@ -58,7 +58,7 @@ class ConfigurationPaintsList extends React.Component
 					return (
 						<TogglingRows
 							key={ vendorIndex }
-							selectedItem={ this.props.selectedVendor.id === vendor.id }
+							selectedItem={ this.props.vendor.id === vendor.id }
 							columnValues={ [
 								vendor.company,
 								vendor.street,
@@ -135,4 +135,4 @@ class ConfigurationPaintsList extends React.Component
     }
 }
 
-export default ConfigurationPaintsList;
+export default ConfigurationVendorsList;

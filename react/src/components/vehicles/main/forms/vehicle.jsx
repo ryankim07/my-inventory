@@ -60,10 +60,10 @@ class VehicleForm extends React.Component
 	}
 
     render() {
-    	let manufacturers  = this.props.manufacturers;
-		let vehicle      = this.state.vehicle;
-		let defaultMfgId = parseInt(vehicle.mfg_id);
-		let yearsOptions = [];
+    	let manufacturers = this.props.manufacturers;
+		let vehicle       = this.state.vehicle;
+		let defaultMfgId  = parseInt(vehicle.mfg_id);
+		let yearsOptions  = [];
 
 		// Years options
 		for (let i = 2014; i <= 2020; i++) {

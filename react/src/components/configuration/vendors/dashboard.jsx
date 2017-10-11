@@ -5,6 +5,7 @@ import VendorsStore from '../../../stores/vendors/store';
 import ConfigurationMainPanel from './../main_panel';
 import ConfigurationRightPanel from './../right_panel';
 import ConfigurationVendorsList from './../vendors/list';
+import ConfigurationVendor from './../vendors/forms/vendor';
 import FlashMessage from '../../helper/flash_message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -21,8 +22,7 @@ class ConfigurationVendorsDashboard extends React.Component
 
 		this.state = {
 			vendors: [],
-			selectedVendor: {},
-			selectedModel: {},
+			vendor: {},
 			loader: true,
 			isEditingMode: false,
 			mainPanel: this.props.params.section,
@@ -74,7 +74,7 @@ class ConfigurationVendorsDashboard extends React.Component
 	// Handle main panel
 	onHandleMainPanel(id) {
 		this.setState({
-			selectedVendor: this.state.vendors.find(obj => obj.id === id),
+			vendor: this.state.vendors.find(obj => obj.id === id),
 			showRightPanel: true,
 			mainPanelColumnCss: {
 				'mobileWidth': mainShrinkedMobileColumnWidth,
@@ -88,7 +88,7 @@ class ConfigurationVendorsDashboard extends React.Component
 		let vendor = this.state.vendors.find(obj => obj.id === id);
 
 		this.setState({
-			selectedModel: vendor,
+			vendor: vendor,
 			showRightPanel: true,
 			mainPanelColumnCss: {
 				'mobileWidth': mainShrinkedMobileColumnWidth,
@@ -115,7 +115,6 @@ class ConfigurationVendorsDashboard extends React.Component
 
 	render() {
 		// Main panel
-		console.log('vehicles dashboard');
 		let mainPanelHtml = '';
 
 		switch (this.state.mainPanel) {
@@ -124,7 +123,8 @@ class ConfigurationVendorsDashboard extends React.Component
 					<ConfigurationVendorsList
 						loader={ this.state.loader }
 						vendors={ this.state.vendors }
-						selectedVendor={ this.state.selectedVendor }
+						vendor={ this.state.vendor }
+						onHandleRightPanel={ this.onHandleRightPanel }
 						onHandleMainPanel={ this.onHandleMainPanel }
 					/>;
 			break;
@@ -141,11 +141,8 @@ class ConfigurationVendorsDashboard extends React.Component
 				{
 					this.state.showRightPanel ?
 						<ConfigurationRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
-							<ConfigurationVendorsList
-								vendor={ this.state.selectedVendor.company }
-								models={ this.state.vendors }
-								selectedModel={ this.state.selectedModel }
-								onHandleRightPanel={ this.onHandleRightPanel }
+							<ConfigurationVendor
+								vendor={ this.state.vendor }
 								closeRightPanel={ this.closeRightPanel }
 							/>
 						</ConfigurationRightPanel> : null

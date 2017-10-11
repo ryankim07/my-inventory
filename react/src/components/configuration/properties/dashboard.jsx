@@ -22,7 +22,8 @@ class ConfigurationPropertiesDashboard extends React.Component
 
 		this.state = {
 			paints: [],
-			selectedPaint: {},
+			paint: {},
+			vendors: [],
 			isEditingMode: false,
 			loader: true,
 			mainPanel: this.props.params.section,
@@ -52,7 +53,7 @@ class ConfigurationPropertiesDashboard extends React.Component
 	}
 
 	componentDidMount() {
-		PaintsAction.getPaints();
+		PaintsAction.getPaintsAndVendors();
 	}
 
 	componentWillUnmount() {
@@ -61,6 +62,7 @@ class ConfigurationPropertiesDashboard extends React.Component
 
 	_onChange() {
 		let paints		    = PaintsStore.getPaints();
+		let vendors			= PaintsStore.getVendors();
 		let flashMessage 	= PaintsStore.getStoreFlashMessage();
 		let isAuthenticated = PaintsStore.isAuthenticated();
 		let openRightPanel  = PaintsStore.showRightPanel();
@@ -72,6 +74,7 @@ class ConfigurationPropertiesDashboard extends React.Component
 
 		this.setState({
 			paints: paints,
+			vendors: vendors,
 			showRightPanel: !!openRightPanel,
 			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,
@@ -94,7 +97,7 @@ class ConfigurationPropertiesDashboard extends React.Component
 	// Handle main panel
 	onHandleMainPanel(id) {
 		this.setState({
-			selectedPaint: this.state.paints.find(obj => obj.id === id),
+			paint: this.state.paints.find(obj => obj.id === id),
 			showRightPanel: true,
 			mainPanelColumnCss: {
 				'mobileWidth': mainShrinkedMobileColumnWidth,
@@ -111,6 +114,7 @@ class ConfigurationPropertiesDashboard extends React.Component
 			{
 				id: '',
 				vendor_id: '',
+				brand: '',
 				name: '',
 				number: '',
 				color: '',
@@ -120,7 +124,7 @@ class ConfigurationPropertiesDashboard extends React.Component
 			}
 
 		this.setState({
-			selectedPaint: paint,
+			paint: paint,
 			isEditingMode: isEditingMode,
 			showRightPanel: true,
 			mainPanelColumnCss: {
@@ -156,7 +160,7 @@ class ConfigurationPropertiesDashboard extends React.Component
 					<ConfigurationPaintsList
 						loader={ this.state.loader }
 						paints={ this.state.paints }
-						selectedPaint={ this.state.selectedPaint }
+						paint={ this.state.paint }
 						onHandleMainPanel={ this.onHandleMainPanel }
 						onHandleRightPanel={ this.onHandleRightPanel }
 					/>;
@@ -170,7 +174,8 @@ class ConfigurationPropertiesDashboard extends React.Component
 			default:
 				rightPanelHtml =
 					<ConfigurationPaint
-						paint={ this.state.selectedPaint }
+						paint={ this.state.paint }
+						vendors={ this.state.vendors }
 						isEditingMode={ this.state.isEditingMode }
 						onHandleFormSubmit={ this.onHandleFormSubmit }
 						closeRightPanel={ this.closeRightPanel }

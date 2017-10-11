@@ -73,7 +73,7 @@ class ConfigurationManufacturersList extends React.Component
 					return (
 						<TogglingRows
 							key={ vehicleIndex }
-							selectedItem={ this.props.selectedMfg.id === vehicle.id }
+							selectedItem={ this.props.mfg.id === vehicle.id }
 							columnValues={ [vehicle.mfg] }
 							addViewBtn={ true }
 							addEditBtn={ false }

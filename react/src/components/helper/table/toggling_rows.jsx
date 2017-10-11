@@ -28,7 +28,6 @@ class TogglingRows extends React.Component
 		}
 	}
 
-
 	// Handle mouse enter, mouse leave hover
 	onHandleHover() {
 		this.setState({
@@ -36,6 +35,7 @@ class TogglingRows extends React.Component
 		});
 	}
 
+	// Render
     render() {
 		let rowCss = {
 			background: this.state.defaultBackground

@@ -22,8 +22,8 @@ class ConfigurationVehiclesDashboard extends React.Component
 
 		this.state = {
 			manufacturers: [],
-			selectedMfg: {},
-			selectedModel: {},
+			mfg: {},
+			model: {},
 			loader: true,
 			isEditingMode: false,
 			mainPanel: this.props.params.section,
@@ -80,7 +80,7 @@ class ConfigurationVehiclesDashboard extends React.Component
 	// Handle main panel
 	onHandleMainPanel(id) {
 		this.setState({
-			selectedMfg: this.state.manufacturers.find(obj => obj.id === id),
+			mfg: this.state.manufacturers.find(obj => obj.id === id),
 			showRightPanel: true,
 			mainPanelColumnCss: {
 				'mobileWidth': mainShrinkedMobileColumnWidth,
@@ -91,11 +91,11 @@ class ConfigurationVehiclesDashboard extends React.Component
 
 	// Handle right panel
 	onHandleRightPanel(id) {
-		let mfg   = this.state.selectedMfg;
+		let mfg   = this.state.mfg;
 		let model = mfg.models.find(obj => obj.id === id);
 
 		this.setState({
-			selectedModel: model,
+			model: model,
 			showRightPanel: true,
 			mainPanelColumnCss: {
 				'mobileWidth': mainShrinkedMobileColumnWidth,
@@ -131,7 +131,7 @@ class ConfigurationVehiclesDashboard extends React.Component
 					<ConfigurationManufacturersList
 						loader={ this.state.loader }
 						manufacturers={ this.state.manufacturers }
-						selectedMfg={ this.state.selectedMfg }
+						mfg={ this.state.mfg }
 						onHandleSync={ this.onHandleSync }
 						onHandleMainPanel={ this.onHandleMainPanel }
 					/>;
@@ -150,9 +150,9 @@ class ConfigurationVehiclesDashboard extends React.Component
 					this.state.showRightPanel ?
 						<ConfigurationRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
 							<ConfigurationManufacturerModelsList
-								mfg={ this.state.selectedMfg.mfg }
-								models={ this.state.selectedMfg.models }
-								selectedModel={ this.state.selectedModel }
+								mfg={ this.state.mfg.mfg }
+								models={ this.state.mfg.models }
+								model={ this.state.model }
 								onHandleRightPanel={ this.onHandleRightPanel }
 								closeRightPanel={ this.closeRightPanel }
 							/>

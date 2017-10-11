@@ -259,7 +259,9 @@ class PropertiesDashboard extends React.Component
 			default:
 				mainPanelHtml =
 					<PropertiesList
-						state={ this.state }
+						loader={ this.state.loader }
+						property={ this.state.property }
+						properties={ this.state.properties }
 						onHandleMainPanel={ this.onHandleMainPanel }
 						onHandleRightPanel={ this.onHandleRightPanel }
 						onHandleRemove={ this.onHandleRemove }

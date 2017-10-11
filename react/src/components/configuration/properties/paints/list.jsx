@@ -58,10 +58,10 @@ class ConfigurationPaintsList extends React.Component
 					return (
 						<TogglingRows
 							key={ paintIndex }
-							selectedItem={ this.props.selectedPaint.id === paint.id }
+							selectedItem={ this.props.paint.id === paint.id }
 							columnValues={ [
-								paint.brand,
 								paint.name,
+								paint.brand,
 								paint.number,
 								paint.color,
 								paint.hex,

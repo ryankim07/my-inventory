@@ -6,6 +6,7 @@ import _ from 'lodash';
 
 let _paints = [];
 let _paint = {};
+let _vendors = [];
 let _rightPanel = false;
 let _storeMsg;
 
@@ -29,6 +30,20 @@ let PaintsStore = assign({}, EventEmitter.prototype, {
 
     removeChangeListener: function(callback){
         this.removeListener('change', callback);
+	},
+
+	setPaintsAndVendors: function(paints, vendors) {
+		if (paints.length !== 0) {
+			_paints = paints;
+		}
+
+		if (vendors.length !== 0) {
+			_vendors = vendors;
+		}
+	},
+
+	getVendors: function () {
+		return _vendors;
 	},
 
 	getPaints: function () {
@@ -119,6 +134,10 @@ PaintsStore.dispatchToken = Dispatcher.register(function(payload) {
 
 		case ActionConstants.REMOVE_PAINT:
 			PaintsStore.removePaint(results);
+		break;
+
+		case ActionConstants.RECEIVE_PAINTS_AND_VENDORS:
+			PaintsStore.setPaintsAndVendors(action.paints, action.vendors);
 		break;
 
         case ActionConstants.RECEIVE_PAINTS:

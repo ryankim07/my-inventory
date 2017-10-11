@@ -1,5 +1,5 @@
 import React from 'react';
-import StatesDropdown from './../forms/states_dropdown';
+import StatesDropdown from '../../../helper/states_dropdown';
 import { upperFirstLetter } from '../../../helper/utils';
 
 class PropertyAddressForm extends React.Component
@@ -38,11 +38,13 @@ class PropertyAddressForm extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Street</label>
 						<div className="input-group">
-							<input type="text"
-								   onChange={ this.handleFormChange.bind(this, 'street') }
-								   value={ address.street }
-								   className="form-control input-sm"
-								   required="required"/>
+							<input
+								type="text"
+								onChange={ this.handleFormChange.bind(this, 'street') }
+								value={ address.street }
+								className="form-control input-sm"
+								required="required"
+							/>
 						</div>
 					</div>
 				</div>
@@ -50,11 +52,13 @@ class PropertyAddressForm extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">City</label>
 						<div className="input-group">
-							<input type="text"
-								   onChange={ this.handleFormChange.bind(this, 'city') }
-								   value={ address.city }
-								   className="form-control input-sm"
-								   required="required"/>
+							<input
+								type="text"
+								onChange={ this.handleFormChange.bind(this, 'city') }
+								value={ address.city }
+								className="form-control input-sm"
+								required="required"
+							/>
 						</div>
 					</div>
 				</div>
@@ -62,14 +66,12 @@ class PropertyAddressForm extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">State</label>
 						<div className="input-group">
-
 						<StatesDropdown
 							state={ address.state }
 							handleFormChange={ this.handleFormChange }
 							className="form-control input-sm"
 							required="required"
 						/>
-
 						</div>
 					</div>
 				</div>
@@ -77,11 +79,13 @@ class PropertyAddressForm extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Zip</label>
 						<div className="input-group">
-							<input type="text"
-								   onChange={ this.handleFormChange.bind(this, 'zip') }
-								   value={ address.zip }
-								   className="form-control input-sm"
-								   required="required"/>
+							<input
+								type="text"
+								onChange={ this.handleFormChange.bind(this, 'zip') }
+								value={ address.zip }
+								className="form-control input-sm"
+								required="required"
+							/>
 						</div>
 					</div>
 				</div>
@@ -89,7 +93,7 @@ class PropertyAddressForm extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">County</label>
 						<div className="input-group">
-							<select
+								<select
 									onChange={ this.handleFormChange.bind(this, 'county') }
 									value={ address.county }
 									className="form-control input-sm">
@@ -104,7 +108,7 @@ class PropertyAddressForm extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Country</label>
 						<div className="input-group">
-							<select
+								<select
 									onChange={ this.handleFormChange.bind(this, 'country') }
 									value={ address.country }
 									className="form-control input-sm">
@@ -118,10 +122,12 @@ class PropertyAddressForm extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Subdivision</label>
 						<div className="input-group">
-							<input type="text"
-								   onChange={ this.handleFormChange.bind(this, 'subdivision') }
-								   value={ address.subdivision }
-								   className="form-control input-sm"/>
+							<input
+								type="text"
+								onChange={ this.handleFormChange.bind(this, 'subdivision') }
+								value={ address.subdivision }
+								className="form-control input-sm"
+							/>
 						</div>
 					</div>
 				</div>

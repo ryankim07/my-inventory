@@ -1,32 +1,77 @@
 import React from 'react';
+import SearchField from '../../helper/search_field';
+import TogglingRows from '../../helper/table/toggling_rows';
 import Loader from '../../helper/loader';
 
 class VehiclesList extends React.Component
 {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			vehicles: this.props.vehicles,
+			clonedVehicles: JSON.parse(JSON.stringify(this.props.vehicles)),
+			searchText: '',
+			isSearch: false,
+		};
+
+		this.onHandleFormChange = this.onHandleFormChange.bind(this);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.vehicles !== this.state.vehicles) {
+			this.setState({
+				vehicles: nextProps.vehicles,
+				clonedVehicles: JSON.parse(JSON.stringify(nextProps.vehicles)),
+				searchText: '',
+				isSearch: false
+			});
+		}
+	}
+
+	// Handle input changes
+	onHandleFormChange(event) {
+		let searchText = event.target.value;
+		let vehicles   = this.state.clonedVehicles;
+		let results = vehicles.filter(function (list) {
+			return list.mfg.match(new RegExp(searchText, 'gi'));
+		});
+
+		this.setState({
+			vehicles: searchText.replace(/\s/g, '').length ? results : vehicles,
+			searchText: searchText,
+			isSearch: true
+		});
+	}
+
 	render() {
         let vehiclesHtml = '';
 
 		// If loading is complete
         if (!this.props.loader) {
-        	let vehicles  = this.props.vehicles;
+        	let vehicles = this.state.vehicles;
 
         	if (!vehicles || vehicles.length === 0) {
 				vehiclesHtml = <tr><td><span>Empty list.</span></td></tr>;
 			} else {
-				vehiclesHtml = vehicles.map((vehicle) => {
+				vehiclesHtml = vehicles.map((vehicle, vehicleIndex) => {
 					return (
-						<tr key={ vehicle.id }>
-							<td>{ vehicle.mfg }</td>
-							<td>{ vehicle.model }</td>
-							<td>{ vehicle.year }</td>
-							<td>{ vehicle.color }</td>
-							<td>{ vehicle.vin }</td>
-							<td>{ vehicle.plate }</td>
-							<td>
-								<button onClick={ this.props.onHandleRightPanel.bind(this, vehicle.id) }><i className="fa fa-pencil" aria-hidden="true" /></button>
-								<button onClick={ this.props.onHandleRemove.bind(this, vehicle.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
-							</td>
-						</tr>
+						<TogglingRows
+							key={ vehicleIndex }
+							selectedItem={ this.props.vehicle.id === vehicle.id }
+							columnValues={ [
+								vehicle.mfg,
+								vehicle.model,
+								vehicle.year,
+								vehicle.color,
+								vehicle.vin,
+								vehicle.plate
+							] }
+							addEditBtn={ true }
+							handleEditPanel={ this.props.onHandleRightPanel.bind(this, vehicle.id) }
+							addRemoveBtn={ true }
+							handleRemove={ this.props.onHandleRemove.bind(this, vehicle.id) }
+						/>
 					);
 				});
 			}
@@ -48,6 +93,17 @@ class VehiclesList extends React.Component
 						</div>
 					</div>
 					<div className="panel-body">
+						<div className="form-group">
+							<div className="col-xs-12 col-lg-12">
+								<SearchField
+									objs={ this.state.vehicles }
+									objKey="name"
+									searchType="vehicles"
+									searchText={ this.state.searchText }
+									onHandleFormChange={ this.onHandleFormChange }
+								/>
+							</div>
+						</div>
 						<table className="table">
 							<thead>
 							<tr>

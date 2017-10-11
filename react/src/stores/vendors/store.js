@@ -31,11 +31,11 @@ let VendorsStore = assign({}, EventEmitter.prototype, {
         this.removeListener('change', callback);
 	},
 
-	getVendorss: function () {
+	getVendors: function () {
 		return _vendors;
 	},
 
-	setVendorss: function (results) {
+	setVendors: function (results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
 			return false;

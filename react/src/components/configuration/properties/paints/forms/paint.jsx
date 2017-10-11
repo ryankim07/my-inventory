@@ -8,7 +8,8 @@ class ConfigurationPaint extends React.Component
         super(props);
 
         this.state = {
-			paint: this.props.paint
+			paint: this.props.paint,
+			value: ''
 		}
 
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
@@ -64,13 +65,6 @@ class ConfigurationPaint extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Vendor</label>
-						<div className="input-group">
-							<select
-								onChange={ this.handleFormChange.bind(this, 'country') }
-								value={ address.country }
-								className="form-control input-sm">
-							</select>
-						</div>
 					</div>
 				</div>
 				<div className="form-group required">

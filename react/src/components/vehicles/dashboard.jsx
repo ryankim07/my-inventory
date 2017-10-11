@@ -164,6 +164,7 @@ class VehiclesDashboard extends React.Component
 				<VehiclesMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					<VehiclesList
 						loader={ this.state.loader }
+						vehicle={ this.state.vehicle }
 						vehicles={ this.state.vehicles }
 						onHandleRightPanel={ this.onHandleRightPanel }
 						onHandleRemove={ this.onHandleRemove }
@@ -174,7 +175,6 @@ class VehiclesDashboard extends React.Component
 					this.state.showRightPanel ?
 						<VehiclesRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
 							<VehicleForm
-								state={ this.state }
 								vehicle={ this.state.vehicle }
 								manufacturers={ this.state.manufacturers }
 								isEditingMode={ this.state.isEditingMode }

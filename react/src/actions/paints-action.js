@@ -3,6 +3,24 @@ import ActionConstants from '../constants/action-constants';
 import Api from '../services/Api';
 
 let PaintsAction = {
+	getPaintsAndVendors: function() {
+		Api
+			.getMultiple('http://mcs.dev/api/paints', 'http://mcs.dev/api/vendors')
+			.then(function ([paints, vendors])  {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.RECEIVE_PAINTS_AND_VENDORS,
+					paints: paints,
+					vendors: vendors
+				});
+			})
+			.catch(function(resp) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.PAINTS_ERROR,
+					results: resp.status + ' : ' + resp.msg
+				});
+			});
+	},
+
 	getPaints: function() {
 		Api
 			.get('http://mcs.dev/api/paints')

@@ -64,7 +64,7 @@ class ConfigurationManufacturerModelsList extends React.Component
 				return (
 					<TogglingRows
 						key={ modelIndex }
-						selectedItem={ this.props.selectedModel.id === model.id }
+						selectedItem={ this.props.model.id === model.id }
 						columnValues={ [model.model] }
 						addViewBtn={ true }
 						addEditBtn={ false }

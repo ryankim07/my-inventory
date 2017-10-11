@@ -16,9 +16,9 @@ class VehicleForm extends React.Component
     }
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.state.vehicle !== this.props.vehicle) {
+		if (nextProps.vehicle !== this.props.vehicle) {
 			this.setState({
-				vehicle: nextProps.state.vehicle
+				vehicle: nextProps.vehicle
 			});
 		}
 	}
@@ -41,6 +41,11 @@ class VehicleForm extends React.Component
                 }
             break;
 
+			case 'vin':
+			case 'plate':
+				vehicle[propertyName] = chosenValue.toUpperCase();
+			break;
+
 			case 'assets':
 				vehicle[propertyName] = chosenValue[0];
 			break;
@@ -49,7 +54,9 @@ class VehicleForm extends React.Component
                 vehicle[propertyName] = upperFirstLetter(chosenValue);
         }
 
-        this.setState({vehicle: vehicle});
+        this.setState({
+			vehicle: vehicle
+        });
     }
 
     // Submit

@@ -107,11 +107,8 @@ class PropertiesDashboard extends React.Component
 			return false;
 		}
 
-		property = property.length === 0 ?
-			property = {address: {}} : property;
-
 		this.setState({
-			property: property,
+			property: Object.keys(property).length === 0 ? {address: {}} : property,
 			properties: properties,
 			paints: paints,
 			showRightPanel: !!openRightPanel,

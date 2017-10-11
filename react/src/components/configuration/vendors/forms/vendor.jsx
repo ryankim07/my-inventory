@@ -1,6 +1,6 @@
 import React from 'react';
 import StatesDropdown from '../../../helper/states_dropdown';
-import { upperFirstLetter } from "../../../helper/utils"
+import { upperFirstLetter, phoneFormat, urlFormat } from "../../../helper/utils"
 
 class ConfigurationVendor extends React.Component
 {
@@ -29,11 +29,20 @@ class ConfigurationVendor extends React.Component
         let chosenValue = event.target.value;
 
         switch (propertyName) {
+			case 'company':
 			case 'street':
 			case 'city':
-			case 'subdivision':
+			case 'contact':
 				vendor[propertyName] = upperFirstLetter(chosenValue);
-				break;
+			break;
+
+			case 'phone':
+				vendor[propertyName] = phoneFormat(chosenValue);
+			break;
+
+			case 'url':
+				vendor[propertyName] = urlFormat(chosenValue);
+			break;
 
 			default:
 				vendor[propertyName] = chosenValue;
@@ -57,7 +66,7 @@ class ConfigurationVendor extends React.Component
 		// Get api vehicles list
 		let categoryOptions = this.props.categories.map((cat, catIndex) => {
 			return (
-				<option key={ catIndex } value={ cat.id }>{ cat.name }</option>
+				<option key={ catIndex } value={ cat.id }>{ upperFirstLetter(cat.name) }</option>
 			);
 		});
 
@@ -75,6 +84,20 @@ class ConfigurationVendor extends React.Component
 								<option value="">Select One</option>
 								{ categoryOptions }
 							</select>
+						</div>
+					</div>
+				</div>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Company</label>
+						<div className="input-group">
+							<input
+								type="text"
+								onChange={ this.onHandleFormChange.bind(this, 'company') }
+								value={ vendor.company }
+								className="form-control input-sm"
+								required="required"
+							/>
 						</div>
 					</div>
 				</div>

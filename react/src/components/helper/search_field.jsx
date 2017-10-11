@@ -1,4 +1,6 @@
 /**
+ * Search field component
+ *
  * Required props
  *
  * searchType: type of search

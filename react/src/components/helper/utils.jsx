@@ -1,11 +1,44 @@
-export function numberFormat(value) {
+/**
+ * Utility Methods
+ */
+
+/**
+ * Format thousand format
+ *
+ * @param value
+ * @returns {*}
+ */
+export function numberFormat(value)
+{
 	let num         = value.toString().replace(/,/gi, "").split("").reverse().join("");
 	let replacement = removeRougeChar(num.replace(/(.{3})/g,"$1,").split("").reverse().join(""));
 
 	return replacement;
 }
 
-export function upperFirstLetter(str) {
+/**
+ * Remove unwanted characters
+ *
+ * @param convertString
+ * @returns {*}
+ */
+export function removeRougeChar(convertString)
+{
+	if (convertString.substring(0, 1) === ",") {
+		return convertString.substring(1, convertString.length)
+	}
+
+	return convertString;
+}
+
+/**
+ * Capitalize 1st letter of each word in sentence
+ *
+ * @param str
+ * @returns {*}
+ */
+export function upperFirstLetter(str)
+{
 	if (isNaN(str)) {
 		return str
 			.toLowerCase()
@@ -23,7 +56,15 @@ export function upperFirstLetter(str) {
 	return str;
 }
 
-export function arrayDiff(arr1, arr2) {
+/**
+ * Get differences between 2 arrays
+ *
+ * @param arr1
+ * @param arr2
+ * @returns {Array.<T>|string|Array|*}
+ */
+export function arrayDiff(arr1, arr2)
+{
 	let arr1Filtered = arr1.filter(function (value){
 		return arr2.indexOf(value) === -1;
 	});
@@ -35,10 +76,40 @@ export function arrayDiff(arr1, arr2) {
 	return arr1Filtered.concat(arr2Filtered);
 }
 
-export function removeRougeChar(convertString) {
-	if (convertString.substring(0, 1) === ",") {
-		return convertString.substring(1, convertString.length)
+/**
+ * Format phone number
+ *
+ * @param number
+ */
+export function phoneFormat(number)
+{
+	// Strip all characters from the input except digits
+	let input = number.replace(/\D/g, '');
+
+	// Trim the remaining input to ten characters, to preserve phone number format
+	input = input.substring(0, 10);
+
+	// Based upon the length of the string, we add formatting as necessary
+	let size = input.length;
+	if (size < 4) {
+		input = '(' + input;
+	} else if (size < 7) {
+		input = '(' + input.substring(0, 3) + ') ' + input.substring(3, 6);
+	} else {
+		input = '(' + input.substring(0, 3) + ') ' + input.substring(3, 6) + '-' + input.substring(6, 10);
 	}
 
-	return convertString;
+	return input;
+}
+
+/**
+ * Format url
+ *
+ * @param url
+ * @returns {string}
+ */
+export function urlFormat(url) {
+	if (!/^https?:\/\//i.test(url)) {
+		return 'http://' + url;
+	}
 }

@@ -21,12 +21,29 @@ let PropertiesAction = {
 			});
 	},
 
-	postProperty: function(data) {
+	addProperty: function(data) {
 		Api
 			.post('http://mcs.dev/api/property', data, data.assets)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.MODIFY_PROPERTY,
+					actionType: ActionConstants.ADD_PROPERTY,
+					results: resp
+				});
+			})
+			.catch(function(resp) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.PROPERTIES_ERROR,
+					results: resp.status + ' : ' + resp.msg
+				});
+			});
+	},
+
+	updateProperty: function(data) {
+		Api
+			.post('http://mcs.dev/api/property', data, data.assets)
+			.then(function (resp) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.UPDATE_PROPERTY,
 					results: resp
 				});
 			})

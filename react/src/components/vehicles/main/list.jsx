@@ -57,7 +57,6 @@ class VehiclesList extends React.Component
 				vehiclesHtml = vehicles.map((vehicle, vehicleIndex) => {
 					return (
 						<TogglingRows
-							key={ vehicleIndex }
 							selectedItem={ this.props.vehicle.id === vehicle.id }
 							columnValues={ [
 								vehicle.mfg,

@@ -29,9 +29,7 @@ class PropertiesDashboard extends React.Component
 
 		this.state = {
 			properties: [],
-			property: {
-				address: {}
-			},
+			property: {},
 			room: {},
 			paints: [],
 			isEditingMode: false,
@@ -97,6 +95,7 @@ class PropertiesDashboard extends React.Component
 
 	// State changes
 	_onChange() {
+		let property		= PropertiesStore.getProperty();
 		let properties		= PropertiesStore.getProperties();
 		let paints          = PropertiesStore.getPaints();
 		let flashMessage 	= PropertiesStore.getStoreFlashMessage();
@@ -108,7 +107,11 @@ class PropertiesDashboard extends React.Component
 			return false;
 		}
 
+		property = property.length === 0 ?
+			property = {address: {}} : property;
+
 		this.setState({
+			property: property,
 			properties: properties,
 			paints: paints,
 			showRightPanel: !!openRightPanel,
@@ -125,7 +128,11 @@ class PropertiesDashboard extends React.Component
 	onHandleFormSubmit(obj, type) {
 		obj.obj_type = type;
 
-		PropertiesAction.postProperty(obj);
+		if (!this.state.isEditingMode) {
+			PropertiesAction.addProperty(obj);
+		} else {
+			PropertiesAction.updateProperty(obj);
+		}
 	}
 
 	// Handle delete

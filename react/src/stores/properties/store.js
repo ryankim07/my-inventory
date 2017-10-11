@@ -58,6 +58,17 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		return _properties.find(obj => obj.id === id);
 	},
 
+	addProperty: function(results) {
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
+		}
+
+		_properties.push(results.property);
+		_storeMsg = results.msg;
+		_rightPanel = false;
+	},
+
 	updateProperty: function(results) {
     	if (results.err_msg) {
 			_storeMsg = results.err_msg;
@@ -122,7 +133,11 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
 	let results = action.results;
 
     switch(action.actionType) {
-        case ActionConstants.MODIFY_PROPERTY:
+		case ActionConstants.ADD_PROPERTY:
+			PropertiesStore.addProperty(results);
+		break;
+
+		case ActionConstants.UPDATE_PROPERTY:
             PropertiesStore.updateProperty(results);
         break;
 
@@ -130,12 +145,12 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
             PropertiesStore.removeProperty(results);
         break;
 
-		case ActionConstants.RECEIVE_PROPERTIES_AND_PAINTS:
-			PropertiesStore.setPropertiesAndPaints(action.properties, action.paints);
-		break;
-
 		case ActionConstants.REMOVE_PROPERTY_ROOM:
 			PropertiesStore.removeRoom(results);
+		break;
+
+		case ActionConstants.RECEIVE_PROPERTIES_AND_PAINTS:
+			PropertiesStore.setPropertiesAndPaints(action.properties, action.paints);
 		break;
 
 		case ActionConstants.PROPERTIES_ERROR:

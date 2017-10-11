@@ -22,9 +22,9 @@ class PropertiesAddressList extends React.Component
 					addViewBtn={ true }
 					handleViewPanel={ this.props.onHandleMainPanel.bind(this, property.address.property_id, 'info') }
 					addEditBtn={ true }
-					handleEditPanel={ this.props.handleRightPanel.bind(this, property.address.id) }
+					handleEditPanel={ this.props.handleRightPanel.bind(this, property.address.property_id) }
 					addRemoveBtn={ true }
-					handleRemove={ this.props.onHandleRemove.bind(this, property.address.id) }
+					handleRemove={ this.props.onHandleRemove.bind(this, property.address.property_id) }
 				/>
 			);
 		});

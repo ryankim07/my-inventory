@@ -16,8 +16,10 @@ class PropertyForm extends React.Component
     }
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.state.property !== this.state.property) {
-			this.setState({property: nextProps.state.property});
+		if (nextProps.property !== this.state.property) {
+			this.setState({
+				property: nextProps.property
+			});
 		}
 	}
 

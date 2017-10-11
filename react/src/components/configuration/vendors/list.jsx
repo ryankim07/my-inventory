@@ -71,10 +71,10 @@ class ConfigurationVendorsList extends React.Component
 								vendor.url,
 								vendor.notes
 							] }
-							addViewBtn={ true }
 							addEditBtn={ true }
+							handleEditPanel={ this.props.onHandleRightPanel.bind(this, vendor.id) }
 							addRemoveBtn={ true }
-							handleViewPanel={ this.props.onHandleMainPanel.bind(this, vendor.id) }
+							handleRemove={ this.props.onHandleRemove.bind(this, vendor.id) }
 						/>
 					);
 				});

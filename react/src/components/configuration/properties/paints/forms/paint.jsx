@@ -17,9 +17,9 @@ class ConfigurationPaint extends React.Component
     }
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.state.paint !== this.props.paint) {
+		if (nextProps.paint !== this.props.paint) {
 			this.setState({
-				paint: nextProps.state.paint
+				paint: nextProps.paint
 			});
 		}
 	}

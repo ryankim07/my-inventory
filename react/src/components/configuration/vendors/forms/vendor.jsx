@@ -16,9 +16,9 @@ class ConfigurationVendor extends React.Component
     }
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.state.vendor !== this.props.vendor) {
+		if (nextProps.vendor !== this.props.vendor) {
 			this.setState({
-				vendor: nextProps.state.vendor
+				vendor: nextProps.vendor
 			});
 		}
 	}
@@ -39,7 +39,9 @@ class ConfigurationVendor extends React.Component
 				vendor[propertyName] = chosenValue;
         }
 
-        this.setState({vendor: vendor});
+        this.setState({
+			vendor: vendor
+        });
     }
 
     // Submit

@@ -41,7 +41,6 @@ class ConfigurationPropertiesDashboard extends React.Component
 
 		this._onChange 		 	= this._onChange.bind(this);
 		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
-		this.onHandleMainPanel 	= this.onHandleMainPanel.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.setFlashMessage 	= this.setFlashMessage.bind(this);
 		this.closeRightPanel 	= this.closeRightPanel.bind(this);
@@ -94,18 +93,6 @@ class ConfigurationPropertiesDashboard extends React.Component
 		}
 	}
 
-	// Handle main panel
-	onHandleMainPanel(id) {
-		this.setState({
-			paint: this.state.paints.find(obj => obj.id === id),
-			showRightPanel: true,
-			mainPanelColumnCss: {
-				'mobileWidth': mainShrinkedMobileColumnWidth,
-				'desktopWidth': mainShrinkedDesktopColumnWidth
-			}
-		});
-	}
-
 	// Handle right panel
 	onHandleRightPanel(id) {
 		let isEditingMode = !!id;
@@ -134,6 +121,11 @@ class ConfigurationPropertiesDashboard extends React.Component
 		});
 	}
 
+	// Handle delete
+	onHandleRemove(id) {
+		PaintsAction.removeVendor(id);
+	}
+
 	// Set flash message
 	setFlashMessage(msg) {
 		this.setState({flashMessage: msg});
@@ -151,49 +143,30 @@ class ConfigurationPropertiesDashboard extends React.Component
 	}
 
 	render() {
-		// Main panel
-		let mainPanelHtml = '';
-
-		switch (this.state.mainPanel) {
-			case 'paints-list':
-				mainPanelHtml =
-					<ConfigurationPaintsList
-						loader={ this.state.loader }
-						paints={ this.state.paints }
-						paint={ this.state.paint }
-						onHandleMainPanel={ this.onHandleMainPanel }
-						onHandleRightPanel={ this.onHandleRightPanel }
-					/>;
-			break;
-		}
-
-		// Right panel
-		let rightPanelHtml = '';
-
-		switch (this.state.rightPanel) {
-			default:
-				rightPanelHtml =
-					<ConfigurationPaint
-						paint={ this.state.paint }
-						vendors={ this.state.vendors }
-						isEditingMode={ this.state.isEditingMode }
-						onHandleFormSubmit={ this.onHandleFormSubmit }
-						closeRightPanel={ this.closeRightPanel }
-					/>;
-		}
-
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success" />}
 
 				<ConfigurationMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
-					{ mainPanelHtml }
+					<ConfigurationPaintsList
+						loader={ this.state.loader }
+						paints={ this.state.paints }
+						paint={ this.state.paint }
+						onHandleRightPanel={ this.onHandleRightPanel }
+						onHandleRemove={ this.onHandleRemove }
+					/>
 				</ConfigurationMainPanel>
 
 				{
 					this.state.showRightPanel ?
 						<ConfigurationRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
-							{ rightPanelHtml }
+							<ConfigurationPaint
+								paint={ this.state.paint }
+								vendors={ this.state.vendors }
+								isEditingMode={ this.state.isEditingMode }
+								onHandleFormSubmit={ this.onHandleFormSubmit }
+								closeRightPanel={ this.closeRightPanel }
+							/>
 						</ConfigurationRightPanel> : null
 				}
 			</div>

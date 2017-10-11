@@ -68,10 +68,10 @@ class ConfigurationPaintsList extends React.Component
 								paint.rgb,
 								paint.notes
 							] }
-							addViewBtn={ true }
 							addEditBtn={ true }
+							handleEditPanel={ this.props.onHandleRightPanel.bind(this, paint.id) }
 							addRemoveBtn={ true }
-							handleViewPanel={ this.props.onHandleMainPanel.bind(this, paint.id) }
+							handleRemove={ this.props.onHandleRemove.bind(this, paint.id) }
 						/>
 					);
 				});

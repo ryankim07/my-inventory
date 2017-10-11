@@ -39,8 +39,9 @@ class ConfigurationVendorsDashboard extends React.Component
 		};
 
 		this._onChange 		 	= this._onChange.bind(this);
-		this.onHandleMainPanel 	= this.onHandleMainPanel.bind(this);
+		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
+		this.onHandleRemove 	= this.onHandleRemove.bind(this);
 		this.setFlashMessage 	= this.setFlashMessage.bind(this);
 		this.closeRightPanel 	= this.closeRightPanel.bind(this);
 	}
@@ -59,42 +60,77 @@ class ConfigurationVendorsDashboard extends React.Component
 	}
 
 	_onChange() {
-		let vendors = VendorsStore.getVendors();
+		let vendors 		= VendorsStore.getVendors();
+		let flashMessage 	= VendorsStore.getStoreFlashMessage();
+		let isAuthenticated = VendorsStore.isAuthenticated();
+		let openRightPanel  = VendorsStore.showRightPanel();
+
+		if (!isAuthenticated){
+			this.context.router.push("/auth/login");
+			return false;
+		}
 
 		this.setState({
 			vendors: vendors,
 			loader: false,
-			/*mainPanelColumnCss: {
+			showRightPanel: !!openRightPanel,
+			flashMessage: flashMessage !== undefined ? flashMessage : null,
+			loader: false,
+			mainPanelColumnCss: {
 				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
 				'desktopWidth': openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
-			}*/
+			}
 		});
 	}
 
-	// Handle main panel
-	onHandleMainPanel(id) {
-		this.setState({
-			vendor: this.state.vendors.find(obj => obj.id === id),
-			showRightPanel: true,
-			mainPanelColumnCss: {
-				'mobileWidth': mainShrinkedMobileColumnWidth,
-				'desktopWidth': mainShrinkedDesktopColumnWidth
-			}
-		});
+	// Handle submit
+	onHandleFormSubmit(vehicle) {
+		if (!this.state.isEditingMode) {
+			VendorsAction.addVendor(vehicle);
+		} else {
+			VendorsAction.updateVendor(vehicle);
+		}
 	}
 
 	// Handle right panel
 	onHandleRightPanel(id) {
-		let vendor = this.state.vendors.find(obj => obj.id === id);
+		let isEditingMode = !!id;
+		let vendor = isEditingMode ?
+			this.state.vendors.find(obj => obj.id === id) :
+			{
+				id: '',
+				category_id: '',
+				company: '',
+				street: '',
+				city: '',
+				state: '',
+				zip: '',
+				country: '',
+				phone: '',
+				contact: '',
+				url: '',
+				notes: ''
+			}
 
 		this.setState({
 			vendor: vendor,
+			isEditingMode: isEditingMode,
 			showRightPanel: true,
 			mainPanelColumnCss: {
 				'mobileWidth': mainShrinkedMobileColumnWidth,
 				'desktopWidth': mainShrinkedDesktopColumnWidth
 			}
 		});
+	}
+
+	// Handle delete
+	onHandleRemove(id) {
+		VendorsAction.removeVendor(id);
+	}
+
+	// Set flash message
+	setFlashMessage(msg) {
+		this.setState({flashMessage: msg});
 	}
 
 	// Close right panel
@@ -108,34 +144,19 @@ class ConfigurationVendorsDashboard extends React.Component
 		});
 	}
 
-	// Set flash message
-	setFlashMessage(msg) {
-		this.setState({flashMessage: msg});
-	}
-
 	render() {
-		// Main panel
-		let mainPanelHtml = '';
-
-		switch (this.state.mainPanel) {
-			case 'vendors':
-				mainPanelHtml =
-					<ConfigurationVendorsList
-						loader={ this.state.loader }
-						vendors={ this.state.vendors }
-						vendor={ this.state.vendor }
-						onHandleRightPanel={ this.onHandleRightPanel }
-						onHandleMainPanel={ this.onHandleMainPanel }
-					/>;
-			break;
-		}
-
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success" />}
 
 				<ConfigurationMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
-					{ mainPanelHtml }
+					<ConfigurationVendorsList
+						loader={ this.state.loader }
+						vendor={ this.state.vendor }
+						vendors={ this.state.vendors }
+						onHandleRightPanel={ this.onHandleRightPanel }
+						onHandleRemove={ this.onHandleRemove }
+					/>
 				</ConfigurationMainPanel>
 
 				{
@@ -143,6 +164,7 @@ class ConfigurationVendorsDashboard extends React.Component
 						<ConfigurationRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
 							<ConfigurationVendor
 								vendor={ this.state.vendor }
+								onHandleFormSubmit={ this.onHandleFormSubmit }
 								closeRightPanel={ this.closeRightPanel }
 							/>
 						</ConfigurationRightPanel> : null

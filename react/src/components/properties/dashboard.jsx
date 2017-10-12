@@ -83,7 +83,7 @@ class PropertiesDashboard extends React.Component
 
 			this.setState({
 				mainPanel: mainPanel,
-				showRightPanel: false,
+				showRightPanel: !this.state.showRightPanel,
 				flashMessage: null,
 				mainPanelColumnCss: {
 					'mobileWidth': mainDefaultMobileColumnWidth,
@@ -151,6 +151,7 @@ class PropertiesDashboard extends React.Component
 		this.setState({
 			property: property,
 			mainPanel: panel,
+			showRightPanel: !this.state.showRightPanel,
 			mainPanelColumnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
@@ -164,7 +165,7 @@ class PropertiesDashboard extends React.Component
 			property: property,
 			rightPanel: rightPanel,
 			isEditingMode: isEditingMode,
-			showRightPanel: true,
+			showRightPanel: this.state.showRightPanel,
 			mainPanelColumnCss: {
 				'mobileWidth': mainShrinkedMobileColumnWidth,
 				'desktopWidth': mainShrinkedDesktopColumnWidth
@@ -209,7 +210,7 @@ class PropertiesDashboard extends React.Component
 			room: room,
 			rightPanel: 'room',
 			isEditingMode: isEditingMode,
-			showRightPanel: true,
+			showRightPanel: this.state.showRightPanel,
 			flashMessage: null,
 			mainPanelColumnCss: {
 				'mobileWidth': mainShrinkedMobileColumnWidth,
@@ -222,7 +223,7 @@ class PropertiesDashboard extends React.Component
 	closeRightPanel() {
 		this.setState({
 			mainPanel: this.state.mainPanel,
-			showRightPanel: false,
+			showRightPanel: !this.state.showRightPanel,
 			mainPanelColumnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth

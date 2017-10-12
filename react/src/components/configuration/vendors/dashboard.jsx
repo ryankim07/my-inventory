@@ -117,7 +117,7 @@ class ConfigurationVendorsDashboard extends React.Component
 		this.setState({
 			vendor: vendor,
 			isEditingMode: isEditingMode,
-			showRightPanel: true,
+			showRightPanel: this.state.showRightPanel,
 			mainPanelColumnCss: {
 				'mobileWidth': mainShrinkedMobileColumnWidth,
 				'desktopWidth': mainShrinkedDesktopColumnWidth
@@ -138,7 +138,7 @@ class ConfigurationVendorsDashboard extends React.Component
 	// Close right panel
 	closeRightPanel() {
 		this.setState({
-			showRightPanel: false,
+			showRightPanel: !this.state.showRightPanel,
 			mainPanelColumnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth

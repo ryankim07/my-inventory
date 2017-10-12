@@ -5,7 +5,7 @@ import { upperFirstLetter } from "../../helper/utils";
 class PropertyRoomsList extends React.Component
 {
 	shouldComponentUpdate(nextProps, nextState) {
-		return nextProps.state.property !== this.props.property;
+		return nextProps.property !== this.props.property;
 	}
 
 	render() {

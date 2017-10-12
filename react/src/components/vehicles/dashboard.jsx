@@ -66,7 +66,7 @@ class VehiclesDashboard extends React.Component
 					'mobileWidth': mainDefaultMobileColumnWidth,
 					'desktopWidth': mainDefaultDesktopColumnWidth
 				},
-				showRightPanel: false,
+				showRightPanel: !this.state.showRightPanel,
 				flashMessage: null
 			});
 		}
@@ -127,7 +127,7 @@ class VehiclesDashboard extends React.Component
 		this.setState({
 			vehicle: vehicle,
 			isEditingMode: isEditingMode,
-			showRightPanel: true,
+			showRightPanel: this.state.showRightPanel,
 			mainPanelColumnCss: {
 				'mobileWidth': mainShrinkedMobileColumnWidth,
 				'desktopWidth': mainShrinkedDesktopColumnWidth
@@ -148,7 +148,7 @@ class VehiclesDashboard extends React.Component
 	// Close right panel
 	closeRightPanel() {
 		this.setState({
-			showRightPanel: false,
+			showRightPanel: !this.state.showRightPanel,
 			mainPanelColumnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth

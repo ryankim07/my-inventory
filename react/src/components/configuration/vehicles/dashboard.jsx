@@ -81,7 +81,7 @@ class ConfigurationVehiclesDashboard extends React.Component
 	onHandleMainPanel(id) {
 		this.setState({
 			mfg: this.state.manufacturers.find(obj => obj.id === id),
-			showRightPanel: this.state.showRightPanel,
+			showRightPanel: true,
 			mainPanelColumnCss: {
 				'mobileWidth': mainShrinkedMobileColumnWidth,
 				'desktopWidth': mainShrinkedDesktopColumnWidth
@@ -96,7 +96,7 @@ class ConfigurationVehiclesDashboard extends React.Component
 
 		this.setState({
 			model: model,
-			showRightPanel: this.state.showRightPanel,
+			showRightPanel: true,
 			mainPanelColumnCss: {
 				'mobileWidth': mainShrinkedMobileColumnWidth,
 				'desktopWidth': mainShrinkedDesktopColumnWidth
@@ -107,7 +107,7 @@ class ConfigurationVehiclesDashboard extends React.Component
 	// Close right panel
 	closeRightPanel() {
 		this.setState({
-			showRightPanel: !this.state.showRightPanel,
+			showRightPanel: false,
 			mainPanelColumnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth

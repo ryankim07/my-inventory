@@ -78,6 +78,13 @@ let VendorsStore = assign({}, EventEmitter.prototype, {
 			return false;
 		}
 
+		// Remove existing entry
+		_.remove(_vendors, (storeVendor) => {
+			return parseInt(results.vendor.id) === storeVendor.id;
+		});
+
+		// Add new entry
+		_vendors.push(results.vendor);
 		_vendor = results.vendor;
 		_storeMsg = results.msg;
 		_rightPanel = false;
@@ -90,7 +97,7 @@ let VendorsStore = assign({}, EventEmitter.prototype, {
 		}
 
 		_.remove(_vendors, (storeVendor) => {
-			return parseInt(results.id) == storeVendor.id;
+			return parseInt(results.id) === storeVendor.id;
 		});
 
 		_storeMsg = results.msg;

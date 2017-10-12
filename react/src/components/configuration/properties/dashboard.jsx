@@ -113,7 +113,7 @@ class ConfigurationPropertiesDashboard extends React.Component
 		this.setState({
 			paint: paint,
 			isEditingMode: isEditingMode,
-			showRightPanel: this.state.showRightPanel,
+			showRightPanel: true,
 			mainPanelColumnCss: {
 				'mobileWidth': mainShrinkedMobileColumnWidth,
 				'desktopWidth': mainShrinkedDesktopColumnWidth
@@ -134,7 +134,7 @@ class ConfigurationPropertiesDashboard extends React.Component
 	// Close right panel
 	closeRightPanel() {
 		this.setState({
-			showRightPanel: !this.state.showRightPanel,
+			showRightPanel: false,
 			mainPanelColumnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth

@@ -75,6 +75,13 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 			return false;
 		}
 
+		// Remove existing entry
+		_.remove(_properties, (storeProperty) => {
+			return parseInt(results.property.id) === storeProperty.id;
+		});
+
+    	// Add new entry
+		_properties.push(results.property);
 		_property = results.property;
 		_storeMsg = results.msg;
 		_rightPanel = false;

@@ -17,9 +17,9 @@ class PropertyInfoView extends React.Component
 
 	// When component from same route are unmounting and need to remount
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.state.property !== this.state.property) {
+		if (nextProps.property !== this.state.property) {
 			this.setState({
-				property: nextProps.state.property
+				property: nextProps.property
 			});
 		}
 	}
@@ -88,7 +88,7 @@ class PropertyInfoView extends React.Component
 	}
 
 	render() {
-		let property 		 = this.state.property;
+		let property 		 = this.props.property;
 		let address  		 = property.address === undefined || Object.keys(property.address).length === 0 ? null : property.address;
 		let features		 = property.features === undefined || property.features.id === "" ? null : property.features;
 		let exteriorFeatures = property.exterior_features === undefined || property.exterior_features.id === "" ? null : property.exterior_features;

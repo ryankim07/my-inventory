@@ -78,6 +78,13 @@ let PaintsStore = assign({}, EventEmitter.prototype, {
 			return false;
 		}
 
+		// Remove existing entry
+		_.remove(_paints, (storePaint) => {
+			return parseInt(results.paint.id) === storePaint.id;
+		});
+
+		// Add new entry
+		_paints.push(results.paint);
 		_paint = results.paint;
 		_storeMsg = results.msg;
 		_rightPanel = false;
@@ -90,7 +97,7 @@ let PaintsStore = assign({}, EventEmitter.prototype, {
 		}
 
 		_.remove(_paints, (storePaint) => {
-			return parseInt(results.id) == storePaint.id;
+			return parseInt(results.id) === storePaint.id;
 		});
 
 		_storeMsg = results.msg;

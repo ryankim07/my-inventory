@@ -67,6 +67,13 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
 			return false;
 		}
 
+		// Remove existing entry
+		_.remove(_vehicles, (storeVehicle) => {
+			return parseInt(results.vehicle.id) === storeVehicle.id;
+		});
+
+		// Add new entry
+		_vehicles.push(results.vehicle);
 		_vehicle = results.vehicle;
 		_storeMsg = results.msg;
 		_rightPanel = false;

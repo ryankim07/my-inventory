@@ -49,7 +49,7 @@ class AddressEntity
     private $state;
 
     /**
-     * @ORM\Column(type="integer", length=10)
+     * @ORM\Column(type="string", length=10)
      * @Assert\NotBlank()
      */
     private $zip;

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Vendors Controller
+ */
+
 namespace AppBundle\Controller\Vendors;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -67,7 +71,7 @@ class VendorsController extends FOSRestController
         $data = json_decode(stripslashes($request->get('data')), true);
 
         // Call service to save
-        $service = $this->get('Paints');
+        $service = $this->get('Vendors');
         $results = $service->save($data);
 
         return new View($results, Response::HTTP_OK);

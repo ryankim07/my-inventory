@@ -52,8 +52,7 @@ class VendorsEntity
     private $state;
 
     /**
-     * @ORM\Column(type="integer", length=10)
-     * @Assert\Blank()
+     * @ORM\Column(type="string", length=10)
      */
     private $zip;
 

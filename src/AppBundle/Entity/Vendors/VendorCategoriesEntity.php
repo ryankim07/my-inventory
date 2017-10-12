@@ -79,7 +79,7 @@ class VendorCategoriesEntity
      *
      * @return VendorsEntity
      */
-    public function addPaint(VendorsEntity $vendors)
+    public function addVendor(VendorsEntity $vendors)
     {
         $this->vendors[] = $vendors;
         $vendors->setCategory($this);

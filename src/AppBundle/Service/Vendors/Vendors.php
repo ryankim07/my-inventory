@@ -96,11 +96,8 @@ class Vendors
 
             $this->entity = $this->existingVendor ? $this->existingVendor : new VendorsEntity();
 
-            $op = !$this->existingVehicle ? 'added' : 'updated';
+            $op = !$this->existingVendor ? 'added' : 'updated';
             $msg = "Vendor successfully {$op}.";
-
-            // Save or update vendor
-            $this->_save($data);
 
             // Save or update vendor
             if (!$this->_save($data)) {
@@ -125,15 +122,15 @@ class Vendors
     private function _save($data)
     {
         $this->entity->setCategoryId($data['category_id']);
-        $this->entity->setCompany($data['brand']);
+        $this->entity->setCompany($data['company']);
         $this->entity->setStreet($data['street']);
         $this->entity->setCity($data['city']);
         $this->entity->setState($data['state']);
         $this->entity->setZip($data['zip']);
-        $this->entity->setCounty($data['company']);
+        $this->entity->setCountry($data['country']);
         $this->entity->setPhone($data['phone']);
-        $this->entity->setUrl($data['url']);
         $this->entity->setContact($data['contact']);
+        $this->entity->setUrl($data['url']);
         $this->entity->setNotes($data['notes']);
 
         if (!$this->existingVendor) {
@@ -164,7 +161,7 @@ class Vendors
             $this->em->flush();
 
             return [
-                'msg' => 'Vendor color successfully deleted.',
+                'msg' => 'Vendor successfully deleted.',
                 'id'  => $id
             ];
         } catch(\Exception $e) {

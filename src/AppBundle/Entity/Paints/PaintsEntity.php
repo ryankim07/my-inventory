@@ -38,13 +38,11 @@ class PaintsEntity
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @ORM\Column(type="integer", length=10)
-     * @Assert\NotBlank()
      */
     private $number;
 

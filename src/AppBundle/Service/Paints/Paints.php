@@ -31,7 +31,7 @@ class Paints
     }
 
     /**
-     * Get all rooms
+     * Get all paints
      *
      * @return mixed|string
      */
@@ -41,7 +41,7 @@ class Paints
     }
 
     /**
-     * Find specific room
+     * Find specific paint
      *
      * @param $id
      * @return mixed|null|object|string

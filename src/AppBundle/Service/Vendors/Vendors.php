@@ -31,7 +31,7 @@ class Vendors
     }
 
     /**
-     * Get all rooms
+     * Get all vendors
      *
      * @return mixed|string
      */
@@ -41,7 +41,7 @@ class Vendors
     }
 
     /**
-     * Find specific room
+     * Find specific vendor
      *
      * @param $id
      * @return mixed|null|object|string

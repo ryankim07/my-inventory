@@ -23,7 +23,6 @@ class VendorsEntity
 
     /**
      * @ORM\Column(type="integer", length=11)
-     * @Assert\NotBlank()
      */
     private $categoryId;
 
@@ -35,19 +34,16 @@ class VendorsEntity
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\Blank()
      */
     private $street;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Assert\Blank()
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=2)
-     * @Assert\Blank()
      */
     private $state;
 
@@ -57,26 +53,22 @@ class VendorsEntity
     private $zip;
 
     /**
-     * @ORM\Column(type="string", length=3)
-     * @Assert\Blank()
+     * @ORM\Column(type="string", length=100)
      */
     private $country;
 
     /**
      * @ORM\Column(type="string", length=15)
-     * @Assert\Blank()
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Blank()
      */
     private $url;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\Blank()
      */
     private $contact;
 

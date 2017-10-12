@@ -6,6 +6,7 @@ import { upperFirstLetter, phoneFormat, urlFormat } from "../../../helper/utils"
 
 class ConfigurationVendor extends React.Component
 {
+	// Constructor
     constructor(props) {
         super(props);
 
@@ -18,10 +19,12 @@ class ConfigurationVendor extends React.Component
 		this.handleFormSubmit   = this.handleFormSubmit.bind(this);
     }
 
+    // When it receives new values
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.vendor !== this.props.vendor) {
 			this.setState({
-				vendor: nextProps.vendor
+				vendor: nextProps.vendor,
+				submit: true
 			});
 		}
 	}
@@ -70,6 +73,7 @@ class ConfigurationVendor extends React.Component
 		this.props.onHandleFormSubmit(this.state.vendor);
 	}
 
+	// Render
     render() {
 		let vendor = this.state.vendor;
 
@@ -88,15 +92,14 @@ class ConfigurationVendor extends React.Component
 
 		let vendorForm =
 			<form onSubmit={ this.handleFormSubmit }>
-				<div className="form-group required">
+				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Category</label>
 						<div className="input-group">
 							<select
 								onChange={ this.onHandleFormChange.bind(this, 'category_id') }
 								value={ vendor.category_id }
-								className="form-control input-sm"
-								required="required">
+								className="form-control input-sm">
 								<option value="">Select One</option>
 								{ categoryOptions }
 							</select>

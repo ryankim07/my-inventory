@@ -15,7 +15,7 @@ let VendorsAction = {
 			})
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.PAINTS_ERROR,
+					actionType: ActionConstants.VENDORS_ERROR,
 					results: resp.status + ' : ' + resp.msg
 				});
 			});

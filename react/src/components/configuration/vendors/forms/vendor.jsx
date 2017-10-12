@@ -1,4 +1,6 @@
 import React from 'react';
+import classNames from 'classnames';
+import InputText from '../../../helper/forms/input_text';
 import StatesDropdown from '../../../helper/states_dropdown';
 import { upperFirstLetter, phoneFormat, urlFormat } from "../../../helper/utils"
 
@@ -8,7 +10,8 @@ class ConfigurationVendor extends React.Component
         super(props);
 
         this.state = {
-			vendor: this.props.vendor
+			vendor: this.props.vendor,
+			submit: true
 		}
 
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
@@ -27,6 +30,7 @@ class ConfigurationVendor extends React.Component
     onHandleFormChange(propertyName, event) {
     	let vendor 	    = this.state.vendor;
         let chosenValue = event.target.value;
+        let submit      = true;
 
         switch (propertyName) {
 			case 'company':
@@ -40,6 +44,11 @@ class ConfigurationVendor extends React.Component
 				vendor[propertyName] = phoneFormat(chosenValue);
 			break;
 
+			case 'zip':
+				let regex = /^(?:\d{5})?$/;
+				submit = regex.test(chosenValue);
+			break;
+
 			case 'url':
 				vendor[propertyName] = urlFormat(chosenValue);
 			break;
@@ -49,7 +58,8 @@ class ConfigurationVendor extends React.Component
         }
 
         this.setState({
-			vendor: vendor
+			vendor: vendor,
+			submit: submit
         });
     }
 
@@ -68,6 +78,12 @@ class ConfigurationVendor extends React.Component
 			return (
 				<option key={ catIndex } value={ cat.id }>{ upperFirstLetter(cat.name) }</option>
 			);
+		});
+
+		// Submit className
+		let submitClass = classNames({
+			'btn': true,
+			'disabled': !this.state.submit
 		});
 
 		let vendorForm =
@@ -143,11 +159,14 @@ class ConfigurationVendor extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Zip</label>
 						<div className="input-group">
-							<input
-								type="text"
-								onChange={ this.onHandleFormChange.bind(this, 'zip') }
+							<InputText
+								uniqueName="zip"
 								value={ vendor.zip }
-								className="form-control input-sm"
+								required={ false }
+								minCharacters={ 5 }
+								onChange={ this.onHandleFormChange }
+								errorMessage="Zip code is invalid"
+								emptyMessage=""
 							/>
 						</div>
 					</div>
@@ -228,7 +247,7 @@ class ConfigurationVendor extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-12">
 						<div className="clearfix">
-							<input type="submit" value="Submit" className="btn"/>
+							<input type="submit" value="Submit" className={ submitClass }/>
 						</div>
 					</div>
 				</div>

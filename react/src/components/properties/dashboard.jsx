@@ -103,7 +103,7 @@ class PropertiesDashboard extends React.Component
 		let openRightPanel 	= PropertiesStore.showRightPanel();
 
 		if (!isAuthenticated){
-			this.context.router.push("/auth/login");
+			this.context.router.push("/auth/forms/login");
 			return false;
 		}
 

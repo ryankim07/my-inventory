@@ -1,10 +1,10 @@
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import ActionConstants from '../constants/action-constants';
-import User from '../services/User';
+import Users from '../services/Users';
 
 let UsersAction = {
 	getUsers: function() {
-		User
+		Users
 			.get('http://mcs.dev/api/users')
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
@@ -21,11 +21,11 @@ let UsersAction = {
 	},
 
 	addUser: function(data) {
-		User
+		Users
 			.post('http://mcs.dev/api/user', data)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.ADD_NEW_USER,
+					actionType: ActionConstants.ADD_USER,
 					results: resp
 				});
 			})
@@ -38,7 +38,7 @@ let UsersAction = {
 	},
 
 	updateUser: function(data) {
-		User
+		Users
 			.post('http://mcs.dev/api/user', data, data.assets)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
@@ -55,7 +55,7 @@ let UsersAction = {
 	},
 
 	removeUser: function(id) {
-		User
+		Users
 			.delete('http://mcs.dev/api/users/' + id)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({

@@ -5,7 +5,7 @@ import AuthStore from '../stores/auth/store';
 /**
  * Wrapper for calling a API
  */
-let User = {
+let Users = {
 	get: function (url) {
 		return new Promise(function (resolve, reject) {
 			request
@@ -48,4 +48,4 @@ let User = {
 	}
 };
 
-export default User;
+export default Users;

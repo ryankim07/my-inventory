@@ -5,7 +5,7 @@ import Auth from '../services/Auth';
 let AuthAction = {
 	login: function(data)  {
 		Auth
-			.post('http://mcs.dev/login', data)
+			.post('http://mcs.dev/auth/login', data)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.LOGIN_USER,
@@ -15,7 +15,8 @@ let AuthAction = {
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.LOGIN_USER_ERROR,
-					results: resp.status + ' : ' + resp.msg
+					status: resp.status,
+					results: resp.msg
 				});
 			});
 	}

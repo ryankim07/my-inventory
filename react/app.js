@@ -4,12 +4,14 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import AuthStore from './src/stores/auth/store';
 import Main from './src/components/main';
 import Home from './src/components/home';
-import Login from './src/components/auth/login';
-import Logout from './src/components/auth/logout';
-import Signup from './src/components/auth/signup';
+import AuthLogin from './src/components/auth/forms/login';
+import AuthLogout from './src/components/auth/forms/logout';
+import UsersDashboard from './src/components/users/dashboard';
+import UserForm from './src/components/users/forms/user';
+import UsersList from './src/components/users/list';
 import VehicleDashboard from './src/components/vehicles/dashboard';
-import VehicleForm from './src/components/vehicles/main/forms/vehicle';
-import VehiclesList from './src/components/vehicles/main/list';
+import VehicleForm from './src/components/vehicles/forms/vehicle';
+import VehiclesList from './src/components/vehicles/list';
 import PropertiesDashboard from './src/components/properties/dashboard';
 import PropertyForm from './src/components/properties/main/forms/property';
 import PropertiesList from './src/components/properties/main/list';
@@ -30,7 +32,7 @@ function requireAuth(nextState, replace)
 {
 	if (!AuthStore.isAuthenticated()) {
 		replace({
-			pathname: '/auth/login',
+			pathname: '/auth/forms/login',
 			state: {nextPathname: nextState.location.pathname}
 		})
 	}
@@ -38,27 +40,31 @@ function requireAuth(nextState, replace)
 
 ReactDOM.render(
     <Router history={ browserHistory }>
-        <Route path="/auth/login" component={ Login } />
-		<Route path="/auth/logout" component={ Logout } />
+		<Route path="/auth/forms/login" component={ AuthLogin } />
+		<Route path="/auth/forms/logout" component={ AuthLogout } />
         <Route component={ Main} onEnter={ requireAuth }>
             <IndexRoute component={ Home } />
             <Route path="/" component={ Home } />
-			<Route path="/auth/signup" component={ Signup } />
+
+			<Route path="/users/dashboard" component={ UsersDashboard }>
+				<Route path="/users/forms/user" component={ UserForm } />
+				<Route path="/users" component={ UsersList } />
+			</Route>
 
             <Route path="/vehicles/dashboard" component={ VehicleDashboard }>
-                <Route path="/vehicle/vehicle" component={ VehicleForm } />
+                <Route path="/vehicle/forms/vehicle" component={ VehicleForm } />
                 <Route path="/vehicles" component={ VehiclesList } />
             </Route>
 
 			<Route path="/properties/dashboard" component={ PropertiesDashboard }>
-				<Route path="/properties" component={ PropertiesList } />
-				<Route path="/properties/forms/property" component={ PropertyForm } />
+				<Route path="/properties/main/forms/property" component={ PropertyForm } />
 				<Route path="/properties/info/view" component={ PropertyInfoView } />
 				<Route path="/property/info/forms/features" component={ PropertyFeaturesForm } />
 				<Route path="/property/info/forms/exterior_features" component={ PropertyExteriorFeaturesForm } />
 				<Route path="/property/info/forms/interior_features" component={ PropertyInteriorFeaturesForm } />
 				<Route path="/property/rooms/forms/room" component={ PropertyRoomForm } />
 				<Route path="/properties/rooms" component={ PropertyRoomsList } />
+				<Route path="/properties" component={ PropertiesList } />
 			</Route>
 
 			<Route exact path="/configuration/vehicles/dashboard/:section" component={ ConfigurationVehiclesDashboard }>

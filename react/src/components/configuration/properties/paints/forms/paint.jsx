@@ -186,7 +186,7 @@ class ConfigurationPaint extends React.Component
 			</form>
 
         return (
-			<div className="row" id="paint-add">
+			<div className="row" id="paint-form">
 				<div className="panel panel-info">
 					<div className="panel-heading">
 						<div className="row">

@@ -257,7 +257,7 @@ class ConfigurationVendor extends React.Component
 			</form>
 
         return (
-			<div className="row" id="vendor-add">
+			<div className="row" id="vendor-form">
 				<div className="panel panel-info">
 					<div className="panel-heading">
 						<div className="row">

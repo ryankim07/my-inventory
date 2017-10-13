@@ -4,8 +4,8 @@ parameters:
 #    parameter_name: value
 
 services:
-    User:
-        class: AppBundle\Service\Auth\User
+    Users:
+        class: AppBundle\Service\Auth\Users
         arguments:
             - "@doctrine.orm.default_entity_manager"
 

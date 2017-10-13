@@ -79,7 +79,7 @@ class PropertiesList extends React.Component
 				assets: []
 			}
 
-		this.props.onHandleRightPanel(property, isEditingMode, 'property-add');
+		this.props.onHandleRightPanel(property, isEditingMode, 'property-form');
 	}
 
 	render() {

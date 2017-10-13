@@ -4,8 +4,8 @@ import VehiclesAction from '../../actions/vehicles-action';
 import VehiclesStore from '../../stores/vehicles/store';
 import VehiclesMainPanel from './main_panel';
 import VehiclesRightPanel from './right_panel';
-import VehicleForm from './main/forms/vehicle';
-import VehiclesList from './main/list';
+import VehicleForm from './forms/vehicle';
+import VehiclesList from './list';
 import FlashMessage from '../helper/flash_message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -80,7 +80,7 @@ class VehiclesDashboard extends React.Component
 		let openRightPanel  = VehiclesStore.showRightPanel();
 
 		if (!isAuthenticated){
-			this.context.router.push("/auth/login");
+			this.context.router.push("/auth/forms/login");
 			return false;
 		}
 

@@ -1,12 +1,12 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import PaintsAction from '../../../actions/paints-action';
-import PaintsStore from '../../../stores/paints/store';
-import ConfigurationMainPanel from './../main_panel';
-import ConfigurationRightPanel from './../right_panel';
-import ConfigurationPaintsList from './paints/list';
-import ConfigurationPaint from './paints/forms/paint';
-import FlashMessage from '../../helper/flash_message';
+import UsersAction from '../../actions/users-action';
+import UsersStore from '../../stores/users/store';
+import UsersMainPanel from './main_panel';
+import UsersRightPanel from './right_panel';
+import UserForm from './forms/user';
+import UsersList from './list';
+import FlashMessage from '../helper/flash_message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
 let mainDefaultDesktopColumnWidth = 'col-md-12';
@@ -15,18 +15,16 @@ let mainShrinkedDesktopColumnWidth = 'col-md-8';
 let rightPanelMobileColumnWidth = 'col-xs-4';
 let rightPanelDesktopColumnWidth = 'col-md-4';
 
-class ConfigurationPropertiesDashboard extends React.Component
+class UsersDashboard extends React.Component
 {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			paints: [],
-			paint: {},
-			vendors: [],
-			isEditingMode: false,
+			users: [],
+			user: {},
 			loader: true,
-			mainPanel: this.props.params.section,
+			isEditingMode: false,
 			showRightPanel: false,
 			flashMessage: null,
 			mainPanelColumnCss: {
@@ -39,32 +37,45 @@ class ConfigurationPropertiesDashboard extends React.Component
 			}
 		};
 
-		this._onChange 		 	= this._onChange.bind(this);
+		this._onChange 		  	= this._onChange.bind(this);
 		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
-		this.setFlashMessage 	= this.setFlashMessage.bind(this);
-		this.closeRightPanel 	= this.closeRightPanel.bind(this);
+		this.onHandleRemove 	= this.onHandleRemove.bind(this);
+		this.setFlashMessage  	= this.setFlashMessage.bind(this);
+		this.closeRightPanel  	= this.closeRightPanel.bind(this);
 	}
 
 	componentWillMount() {
-		PaintsStore.addChangeListener(this._onChange);
-		PaintsStore.unsetStoreFlashMessage();
+		UsersStore.addChangeListener(this._onChange);
+		UsersStore.unsetStoreFlashMessage();
 	}
 
 	componentDidMount() {
-		PaintsAction.getPaintsAndVendors();
+		UsersAction.getUsers();
 	}
 
 	componentWillUnmount() {
-		PaintsStore.removeChangeListener(this._onChange);
+		UsersStore.removeChangeListener(this._onChange);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.location.action !== 'POP') {
+			this.setState({
+				mainPanelColumnCss: {
+					'mobileWidth': mainDefaultMobileColumnWidth,
+					'desktopWidth': mainDefaultDesktopColumnWidth
+				},
+				showRightPanel: false,
+				flashMessage: null
+			});
+		}
 	}
 
 	_onChange() {
-		let paints		    = PaintsStore.getPaints();
-		let vendors			= PaintsStore.getVendors();
-		let flashMessage 	= PaintsStore.getStoreFlashMessage();
-		let isAuthenticated = PaintsStore.isAuthenticated();
-		let openRightPanel  = PaintsStore.showRightPanel();
+		let users 			= UsersStore.getUsers();
+		let flashMessage 	= UsersStore.getStoreFlashMessage();
+		let isAuthenticated = UsersStore.isAuthenticated();
+		let openRightPanel  = UsersStore.showRightPanel();
 
 		if (!isAuthenticated){
 			this.context.router.push("/auth/forms/login");
@@ -72,8 +83,7 @@ class ConfigurationPropertiesDashboard extends React.Component
 		}
 
 		this.setState({
-			paints: paints,
-			vendors: vendors,
+			users: users,
 			showRightPanel: !!openRightPanel,
 			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,
@@ -85,33 +95,31 @@ class ConfigurationPropertiesDashboard extends React.Component
 	}
 
 	// Handle submit
-	onHandleFormSubmit(paint) {
+	onHandleFormSubmit(user) {
 		if (!this.state.isEditingMode) {
-			PaintsAction.addPaint(paint);
+			UsersAction.addUser(user);
 		} else {
-			PaintsAction.updatePaint(paint);
+			UsersAction.updateUser(user);
 		}
 	}
 
 	// Handle right panel
 	onHandleRightPanel(id) {
 		let isEditingMode = !!id;
-		let paint = isEditingMode ?
-			this.state.paints.find(obj => obj.id === id) :
+		let user = isEditingMode ?
+			this.state.users.find(obj => obj.id === id) :
 			{
 				id: '',
-				vendor_id: '',
-				brand: '',
-				name: '',
-				number: '',
-				color: '',
-				hex: '',
-				rgb: '',
-				notes: ''
+				first_name: '',
+				last_name: '',
+				username: '',
+				password: '',
+				email: '',
+				is_active: ''
 			}
 
 		this.setState({
-			paint: paint,
+			user: user,
 			isEditingMode: isEditingMode,
 			showRightPanel: true,
 			mainPanelColumnCss: {
@@ -123,7 +131,7 @@ class ConfigurationPropertiesDashboard extends React.Component
 
 	// Handle delete
 	onHandleRemove(id) {
-		PaintsAction.removeVendor(id);
+		UsersAction.removeUser(id);
 	}
 
 	// Set flash message
@@ -147,35 +155,34 @@ class ConfigurationPropertiesDashboard extends React.Component
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success" />}
 
-				<ConfigurationMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
-					<ConfigurationPaintsList
+				<UsersMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
+					<UsersList
 						loader={ this.state.loader }
-						paints={ this.state.paints }
-						paint={ this.state.paint }
+						user={ this.state.user }
+						users={ this.state.users }
 						onHandleRightPanel={ this.onHandleRightPanel }
 						onHandleRemove={ this.onHandleRemove }
 					/>
-				</ConfigurationMainPanel>
+				</UsersMainPanel>
 
 				{
 					this.state.showRightPanel ?
-						<ConfigurationRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
-							<ConfigurationPaint
-								paint={ this.state.paint }
-								vendors={ this.state.vendors }
+						<UsersRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
+							<UserForm
+								user={ this.state.user }
 								isEditingMode={ this.state.isEditingMode }
 								onHandleFormSubmit={ this.onHandleFormSubmit }
 								closeRightPanel={ this.closeRightPanel }
 							/>
-						</ConfigurationRightPanel> : null
+						</UsersRightPanel> : null
 				}
 			</div>
 		)
 	}
 }
 
-ConfigurationPropertiesDashboard.contextTypes = {
+UsersDashboard.contextTypes = {
 	router: PropTypes.object.isRequired
 }
 
-export default ConfigurationPropertiesDashboard;
+export default UsersDashboard;

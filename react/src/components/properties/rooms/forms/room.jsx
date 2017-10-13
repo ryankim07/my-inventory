@@ -285,7 +285,7 @@ class PropertyRoomForm extends React.Component
 			</form>
 
         return (
-			<div className="row" id="room-add">
+			<div className="row" id="room-form">
 				<div className="panel panel-info">
 					<div className="panel-heading">
 						<div className="row">

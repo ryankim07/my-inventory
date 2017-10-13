@@ -39,10 +39,7 @@ class Header extends React.Component
                                 <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Users <span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <Link to="/auth/signup" className="menu-link"><i className="fa fa-user menu-link-icon" aria-hidden="true" /> Add</Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/auth/dashboard" className="menu-link"><i className="fa fa-list-alt menu-link-icon" aria-hidden="true" /> All</Link>
+                                        <Link to="/users/dashboard" className="menu-link"><i className="fa fa-list-alt menu-link-icon" aria-hidden="true" /> List</Link>
                                     </li>
                                 </ul>
                             </li>
@@ -80,7 +77,7 @@ class Header extends React.Component
                                 <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ryan<span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <Link to="/auth/logout" className="menu-link"><i className="fa fa-car menu-link-icon" aria-hidden="true" /> Logout</Link>
+                                        <Link to="/auth/forms/logout" className="menu-link"><i className="fa fa-car menu-link-icon" aria-hidden="true" /> Logout</Link>
                                     </li>
                                 </ul>
                             </li>

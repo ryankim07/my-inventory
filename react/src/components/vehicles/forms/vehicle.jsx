@@ -1,9 +1,10 @@
 import React from 'react';
-import Uploader from '../../../helper/uploader';
-import { upperFirstLetter } from "../../../helper/utils";
+import Uploader from '../../helper/uploader';
+import { upperFirstLetter } from "../../helper/utils";
 
 class VehicleForm extends React.Component
 {
+	// Constructor
     constructor(props) {
         super(props);
 
@@ -15,6 +16,7 @@ class VehicleForm extends React.Component
 		this.handleFormSubmit   = this.handleFormSubmit.bind(this);
     }
 
+    // Next state change
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.vehicle !== this.props.vehicle) {
 			this.setState({
@@ -66,6 +68,7 @@ class VehicleForm extends React.Component
 		this.props.onHandleFormSubmit(this.state.vehicle);
 	}
 
+	// Render
     render() {
     	let manufacturers = this.props.manufacturers;
 		let vehicle       = this.state.vehicle;
@@ -224,7 +227,7 @@ class VehicleForm extends React.Component
 			</form>
 
         return (
-			<div className="row" id="vehicle-add">
+			<div className="row" id="vehicle-form">
 				<div className="panel panel-info">
 					<div className="panel-heading">
 						<div className="row">

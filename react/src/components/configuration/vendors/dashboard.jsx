@@ -68,7 +68,7 @@ class ConfigurationVendorsDashboard extends React.Component
 		let openRightPanel  = VendorsStore.showRightPanel();
 
 		if (!isAuthenticated){
-			this.context.router.push("/auth/login");
+			this.context.router.push("/auth/forms/login");
 			return false;
 		}
 

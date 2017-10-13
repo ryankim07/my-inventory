@@ -6,26 +6,8 @@ import _ from 'lodash';
 
 let _users = [];
 let _user = {};
-let _userAdded = false;
 let _rightPanel = false;
 let _storeMsg;
-
-function setAllUsers(vehicles) {
-	_users = vehicles ;
-}
-
-function setUser(vehicle) {
-	_user = vehicle ;
-}
-
-function flagNewUser() {
-	_userAdded = true;
-}
-
-function openRightPanel(show) {
-	_rightPanel = show;
-}
-
 function setStoreFlashMessage(msg) {
 	_storeMsg = msg;
 }
@@ -71,33 +53,19 @@ let UsersStore = assign({}, EventEmitter.prototype, {
 		_rightPanel = false;
 	},
 
-	editUser: function (user) {
-		setStoreFlashMessage('');
-		setUser(user);
-	},
-
-	getUserToUpdate: function () {
-		return _user;
-	},
-
-	unsetUserToUpdate: function () {
-		return _user = {};
-	},
-
-	isNewUserAdded: function () {
-		return _userAdded;
-	},
-
-	unFlagNewUser: function() {
-		return _userAdded = false;
-	},
-
-	updateUser: function(results) {
+	updateUser: function (results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
 			return false;
 		}
 
+		// Remove existing entry
+		_.remove(_users, (storeUser) => {
+			return parseInt(results.user.id) === storeUser.id;
+		});
+
+		// Add new entry
+		_users.push(results.user);
 		_user = results.user;
 		_storeMsg = results.msg;
 		_rightPanel = false;
@@ -109,8 +77,8 @@ let UsersStore = assign({}, EventEmitter.prototype, {
 			return false;
 		}
 
-		_.remove(users, (storeUser) => {
-			return parseInt(user.id) == storeUser.id;
+		_.remove(_users, (storeUser) => {
+			return parseInt(results.id) == storeUser.id;
 		});
 
 		_storeMsg = results.msg;
@@ -145,13 +113,8 @@ UsersStore.dispatchToken = Dispatcher.register(function(payload)
 	let results = action.results
 
 	switch(action.actionType) {
-        case ActionConstants.ADD_NEW_USER:
+        case ActionConstants.ADD_USER:
             UsersStore.addUser(results.msg);
-		break;
-
-        case ActionConstants.EDIT_USER:
-			UsersStore.editUser(action.user, action.showRightPanel);
-			openRightPanel(true);
 		break;
 
         case ActionConstants.UPDATE_USER:

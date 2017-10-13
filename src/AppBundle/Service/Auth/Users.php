@@ -115,7 +115,7 @@ class Users
             if (is_null($data['groups'])) {
                 $groupsEntity->setUsername($data['username']);
                 $groupsEntity->setRole($data['role']);
-                $this->entity->addGroup($newGroup);
+                $this->entity->addGroup($groupsEntity);
             }
 
             if (!$this->existingUser) {

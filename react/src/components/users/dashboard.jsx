@@ -106,8 +106,22 @@ class UsersDashboard extends React.Component
 	// Handle right panel
 	onHandleRightPanel(id) {
 		let isEditingMode = !!id;
+
+		// If a particular user is edited without submit and user selects
+		// a new user to edit, we need to restore old user values.  Therefore,
+		// we need to clone object to stop js original object reference
+		let users = JSON.parse(JSON.stringify(this.state.users));
+
+		let groupsObj = {
+			id: '',
+			username: '',
+			role: '',
+			users: []
+		};
+
+		// Instantiate new object or load existing object if found
 		let user = isEditingMode ?
-			this.state.users.find(obj => obj.id === id) :
+			users.find(obj => obj.id === id) :
 			{
 				id: '',
 				first_name: '',
@@ -116,14 +130,12 @@ class UsersDashboard extends React.Component
 				password: '',
 				email: '',
 				is_enabled: '',
-				groups: [
-					{
-						id: '',
-						role: '',
-						username: ''
-					}
-				]
+				groups: [groupsObj]
 			}
+
+		if (isEditingMode && user.groups.length === 0) {
+			user.groups.push(groupsObj);
+		}
 
 		this.setState({
 			user: user,

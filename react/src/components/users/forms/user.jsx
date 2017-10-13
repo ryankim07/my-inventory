@@ -1,5 +1,5 @@
 import React from 'react';
-import { upperFirstLetter } from '../../helper/utils';
+import { upperFirstLetter, arrayDiff } from '../../helper/utils';
 
 class AuthForm extends React.Component
 {
@@ -8,7 +8,8 @@ class AuthForm extends React.Component
 		super(props);
 
 		this.state = {
-			user: this.props.user
+			user: this.props.user,
+			clonedGroup: JSON.parse(JSON.stringify(this.props.user.groups))
 		};
 
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
@@ -17,9 +18,10 @@ class AuthForm extends React.Component
 
     // Next state change
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.user !== this.props.user) {
+		if (nextProps.user !== this.state.user) {
 			this.setState({
-				user: nextProps.user
+				user: nextProps.user,
+				clonedGroup: JSON.parse(JSON.stringify(nextProps.user.groups))
 			});
 		}
 	}
@@ -35,12 +37,49 @@ class AuthForm extends React.Component
 				user[propertyName] = upperFirstLetter(chosenValue);
 			break;
 
-			case 'groups':
-				let allGroups = user.groups;
+			case 'username':
+				let username = chosenValue.toLowerCase();
 
-				let selected = groups.slice.call(event.target.selectedOptions).map(o => {
-					return o.value;
+				// Add username to all groups
+				user.groups.map(group => {
+					group['username'] = username;
 				});
+
+				user[propertyName] = username;
+			break;
+
+			case 'groups':
+				let existingGroup = user.groups;
+				let newGroup 	  = [];
+
+				// Iterate selected options
+				existingGroup.slice.call(event.target.selectedOptions).map(role => {
+					let selectedRole = role.value;
+
+					// Find out if the selected role already exists
+					let foundGroup = existingGroup.find(existingRole => existingRole.role === selectedRole);
+
+					// Add new role object
+					if (!foundGroup) {
+						foundGroup = {
+							id: '',
+							username: this.state.user.username,
+							role: selectedRole,
+							users: []
+						};
+
+						let group = this.state.clonedGroup.find(clonedRole => clonedRole.role === foundGroup.role);
+
+						return newGroup.push(!group ? foundGroup : group);
+					} else {
+						// Make sure if an existing object with all the properties already exists
+						let group = this.state.clonedGroup.find(clonedRole => clonedRole.role === foundGroup.role);
+
+						newGroup.push(!group ? foundGroup : group);
+					}
+				});
+
+				user[propertyName] = newGroup;
 			break;
 
 			default:
@@ -70,7 +109,7 @@ class AuthForm extends React.Component
 			<form onSubmit={ this.handleFormSubmit }>
 				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Role</label>
+						<label className="control-label">Groups</label>
 						<div className="input-group">
 							<select
 								multiple={ true }
@@ -78,9 +117,9 @@ class AuthForm extends React.Component
 								value={ rolesOptions }
 								className="form-control input-sm"
 								required="required">
-								<option value="">Select One</option>
 								<option value="ROLE_USER">User</option>
 								<option value="ROLE_ADMIN">Admin</option>
+								<option value="ROLE_SUPER_ADMIN">Super Admin</option>
 							</select>
 						</div>
 					</div>

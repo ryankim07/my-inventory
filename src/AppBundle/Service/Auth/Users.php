@@ -51,7 +51,7 @@ class Users
      */
     private function doSelect($id = null)
     {
-        $results = !is_null($id) ? $this->repo->find($id) : $this->repo->findBy([], ['first_name' => 'ASC']);
+        $results = !is_null($id) ? $this->repo->find($id) : $this->repo->findBy([], ['firstName' => 'ASC']);
 
         if (!is_null($id)) {
             $results = $this->addDependencies($results);

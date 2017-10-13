@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Class PaintsController
+ *
+ * Controller class
+ *
+ * @author  Ryan Kim
+ * @module  MyInventory
+ */
+
 namespace AppBundle\Controller\Paints;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

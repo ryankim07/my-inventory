@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Class Vehicles
+ *
+ * Service class
+ *
+ * @author  Ryan Kim
+ * @module  MyInventory
+ */
+
 namespace AppBundle\Service\Vehicles;
 
 use Doctrine\ORM\EntityManager;

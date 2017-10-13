@@ -1,10 +1,19 @@
 <?php
 
+/**
+ * Class Users
+ *
+ * Service class
+ *
+ * @author  Ryan Kim
+ * @module  MyInventory
+ */
+
 namespace AppBundle\Service\Auth;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\UserEntity;
-use AppBundle\Entity\GroupEntity;
+use AppBundle\Entity\UsersEntity;
+use AppBundle\Entity\GroupsEntity;
 
 class Users
 {
@@ -19,7 +28,7 @@ class Users
     public function __construct(EntityManager $entityManager)
     {
         $this->em   = $entityManager;
-        $this->repo = $this->em->getRepository('AppBundle\Entity\Auth\UserEntity');
+        $this->repo = $this->em->getRepository('AppBundle\Entity\Auth\UsersEntity');
     }
 
     /**
@@ -91,15 +100,15 @@ class Users
             $response = null;
 
             $existingUser  = $this->findByUsernameOrEmail($username, $email);
-            $existingGroup = $this->em->getRepository('AppBundle\Entity\Auth\GroupEntity')->findOneByUsername($username);
+            $existingRoles = $this->em->getRepository('AppBundle\Entity\Auth\RolesEntity')->findOneById($user['id']);
 
             if (is_null($existingUser)) {
                 // Save new user
-                $newUser = new UserEntity();
+                $newUser = new UsersEntity();
                 $newUser->setUsername($username);
                 $newUser->setPassword($password);
                 $newUser->setEmail($email);
-                $newUser->setIsActive(0);
+                $newUser->setIsEnabled(0);
 
                 $this->em->persist($newUser);
                 $this->em->flush();
@@ -122,10 +131,9 @@ class Users
                 ];
             }
 
-            if (is_null($existingGroup)) {
+            if (is_null($existingRoles)) {
                 // Save new group for user
-                $newGroup = new GroupEntity();
-                $newGroup->setUsername($username);
+                $newGroup = new GroupsEntity();
                 $newGroup->setRole($role);
 
                 $newUser->addGroup($newGroup);
@@ -135,18 +143,17 @@ class Users
 
                 $response = [
                     'group' => $newGroup,
-                    'msg'   => "User's group successfully added."
+                    'msg'   => "User's role successfully added."
                 ];
             } else {
-                // Update existing group
-                $existingGroup->setUsername($username);
+                // Update existing role
                 $existingUser->setEmail($email);
 
                 $this->em->flush();
 
                 $response = [
                     'user' => $existingUser,
-                    'msg'  => "User's group successfully updated."
+                    'msg'  => "User's role successfully updated."
                 ];
             }
 

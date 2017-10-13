@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Class ConfigurationController
+ *
+ * Controller class
+ *
+ * @author  Ryan Kim
+ * @module  MyInventory
+ */
+
 namespace AppBundle\Controller\Properties;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

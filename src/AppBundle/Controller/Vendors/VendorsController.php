@@ -1,7 +1,12 @@
 <?php
 
 /**
- * Vendors Controller
+ * Class VendorsController
+ *
+ * Controller class
+ *
+ * @author  Ryan Kim
+ * @module  MyInventory
  */
 
 namespace AppBundle\Controller\Vendors;

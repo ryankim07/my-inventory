@@ -1,10 +1,12 @@
 <?php
 
 /**
- * Created by PhpStorm.
- * User: kimr234z
- * Date: 2/21/17
- * Time: 10:28 AM
+ * Class VendorCategories
+ *
+ * Service class
+ *
+ * @author  Ryan Kim
+ * @module  MyInventory
  */
 
 namespace AppBundle\Service\Vendors;

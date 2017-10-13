@@ -1,9 +1,12 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: kimr234z
- * Date: 4/5/17
- * Time: 4:32 PM
+ * Class FileUploader
+ *
+ * Service class
+ *
+ * @author  Ryan Kim
+ * @module  MyInventory
  */
 
 namespace AppBundle\Service;

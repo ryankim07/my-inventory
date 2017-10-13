@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Class ManufacturersFactory
+ *
+ * Factory service class
+ *
+ * @author  Ryan Kim
+ * @module  MyInventory
+ */
+
 namespace AppBundle\Service\Vehicles\Api;
 
 use Doctrine\ORM\EntityManager;

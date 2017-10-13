@@ -1,22 +1,26 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: kimr234z
- * Date: 4/18/17
- * Time: 3:22 PM
+ * Class GroupsEntity
+ *
+ * Entity class
+ *
+ * @author  Ryan Kim
+ * @module  MyInventory
  */
 
 namespace AppBundle\Entity\Auth;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\Role\RoleInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\Role\Role;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity()
  * @ORM\Table(name="groups")
  */
-class GroupEntity implements RoleInterface
+class GroupsEntity extends Role
 {
     /**
      * @ORM\Column(name="id", type="integer")
@@ -27,16 +31,18 @@ class GroupEntity implements RoleInterface
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank()
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=20, unique=true)
+     * @Assert\NotBlank()
      */
     private $role;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Auth\UserEntity", mappedBy="groups")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Auth\UsersEntity", mappedBy="groups")
      */
     private $users;
 
@@ -114,9 +120,9 @@ class GroupEntity implements RoleInterface
     /**
      * Add user
      *
-     * @param UserEntity $user
+     * @param UsersEntity $user
      */
-    public function addUser(UserEntity $user)
+    public function addUser(UsersEntity $user)
     {
         if (true === $this->users->contains($user)) {
             return;
@@ -129,9 +135,9 @@ class GroupEntity implements RoleInterface
     /**
      * Remove user
      *
-     * @param UserEntity $user
+     * @param UsersEntity $user
      */
-    public function removeUser(UserEntity $user)
+    public function removeUser(UsersEntity $user)
     {
         if (false === $this->users->contains($user)) {
             return;

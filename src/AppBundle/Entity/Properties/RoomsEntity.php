@@ -1,9 +1,12 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: kimr234z
- * Date: 4/10/17
- * Time: 4:10 PM
+ * Class RoomsEntity
+ *
+ * Entity class
+ *
+ * @author  Ryan Kim
+ * @module  MyInventory
  */
 
 namespace AppBundle\Entity\Properties;

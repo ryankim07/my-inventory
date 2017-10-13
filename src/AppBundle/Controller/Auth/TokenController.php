@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Class TokenController
+ *
+ * Controller class
+ *
+ * @author  Ryan Kim
+ * @module  MyInventory
+ */
+
 namespace AppBundle\Controller\Auth;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -17,7 +26,6 @@ class TokenController extends FOSRestController
      * New token generator
      *
      * @Rest\Post("/api/token", name="api_token")
-     *
      * @param Request $request
      * @return View
      */
@@ -27,7 +35,7 @@ class TokenController extends FOSRestController
 
         // Find username
         $user = $this->getDoctrine()
-            ->getRepository('AppBundle\Entity\Auth\UserEntity')
+            ->getRepository('AppBundle\Entity\Auth\UsersEntity')
             ->findOneByUsername($request['username']);
 
         if (!$user) {

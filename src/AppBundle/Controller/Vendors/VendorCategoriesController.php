@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Class VendorCategoriesController
+ *
+ * Controller class
+ *
+ * @author  Ryan Kim
+ * @module  MyInventory
+ */
+
 namespace AppBundle\Controller\Vendors;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

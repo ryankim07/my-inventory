@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Class ManufacturersController
+ *
+ * Controller class
+ *
+ * @author  Ryan Kim
+ * @module  MyInventory
+ */
+
 namespace AppBundle\Controller\Vehicles;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

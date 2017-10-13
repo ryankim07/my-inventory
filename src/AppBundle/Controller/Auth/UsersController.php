@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Class UsersController
+ *
+ * Controller class
+ *
+ * @author  Ryan Kim
+ * @module  MyInventory
+ */
+
 namespace AppBundle\Controller\Auth;
 
 use AppBundle\AppBundle;

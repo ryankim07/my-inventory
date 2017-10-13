@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Class Edmunds
+ *
+ * Service class
+ *
+ * @author  Ryan Kim
+ * @module  MyInventory
+ */
+
 namespace AppBundle\Service\Vehicles\Api;
 
 class Edmunds implements ManufacturersInterface

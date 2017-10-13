@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Class ManufacturersInterface
+ *
+ * Interface class
+ *
+ * @author  Ryan Kim
+ * @module  MyInventory
+ */
+
 namespace AppBundle\Service\Vehicles\Api;
 
 interface ManufacturersInterface

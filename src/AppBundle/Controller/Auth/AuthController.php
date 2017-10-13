@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Class AuthController
+ *
+ * Controller class
+ *
+ * @author  Ryan Kim
+ * @module  MyInventory
+ */
+
 namespace AppBundle\Controller\Auth;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

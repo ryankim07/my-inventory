@@ -1,9 +1,12 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: kimr234z
- * Date: 4/10/17
- * Time: 4:10 PM
+ * Class UsersEntity
+ *
+ * Entity class
+ *
+ * @author  Ryan Kim
+ * @module  MyInventory
  */
 
 namespace AppBundle\Entity\Auth;
@@ -18,7 +21,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity
  * @ORM\Table(name="users")
  */
-class UserEntity implements AdvancedUserInterface, \Serializable
+class UsersEntity implements AdvancedUserInterface, \Serializable
 {
     /**
      * @ORM\Column(type="integer")
@@ -40,7 +43,7 @@ class UserEntity implements AdvancedUserInterface, \Serializable
     private $lastName;
 
     /**
-     * @ORM\Column(type="string", length=25, unique=true)
+     * @ORM\Column(type="string", length=30, unique=true)
      * @Assert\NotBlank()
      */
     private $username;
@@ -61,12 +64,12 @@ class UserEntity implements AdvancedUserInterface, \Serializable
      * @ORM\Column(type="boolean")
      * @Assert\NotBlank()
      */
-    private $isActive;
+    private $isEnabled;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Auth\GroupEntity", inversedBy="users")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Auth\GroupsEntity", inversedBy="users")
      * @ORM\JoinTable(
-     *  name="user_group",
+     *  name="users_groups",
      *  joinColumns={
      *      @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      *  },
@@ -124,7 +127,7 @@ class UserEntity implements AdvancedUserInterface, \Serializable
      * @param $lastName
      * @return $this
      */
-    public function setLastname($lastName)
+    public function setLastName($lastName)
     {
         $this->lastName = $lastName;
 
@@ -138,7 +141,7 @@ class UserEntity implements AdvancedUserInterface, \Serializable
      */
     public function getLastName()
     {
-        return $this->lastname;
+        return $this->lastName;
     }
 
     /**
@@ -222,11 +225,21 @@ class UserEntity implements AdvancedUserInterface, \Serializable
     /**
      * Set is active
      *
-     * @param $active
+     * @param $isEnabled
      */
-    public function setIsActive($active)
+    public function setIsEnabled($isEnabled)
     {
-        $this->isActive = $active;
+        $this->isEnabled = $isEnabled;
+    }
+
+    /**
+     * Is enabled
+     *
+     * @return mixed
+     */
+    public function isEnabled()
+    {
+        return $this->isEnabled;
     }
 
     /**
@@ -277,16 +290,6 @@ class UserEntity implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Is enabled
-     *
-     * @return mixed
-     */
-    public function isEnabled()
-    {
-        return $this->isActive;
-    }
-
-    /**
      * Serialize
      *
      * @return string
@@ -294,7 +297,7 @@ class UserEntity implements AdvancedUserInterface, \Serializable
     public function serialize()
     {
         return serialize(array(
-            $this->isActive
+            $this->isEnabled
         ));
     }
 
@@ -305,7 +308,7 @@ class UserEntity implements AdvancedUserInterface, \Serializable
      */
     public function unserialize($serialized)
     {
-        list($this->isActive) = unserialize($serialized);
+        list($this->isEnabled) = unserialize($serialized);
     }
 
     /**
@@ -321,9 +324,9 @@ class UserEntity implements AdvancedUserInterface, \Serializable
     /**
      * Add group
      *
-     * @param GroupEntity $group
+     * @param GroupsEntity $group
      */
-    public function addGroup(GroupEntity $group)
+    public function addGroup(GroupsEntity $group)
     {
         if (true === $this->groups->contains($group)) {
             return;
@@ -336,24 +339,14 @@ class UserEntity implements AdvancedUserInterface, \Serializable
     /**
      * Remove group
      *
-     * @param GroupEntity $group
+     * @param GroupsEntity $group
      */
-    public function removeGroup(GroupEntity $group)
+    public function removeGroup(GroupsEntity $group)
     {
         if (false === $this->groups->contains($group)) {
             return;
         }
         $this->groups->removeElement($group);
         $group->removeUser($this);
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean
-     */
-    public function getIsActive()
-    {
-        return $this->isActive;
     }
 }

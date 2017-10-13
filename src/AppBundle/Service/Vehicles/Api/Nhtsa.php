@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Class Nhtsa
+ *
+ * Service class
+ *
+ * @author  Ryan Kim
+ * @module  MyInventory
+ */
+
 namespace AppBundle\Service\Vehicles\Api;
 
 class Nhtsa implements ManufacturersInterface

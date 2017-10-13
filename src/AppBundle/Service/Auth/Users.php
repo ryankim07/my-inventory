@@ -12,13 +12,15 @@
 namespace AppBundle\Service\Auth;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\UsersEntity;
-use AppBundle\Entity\GroupsEntity;
+use AppBundle\Entity\Auth\UsersEntity;
+use AppBundle\Entity\Auth\GroupsEntity;
 
 class Users
 {
     protected $em;
     protected $repo;
+    private $entity;
+    private $existingUser;
 
     /**
      * Constructor
@@ -83,84 +85,57 @@ class Users
     /**
      * Save or update user
      *
-     * @param $user
-     * @return array|null
+     * @param $data
+     * @return array
      */
-    public function save($user)
+    public function save($data)
     {
-        if (count($user) == 0) {
+        if (count($data) == 0) {
             return ['msg' => 'New user information empty.'];
         }
 
         try {
-            $username = $user['username'];
-            $password = $user['password'];
-            $email    = $user['email'];
-            $role     = $user['role'];
-            $response = null;
+            $this->existingUser = $this->findByUsernameOrEmail($data['username'], $data['email']);
+            $this->entity       = $this->existingUser ? $this->existingUser : new UsersEntity();
 
-            $existingUser  = $this->findByUsernameOrEmail($username, $email);
-            $existingRoles = $this->em->getRepository('AppBundle\Entity\Auth\RolesEntity')->findOneById($user['id']);
+            $op  = !$this->existingProperty ? 'added' : 'updated';
+            $msg = "User successfully {$op}.";
 
-            if (is_null($existingUser)) {
-                // Save new user
-                $newUser = new UsersEntity();
-                $newUser->setUsername($username);
-                $newUser->setPassword($password);
-                $newUser->setEmail($email);
-                $newUser->setIsEnabled(0);
-
-                $this->em->persist($newUser);
-                $this->em->flush();
-
-                $response = [
-                    'user' => $newUser,
-                    'msg'  => 'User successfully added.'
-                ];
-            } else {
-                // Update existing user
-                $existingUser->setUsername($username);
-                $existingUser->setPassword($password);
-                $existingUser->setEmail($email);
-
-                $this->em->flush();
-
-                $response = [
-                    'user' => $existingUser,
-                    'msg'  => 'User successfully updated.'
-                ];
+            if (!$this->existingUser) {
+                $groupsEntity = $this->em->getRepository('AppBundle\Entity\Auth\GroupsEntity')->findOneById($data['id']);
             }
 
-            if (is_null($existingRoles)) {
-                // Save new group for user
-                $newGroup = new GroupsEntity();
-                $newGroup->setRole($role);
+            $this->entity->setFirstName($data['first_name']);
+            $this->entity->setLastname($data['last_name']);
+            $this->entity->setUsername($data['username']);
+            $this->entity->setPassword($data['password']);
+            $this->entity->setEmail($data['email']);
+            $this->entity->setIsEnabled(0);
 
-                $newUser->addGroup($newGroup);
-
-                $this->em->persist($newGroup);
-                $this->em->flush();
-
-                $response = [
-                    'group' => $newGroup,
-                    'msg'   => "User's role successfully added."
-                ];
-            } else {
-                // Update existing role
-                $existingUser->setEmail($email);
-
-                $this->em->flush();
-
-                $response = [
-                    'user' => $existingUser,
-                    'msg'  => "User's role successfully updated."
-                ];
+            if (is_null($data['groups'])) {
+                $groupsEntity->setUsername($data['username']);
+                $groupsEntity->setRole($data['role']);
+                $this->entity->addGroup($newGroup);
             }
 
-            return $response;
+            if (!$this->existingUser) {
+                $this->em->persist($this->entity);
+            }
+
+            $this->em->flush();
+
+            // Save or update property
+            if (!$this->entity) {
+                $msg = "User could not be {$op}.";
+            };
         } catch(\Exception $e) {
-            return ['msg' => $e->getMessage()];
+            return ['err_msg' => $e->getMessage()];
         }
+
+        return [
+            'user' => $this->entity,
+            'msg'  => $msg
+        ];
     }
 
     /**

@@ -105,8 +105,7 @@ class Vehicles
 
         try {
             $this->existingVehicle = $this->findByIdOrVin($data['id'], $data['vin']);
-
-            $this->entity = $this->existingVehicle ? $this->existingVehicle : new VehicleEntity();
+            $this->entity          = $this->existingVehicle ? $this->existingVehicle : new VehicleEntity();
 
             $this->mfg = $this->mfgsService->find($data['mfg_id']);
             $models    = $this->mfg->getModels();

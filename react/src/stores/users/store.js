@@ -8,6 +8,7 @@ let _users = [];
 let _user = {};
 let _rightPanel = false;
 let _storeMsg;
+
 function setStoreFlashMessage(msg) {
 	_storeMsg = msg;
 }
@@ -34,11 +35,14 @@ let UsersStore = assign({}, EventEmitter.prototype, {
 		return _users;
 	},
 
-	setUsers: function (users) {
-		if (users.msg) {
-			setStoreFlashMessage(users.msg)
+	setUsers: function (results) {
+		if (results.err_msg) {
+			_storeMsg = results.err_msg;
+			return false;
 		} else {
-			setAllUsers(users)
+			if (results.length !== 0) {
+				_users = results;
+			}
 		}
 	},
 
@@ -126,7 +130,7 @@ UsersStore.dispatchToken = Dispatcher.register(function(payload)
         break;
 
 		case ActionConstants.RECEIVE_USERS:
-			UsersStore.setUsers(action.users);
+			UsersStore.setUsers(results);
 		break;
 
 		case ActionConstants.USERS_ERROR:

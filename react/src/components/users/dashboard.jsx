@@ -115,7 +115,14 @@ class UsersDashboard extends React.Component
 				username: '',
 				password: '',
 				email: '',
-				is_active: ''
+				is_enabled: '',
+				groups: [
+					{
+						id: '',
+						role: '',
+						username: ''
+					}
+				]
 			}
 
 		this.setState({

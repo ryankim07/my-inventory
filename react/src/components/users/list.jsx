@@ -34,7 +34,7 @@ class UsersList extends React.Component
 		let searchText = event.target.value;
 		let users   = this.state.clonedUsers;
 		let results = users.filter(function (list) {
-			return list.mfg.match(new RegExp(searchText, 'gi'));
+			return list.first_name.match(new RegExp(searchText, 'gi'));
 		});
 
 		this.setState({
@@ -64,7 +64,7 @@ class UsersList extends React.Component
 								user.last_name,
 								user.username,
 								user.email,
-								user.is_active
+								user.is_enabled
 							] }
 							addEditBtn={ true }
 							handleEditPanel={ this.props.onHandleRightPanel.bind(this, user.id) }

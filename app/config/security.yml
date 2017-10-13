@@ -3,13 +3,13 @@
 security:
 
     encoders:
-        AppBundle\Entity\Auth\UserEntity:
+        AppBundle\Entity\Auth\UsersEntity:
             algorithm: bcrypt
 
     providers:
         database_users:
             entity:
-                class: 'AppBundle\Entity\Auth\UserEntity'
+                class: 'AppBundle\Entity\Auth\UsersEntity'
                 property: username
 
     firewalls:
@@ -18,7 +18,7 @@ security:
             security: false
 
         login:
-            pattern:  ^/auth
+            pattern: ^/auth
             anonymous: true
             stateless: true
             guard:
@@ -31,7 +31,7 @@ security:
             stateless: true
             guard:
                 authenticators:
-                    - 'jwt_token_authenticator'
+                    - 'Jwt_Token_Authenticator'
 
         main:
             pattern: ^/
@@ -39,5 +39,5 @@ security:
             provider: database_users
 
     access_control:
-        - { path: ^/api, roles: [ROLE_ADMIN] }
+        - { path: ^/api, roles: [ROLE_ADMIN, ROLE_USER] }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }

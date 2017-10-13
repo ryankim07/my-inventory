@@ -1,4 +1,5 @@
 import React from 'react';
+import { upperFirstLetter } from '../../helper/utils';
 
 class AuthForm extends React.Component
 {
@@ -25,8 +26,26 @@ class AuthForm extends React.Component
 
 	// Handle input changes
 	onHandleFormChange(propertyName, event) {
-		let user 		   = this.state.user;
-		user[propertyName] = event.target.value;
+		let user 		= this.state.user;
+		let chosenValue = event.target.value;
+
+		switch (propertyName) {
+			case 'first_name':
+			case 'last_name':
+				user[propertyName] = upperFirstLetter(chosenValue);
+			break;
+
+			case 'groups':
+				let allGroups = user.groups;
+
+				let selected = groups.slice.call(event.target.selectedOptions).map(o => {
+					return o.value;
+				});
+			break;
+
+			default:
+				user[propertyName] = chosenValue;
+		}
 
 		this.setState({
 			user: user
@@ -43,6 +62,9 @@ class AuthForm extends React.Component
 	// Render
 	render() {
 		let user = this.state.user;
+		let rolesOptions = user.groups.map((obj) => {
+			return (obj.role);
+		});
 
 		let userForm =
 			<form onSubmit={ this.handleFormSubmit }>
@@ -51,8 +73,9 @@ class AuthForm extends React.Component
 						<label className="control-label">Role</label>
 						<div className="input-group">
 							<select
-								onChange={ this.onHandleFormChange.bind(this, 'role') }
-								value={ user.role }
+								multiple={ true }
+								onChange={ this.onHandleFormChange.bind(this, 'groups') }
+								value={ rolesOptions }
 								className="form-control input-sm"
 								required="required">
 								<option value="">Select One</option>
@@ -69,8 +92,8 @@ class AuthForm extends React.Component
 							<input
 								type="email"
 								className="form-control input-sm"
-								value={ user.firstname }
-								onChange={ this.onHandleFormChange.bind(this, 'firstname') }
+								value={ user.first_name }
+								onChange={ this.onHandleFormChange.bind(this, 'first_name') }
 								required="required"
 							/>
 						</div>
@@ -83,8 +106,8 @@ class AuthForm extends React.Component
 							<input
 								type="email"
 								className="form-control input-sm"
-								value={ user.lastname }
-								onChange={ this.onHandleFormChange.bind(this, 'lastname') }
+								value={ user.last_name }
+								onChange={ this.onHandleFormChange.bind(this, 'last_name') }
 								required="required"
 							/>
 						</div>

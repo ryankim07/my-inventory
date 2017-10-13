@@ -134,7 +134,7 @@ class Properties
             $this->existingProperty = $this->find($data['id']);
             $this->entity           = $this->existingProperty ? $this->existingProperty : new PropertyEntity();
 
-            $op = !$this->existingProperty ? 'added' : 'updated';
+            $op  = !$this->existingProperty ? 'added' : 'updated';
             $msg = "Property successfully {$op}.";
 
             // Upload asset

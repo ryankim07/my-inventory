@@ -11,20 +11,17 @@ parameters:
     assets_dir: '/uploads/assets'
 
 framework:
-    #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }
-    secret:          "%secret%"
+    secret: "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
-    form:            ~
+    form: ~
     csrf_protection: ~
-    validation:      { enable_annotations: true }
-    #serializer:      { enable_annotations: true }
+    validation: { enable_annotations: true }
     templating:
         engines: ['twig']
     default_locale: "%locale%"
-    trusted_hosts:   ~
+    trusted_hosts: ~
     trusted_proxies: ~
     session:
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id

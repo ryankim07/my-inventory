@@ -20,6 +20,20 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class UsersController extends FOSRestController
 {
     /**
+     * Get vehicles
+     *
+     * @Rest\Get("/api/users", name="get_all_users")
+     * @return mixed|string
+     */
+    public function getListAction()
+    {
+        $service = $this->get('Users');
+        $results = $service->findAll();
+
+        return $results;
+    }
+
+    /**
      * Add new user
      *
      * @Rest\Post("/api/user", name="new_user")
@@ -32,9 +46,9 @@ class UsersController extends FOSRestController
         $data = json_decode(stripslashes($request->get('data')), true);
 
         // Call service to save
+        $userService           = $this->get('Users');
         $authenticationService = $this->get('Username_Password_Authenticator');
         $data['password']      = $authenticationService->encodePassword($user, $data['password']);
-        $userService           = $this->get('User');
         $results               = $userService->save($data);
 
         // Send email

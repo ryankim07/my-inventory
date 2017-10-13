@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\UserEntity;
 use AppBundle\Entity\GroupEntity;
 
-class User
+class Users
 {
     protected $em;
     protected $repo;
@@ -51,7 +51,7 @@ class User
      */
     private function doSelect($id = null)
     {
-        $results = !is_null($id) ? $this->repo->find($id) : $this->repo->findBy([], ['users' => 'ASC']);
+        $results = !is_null($id) ? $this->repo->find($id) : $this->repo->findBy([], ['firstname' => 'ASC']);
 
         if (!is_null($id)) {
             $results = $this->addDependencies($results);

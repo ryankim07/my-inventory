@@ -28,22 +28,38 @@ class UserEntity implements AdvancedUserInterface, \Serializable
     private $id;
 
     /**
+     * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank()
+     */
+    private $firstName;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank()
+     */
+    private $lastName;
+
+    /**
      * @ORM\Column(type="string", length=25, unique=true)
+     * @Assert\NotBlank()
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Assert\NotBlank()
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=60, unique=true)
+     * @Assert\NotBlank()
      */
     private $email;
 
     /**
-     * @ORM\Column(name="is_active", type="boolean")
+     * @ORM\Column(type="boolean")
+     * @Assert\NotBlank()
      */
     private $isActive;
 
@@ -77,6 +93,52 @@ class UserEntity implements AdvancedUserInterface, \Serializable
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set first name
+     *
+     * @param $firstName
+     * @return $this
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * Get first name
+     *
+     * @return mixed
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * Set last name
+     *
+     * @param $lastName
+     * @return $this
+     */
+    public function setLastname($lastName)
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * Get last name
+     *
+     * @return mixed
+     */
+    public function getLastName()
+    {
+        return $this->lastname;
     }
 
     /**

@@ -15,12 +15,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
  * @Security("is_granted(['ROLE_USER','ROLE_ADMIN'])")
  */
-class SecurityController extends FOSRestController
+class AuthController extends FOSRestController
 {
     /**
      * Login
      *
-     * @Rest\Post("/login", name="security_login")
+     * @Rest\Post("/auth/login", name="auth_login")
      * @param Request $request
      * @return JsonResponse
      */
@@ -35,7 +35,7 @@ class SecurityController extends FOSRestController
     }
 
     /**
-     * @Rest\Get("/login/check", name="security_login_check")
+     * @Rest\Get("/auth/check", name="auth_check")
      */
     public function loginCheckAction()
     {
@@ -44,7 +44,7 @@ class SecurityController extends FOSRestController
     /**
      * Logout
      *
-     * @Rest\Get("/logout", name="security_logout")
+     * @Rest\Get("/auth/logout", name="auth_logout")
      */
     public function logoutAction()
     {

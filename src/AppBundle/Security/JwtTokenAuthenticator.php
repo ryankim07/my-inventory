@@ -25,19 +25,19 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
 class JwtTokenAuthenticator extends AbstractGuardAuthenticator
 {
-    private $jwtEncoder;
     private $em;
+    private $jwtEncoder;
 
     /**
      * Constructor
      *
-     * @param JWTEncoderInterface $jwtEncoder
      * @param EntityManager $em
+     * @param JWTEncoderInterface $jwtEncoder
      */
-    public function __construct(JWTEncoderInterface $jwtEncoder, EntityManager $em)
+    public function __construct(EntityManager $em, JWTEncoderInterface $jwtEncoder)
     {
-        $this->jwtEncoder = $jwtEncoder;
         $this->em         = $em;
+        $this->jwtEncoder = $jwtEncoder;
     }
 
     /**

@@ -36,7 +36,7 @@ class GroupsEntity extends Role
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=20, unique=true)
+     * @ORM\Column(type="string", length=20)
      * @Assert\NotBlank()
      */
     private $role;

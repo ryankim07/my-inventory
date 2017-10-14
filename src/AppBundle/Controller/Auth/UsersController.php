@@ -29,10 +29,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class UsersController extends FOSRestController
 {
     /**
-     * Get vehicles
+     * Get users
      *
      * @Rest\Get("/api/users", name="get_all_users")
-     * @return mixed|string
+     * @return mixed
      */
     public function getListAction()
     {
@@ -47,6 +47,7 @@ class UsersController extends FOSRestController
      *
      * @Rest\Post("/api/user", name="new_user")
      * @param Request $request
+     * @param UserInterface $user
      * @return View
      */
     public function postAction(Request $request, UserInterface $user)
@@ -54,33 +55,41 @@ class UsersController extends FOSRestController
         // Request param
         $data = json_decode(stripslashes($request->get('data')), true);
 
-        // Call service to save
-        $userService           = $this->get('Users');
+        // Hash password
         $authenticationService = $this->get('Username_Password_Authenticator');
         $data['password']      = $authenticationService->encodePassword($user, $data['password']);
-        $results               = $userService->save($data);
+
+        // Save user
+        $userService = $this->get('Users');
+        $results     = $userService->save($data);
+        $user        = $results['user'];
 
         // Send email
-        $results['token'] = $this->get('lexik_jwt_authentication.encoder')->encode([
-            'username' => $this->getUser()->getUsername(),
-            'exp'      => time() + $this->container->getParameter('lexik_jwt_authentication.token_ttl')
-        ]);
-
-        $message = \Swift_Message::newInstance()
-            ->setSubject('Hello Email')
-            ->setFrom('admin@my-inventory.com')
-            ->setTo('rkim07@hotmail.com')
-            ->setBody(
-                $this->renderView(
-                // app/Resources/views/Emails/registration.html.twig
-                    'Emails/registration.html.twig',
-                    array('name' => 'Ryan Kim')
-                ),
-                'text/html'
-            );
-
-        $this->get('mailer')->send($message);
+        $emailService = $this->get('Email');
+        $emailService->send(
+            'Welcome to My Inventory',
+            'admin@my-inventory.com',
+            'ryankim07@gmail.com',//$user->getEmail(),
+            $user->getFirstName(),
+            $user->getRegistration()->getCode()
+        );
 
         return new View($results, Response::HTTP_OK);
+    }
+
+    /**
+     * Activate new user
+     *
+     * @Rest\Get("/api/user/activate/{email}/{code}", name="activate_user")
+     * @param $email
+     * @param $code
+     * @return Response
+     */
+    public function activateAction($email, $code)
+    {
+        $userService = $this->get('Users');
+        $results = $userService->activate($email, $code);
+
+        return $this->forward('AppBundle:Auth:login', ['msg' => $results]);
     }
 }

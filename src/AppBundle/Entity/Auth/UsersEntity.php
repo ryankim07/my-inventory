@@ -64,7 +64,7 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
      * @ORM\Column(type="boolean")
      * @Assert\NotBlank()
      */
-    private $isEnabled;
+    private $isActive;
 
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Auth\GroupsEntity", inversedBy="users", cascade={"persist", "remove"})
@@ -79,6 +79,11 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
      * )
      */
     private $groups;
+
+    /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Auth\UsersRegistrationEntity", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $registration;
 
     /**
      * Constructor
@@ -225,11 +230,24 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
     /**
      * Set is active
      *
-     * @param $isEnabled
+     * @param $isActive
+     * @return $this
      */
-    public function setIsEnabled($isEnabled)
+    public function setIsActive($isActive)
     {
-        $this->isEnabled = $isEnabled;
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get is active
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
     }
 
     /**
@@ -239,7 +257,80 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
      */
     public function isEnabled()
     {
-        return $this->isEnabled;
+        return $this->getIsActive();
+    }
+
+    /**
+     * Get groups
+     *
+     * @return ArrayCollection
+     */
+    public function getGroups()
+    {
+        return $this->groups;
+    }
+
+    /**
+     * Add group
+     *
+     * @param GroupsEntity $group
+     */
+    public function addGroup(GroupsEntity $group)
+    {
+        if (true === $this->groups->contains($group)) {
+            return;
+        }
+
+        $this->groups->add($group);
+        $group->addUser($this);
+    }
+
+    /**
+     * Remove group
+     *
+     * @param GroupsEntity $group
+     */
+    public function removeGroup(GroupsEntity $group)
+    {
+        if (false === $this->groups->contains($group)) {
+            return;
+        }
+        $this->groups->removeElement($group);
+        $group->removeUser($this);
+    }
+
+    /**
+     * Add registration
+     *
+     * @param UsersRegistrationEntity $registration
+     */
+    public function addRegistration(UsersRegistrationEntity $registration)
+    {
+        $this->registration = $registration;
+        $registration->setUser($this);
+    }
+
+    /**
+     * Set registration
+     *
+     * @param UsersRegistrationEntity|null $registration
+     * @return $this
+     */
+    public function setRegistration(UsersRegistrationEntity $registration = null)
+    {
+        $this->registration = $registration;
+
+        return $this;
+    }
+
+    /**
+     * Get registration
+     *
+     * @return mixed
+     */
+    public function getRegistration()
+    {
+        return $this->registration;
     }
 
     /**
@@ -296,9 +387,11 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
      */
     public function serialize()
     {
-        return serialize(array(
-            $this->isEnabled
-        ));
+        return serialize([
+            $this->username,
+            $this->password,
+            $this->isActive
+        ]);
     }
 
     /**
@@ -308,45 +401,9 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
      */
     public function unserialize($serialized)
     {
-        list($this->isEnabled) = unserialize($serialized);
-    }
-
-    /**
-     * Get groups
-     *
-     * @return ArrayCollection
-     */
-    public function getGroups()
-    {
-        return $this->groups;
-    }
-
-    /**
-     * Add group
-     *
-     * @param GroupsEntity $group
-     */
-    public function addGroup(GroupsEntity $group)
-    {
-        if (true === $this->groups->contains($group)) {
-            return;
-        }
-
-        $this->groups->add($group);
-        $group->addUser($this);
-    }
-
-    /**
-     * Remove group
-     *
-     * @param GroupsEntity $group
-     */
-    public function removeGroup(GroupsEntity $group)
-    {
-        if (false === $this->groups->contains($group)) {
-            return;
-        }
-        $this->groups->removeElement($group);
-        $group->removeUser($this);
+        list(
+            $this->username,
+            $this->password,
+            $this->isActive) = unserialize($serialized);
     }
 }

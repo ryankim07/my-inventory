@@ -14,11 +14,12 @@ namespace AppBundle\Service\Auth;
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Auth\UsersEntity;
 use AppBundle\Entity\Auth\GroupsEntity;
+use AppBundle\Entity\Auth\UsersRegistrationEntity;
 
 class Users
 {
-    protected $em;
-    protected $repo;
+    private $em;
+    private $repo;
     private $entity;
     private $existingUser;
 
@@ -95,48 +96,68 @@ class Users
         }
 
         try {
+            // Add user
             $this->existingUser = $this->findByUsernameOrEmail($data['username'], $data['email']);
             $this->entity       = $this->existingUser ? $this->existingUser : new UsersEntity();
 
-            $op  = !$this->existingProperty ? 'added' : 'updated';
+            $op  = !$this->existingUser ? 'added' : 'updated';
             $msg = "User successfully {$op}.";
 
-            $groupsEntity = $this->existingUser ?
-                $this->em->getRepository('AppBundle\Entity\Auth\GroupsEntity')->findOneByRole($this->entity->getUsername()) : new GroupsEntity();
-
-            $this->entity->setFirstName($data['first_name']);
-            $this->entity->setLastname($data['last_name']);
-            $this->entity->setUsername($data['username']);
-            $this->entity->setPassword($data['password']);
-            $this->entity->setEmail($data['email']);
-            $this->entity->setIsEnabled(0);
-
-            if (!is_null($data['groups'])) {
-                foreach($data['groups'] as $group) {
-                    $groupsEntity->setUsername($group['username']);
-                    $groupsEntity->setRole($group['role']);
-                    $this->entity->addGroup($groupsEntity);
-                }
-            }
-
-            if (!$this->existingUser) {
-                $this->em->persist($this->entity);
-            }
-
-            $this->em->flush();
-
-            // Save or update property
-            if (!$this->entity) {
+            // Save or update paint
+            if (!$this->_save($data)) {
                 $msg = "User could not be {$op}.";
             };
+
+            return [
+                'user' => $this->entity,
+                'msg'  => $msg
+            ];
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
         }
+    }
 
-        return [
-            'user' => $this->entity,
-            'msg'  => $msg
-        ];
+    /**
+     * Save or update user
+     *
+     * @param $data
+     * @return bool
+     */
+    private function _save($data)
+    {
+        $this->entity->setFirstName($data['first_name']);
+        $this->entity->setLastname($data['last_name']);
+        $this->entity->setUsername($data['username']);
+        $this->entity->setPassword($data['password']);
+        $this->entity->setEmail($data['email']);
+        $this->entity->setIsActive(0);
+
+        // Add groups
+        $groupsEntity = $this->existingUser ?
+            $this->em->getRepository('AppBundle\Entity\Auth\GroupsEntity')->findOneByUsername($this->entity->getUsername()) : new GroupsEntity();
+
+        if (!is_null($data['groups'])) {
+            foreach($data['groups'] as $group) {
+                $groupsEntity->setUsername($group['username']);
+                $groupsEntity->setRole($group['role']);
+                $this->entity->addGroup($groupsEntity);
+            }
+        }
+
+        // Add registration
+        $registrationEntity = new UsersRegistrationEntity();
+        $registrationEntity->setUserId($this->entity->getId());
+        $registrationEntity->setEmail($this->entity->getEmail());
+        $registrationEntity->setCode(substr(uniqid('', true), -30));
+        $this->entity->addRegistration($registrationEntity);
+
+        if (!$this->existingUser) {
+            $this->em->persist($this->entity);
+        }
+
+        $this->em->flush();
+
+        return true;
     }
 
     /**
@@ -155,5 +176,43 @@ class Users
         }
 
         return $results;
+    }
+
+    /**
+     * Finish activating user
+     *
+     * @param $email
+     * @param $code
+     * @return array|string
+     */
+    public function activate($email, $code)
+    {
+        try {
+            $registration = $this->em
+                ->getRepository('AppBundle\Entity\Auth\UsersRegistrationEntity')
+                ->findBy([
+                    'email' => $email,
+                    'code'  => $code
+                ]);
+
+            if (!$registration) {
+                return 'Invalid email or code.';
+            }
+
+            $user = $this->find($registration->getUserId());
+
+            if ($user->getIsActive() == 1) {
+                return 'User already registered.';
+            } else {
+                $user->setIsActive(1);
+            }
+
+            $this->em->persist($user);
+            $this->em->flush();
+
+            return 'User successfully registered.';
+        } catch (\Exception $e) {
+            return ['err_msg' => 'Invalid email or code.'];
+        }
     }
 }

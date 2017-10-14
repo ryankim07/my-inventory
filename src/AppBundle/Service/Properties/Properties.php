@@ -141,13 +141,10 @@ class Properties
             $assets        = $data['assets'];
             $assetFullPath = !is_null($assets) ? $this->fileUploader->upload($assets) : null;
 
-            if (!$this->existingProperty) {
-                $addressEntity = new AddressEntity();
-                $assetEntity   = new PropertyAssetsEntity();
-            } else {
-                $addressEntity = $this->em->getRepository('AppBundle\Entity\Properties\AddressEntity')->findOneByPropertyId($this->entity->getId());
-                $assetEntity   = $this->em->getRepository('AppBundle\Entity\Properties\PropertyAssetsEntity')->findByPropertyId($this->entity->getId());
-            }
+            $addressEntity = !$this->existingProperty ?
+                $this->em->getRepository('AppBundle\Entity\Properties\AddressEntity')->findOneByPropertyId($this->entity->getId()) : new AddressEntity();
+            $assetEntity   = $this->existingProperty ?
+                $this->em->getRepository('AppBundle\Entity\Properties\PropertyAssetsEntity')->findByPropertyId($this->entity->getId()) : new PropertyAssetsEntity();
 
             // Property entity
             $this->entity->setBuilt($data['built']);

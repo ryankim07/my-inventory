@@ -67,7 +67,7 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
     private $isEnabled;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Auth\GroupsEntity", inversedBy="users")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Auth\GroupsEntity", inversedBy="users", cascade={"persist", "remove"})
      * @ORM\JoinTable(
      *  name="users_groups",
      *  joinColumns={

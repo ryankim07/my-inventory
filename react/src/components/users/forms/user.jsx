@@ -9,10 +9,15 @@ class AuthForm extends React.Component
 
 		this.state = {
 			user: this.props.user,
-			clonedGroup: JSON.parse(JSON.stringify(this.props.user.groups))
+			clonedGroup: JSON.parse(JSON.stringify(this.props.user.groups)),
+			isChecked: false,
+			passwordInputType: 'password',
+			confirmPasswordInputType: 'password'
+
 		};
 
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
+		this.onHandleCheckBox   = this.onHandleCheckBox.bind(this);
 		this.handleFormSubmit   = this.handleFormSubmit.bind(this);
 	}
 
@@ -91,6 +96,17 @@ class AuthForm extends React.Component
 		});
 	}
 
+	onHandleCheckBox(event) {
+		const target = event.target;
+		const value  = target.type === 'checkbox' ? target.checked : target.value;
+
+		this.setState({
+			passwordInputType: !value ? 'password' : 'text',
+			confirmPasswordInputType: !value ? 'password' : 'text',
+			isChecked: value
+		});
+	}
+
 	// Submit
 	handleFormSubmit(event) {
 		event.preventDefault();
@@ -129,7 +145,7 @@ class AuthForm extends React.Component
 						<label className="control-label">First Name</label>
 						<div className="input-group">
 							<input
-								type="email"
+								type="text"
 								className="form-control input-sm"
 								value={ user.first_name }
 								onChange={ this.onHandleFormChange.bind(this, 'first_name') }
@@ -143,7 +159,7 @@ class AuthForm extends React.Component
 						<label className="control-label">Last name</label>
 						<div className="input-group">
 							<input
-								type="email"
+								type="text"
 								className="form-control input-sm"
 								value={ user.last_name }
 								onChange={ this.onHandleFormChange.bind(this, 'last_name') }
@@ -185,8 +201,9 @@ class AuthForm extends React.Component
 						<label className="control-label">Password</label>
 						<div className="input-group">
 							<input
-								type="password"
+								type={ this.state.passwordInputType }
 								className="form-control input-sm"
+								onChange={ this.onHandleFormChange.bind(this, 'password') }
 								required="required"
 							/>
 						</div>
@@ -197,10 +214,24 @@ class AuthForm extends React.Component
 						<label className="control-label">Confirm Password</label>
 						<div className="input-group">
 							<input
-								type="password"
+								type={ this.state.confirmPasswordInputType }
 								className="form-control input-sm"
+								onChange={ this.onHandleFormChange.bind(this, 'confirm_password') }
 								required="required"
 							/>
+						</div>
+					</div>
+				</div>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<div className="checkbox">
+							<label>
+								<input
+									type="checkbox"
+									checked={ this.state.isChecked }
+									onChange={ this.onHandleCheckBox }
+								/>
+							Show password</label>
 						</div>
 					</div>
 				</div>

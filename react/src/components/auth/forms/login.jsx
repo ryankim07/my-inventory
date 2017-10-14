@@ -99,15 +99,19 @@ class AuthLogin extends React.Component
 							</div>
 						</div>
 						<div className="form-group">
-							<div className="col-xs-12 col-md-8">
-								<label className="control-label">Remember me</label>
-								<div className="input-group">
-									<input
-										type="checkbox"
-										id="remember_me"
-										name="_remember_me"
-										className="form-control input-sm"
-									/>
+							<div className="form-group">
+								<div className="col-xs-12 col-md-8">
+									<div className="checkbox">
+										<label>
+											<input
+												type="checkbox"
+												id="remember_me"
+												name="_remember_me"
+												checked=""
+												onChange=""
+											/>
+											Remember me</label>
+									</div>
 								</div>
 							</div>
 						</div>

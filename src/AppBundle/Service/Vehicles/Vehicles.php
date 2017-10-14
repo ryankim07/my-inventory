@@ -157,8 +157,8 @@ class Vehicles
         // Upload asset
         $assets        = $data['assets'];
         $assetFullPath = !is_null($assets) ? $this->fileUploader->upload($assets) : null;
-        $assetEntity   = !$this->existingVehicle ?
-            new AssetsEntity() : $this->em->getRepository('AppBundle\Entity\Vehicles\AssetsEntity')->findOneByVehicleId($this->entity->getId());
+        $assetEntity   = $this->existingVehicle ?
+            $this->em->getRepository('AppBundle\Entity\Vehicles\AssetsEntity')->findOneByVehicleId($this->entity->getId()) : new AssetsEntity();
 
         // Vehicle entity
         $this->entity->setMfgId($data['mfg_id']);

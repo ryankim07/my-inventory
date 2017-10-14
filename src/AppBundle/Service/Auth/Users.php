@@ -101,9 +101,8 @@ class Users
             $op  = !$this->existingProperty ? 'added' : 'updated';
             $msg = "User successfully {$op}.";
 
-            if (!$this->existingUser) {
-                $groupsEntity = $this->em->getRepository('AppBundle\Entity\Auth\GroupsEntity')->findOneById($data['id']);
-            }
+            $groupsEntity = $this->existingUser ?
+                $this->em->getRepository('AppBundle\Entity\Auth\GroupsEntity')->findOneByRole($this->entity->getUsername()) : new GroupsEntity();
 
             $this->entity->setFirstName($data['first_name']);
             $this->entity->setLastname($data['last_name']);
@@ -112,10 +111,12 @@ class Users
             $this->entity->setEmail($data['email']);
             $this->entity->setIsEnabled(0);
 
-            if (is_null($data['groups'])) {
-                $groupsEntity->setUsername($data['username']);
-                $groupsEntity->setRole($data['role']);
-                $this->entity->addGroup($groupsEntity);
+            if (!is_null($data['groups'])) {
+                foreach($data['groups'] as $group) {
+                    $groupsEntity->setUsername($group['username']);
+                    $groupsEntity->setRole($group['role']);
+                    $this->entity->addGroup($groupsEntity);
+                }
             }
 
             if (!$this->existingUser) {

@@ -4,19 +4,22 @@ parameters:
 #    parameter_name: value
 
 services:
-    Users:
-        class: AppBundle\Service\Auth\Users
-        arguments: ["@doctrine.orm.default_entity_manager", "@lexik_jwt_authentication.encoder.default"]
-
+    # Authenticator
     Jwt_Token_Authenticator:
         class: AppBundle\Security\JwtTokenAuthenticator
         arguments: ["@doctrine.orm.default_entity_manager", "@lexik_jwt_authentication.encoder.default"]
 
+    # Authenticator
     Username_Password_Authenticator:
         class: AppBundle\Security\UsernamePasswordAuthenticator
         arguments: ["@security.password_encoder"]
-        public: false
 
+    # Users
+    Users:
+        class: AppBundle\Service\Auth\Users
+        arguments: ["@doctrine.orm.default_entity_manager"]
+
+    # Email
     Email:
         class: AppBundle\Service\Email\SwiftMessage
         arguments: ["@mailer", "@twig"]

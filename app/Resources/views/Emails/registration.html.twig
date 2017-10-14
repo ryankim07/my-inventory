@@ -1,5 +1,4 @@
-<h3>Welcome to My Inventory!</h3>
-
-<p>Hi {{ name }}! You're successfully registered.</p>
-<p>Please click <a href="{{ absolute_url(path('activate_user', {'token' : token})) }}">here</a> to finish your registration.</p>
+<p><h2>Hi {{ name }},</h2></p>
+<p>You are just one step away to start enjoying your membership.</p>
+<p>Please click <a href="{{ absolute_url(path('activate_user', {'email' : email, 'code' : code})) }}">here</a> to finish your registration.</p>
 <p>Thanks!</p>

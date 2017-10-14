@@ -6,8 +6,7 @@ parameters:
 services:
     Users:
         class: AppBundle\Service\Auth\Users
-        arguments:
-            - "@doctrine.orm.default_entity_manager"
+        arguments: ["@doctrine.orm.houses_entity_manager"]
 
     Jwt_Token_Authenticator:
         class: AppBundle\Security\JwtTokenAuthenticator
@@ -17,6 +16,10 @@ services:
         class: AppBundle\Security\UsernamePasswordAuthenticator
         arguments: ["@security.password_encoder"]
         public: false
+
+    Email:
+        class: AppBundle\Service\Email\SwiftMessage
+        arguments: ["@mailer"]
 
     # Sync Factory
     Manufacturers_Factory:

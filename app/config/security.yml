@@ -3,13 +3,13 @@
 security:
 
     encoders:
-        AppBundle\Entity\Auth\UsersEntity:
+        AppBundle\Entity\Users\UsersEntity:
             algorithm: bcrypt
 
     providers:
         database_users:
             entity:
-                class: 'AppBundle\Entity\Auth\UsersEntity'
+                class: 'AppBundle\Entity\Users\UsersEntity'
                 property: username
 
     firewalls:
@@ -28,6 +28,7 @@ security:
         registration:
             pattern: ^/api/user/activate
             anonymous: true
+            stateless: true
             security: false
 
         api:

@@ -9,7 +9,7 @@
  * @module  MyInventory
  */
 
-namespace AppBundle\Entity\Auth;
+namespace AppBundle\Entity\Users;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -42,7 +42,7 @@ class GroupsEntity extends Role
     private $role;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Auth\UsersEntity", mappedBy="groups")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Users\UsersEntity", mappedBy="groups")
      */
     private $users;
 

@@ -9,7 +9,7 @@
  * @module  MyInventory
  */
 
-namespace AppBundle\Controller\Auth;
+namespace AppBundle\Controller\Users;
 
 use AppBundle\AppBundle;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -23,14 +23,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @Security("is_granted(['ROLE_ADMIN'])")
- */
 class UsersController extends FOSRestController
 {
     /**
      * Get users
      *
+     * @Security("is_granted(['ROLE_ADMIN'])")
      * @Rest\Get("/api/users", name="get_all_users")
      * @return mixed
      */
@@ -45,6 +43,7 @@ class UsersController extends FOSRestController
     /**
      * Add new user
      *
+     * @Security("is_granted(['ROLE_ADMIN'])")
      * @Rest\Post("/api/user", name="new_user")
      * @param Request $request
      * @param UserInterface $user

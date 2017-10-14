@@ -9,12 +9,12 @@
  * @module  MyInventory
  */
 
-namespace AppBundle\Service\Auth;
+namespace AppBundle\Service\Users;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\Auth\UsersEntity;
-use AppBundle\Entity\Auth\GroupsEntity;
-use AppBundle\Entity\Auth\UsersRegistrationEntity;
+use AppBundle\Entity\Users\UsersEntity;
+use AppBundle\Entity\Users\GroupsEntity;
+use AppBundle\Entity\Users\UsersRegistrationEntity;
 
 class Users
 {
@@ -31,7 +31,7 @@ class Users
     public function __construct(EntityManager $entityManager)
     {
         $this->em   = $entityManager;
-        $this->repo = $this->em->getRepository('AppBundle\Entity\Auth\UsersEntity');
+        $this->repo = $this->em->getRepository('AppBundle\Entity\Users\UsersEntity');
     }
 
     /**
@@ -134,7 +134,7 @@ class Users
 
         // Add groups
         $groupsEntity = $this->existingUser ?
-            $this->em->getRepository('AppBundle\Entity\Auth\GroupsEntity')->findOneByUsername($this->entity->getUsername()) : new GroupsEntity();
+            $this->em->getRepository('AppBundle\Entity\Users\GroupsEntity')->findOneByUsername($this->entity->getUsername()) : new GroupsEntity();
 
         if (!is_null($data['groups'])) {
             foreach($data['groups'] as $group) {
@@ -189,8 +189,8 @@ class Users
     {
         try {
             $registration = $this->em
-                ->getRepository('AppBundle\Entity\Auth\UsersRegistrationEntity')
-                ->findBy([
+                ->getRepository('AppBundle\Entity\Users\UsersRegistrationEntity')
+                ->findOneBy([
                     'email' => $email,
                     'code'  => $code
                 ]);

@@ -10,9 +10,7 @@ class AuthForm extends React.Component
 		this.state = {
 			user: this.props.user,
 			clonedGroup: JSON.parse(JSON.stringify(this.props.user.groups)),
-			isChecked: false,
-			passwordInputType: 'password',
-			confirmPasswordInputType: 'password'
+			isChecked: false
 
 		};
 
@@ -101,8 +99,6 @@ class AuthForm extends React.Component
 		const value  = target.type === 'checkbox' ? target.checked : target.value;
 
 		this.setState({
-			passwordInputType: !value ? 'password' : 'text',
-			confirmPasswordInputType: !value ? 'password' : 'text',
 			isChecked: value
 		});
 	}
@@ -201,7 +197,7 @@ class AuthForm extends React.Component
 						<label className="control-label">Password</label>
 						<div className="input-group">
 							<input
-								type={ this.state.passwordInputType }
+								type={ this.state.isChecked ? 'text' : 'password' }
 								className="form-control input-sm"
 								onChange={ this.onHandleFormChange.bind(this, 'password') }
 								required="required"
@@ -214,7 +210,7 @@ class AuthForm extends React.Component
 						<label className="control-label">Confirm Password</label>
 						<div className="input-group">
 							<input
-								type={ this.state.confirmPasswordInputType }
+								type={ this.state.isChecked ? 'text' : 'password' }
 								className="form-control input-sm"
 								onChange={ this.onHandleFormChange.bind(this, 'confirm_password') }
 								required="required"

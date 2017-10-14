@@ -9,7 +9,7 @@
  * @module  MyInventory
  */
 
-namespace AppBundle\Entity\Auth;
+namespace AppBundle\Entity\Users;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -67,7 +67,7 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
     private $isActive;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Auth\GroupsEntity", inversedBy="users", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Users\GroupsEntity", inversedBy="users", cascade={"persist", "remove"})
      * @ORM\JoinTable(
      *  name="users_groups",
      *  joinColumns={
@@ -81,7 +81,7 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
     private $groups;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Auth\UsersRegistrationEntity", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Users\UsersRegistrationEntity", mappedBy="user", cascade={"persist", "remove"})
      */
     private $registration;
 

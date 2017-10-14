@@ -16,7 +16,7 @@ services:
 
     # Users
     Users:
-        class: AppBundle\Service\Auth\Users
+        class: AppBundle\Service\Users\Users
         arguments: ["@doctrine.orm.default_entity_manager"]
 
     # Email

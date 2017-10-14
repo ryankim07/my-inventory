@@ -108,7 +108,6 @@ class AuthLogin extends React.Component
 												id="remember_me"
 												name="_remember_me"
 												checked=""
-												onChange=""
 											/>
 											Remember me</label>
 									</div>

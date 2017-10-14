@@ -118,7 +118,7 @@ UsersStore.dispatchToken = Dispatcher.register(function(payload)
 
 	switch(action.actionType) {
         case ActionConstants.ADD_USER:
-            UsersStore.addUser(results.msg);
+            UsersStore.addUser(results);
 		break;
 
         case ActionConstants.UPDATE_USER:

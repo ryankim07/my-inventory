@@ -9,7 +9,7 @@
  * @module  MyInventory
  */
 
-namespace AppBundle\Entity\Auth;
+namespace AppBundle\Entity\Users;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -53,7 +53,7 @@ class UsersRegistrationEntity
     private $createdOn;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Auth\UsersEntity", inversedBy="registration")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Users\UsersEntity", inversedBy="registration")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;

@@ -73,7 +73,7 @@ class AuthController extends FOSRestController
 
         // Find username
         $user = $this->getDoctrine()
-            ->getRepository('AppBundle\Entity\Auth\UsersEntity')
+            ->getRepository('AppBundle\Entity\Users\UsersEntity')
             ->findOneByUsername($request['username']);
 
         if (!$user) {

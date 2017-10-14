@@ -45,7 +45,7 @@ class SwiftMessage
             ->setTo($email)
             ->setBody(
                 $this->twig->render(
-                    'Emails/registration.html.twig',
+                    'emails/registration.html.twig',
                     [
                         'name'  => $firstName,
                         'email' => $email,

@@ -31,6 +31,7 @@ class AuthController extends FOSRestController
      * Login
      *
      * @Rest\Post("/auth/login", name="auth_login")
+     *
      * @param Request $request
      * @return JsonResponse
      */
@@ -45,6 +46,8 @@ class AuthController extends FOSRestController
     }
 
     /**
+     * Check login
+     *
      * @Rest\Get("/auth/check", name="auth_check")
      */
     public function loginCheckAction()
@@ -64,6 +67,7 @@ class AuthController extends FOSRestController
      * New token generator
      *
      * @Rest\Post("/auth/token", name="auth_token")
+     *
      * @param Request $request
      * @return View
      */

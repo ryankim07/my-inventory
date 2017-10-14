@@ -30,6 +30,7 @@ class VehiclesController extends FOSRestController
      * Get vehicles
      *
      * @Rest\Get("/api/vehicles", name="get_all_vehicles")
+     *
      * @return mixed|string
      */
     public function getListAction()
@@ -44,6 +45,7 @@ class VehiclesController extends FOSRestController
      * Add new vehicle
      *
      * @Rest\Post("/api/vehicle", name="new_vehicle")
+     *
      * @param Request $request
      * @return View
      */
@@ -64,6 +66,7 @@ class VehiclesController extends FOSRestController
      * Delete vehicle
      *
      * @Rest\Delete("/api/vehicles/{id}", name="delete_vehicle")
+     *
      * @param $id
      * @return View
      */

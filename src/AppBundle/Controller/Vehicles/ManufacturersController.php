@@ -25,6 +25,7 @@ class ManufacturersController extends FOSRestController
      * Get api vehicle by ID
      *
      * @Rest\Get("/api/manufacturers/{id}", name="manufacturers")
+     *
      * @param $id
      * @return View
      */

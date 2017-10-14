@@ -26,6 +26,7 @@ class AssetsController extends FOSRestController
      * Add media
      *
      * @Rest\Post("/api/asset", name="new_asset")
+     *
      * @param Request $request
      * @return View
      */

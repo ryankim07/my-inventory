@@ -30,6 +30,7 @@ class VendorCategoriesController extends FOSRestController
      * Get vendor category by ID
      *
      * @Rest\Get("/api/vendor/categories/{id}", name="get_vendor_categories")
+     *
      * @param $id
      * @return View
      */
@@ -49,6 +50,7 @@ class VendorCategoriesController extends FOSRestController
      * Get vendor categories
      *
      * @Rest\Get("/api/vendor/categories", name="get_all_vendor_categories")
+     *
      * @return mixed|string
      */
     public function getListAction()
@@ -67,6 +69,7 @@ class VendorCategoriesController extends FOSRestController
      * Add new or update vendor category
      *
      * @Rest\Post("/api/vendor/category", name="new_category")
+     *
      * @param Request $request
      * @return View
      */
@@ -86,6 +89,7 @@ class VendorCategoriesController extends FOSRestController
      * Delete vendor category
      *
      * @Rest\Delete("/api/vendor/category/{id}", name="delete_vendor_category")
+     *
      * @param $id
      * @return View
      */

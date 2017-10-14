@@ -30,6 +30,7 @@ class ConfigurationController extends FOSRestController
      * Get addresses
      *
      * @Rest\Get("/api/configuration/properties/rooms", name="get_all_configured_rooms")
+     *
      * @return mixed|string
      */
     public function getListAction()

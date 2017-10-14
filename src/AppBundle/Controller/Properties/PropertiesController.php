@@ -30,6 +30,7 @@ class PropertiesController extends FOSRestController
      * Get property by ID
      *
      * @Rest\Get("/api/properties/{id}", name="get_property")
+     *
      * @param $id
      * @return View
      */
@@ -49,6 +50,7 @@ class PropertiesController extends FOSRestController
      * Get properties
      *
      * @Rest\Get("/api/properties", name="get_all_properties")
+     *
      * @return mixed|string
      */
     public function getListAction()
@@ -67,6 +69,7 @@ class PropertiesController extends FOSRestController
      * Add new or update property
      *
      * @Rest\Post("/api/property", name="new_property")
+     *
      * @param Request $request
      * @return View
      */
@@ -107,6 +110,7 @@ class PropertiesController extends FOSRestController
      * Delete property
      *
      * @Rest\Delete("/api/properties/{id}", name="delete_property")
+     *
      * @param $id
      * @return View
      */
@@ -122,6 +126,7 @@ class PropertiesController extends FOSRestController
      * Delete room
      *
      * @Rest\Delete("/api/properties/{propertyId}/rooms/{roomId}", name="delete_room")
+     *
      * @param $propertyId
      * @param $roomId
      * @return View

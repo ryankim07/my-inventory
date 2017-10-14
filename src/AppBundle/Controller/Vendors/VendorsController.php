@@ -30,6 +30,7 @@ class VendorsController extends FOSRestController
      * Get vendor by ID
      *
      * @Rest\Get("/api/vendors/{id}", name="get_vendor")
+     *
      * @param $id
      * @return View
      */
@@ -49,6 +50,7 @@ class VendorsController extends FOSRestController
      * Get vendors
      *
      * @Rest\Get("/api/vendors", name="get_all_vendors")
+     *
      * @return mixed|string
      */
     public function getListAction()
@@ -67,6 +69,7 @@ class VendorsController extends FOSRestController
      * Add new or update vendor
      *
      * @Rest\Post("/api/vendor", name="new_vendor")
+     *
      * @param Request $request
      * @return View
      */
@@ -86,6 +89,7 @@ class VendorsController extends FOSRestController
      * Delete vendor
      *
      * @Rest\Delete("/api/vendors/{id}", name="delete_vendor")
+     *
      * @param $id
      * @return View
      */

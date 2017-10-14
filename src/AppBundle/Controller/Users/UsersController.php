@@ -30,6 +30,7 @@ class UsersController extends FOSRestController
      *
      * @Security("is_granted(['ROLE_ADMIN'])")
      * @Rest\Get("/api/users", name="get_all_users")
+     *
      * @return mixed
      */
     public function getListAction()
@@ -45,6 +46,7 @@ class UsersController extends FOSRestController
      *
      * @Security("is_granted(['ROLE_ADMIN'])")
      * @Rest\Post("/api/user", name="new_user")
+     *
      * @param Request $request
      * @param UserInterface $user
      * @return View
@@ -80,6 +82,7 @@ class UsersController extends FOSRestController
      * Activate new user
      *
      * @Rest\Get("/api/user/activate/{email}/{code}", name="activate_user")
+     *
      * @param $email
      * @param $code
      * @return Response
@@ -89,6 +92,6 @@ class UsersController extends FOSRestController
         $userService = $this->get('Users');
         $results = $userService->activate($email, $code);
 
-        return $this->forward('AppBundle:Auth:login', ['msg' => $results]);
+        $this->redirect($this->generateUrl('homepage'));
     }
 }

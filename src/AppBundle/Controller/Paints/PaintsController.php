@@ -30,6 +30,7 @@ class PaintsController extends FOSRestController
      * Get paints
      *
      * @Rest\Get("/api/paints", name="get_all_paints")
+     *
      * @return mixed|string
      */
     public function getListAction()
@@ -48,6 +49,7 @@ class PaintsController extends FOSRestController
      * Add new paint
      *
      * @Rest\Post("/api/paint", name="new_paint")
+     *
      * @param Request $request
      * @return View
      */
@@ -67,6 +69,7 @@ class PaintsController extends FOSRestController
      * Delete paint
      *
      * @Rest\Delete("/api/paints/{id}", name="delete_paint")
+     *
      * @param $id
      * @return View
      */

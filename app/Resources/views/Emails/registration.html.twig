@@ -1,7 +1,5 @@
-<h3>You did it! You registered!</h3>
+<h3>Welcome to My Inventory!</h3>
 
-Hi {{ name }}! You're successfully registered.
-
-To login, go to: <a href="{% path('new_user') %}">login</a>.
-
-Thanks!
+<p>Hi {{ name }}! You're successfully registered.</p>
+<p>Please click <a href="{{ absolute_url(path('activate_user', {'token' : token})) }}">here</a> to finish your registration.</p>
+<p>Thanks!</p>

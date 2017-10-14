@@ -6,11 +6,11 @@ parameters:
 services:
     Users:
         class: AppBundle\Service\Auth\Users
-        arguments: ["@doctrine.orm.default_entity_manager"]
+        arguments: ["@doctrine.orm.default_entity_manager", "@lexik_jwt_authentication.encoder.default"]
 
     Jwt_Token_Authenticator:
         class: AppBundle\Security\JwtTokenAuthenticator
-        arguments: ["@lexik_jwt_authentication.encoder.default", "@doctrine.orm.default_entity_manager"]
+        arguments: ["@doctrine.orm.default_entity_manager", "@lexik_jwt_authentication.encoder.default"]
 
     Username_Password_Authenticator:
         class: AppBundle\Security\UsernamePasswordAuthenticator

@@ -48,7 +48,6 @@ class UsersRegistrationEntity
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotBlank()
      */
     private $createdOn;
 

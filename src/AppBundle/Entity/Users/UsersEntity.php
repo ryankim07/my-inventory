@@ -67,6 +67,11 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
     private $isActive;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdOn;
+
+    /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Users\GroupsEntity", inversedBy="users", cascade={"persist", "remove"})
      * @ORM\JoinTable(
      *  name="users_groups",
@@ -251,13 +256,26 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Is enabled
+     * Set created
      *
-     * @return mixed
+     * @param $createdOn
+     * @return $this
      */
-    public function isEnabled()
+    public function setCreatedOn($createdOn)
     {
-        return $this->getIsActive();
+        $this->createdOn = $createdOn;
+
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime
+     */
+    public function getCreatedOn()
+    {
+        return $this->createdOn;
     }
 
     /**
@@ -409,5 +427,15 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
             $this->username,
             $this->password,
             $this->isActive) = unserialize($serialized);
+    }
+
+    /**
+     * Is enabled
+     *
+     * @return mixed
+     */
+    public function isEnabled()
+    {
+        return $this->getIsActive();
     }
 }

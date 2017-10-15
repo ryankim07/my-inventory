@@ -104,7 +104,7 @@ class Users
             $op  = !$this->existingUser ? 'added' : 'updated';
             $msg = "User successfully {$op}.";
 
-            // Save or update paint
+            // Save or update user
             if (!$this->_save($data)) {
                 $msg = "User could not be {$op}.";
             };

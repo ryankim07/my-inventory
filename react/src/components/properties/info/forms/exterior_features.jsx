@@ -39,7 +39,7 @@ class PropertyExteriorFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'exterior') }
-									value={ exteriorFeatures.exterior } />
+									value={ exteriorFeatures.exterior }/>
 						</div>
 					</div>
 				</div>
@@ -51,7 +51,7 @@ class PropertyExteriorFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'foundation') }
-									value={ exteriorFeatures.foundation } />
+									value={ exteriorFeatures.foundation }/>
 						</div>
 					</div>
 				</div>
@@ -63,15 +63,15 @@ class PropertyExteriorFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'others') }
-									value={ exteriorFeatures.others } />
+									value={ exteriorFeatures.others }/>
 						</div>
 					</div>
 				</div>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input type="hidden" value={ exteriorFeatures.id } />
-							<input type="hidden" value={ exteriorFeatures.property_id } />
+							<input type="hidden" value={ exteriorFeatures.id }/>
+							<input type="hidden" value={ exteriorFeatures.property_id }/>
 						</div>
 					</div>
 				</div>
@@ -93,7 +93,7 @@ class PropertyExteriorFeaturesForm extends React.Component
 								<span>Add Exterior Features</span>
 							</div>
 							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true" /></button>
+								<button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true"/></button>
 							</div>
 						</div>
 					</div>

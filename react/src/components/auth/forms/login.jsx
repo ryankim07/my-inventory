@@ -129,7 +129,7 @@ class AuthLogin extends React.Component
 			<div className="row">
 				{
 					!this.state.flashMessage ?
-						null : <FlashMessage message={ this.state.flashMessage } alertType="alert-danger" />
+						null : <FlashMessage message={ this.state.flashMessage } alertType="alert-danger"/>
 				}
 
 				<div className="row" id="login-form">

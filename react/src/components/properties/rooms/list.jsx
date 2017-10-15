@@ -21,8 +21,8 @@ class PropertyRoomsList extends React.Component
 						<td>{ room.total_area }</td>
 						<td>{ room.description }</td>
 						<td>
-							<button onClick={ this.props.onHandleRightRoomPanel.bind(this, room.id) }><i className="fa fa-pencil" aria-hidden="true" /></button>
-							<button onClick={ this.props.onHandleRemoveRoom.bind(this, propertyId, room.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
+							<button onClick={ this.props.onHandleRightRoomPanel.bind(this, room.id) }><i className="fa fa-pencil" aria-hidden="true"/></button>
+							<button onClick={ this.props.onHandleRemoveRoom.bind(this, propertyId, room.id) }><i className="fa fa-trash" aria-hidden="true"/></button>
 						</td>
 					</tr>
 				);
@@ -37,7 +37,7 @@ class PropertyRoomsList extends React.Component
 								<span>Properties Rooms List</span>
 							</div>
 							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.props.onHandleRightRoomPanel.bind(this, false) }><i className="fa fa-plus" aria-hidden="true" /></button>
+								<button onClick={ this.props.onHandleRightRoomPanel.bind(this, false) }><i className="fa fa-plus" aria-hidden="true"/></button>
 								<Previous route="/properties/info/view"/>
 							</div>
 						</div>

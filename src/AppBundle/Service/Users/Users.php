@@ -149,7 +149,7 @@ class Users
         $registrationEntity = new UsersRegistrationEntity();
         $registrationEntity->setUserId($this->entity->getId());
         $registrationEntity->setEmail($this->entity->getEmail());
-        $registrationEntity->setCode(substr(uniqid('', true), -30));
+        $registrationEntity->setCode(substr(bin2hex(random_bytes(16)), -30));
         $this->entity->addRegistration($registrationEntity);
 
         if (!$this->existingUser) {
@@ -202,10 +202,6 @@ class Users
 
             // Get user
             $user = $this->repo->find($registration->getUserId());
-
-            if (!$user) {
-
-            }
 
             if ($user->getIsActive() == 1) {
                 $msg = 'User already registered.';

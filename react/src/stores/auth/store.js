@@ -53,6 +53,10 @@ let AuthStore = assign({}, EventEmitter.prototype, {
 		return true;
 	},
 
+	getToken: function() {
+		return localStorage.getItem('token');
+	},
+
 	getStoreFlashMessage: function() {
 		return _storeMsg;
 	},

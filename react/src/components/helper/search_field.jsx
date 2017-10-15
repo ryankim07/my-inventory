@@ -30,7 +30,7 @@ class SearchField extends React.Component
                     onChange={ this.props.onHandleFormChange.bind(this) }
                     className="form-control"
                 />
-                <button onClick={ this.clearInput.bind(this) }><i className="fa fa-eraser" aria-hidden="true" /> Clear</button>
+                <button onClick={ this.clearInput.bind(this) }><i className="fa fa-eraser" aria-hidden="true"/> Clear</button>
             </div>
         );
     }

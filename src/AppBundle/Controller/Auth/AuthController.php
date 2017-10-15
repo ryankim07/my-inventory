@@ -39,6 +39,7 @@ class AuthController extends FOSRestController
     {
         $token = $this->get('lexik_jwt_authentication.encoder')->encode([
             'username' => $this->getUser()->getUsername(),
+            'roles'    => $this->getUser()->getRoles(),
             'exp'      => time() + $this->container->getParameter('lexik_jwt_authentication.token_ttl')
         ]);
 
@@ -61,40 +62,5 @@ class AuthController extends FOSRestController
      */
     public function logoutAction()
     {
-    }
-
-    /**
-     * New token generator
-     *
-     * @Rest\Post("/auth/token", name="auth_token")
-     *
-     * @param Request $request
-     * @return View
-     */
-    public function newTokenAction(Request $request)
-    {
-        $request = json_decode(stripslashes($request->get('data')), true);
-
-        // Find username
-        $user = $this->getDoctrine()
-            ->getRepository('AppBundle\Entity\Users\UsersEntity')
-            ->findOneByUsername($request['username']);
-
-        if (!$user) {
-            throw $this->createNotFoundException();
-        }
-
-        // Validate password
-        if (!$isValid = $this->get('security.password_encoder')->isPasswordValid($user, $request['password'])) {
-            throw new BadCredentialsException();
-        }
-
-        // Create token
-        $token = $this->get('lexik_jwt_authentication.encoder')->encode([
-            'username' => $user->getUsername(),
-            'exp'      => time() + $this->container->getParameter('lexik_jwt_authentication.token_ttl')
-        ]);
-
-        return new View(['token' => $token], Response::HTTP_OK);
     }
 }

@@ -95,13 +95,13 @@ class PropertyInfoView extends React.Component
 		let interiorFeatures = property.interior_features === undefined || property.interior_features.id === "" ? null : property.interior_features;
 
 		let propertyFeaturesBtn = features === null ?
-			<button onClick={ this.handleRightPanel.bind(this, false, featuresRightPanel) }><i className="fa fa-plus" aria-hidden="true" /> Add Property Features</button> : null;
+			<button onClick={ this.handleRightPanel.bind(this, false, featuresRightPanel) }><i className="fa fa-plus" aria-hidden="true"/> Add Property Features</button> : null;
 
 		let exteriorFeaturesBtn = exteriorFeatures === null ?
-			<button onClick={ this.handleRightPanel.bind(this, false, exteriorFeaturesRightPanel) }><i className="fa fa-plus" aria-hidden="true" /> Add Exterior Features</button> : null;
+			<button onClick={ this.handleRightPanel.bind(this, false, exteriorFeaturesRightPanel) }><i className="fa fa-plus" aria-hidden="true"/> Add Exterior Features</button> : null;
 
 		let interiorFeaturesBtn = interiorFeatures === null ?
-			<button onClick={ this.handleRightPanel.bind(this, false, interiorFeaturesRightPanel) }><i className="fa fa-plus" aria-hidden="true" /> Add Interior Features</button> : null;
+			<button onClick={ this.handleRightPanel.bind(this, false, interiorFeaturesRightPanel) }><i className="fa fa-plus" aria-hidden="true"/> Add Interior Features</button> : null;
 
 		let addressHtml = address !== null ?
 			<div>

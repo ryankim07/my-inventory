@@ -40,43 +40,43 @@ function requireAuth(nextState, replace)
 
 ReactDOM.render(
     <Router history={ browserHistory }>
-		<Route path="/auth/forms/login" component={ AuthLogin } />
-		<Route path="/auth/forms/logout" component={ AuthLogout } />
+		<Route path="/auth/forms/login" component={ AuthLogin }/>
+		<Route path="/auth/forms/logout" component={ AuthLogout }/>
         <Route component={ Body } onEnter={ requireAuth }>
-            <IndexRoute component={ Home } />
-            <Route path="/" component={ Home } />
+            <IndexRoute component={ Home }/>
+            <Route path="/" component={ Home }/>
 
 			<Route path="/users/dashboard" component={ UsersDashboard }>
-				<Route path="/users/forms/user" component={ UserForm } />
-				<Route path="/users" component={ UsersList } />
+				<Route path="/users/forms/user" component={ UserForm }/>
+				<Route path="/users" component={ UsersList }/>
 			</Route>
 
             <Route path="/vehicles/dashboard" component={ VehicleDashboard }>
-                <Route path="/vehicle/forms/vehicle" component={ VehicleForm } />
-                <Route path="/vehicles" component={ VehiclesList } />
+                <Route path="/vehicle/forms/vehicle" component={ VehicleForm }/>
+                <Route path="/vehicles" component={ VehiclesList }/>
             </Route>
 
 			<Route path="/properties/dashboard" component={ PropertiesDashboard }>
-				<Route path="/properties/main/forms/property" component={ PropertyForm } />
-				<Route path="/properties/info/view" component={ PropertyInfoView } />
-				<Route path="/property/info/forms/features" component={ PropertyFeaturesForm } />
-				<Route path="/property/info/forms/exterior_features" component={ PropertyExteriorFeaturesForm } />
-				<Route path="/property/info/forms/interior_features" component={ PropertyInteriorFeaturesForm } />
-				<Route path="/property/rooms/forms/room" component={ PropertyRoomForm } />
-				<Route path="/properties/rooms" component={ PropertyRoomsList } />
-				<Route path="/properties" component={ PropertiesList } />
+				<Route path="/properties/main/forms/property" component={ PropertyForm }/>
+				<Route path="/properties/info/view" component={ PropertyInfoView }/>
+				<Route path="/property/info/forms/features" component={ PropertyFeaturesForm }/>
+				<Route path="/property/info/forms/exterior_features" component={ PropertyExteriorFeaturesForm }/>
+				<Route path="/property/info/forms/interior_features" component={ PropertyInteriorFeaturesForm }/>
+				<Route path="/property/rooms/forms/room" component={ PropertyRoomForm }/>
+				<Route path="/properties/rooms" component={ PropertyRoomsList }/>
+				<Route path="/properties" component={ PropertiesList }/>
 			</Route>
 
 			<Route exact path="/configuration/vehicles/dashboard/:section" component={ ConfigurationVehiclesDashboard }>
-				<Route path="/configuration/vehicles/api/manufacturers" component={ ConfigurationManufacturersList } />
+				<Route path="/configuration/vehicles/api/manufacturers" component={ ConfigurationManufacturersList }/>
 			</Route>
 
 			<Route exact path="/configuration/properties/dashboard/:section" component={ ConfigurationPropertiesDashboard }>
-				<Route path="/configuration/properties/paints/list" component={ ConfigurationPaintsList } />
+				<Route path="/configuration/properties/paints/list" component={ ConfigurationPaintsList }/>
 			</Route>
 
 			<Route exact path="/configuration/vendors/dashboard/:section" component={ ConfigurationVendorsDashboard }>
-				<Route path="/configuration/vendors/list" component={ ConfigurationVendorsList } />
+				<Route path="/configuration/vendors/list" component={ ConfigurationVendorsList }/>
 			</Route>
         </Route>
     </Router>,

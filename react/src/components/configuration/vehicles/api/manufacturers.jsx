@@ -86,7 +86,7 @@ class ConfigurationManufacturersList extends React.Component
 				mfgsHtml.push(allMfgs);
 			}
         } else {
-			mfgsHtml.push(<tr key="l" ><td><Loader /></td></tr>);
+			mfgsHtml.push(<tr key="l" ><td><Loader/></td></tr>);
         }
 
         return (
@@ -98,7 +98,7 @@ class ConfigurationManufacturersList extends React.Component
 								<span>API Vehicle List</span>
 							</div>
 							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.props.onHandleSync.bind(this) }><i className="fa fa-cloud-download" aria-hidden="true" /> Sync</button>
+								<button onClick={ this.props.onHandleSync.bind(this) }><i className="fa fa-cloud-download" aria-hidden="true"/> Sync</button>
 							</div>
 						</div>
 					</div>
@@ -118,7 +118,7 @@ class ConfigurationManufacturersList extends React.Component
 							<thead>
 							<tr>
 								<th>Manufacturer</th>
-								<th />
+								<th/>
 							</tr>
 							</thead>
 							<tbody>

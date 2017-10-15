@@ -250,7 +250,7 @@ class PropertyForm extends React.Component
 						<div className="input-group">
 							<input
 								type="hidden"
-								value={ property.id } />
+								value={ property.id }/>
 						</div>
 					</div>
 				</div>
@@ -275,7 +275,7 @@ class PropertyForm extends React.Component
 								<span>Property</span>
 							</div>
 							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true" /></button>
+								<button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true"/></button>
 							</div>
 						</div>
 					</div>

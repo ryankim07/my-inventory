@@ -47,13 +47,13 @@ class TogglingRows extends React.Component
 			rowCss['background'] = this.state.togglingBackground;
 
 			viewBtn = this.props.addViewBtn ?
-				<button onClick={ this.props.handleViewPanel }><i className="fa fa-search" aria-hidden="true" /> View</button> : null;
+				<button onClick={ this.props.handleViewPanel }><i className="fa fa-search" aria-hidden="true"/> View</button> : null;
 
 			editBtn = this.props.addEditBtn ?
-				<button onClick={ this.props.handleEditPanel }><i className="fa fa-pencil" aria-hidden="true" /> Edit</button> : null;
+				<button onClick={ this.props.handleEditPanel }><i className="fa fa-pencil" aria-hidden="true"/> Edit</button> : null;
 
 			removeBtn = this.props.addRemoveBtn ?
-				<button onClick={ this.props.handleRemove }><i className="fa fa-trash" aria-hidden="true" /> Remove</button> : null;
+				<button onClick={ this.props.handleRemove }><i className="fa fa-trash" aria-hidden="true"/> Remove</button> : null;
 		}
 
 		let columns = this.props.columnValues.map((column, cellIndex) => {

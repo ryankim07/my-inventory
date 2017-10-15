@@ -25,12 +25,6 @@ security:
                 authenticators:
                     - 'Username_Password_Authenticator'
 
-        registration:
-            pattern: ^/api/user/activate
-            anonymous: true
-            stateless: true
-            security: false
-
         api:
             pattern: ^/api
             anonymous: false
@@ -39,12 +33,18 @@ security:
                 authenticators:
                     - 'Jwt_Token_Authenticator'
 
+        registration:
+            pattern: ^/registration
+            anonymous: true
+            stateless: true
+            security: false
+
         main:
             pattern: ^/
             anonymous: ~
             provider: database_users
 
     access_control:
-        - { path: ^/api, roles: [ROLE_ADMIN, ROLE_USER] }
-        - { path:  ^/api/user/activate, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: [ROLE_ADMIN, ROLE_USER] }
+        - { path:  ^/registration, roles: IS_AUTHENTICATED_ANONYMOUSLY }

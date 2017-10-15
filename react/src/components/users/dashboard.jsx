@@ -172,7 +172,7 @@ class UsersDashboard extends React.Component
 	render() {
 		return (
 			<div className="row">
-				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success" />}
+				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/>}
 
 				<UsersMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					<UsersList

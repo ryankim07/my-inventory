@@ -55,7 +55,7 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=60, unique=true)
+     * @ORM\Column(type="string", length=100, unique=true)
      * @Assert\NotBlank()
      */
     private $email;
@@ -340,7 +340,11 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
      */
     public function getRoles()
     {
-        return $this->groups->toArray();
+        foreach($this->groups->toArray() as $group) {
+            $roles[] = $group->getRole();
+        }
+
+        return $roles;
     }
 
     /**

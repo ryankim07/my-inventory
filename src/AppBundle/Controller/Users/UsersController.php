@@ -82,7 +82,7 @@ class UsersController extends FOSRestController
     /**
      * Activate new user
      *
-     * @Rest\Get("/api/user/activate/{email}/{code}", name="activate_user")
+     * @Rest\Get("/api/registration/activate/{email}/{code}", name="activate_user")
      *
      * @param $email
      * @param $code
@@ -92,11 +92,13 @@ class UsersController extends FOSRestController
     {
         try {
             $userService = $this->get('Users');
-            $results = $userService->activate($email, $code);
+            $results     = $userService->activate($email, $code);
 
             $token = $this->container->get('lexik_jwt_authentication.jwt_manager')->create($results['user']);
-            //$authenticationSuccessHandler = $this->container->get('lexik_jwt_authentication.handler.authentication_success');
-            //$authenticationSuccessHandler->handleAuthenticationSuccess($results['user'], $token);
+
+            // Use below to skip login
+            /*$authenticationSuccessHandler->handleAuthenticationSuccess($results['user'], $token);
+            $authenticationSuccessHandler = $this->container->get('lexik_jwt_authentication.handler.authentication_success');*/
 
             return $this->redirectToRoute('homepage', array('token' => $token));
         } catch (\Exception $e) {

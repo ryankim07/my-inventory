@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { jwtDecode } from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
+import AuthStore from '../stores/auth/store';
 
 class Header extends React.Component
 {
     render() {
-        let isAuthenticated = this.props.isAuthenticated();
+        let isAuthenticated = AuthStore.isAuthenticated();
+        let jwt             = jwtDecode(AuthStore.getToken());
 
         return (
             <div className="navbar navbar-inverse navbar-fixed-top">
@@ -24,7 +26,7 @@ class Header extends React.Component
                                 <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Vehicles <span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <Link to="/vehicles/dashboard" className="menu-link"><i className="fa fa-car menu-link-icon" aria-hidden="true" /> All</Link>
+                                        <Link to="/vehicles/dashboard" className="menu-link"><i className="fa fa-car menu-link-icon" aria-hidden="true"/> All</Link>
                                     </li>
                                 </ul>
                             </li>
@@ -32,7 +34,7 @@ class Header extends React.Component
                                 <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Properties <span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <Link to="/properties/dashboard" className="menu-link"><i className="fa fa-home menu-link-icon" aria-hidden="true" /> All</Link>
+                                        <Link to="/properties/dashboard" className="menu-link"><i className="fa fa-home menu-link-icon" aria-hidden="true"/> All</Link>
                                     </li>
                                 </ul>
                             </li>
@@ -40,7 +42,7 @@ class Header extends React.Component
                                 <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Users <span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <Link to="/users/dashboard" className="menu-link"><i className="fa fa-address-card-o menu-link-icon" aria-hidden="true" /> List</Link>
+                                        <Link to="/users/dashboard" className="menu-link"><i className="fa fa-address-card-o menu-link-icon" aria-hidden="true"/> List</Link>
                                     </li>
                                 </ul>
                             </li>
@@ -50,7 +52,7 @@ class Header extends React.Component
                                     <li className="dropdown dropdown-submenu">
                                         <a href="#" className="dropdown-toggle" data-toggle="dropdown">API Vehicles</a>
                                         <ul className="dropdown-menu">
-                                            <li><Link to="/configuration/vehicles/dashboard/manufacturers"><i className="fa fa-car menu-link-icon" aria-hidden="true" /> List</Link></li>
+                                            <li><Link to="/configuration/vehicles/dashboard/manufacturers"><i className="fa fa-car menu-link-icon" aria-hidden="true"/> List</Link></li>
                                         </ul>
                                     </li>
                                     <li className="dropdown dropdown-submenu">
@@ -59,7 +61,7 @@ class Header extends React.Component
                                             <li className="dropdown dropdown-submenu">
                                                 <a href="#" className="dropdown-toggle" data-toggle="dropdown">Paints</a>
                                                 <ul className="dropdown-menu">
-                                                    <li><Link to="/configuration/properties/dashboard/paints-list"><i className="fa fa-paint-brush menu-link-icon" aria-hidden="true" /> List</Link></li>
+                                                    <li><Link to="/configuration/properties/dashboard/paints-list"><i className="fa fa-paint-brush menu-link-icon" aria-hidden="true"/> List</Link></li>
                                                 </ul>
                                             </li>
                                         </ul>
@@ -67,7 +69,7 @@ class Header extends React.Component
                                     <li className="dropdown dropdown-submenu">
                                         <a href="#" className="dropdown-toggle" data-toggle="dropdown">Vendors</a>
                                         <ul className="dropdown-menu">
-                                            <li><Link to="/configuration/vendors/dashboard/vendors"><i className="fa fa-shopping-bag menu-link-icon" aria-hidden="true" /> List</Link></li>
+                                            <li><Link to="/configuration/vendors/dashboard/vendors"><i className="fa fa-shopping-bag menu-link-icon" aria-hidden="true"/> List</Link></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -78,7 +80,7 @@ class Header extends React.Component
                                 <a href="" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ryan<span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <Link to="/auth/forms/logout" className="menu-link"><i className="fa fa-sign-out menu-link-icon" aria-hidden="true" /> Logout</Link>
+                                        <Link to="/auth/forms/logout" className="menu-link"><i className="fa fa-sign-out menu-link-icon" aria-hidden="true"/> Logout</Link>
                                     </li>
                                 </ul>
                             </li>

@@ -39,7 +39,7 @@ class PropertyFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'parking') }
-									value={ features.parking } />
+									value={ features.parking }/>
 						</div>
 					</div>
 				</div>
@@ -51,7 +51,7 @@ class PropertyFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'multi_unit') }
-									value={ features.multi_unit } />
+									value={ features.multi_unit }/>
 						</div>
 					</div>
 				</div>
@@ -63,7 +63,7 @@ class PropertyFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'hoa') }
-									value={ features.hoa } />
+									value={ features.hoa }/>
 						</div>
 					</div>
 				</div>
@@ -75,7 +75,7 @@ class PropertyFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'utilities') }
-									value={ features.utilities } />
+									value={ features.utilities }/>
 						</div>
 					</div>
 				</div>
@@ -87,7 +87,7 @@ class PropertyFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'lot') }
-									value={ features.lot } />
+									value={ features.lot }/>
 						</div>
 					</div>
 				</div>
@@ -99,7 +99,7 @@ class PropertyFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'common_walls') }
-									value={ features.common_walls } />
+									value={ features.common_walls }/>
 						</div>
 					</div>
 				</div>
@@ -111,7 +111,7 @@ class PropertyFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'facing_direction') }
-									value={ features.facing_direction } />
+									value={ features.facing_direction }/>
 						</div>
 					</div>
 				</div>
@@ -123,7 +123,7 @@ class PropertyFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange.bind(this, 'others') }
-									value={ features.others } />
+									value={ features.others }/>
 						</div>
 					</div>
 				</div>
@@ -132,10 +132,10 @@ class PropertyFeaturesForm extends React.Component
 						<div className="input-group">
 							<input
 								type="hidden"
-								value={ features.id } />
+								value={ features.id }/>
 							<input
 								type="hidden"
-								value={ features.property_id } />
+								value={ features.property_id }/>
 						</div>
 					</div>
 				</div>
@@ -160,7 +160,7 @@ class PropertyFeaturesForm extends React.Component
 								<span>Add Exterior Features</span>
 							</div>
 							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true" /></button>
+								<button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true"/></button>
 							</div>
 						</div>
 					</div>

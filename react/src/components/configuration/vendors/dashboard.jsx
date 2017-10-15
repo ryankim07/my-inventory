@@ -149,7 +149,7 @@ class ConfigurationVendorsDashboard extends React.Component
 	render() {
 		return (
 			<div className="row">
-				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success" />}
+				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/>}
 
 				<ConfigurationMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					<ConfigurationVendorsList

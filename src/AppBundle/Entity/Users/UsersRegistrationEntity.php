@@ -35,7 +35,7 @@ class UsersRegistrationEntity
     private $userId;
 
     /**
-     * @ORM\Column(type="string", length=60, unique=true)
+     * @ORM\Column(type="string", length=100)
      * @Assert\NotBlank()
      */
     private $email;

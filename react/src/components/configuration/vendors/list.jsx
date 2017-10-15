@@ -80,7 +80,7 @@ class ConfigurationVendorsList extends React.Component
 				});
 			}
         } else {
-			vendorsHtml = <tr><td><Loader /></td></tr>;
+			vendorsHtml = <tr><td><Loader/></td></tr>;
         }
 
         return (
@@ -92,7 +92,7 @@ class ConfigurationVendorsList extends React.Component
 								<span>Paints List</span>
 							</div>
 							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.props.onHandleRightPanel.bind(this, false) }><i className="fa fa-plus" aria-hidden="true" /></button>
+								<button onClick={ this.props.onHandleRightPanel.bind(this, false) }><i className="fa fa-plus" aria-hidden="true"/></button>
 							</div>
 						</div>
 					</div>

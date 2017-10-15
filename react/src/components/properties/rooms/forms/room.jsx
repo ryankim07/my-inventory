@@ -194,7 +194,7 @@ class PropertyRoomForm extends React.Component
 					<div className="form-group">
 						<div className="col-xs-12 col-md-8">
 							<label className="control-label">Wall Name</label>
-							<button onClick={ this.onHandleRemoveWall.bind(this, wallIndex) }><i className="fa fa-trash" aria-hidden="true" /></button>
+							<button onClick={ this.onHandleRemoveWall.bind(this, wallIndex) }><i className="fa fa-trash" aria-hidden="true"/></button>
 							<PropertyRoomWallsDropdown
 								index={ wallIndex }
 								wall={ wall }
@@ -250,7 +250,7 @@ class PropertyRoomForm extends React.Component
 					<div className="form-group">
 						<div className="col-xs-12 col-md-12">
 							<div className="clearfix">
-								<button onClick={ this.onHandleAddWall }><i className="fa fa-plus" aria-hidden="true" /> Add Walls</button>
+								<button onClick={ this.onHandleAddWall }><i className="fa fa-plus" aria-hidden="true"/> Add Walls</button>
 							</div>
 						</div>
 					</div> : null
@@ -264,14 +264,14 @@ class PropertyRoomForm extends React.Component
 								rows="5"
 								className="form-control"
 								onChange={ this.onHandleFormChange.bind(this, 'description') }
-								value={ room.description } />
+								value={ room.description }/>
 						</div>
 					</div>
 				</div>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input type="hidden" value={ room.id } />
+							<input type="hidden" value={ room.id }/>
 						</div>
 					</div>
 				</div>

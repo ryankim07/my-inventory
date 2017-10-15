@@ -76,7 +76,7 @@ class VehiclesList extends React.Component
 				});
 			}
         } else {
-            vehiclesHtml = <tr><td><Loader /></td></tr>;
+            vehiclesHtml = <tr><td><Loader/></td></tr>;
         }
 
         return (
@@ -88,7 +88,7 @@ class VehiclesList extends React.Component
 								<span>Vehicle List</span>
 							</div>
 							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.props.onHandleRightPanel.bind(this, false) }><i className="fa fa-plus" aria-hidden="true" /></button>
+								<button onClick={ this.props.onHandleRightPanel.bind(this, false) }><i className="fa fa-plus" aria-hidden="true"/></button>
 							</div>
 						</div>
 					</div>

@@ -134,7 +134,7 @@ class PropertyAddressForm extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input type="hidden" value={ address.id } />
+							<input type="hidden" value={ address.id }/>
 						</div>
 					</div>
 				</div>

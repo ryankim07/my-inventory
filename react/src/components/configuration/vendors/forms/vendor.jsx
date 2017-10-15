@@ -265,7 +265,7 @@ class ConfigurationVendor extends React.Component
 								<span>Vendor</span>
 							</div>
 							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true" /></button>
+								<button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true"/></button>
 							</div>
 						</div>
 					</div>

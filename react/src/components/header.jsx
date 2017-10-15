@@ -80,7 +80,7 @@ class Header extends React.Component
                                             <li className="dropdown-submenu">
                                                 <a href="" className="dropdown-toggle" data-toggle="dropdown">Users</a>
                                                 <ul className="dropdown-menu">
-                                                    <li><Link to="/users/dashboard"><i className="fa fa-users menu-link-icon" aria-hidden="true"/> List</Link></li>
+                                                    <li><Link to="/settings/users/dashboard/users"><i className="fa fa-users menu-link-icon" aria-hidden="true"/> List</Link></li>
                                                 </ul>
                                             </li>
                                             <li className="dropdown dropdown-submenu">

@@ -2,8 +2,10 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import UsersAction from '../../../actions/users-action';
 import UsersStore from '../../../stores/users/store';
-import SettingsUser from './forms/user';
-import SettingsUsersList from './list';
+import SettingsMainPanel from './../main_panel';
+import SettingsRightPanel from './../right_panel';
+import SettingsUser from './../users/forms/user';
+import SettingsUsersList from './../users/list';
 import FlashMessage from '../../helper/flash_message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -172,26 +174,26 @@ class SettingsUsersDashboard extends React.Component
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/>}
 
-				<SettingsUsersList mainPanelColumnCss={ this.state.mainPanelColumnCss }>
-					<UsersList
+				<SettingsMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
+					<SettingsUsersList
 						loader={ this.state.loader }
 						user={ this.state.user }
 						users={ this.state.users }
 						onHandleRightPanel={ this.onHandleRightPanel }
 						onHandleRemove={ this.onHandleRemove }
 					/>
-				</SettingsUsersList>
+				</SettingsMainPanel>
 
 				{
 					this.state.showRightPanel ?
-						<UsersRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
+						<SettingsRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
 							<SettingsUser
 								user={ this.state.user }
 								isEditingMode={ this.state.isEditingMode }
 								onHandleFormSubmit={ this.onHandleFormSubmit }
 								closeRightPanel={ this.closeRightPanel }
 							/>
-						</UsersRightPanel> : null
+						</SettingsRightPanel> : null
 				}
 			</div>
 		)

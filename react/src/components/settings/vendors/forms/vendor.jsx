@@ -4,7 +4,7 @@ import InputText from '../../../helper/forms/input_text';
 import StatesDropdown from '../../../helper/states_dropdown';
 import { upperFirstLetter, phoneFormat, urlFormat } from "../../../helper/utils"
 
-class ConfigurationVendor extends React.Component
+class SettingsVendor extends React.Component
 {
 	// Constructor
     constructor(props) {
@@ -13,7 +13,7 @@ class ConfigurationVendor extends React.Component
         this.state = {
 			vendor: this.props.vendor,
 			submit: true
-		}
+		};
 
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 		this.handleFormSubmit   = this.handleFormSubmit.bind(this);
@@ -254,7 +254,7 @@ class ConfigurationVendor extends React.Component
 						</div>
 					</div>
 				</div>
-			</form>
+			</form>;
 
         return (
 			<div className="row" id="vendor-form">
@@ -278,4 +278,4 @@ class ConfigurationVendor extends React.Component
     }
 }
 
-export default ConfigurationVendor;
+export default SettingsVendor;

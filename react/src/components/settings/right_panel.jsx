@@ -1,6 +1,6 @@
 import React from 'react';
 
-class ConfigurationRightPanel extends React.Component
+class SettingsRightPanel extends React.Component
 {
 	render() {
 		return (
@@ -11,4 +11,4 @@ class ConfigurationRightPanel extends React.Component
 	}
 }
 
-export default ConfigurationRightPanel;
+export default SettingsRightPanel;

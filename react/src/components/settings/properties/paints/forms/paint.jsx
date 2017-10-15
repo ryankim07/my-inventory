@@ -2,7 +2,7 @@ import React from 'react';
 //import Uploader from '../../../helper/uploader';
 import { upperFirstLetter } from "../../../../helper/utils"
 
-class ConfigurationPaint extends React.Component
+class SettingsPaint extends React.Component
 {
     constructor(props) {
         super(props);
@@ -10,7 +10,7 @@ class ConfigurationPaint extends React.Component
         this.state = {
 			paint: this.props.paint,
 			value: ''
-		}
+		};
 
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 		this.handleFormSubmit   = this.handleFormSubmit.bind(this);
@@ -183,7 +183,7 @@ class ConfigurationPaint extends React.Component
 						</div>
 					</div>
 				</div>
-			</form>
+			</form>;
 
         return (
 			<div className="row" id="paint-form">
@@ -207,4 +207,4 @@ class ConfigurationPaint extends React.Component
     }
 }
 
-export default ConfigurationPaint;
+export default SettingsPaint;

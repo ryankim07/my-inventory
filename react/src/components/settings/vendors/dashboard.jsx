@@ -1,11 +1,11 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import PaintsAction from '../../../actions/paints-action';
-import PaintsStore from '../../../stores/paints/store';
-import ConfigurationMainPanel from './../main_panel';
-import ConfigurationRightPanel from './../right_panel';
-import ConfigurationPaintsList from './paints/list';
-import ConfigurationPaint from './paints/forms/paint';
+import VendorsAction from '../../../actions/vendors-action';
+import VendorsStore from '../../../stores/vendors/store';
+import SettingsMainPanel from './../main_panel';
+import SettingsRightPanel from './../right_panel';
+import SettingsVendorsList from './../vendors/list';
+import SettingsVendor from './../vendors/forms/vendor';
 import FlashMessage from '../../helper/flash_message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -15,17 +15,17 @@ let mainShrinkedDesktopColumnWidth = 'col-md-8';
 let rightPanelMobileColumnWidth = 'col-xs-4';
 let rightPanelDesktopColumnWidth = 'col-md-4';
 
-class ConfigurationPropertiesDashboard extends React.Component
+class SettingsVendorsDashboard extends React.Component
 {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			paints: [],
-			paint: {},
 			vendors: [],
-			isEditingMode: false,
+			vendor: {},
+			categories: [],
 			loader: true,
+			isEditingMode: false,
 			mainPanel: this.props.params.section,
 			showRightPanel: false,
 			flashMessage: null,
@@ -42,29 +42,30 @@ class ConfigurationPropertiesDashboard extends React.Component
 		this._onChange 		 	= this._onChange.bind(this);
 		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
+		this.onHandleRemove 	= this.onHandleRemove.bind(this);
 		this.setFlashMessage 	= this.setFlashMessage.bind(this);
 		this.closeRightPanel 	= this.closeRightPanel.bind(this);
 	}
 
 	componentWillMount() {
-		PaintsStore.addChangeListener(this._onChange);
-		PaintsStore.unsetStoreFlashMessage();
+		VendorsStore.addChangeListener(this._onChange);
+		VendorsStore.unsetStoreFlashMessage();
 	}
 
 	componentDidMount() {
-		PaintsAction.getPaintsAndVendors();
+		VendorsAction.getVendorsAndCategories();
 	}
 
 	componentWillUnmount() {
-		PaintsStore.removeChangeListener(this._onChange);
+		VendorsStore.removeChangeListener(this._onChange);
 	}
 
 	_onChange() {
-		let paints		    = PaintsStore.getPaints();
-		let vendors			= PaintsStore.getVendors();
-		let flashMessage 	= PaintsStore.getStoreFlashMessage();
-		let isAuthenticated = PaintsStore.isAuthenticated();
-		let openRightPanel  = PaintsStore.showRightPanel();
+		let vendors 		= VendorsStore.getVendors();
+		let categories		= VendorsStore.getCategories();
+		let flashMessage 	= VendorsStore.getStoreFlashMessage();
+		let isAuthenticated = VendorsStore.isAuthenticated();
+		let openRightPanel  = VendorsStore.showRightPanel();
 
 		if (!isAuthenticated){
 			this.context.router.push("/auth/forms/login");
@@ -72,8 +73,8 @@ class ConfigurationPropertiesDashboard extends React.Component
 		}
 
 		this.setState({
-			paints: paints,
 			vendors: vendors,
+			categories: categories,
 			showRightPanel: !!openRightPanel,
 			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,
@@ -85,33 +86,36 @@ class ConfigurationPropertiesDashboard extends React.Component
 	}
 
 	// Handle submit
-	onHandleFormSubmit(paint) {
+	onHandleFormSubmit(vehicle) {
 		if (!this.state.isEditingMode) {
-			PaintsAction.addPaint(paint);
+			VendorsAction.addVendor(vehicle);
 		} else {
-			PaintsAction.updatePaint(paint);
+			VendorsAction.updateVendor(vehicle);
 		}
 	}
 
 	// Handle right panel
 	onHandleRightPanel(id) {
 		let isEditingMode = !!id;
-		let paint = isEditingMode ?
-			this.state.paints.find(obj => obj.id === id) :
+		let vendor = isEditingMode ?
+			this.state.vendors.find(obj => obj.id === id) :
 			{
 				id: '',
-				vendor_id: '',
-				brand: '',
-				name: '',
-				number: '',
-				color: '',
-				hex: '',
-				rgb: '',
+				category_id: '',
+				company: '',
+				street: '',
+				city: '',
+				state: '',
+				zip: '',
+				country: '',
+				phone: '',
+				contact: '',
+				url: '',
 				notes: ''
-			}
+			};
 
 		this.setState({
-			paint: paint,
+			vendor: vendor,
 			isEditingMode: isEditingMode,
 			showRightPanel: true,
 			mainPanelColumnCss: {
@@ -123,7 +127,7 @@ class ConfigurationPropertiesDashboard extends React.Component
 
 	// Handle delete
 	onHandleRemove(id) {
-		PaintsAction.removeVendor(id);
+		VendorsAction.removeVendor(id);
 	}
 
 	// Set flash message
@@ -147,35 +151,34 @@ class ConfigurationPropertiesDashboard extends React.Component
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/>}
 
-				<ConfigurationMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
-					<ConfigurationPaintsList
+				<SettingsMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
+					<SettingsVendorsList
 						loader={ this.state.loader }
-						paints={ this.state.paints }
-						paint={ this.state.paint }
+						vendor={ this.state.vendor }
+						vendors={ this.state.vendors }
 						onHandleRightPanel={ this.onHandleRightPanel }
 						onHandleRemove={ this.onHandleRemove }
 					/>
-				</ConfigurationMainPanel>
+				</SettingsMainPanel>
 
 				{
 					this.state.showRightPanel ?
-						<ConfigurationRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
-							<ConfigurationPaint
-								paint={ this.state.paint }
-								vendors={ this.state.vendors }
-								isEditingMode={ this.state.isEditingMode }
+						<SettingsRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
+							<SettingsVendor
+								vendor={ this.state.vendor }
+								categories={ this.state.categories }
 								onHandleFormSubmit={ this.onHandleFormSubmit }
 								closeRightPanel={ this.closeRightPanel }
 							/>
-						</ConfigurationRightPanel> : null
+						</SettingsRightPanel> : null
 				}
 			</div>
 		)
 	}
 }
 
-ConfigurationPropertiesDashboard.contextTypes = {
+SettingsVendorsDashboard.contextTypes = {
 	router: PropTypes.object.isRequired
-}
+};
 
-export default ConfigurationPropertiesDashboard;
+export default SettingsVendorsDashboard;

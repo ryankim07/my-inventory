@@ -6,9 +6,6 @@ import Body from './src/components/body';
 import Home from './src/components/home';
 import AuthLogin from './src/components/auth/forms/login';
 import AuthLogout from './src/components/auth/forms/logout';
-import UsersDashboard from './src/components/users/dashboard';
-import UserForm from './src/components/users/forms/user';
-import UsersList from './src/components/users/list';
 import VehicleDashboard from './src/components/vehicles/dashboard';
 import VehicleForm from './src/components/vehicles/forms/vehicle';
 import VehiclesList from './src/components/vehicles/list';
@@ -21,12 +18,14 @@ import PropertyExteriorFeaturesForm from './src/components/properties/info/forms
 import PropertyInteriorFeaturesForm from './src/components/properties/info/forms/interior_features';
 import PropertyRoomForm from "./src/components/properties/rooms/forms/room";
 import PropertyRoomsList from './src/components/properties/rooms/list';
-import ConfigurationVehiclesDashboard from './src/components/configuration/vehicles/dashboard';
-import ConfigurationManufacturersList from './src/components/configuration/vehicles/api/manufacturers';
-import ConfigurationPropertiesDashboard from './src/components/configuration/properties/dashboard';
-import ConfigurationPaintsList from './src/components/configuration/properties/paints/list';
-import ConfigurationVendorsDashboard from './src/components/configuration/vendors/dashboard';
-import ConfigurationVendorsList from './src/components/configuration/vendors/list';
+import SettingsUsersDashboard from './src/components/settings/users/dashboard';
+import SettingsUsersList from './src/components/settings/users/list';
+import SettingsVehiclesDashboard from './src/components/settings/vehicles/dashboard';
+import SettingsManufacturersList from './src/components/settings/vehicles/api/manufacturers';
+import SettingsPropertiesDashboard from './src/components/settings/properties/dashboard';
+import SettingsPaintsList from './src/components/settings/properties/paints/list';
+import SettingsVendorsDashboard from './src/components/settings/vendors/dashboard';
+import SettingsVendorsList from './src/components/settings/vendors/list';
 
 function requireAuth(nextState, replace)
 {
@@ -46,11 +45,6 @@ ReactDOM.render(
             <IndexRoute component={ Home }/>
             <Route path="/" component={ Home }/>
 
-			<Route path="/users/dashboard" component={ UsersDashboard }>
-				<Route path="/users/forms/user" component={ UserForm }/>
-				<Route path="/users" component={ UsersList }/>
-			</Route>
-
             <Route path="/vehicles/dashboard" component={ VehicleDashboard }>
                 <Route path="/vehicle/forms/vehicle" component={ VehicleForm }/>
                 <Route path="/vehicles" component={ VehiclesList }/>
@@ -67,16 +61,20 @@ ReactDOM.render(
 				<Route path="/properties" component={ PropertiesList }/>
 			</Route>
 
-			<Route exact path="/configuration/vehicles/dashboard/:section" component={ ConfigurationVehiclesDashboard }>
-				<Route path="/configuration/vehicles/api/manufacturers" component={ ConfigurationManufacturersList }/>
+			<Route path="/settings/users/dashboard/:section" component={ SettingsUsersDashboard }>
+				<Route path="/settings/users/list" component={ SettingsUsersList }/>
 			</Route>
 
-			<Route exact path="/configuration/properties/dashboard/:section" component={ ConfigurationPropertiesDashboard }>
-				<Route path="/configuration/properties/paints/list" component={ ConfigurationPaintsList }/>
+			<Route exact path="/settings/vehicles/dashboard/:section" component={ SettingsVehiclesDashboard }>
+				<Route path="/settings/vehicles/api/manufacturers" component={ SettingsManufacturersList }/>
 			</Route>
 
-			<Route exact path="/configuration/vendors/dashboard/:section" component={ ConfigurationVendorsDashboard }>
-				<Route path="/configuration/vendors/list" component={ ConfigurationVendorsList }/>
+			<Route exact path="/settings/properties/dashboard/:section" component={ SettingsPropertiesDashboard }>
+				<Route path="/settings/properties/paints/list" component={ SettingsPaintsList }/>
+			</Route>
+
+			<Route exact path="/settings/vendors/dashboard/:section" component={ SettingsVendorsDashboard }>
+				<Route path="/settings/vendors/list" component={ SettingsVendorsList }/>
 			</Route>
         </Route>
     </Router>,

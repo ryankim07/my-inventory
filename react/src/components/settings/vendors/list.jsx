@@ -3,7 +3,7 @@ import SearchField from '../../helper/search_field';
 import TogglingRows from '../../helper/table/toggling_rows';
 import Loader from '../../helper/loader';
 
-class ConfigurationVendorsList extends React.Component
+class SettingsVendorsList extends React.Component
 {
 	constructor(props) {
 		super(props);
@@ -135,4 +135,4 @@ class ConfigurationVendorsList extends React.Component
     }
 }
 
-export default ConfigurationVendorsList;
+export default SettingsVendorsList;

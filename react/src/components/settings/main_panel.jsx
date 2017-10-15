@@ -1,6 +1,6 @@
 import React from 'react';
 
-class ConfigurationMainPanel extends React.Component
+class SettingsMainPanel extends React.Component
 {
 	render() {
 		return (
@@ -11,4 +11,4 @@ class ConfigurationMainPanel extends React.Component
 	}
 }
 
-export default ConfigurationMainPanel;
+export default SettingsMainPanel;

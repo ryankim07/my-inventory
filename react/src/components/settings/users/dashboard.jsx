@@ -1,11 +1,9 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import VendorsAction from '../../../actions/vendors-action';
-import VendorsStore from '../../../stores/vendors/store';
-import ConfigurationMainPanel from './../main_panel';
-import ConfigurationRightPanel from './../right_panel';
-import ConfigurationVendorsList from './../vendors/list';
-import ConfigurationVendor from './../vendors/forms/vendor';
+import UsersAction from '../../../actions/users-action';
+import UsersStore from '../../../stores/users/store';
+import SettingsUser from './forms/user';
+import SettingsUsersList from './list';
 import FlashMessage from '../../helper/flash_message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -15,18 +13,16 @@ let mainShrinkedDesktopColumnWidth = 'col-md-8';
 let rightPanelMobileColumnWidth = 'col-xs-4';
 let rightPanelDesktopColumnWidth = 'col-md-4';
 
-class ConfigurationVendorsDashboard extends React.Component
+class SettingsUsersDashboard extends React.Component
 {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			vendors: [],
-			vendor: {},
-			categories: [],
+			users: [],
+			user: {},
 			loader: true,
 			isEditingMode: false,
-			mainPanel: this.props.params.section,
 			showRightPanel: false,
 			flashMessage: null,
 			mainPanelColumnCss: {
@@ -39,33 +35,45 @@ class ConfigurationVendorsDashboard extends React.Component
 			}
 		};
 
-		this._onChange 		 	= this._onChange.bind(this);
+		this._onChange 		  	= this._onChange.bind(this);
 		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.onHandleRemove 	= this.onHandleRemove.bind(this);
-		this.setFlashMessage 	= this.setFlashMessage.bind(this);
-		this.closeRightPanel 	= this.closeRightPanel.bind(this);
+		this.setFlashMessage  	= this.setFlashMessage.bind(this);
+		this.closeRightPanel  	= this.closeRightPanel.bind(this);
 	}
 
 	componentWillMount() {
-		VendorsStore.addChangeListener(this._onChange);
-		VendorsStore.unsetStoreFlashMessage();
+		UsersStore.addChangeListener(this._onChange);
+		UsersStore.unsetStoreFlashMessage();
 	}
 
 	componentDidMount() {
-		VendorsAction.getVendorsAndCategories();
+		UsersAction.getUsers();
 	}
 
 	componentWillUnmount() {
-		VendorsStore.removeChangeListener(this._onChange);
+		UsersStore.removeChangeListener(this._onChange);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.location.action !== 'POP') {
+			this.setState({
+				mainPanelColumnCss: {
+					'mobileWidth': mainDefaultMobileColumnWidth,
+					'desktopWidth': mainDefaultDesktopColumnWidth
+				},
+				showRightPanel: false,
+				flashMessage: null
+			});
+		}
 	}
 
 	_onChange() {
-		let vendors 		= VendorsStore.getVendors();
-		let categories		= VendorsStore.getCategories();
-		let flashMessage 	= VendorsStore.getStoreFlashMessage();
-		let isAuthenticated = VendorsStore.isAuthenticated();
-		let openRightPanel  = VendorsStore.showRightPanel();
+		let users 			= UsersStore.getUsers();
+		let flashMessage 	= UsersStore.getStoreFlashMessage();
+		let isAuthenticated = UsersStore.isAuthenticated();
+		let openRightPanel  = UsersStore.showRightPanel();
 
 		if (!isAuthenticated){
 			this.context.router.push("/auth/forms/login");
@@ -73,8 +81,7 @@ class ConfigurationVendorsDashboard extends React.Component
 		}
 
 		this.setState({
-			vendors: vendors,
-			categories: categories,
+			users: users,
 			showRightPanel: !!openRightPanel,
 			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,
@@ -86,36 +93,50 @@ class ConfigurationVendorsDashboard extends React.Component
 	}
 
 	// Handle submit
-	onHandleFormSubmit(vehicle) {
+	onHandleFormSubmit(user) {
 		if (!this.state.isEditingMode) {
-			VendorsAction.addVendor(vehicle);
+			UsersAction.addUser(user);
 		} else {
-			VendorsAction.updateVendor(vehicle);
+			UsersAction.updateUser(user);
 		}
 	}
 
 	// Handle right panel
 	onHandleRightPanel(id) {
 		let isEditingMode = !!id;
-		let vendor = isEditingMode ?
-			this.state.vendors.find(obj => obj.id === id) :
+
+		// If a particular user is edited without submit and user selects
+		// a new user to edit, we need to restore old user values.  Therefore,
+		// we need to clone object to stop js original object reference
+		let users = JSON.parse(JSON.stringify(this.state.users));
+
+		let groupsObj = {
+			id: '',
+			username: '',
+			role: '',
+			users: []
+		};
+
+		// Instantiate new object or load existing object if found
+		let user = isEditingMode ?
+			users.find(obj => obj.id === id) :
 			{
 				id: '',
-				category_id: '',
-				company: '',
-				street: '',
-				city: '',
-				state: '',
-				zip: '',
-				country: '',
-				phone: '',
-				contact: '',
-				url: '',
-				notes: ''
-			}
+				first_name: '',
+				last_name: '',
+				username: '',
+				password: '',
+				email: '',
+				is_enabled: '',
+				groups: [groupsObj]
+			};
+
+		if (isEditingMode && user.groups.length === 0) {
+			user.groups.push(groupsObj);
+		}
 
 		this.setState({
-			vendor: vendor,
+			user: user,
 			isEditingMode: isEditingMode,
 			showRightPanel: true,
 			mainPanelColumnCss: {
@@ -127,7 +148,7 @@ class ConfigurationVendorsDashboard extends React.Component
 
 	// Handle delete
 	onHandleRemove(id) {
-		VendorsAction.removeVendor(id);
+		UsersAction.removeUser(id);
 	}
 
 	// Set flash message
@@ -151,34 +172,34 @@ class ConfigurationVendorsDashboard extends React.Component
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/>}
 
-				<ConfigurationMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
-					<ConfigurationVendorsList
+				<SettingsUsersList mainPanelColumnCss={ this.state.mainPanelColumnCss }>
+					<UsersList
 						loader={ this.state.loader }
-						vendor={ this.state.vendor }
-						vendors={ this.state.vendors }
+						user={ this.state.user }
+						users={ this.state.users }
 						onHandleRightPanel={ this.onHandleRightPanel }
 						onHandleRemove={ this.onHandleRemove }
 					/>
-				</ConfigurationMainPanel>
+				</SettingsUsersList>
 
 				{
 					this.state.showRightPanel ?
-						<ConfigurationRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
-							<ConfigurationVendor
-								vendor={ this.state.vendor }
-								categories={ this.state.categories }
+						<UsersRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
+							<SettingsUser
+								user={ this.state.user }
+								isEditingMode={ this.state.isEditingMode }
 								onHandleFormSubmit={ this.onHandleFormSubmit }
 								closeRightPanel={ this.closeRightPanel }
 							/>
-						</ConfigurationRightPanel> : null
+						</UsersRightPanel> : null
 				}
 			</div>
 		)
 	}
 }
 
-ConfigurationVendorsDashboard.contextTypes = {
+SettingsUsersDashboard.contextTypes = {
 	router: PropTypes.object.isRequired
-}
+};
 
-export default ConfigurationVendorsDashboard;
+export default SettingsUsersDashboard;

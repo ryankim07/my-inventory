@@ -1,7 +1,7 @@
 import React from 'react';
-import { upperFirstLetter, arrayDiff } from '../../helper/utils';
+import { upperFirstLetter, arrayDiff } from '../../../helper/utils';
 
-class AuthForm extends React.Component
+class SettingsUser extends React.Component
 {
 	// Constructor
 	constructor(props) {
@@ -269,4 +269,4 @@ class AuthForm extends React.Component
 	}
 }
 
-export default AuthForm;
+export default SettingsUser;

@@ -2,10 +2,10 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import ManufacturersAction from '../../../actions/manufacturers-action';
 import ManufacturersStore from '../../../stores/vehicles/mfgs-store';
-import ConfigurationMainPanel from './../main_panel';
-import ConfigurationRightPanel from './../right_panel';
-import ConfigurationManufacturersList from './../vehicles/api/manufacturers';
-import ConfigurationManufacturerModelsList from './../vehicles/api/models';
+import SettingsMainPanel from './../main_panel';
+import SettingsRightPanel from './../right_panel';
+import SettingsManufacturersList from './../vehicles/api/manufacturers';
+import SettingsManufacturerModelsList from './../vehicles/api/models';
 import FlashMessage from '../../helper/flash_message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -15,7 +15,7 @@ let mainShrinkedDesktopColumnWidth = 'col-md-8';
 let rightPanelMobileColumnWidth = 'col-xs-4';
 let rightPanelDesktopColumnWidth = 'col-md-4';
 
-class ConfigurationVehiclesDashboard extends React.Component
+class SettingsVehiclesDashboard extends React.Component
 {
 	constructor(props) {
 		super(props);
@@ -128,7 +128,7 @@ class ConfigurationVehiclesDashboard extends React.Component
 		switch (this.state.mainPanel) {
 			case 'manufacturers':
 				mainPanelHtml =
-					<ConfigurationManufacturersList
+					<SettingsManufacturersList
 						loader={ this.state.loader }
 						manufacturers={ this.state.manufacturers }
 						mfg={ this.state.mfg }
@@ -142,29 +142,29 @@ class ConfigurationVehiclesDashboard extends React.Component
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/>}
 
-				<ConfigurationMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
+				<SettingsMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }
-				</ConfigurationMainPanel>
+				</SettingsMainPanel>
 
 				{
 					this.state.showRightPanel ?
-						<ConfigurationRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
-							<ConfigurationManufacturerModelsList
+						<SettingsRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
+							<SettingsManufacturerModelsList
 								mfg={ this.state.mfg.mfg }
 								models={ this.state.mfg.models }
 								model={ this.state.model }
 								onHandleRightPanel={ this.onHandleRightPanel }
 								closeRightPanel={ this.closeRightPanel }
 							/>
-						</ConfigurationRightPanel> : null
+						</SettingsRightPanel> : null
 				}
 			</div>
 		)
 	}
 }
 
-ConfigurationVehiclesDashboard.contextTypes = {
+SettingsVehiclesDashboard.contextTypes = {
 	router: PropTypes.object.isRequired
-}
+};
 
-export default ConfigurationVehiclesDashboard;
+export default SettingsVehiclesDashboard;

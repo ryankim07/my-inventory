@@ -2,7 +2,7 @@ import React from 'react';
 import SearchField from '../../../helper/search_field';
 import TogglingRows from '../../../helper/table/toggling_rows';
 
-class ConfigurationManufacturerModelsList extends React.Component
+class SettingsManufacturerModelsList extends React.Component
 {
 	constructor(props) {
 		super(props);
@@ -12,7 +12,7 @@ class ConfigurationManufacturerModelsList extends React.Component
 			clonedModels: JSON.parse(JSON.stringify(this.props.models)),
 			searchText: '',
 			isSearch: false
-		}
+		};
 
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 	}
@@ -120,4 +120,4 @@ class ConfigurationManufacturerModelsList extends React.Component
     }
 }
 
-export default ConfigurationManufacturerModelsList;
+export default SettingsManufacturerModelsList;

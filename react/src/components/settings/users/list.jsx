@@ -1,9 +1,9 @@
 import React from 'react';
-import SearchField from '../helper/search_field';
-import TogglingRows from '../helper/table/toggling_rows';
-import Loader from '../helper/loader';
+import SearchField from '../../helper/search_field';
+import TogglingRows from '../../helper/table/toggling_rows';
+import Loader from '../../helper/loader';
 
-class UsersList extends React.Component
+class SettingsUsersList extends React.Component
 {
 	constructor(props) {
 		super(props);
@@ -124,4 +124,4 @@ class UsersList extends React.Component
     }
 }
 
-export default UsersList;
+export default SettingsUsersList;

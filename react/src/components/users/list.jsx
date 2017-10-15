@@ -87,7 +87,7 @@ class UsersList extends React.Component
 								<span>Users List</span>
 							</div>
 							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.props.onHandleRightPanel.bind(this, false) }><i className="fa fa-plus" aria-hidden="true" /></button>
+								<button onClick={ this.props.onHandleRightPanel.bind(this, false) }><i className="fa fa-user-plus" aria-hidden="true" /> New</button>
 							</div>
 						</div>
 					</div>

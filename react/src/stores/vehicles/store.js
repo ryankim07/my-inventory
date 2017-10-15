@@ -15,7 +15,7 @@ function setStoreFlashMessage(msg) {
 }
 
 function removeToken() {
-	localStorage.removeItem('id_token');
+	localStorage.removeItem('token');
 }
 
 let VehiclesStore = assign({}, EventEmitter.prototype, {
@@ -94,7 +94,7 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
 	},
 
 	isAuthenticated: function() {
-		if (localStorage.getItem('id_token') === null) {
+		if (localStorage.getItem('token') === null) {
 			return false;
 		}
 

@@ -6,13 +6,13 @@ import ActionConstants from '../../constants/action-constants';
 let _storeMsg;
 
 function setToken(token) {
-	if (!localStorage.getItem('id_token')) {
-		localStorage.setItem('id_token', token);
+	if (!localStorage.getItem('token')) {
+		localStorage.setItem('token', token);
 	}
 }
 
 function removeToken() {
-	localStorage.removeItem('id_token');
+	localStorage.removeItem('token');
 }
 
 function setStoreFlashMessage(msg) {
@@ -42,11 +42,11 @@ let AuthStore = assign({}, EventEmitter.prototype, {
 	},
 
 	getJwt: function() {
-		return localStorage.getItem('id_token');
+		return localStorage.getItem('token');
 	},
 
 	isAuthenticated: function() {
-		if (localStorage.getItem('id_token') === null) {
+		if (localStorage.getItem('token') === null) {
 			return false;
 		}
 

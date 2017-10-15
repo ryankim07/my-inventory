@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import AuthStore from './src/stores/auth/store';
-import Main from './src/components/main';
+import Body from './src/components/body';
 import Home from './src/components/home';
 import AuthLogin from './src/components/auth/forms/login';
 import AuthLogout from './src/components/auth/forms/logout';
@@ -42,7 +42,7 @@ ReactDOM.render(
     <Router history={ browserHistory }>
 		<Route path="/auth/forms/login" component={ AuthLogin } />
 		<Route path="/auth/forms/logout" component={ AuthLogout } />
-        <Route component={ Main} onEnter={ requireAuth }>
+        <Route component={ Body } onEnter={ requireAuth }>
             <IndexRoute component={ Home } />
             <Route path="/" component={ Home } />
 

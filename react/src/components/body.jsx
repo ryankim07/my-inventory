@@ -3,8 +3,9 @@ import Header from './header';
 import Footer from './footer';
 import AuthStore from '../stores/auth/store';
 
-class Main extends React.Component
+class Body extends React.Component
 {
+    // Check if user is authenticated
 	isAuthenticated() {
 		return AuthStore.isAuthenticated()
     }
@@ -13,11 +14,11 @@ class Main extends React.Component
 		return (
             <div className="app">
                 <div className="header">
-                    <Header isAuthenticated={this.isAuthenticated} />
+                    <Header isAuthenticated={ this.isAuthenticated } />
                 </div>
-                <div className="main container-fluid">
+                <div className="body container-fluid">
                     <div className="row-fluid">
-                        {this.props.children}
+                        { this.props.children }
                     </div>
                 </div>
                 <div className="footer">
@@ -28,4 +29,4 @@ class Main extends React.Component
     }
 }
 
-export default Main;
+export default Body;

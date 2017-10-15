@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Users\UsersEntity;
 use AppBundle\Entity\Users\GroupsEntity;
 use AppBundle\Entity\Users\UsersRegistrationEntity;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 class Users
 {
@@ -196,23 +197,31 @@ class Users
                 ]);
 
             if (!$registration) {
-                return 'Invalid email or code.';
+                throw new \Exception('Invalid email or code.');
             }
 
-            $user = $this->find($registration->getUserId());
+            // Get user
+            $user = $this->repo->find($registration->getUserId());
+
+            if (!$user) {
+
+            }
 
             if ($user->getIsActive() == 1) {
-                return 'User already registered.';
+                $msg = 'User already registered.';
             } else {
                 $user->setIsActive(1);
+                $this->em->persist($user);
+                $this->em->flush();
+                $msg = 'User successfully registered.';
             }
 
-            $this->em->persist($user);
-            $this->em->flush();
-
-            return 'User successfully registered.';
+            return [
+                'user' => $user,
+                'msg'  => $msg
+            ];
         } catch (\Exception $e) {
-            return ['err_msg' => 'Invalid email or code.'];
+            throw new Exception('Invalid email or code.');
         }
     }
 }

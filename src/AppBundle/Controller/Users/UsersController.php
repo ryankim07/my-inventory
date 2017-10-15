@@ -14,6 +14,7 @@ namespace AppBundle\Controller\Users;
 use AppBundle\AppBundle;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -89,9 +90,17 @@ class UsersController extends FOSRestController
      */
     public function activateAction($email, $code)
     {
-        $userService = $this->get('Users');
-        $results = $userService->activate($email, $code);
+        try {
+            $userService = $this->get('Users');
+            $results = $userService->activate($email, $code);
 
-        $this->redirect($this->generateUrl('homepage'));
+            $token = $this->container->get('lexik_jwt_authentication.jwt_manager')->create($results['user']);
+            //$authenticationSuccessHandler = $this->container->get('lexik_jwt_authentication.handler.authentication_success');
+            //$authenticationSuccessHandler->handleAuthenticationSuccess($results['user'], $token);
+
+            return $this->redirectToRoute('homepage', array('token' => $token));
+        } catch (\Exception $e) {
+            return ['err_msg' => $e];
+        }
     }
 }

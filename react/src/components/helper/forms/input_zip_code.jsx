@@ -10,7 +10,7 @@ class InputZipCode extends React.Component
 				onChange={ this.props.handleFormChange }
 				value={ this.props.value }
 				pattern="^\d{5}$"
-				title="5 digit zip code"
+				title="Zip code should contain 5 digits"
 				required={ this.props.required }
 			/>
 		);

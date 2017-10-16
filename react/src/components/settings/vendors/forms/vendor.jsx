@@ -202,7 +202,7 @@ class SettingsVendor extends React.Component
 						<label className="control-label">Url</label>
 						<div className="input-group">
 							<input
-								type="text"
+								type="url"
 								className="form-control input-sm"
 								onChange={ this.onHandleFormChange.bind(this, 'url') }
 								value={ vendor.url }

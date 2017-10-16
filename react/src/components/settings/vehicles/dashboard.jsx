@@ -122,7 +122,6 @@ class SettingsVehiclesDashboard extends React.Component
 
 	render() {
 		// Main panel
-		console.log('vehicles dashboard');
 		let mainPanelHtml = '';
 
 		switch (this.state.mainPanel) {

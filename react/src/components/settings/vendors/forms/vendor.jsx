@@ -137,7 +137,7 @@ class SettingsVendor extends React.Component
 							<StatesDropdown
 								className="form-control input-sm"
 								value={ vendor.state }
-								handleFormChange={ this.onHandleFormChange }
+								handleFormChange={ this.onHandleFormChange.bind(this, 'state') }
 								required=""
 							/>
 						</div>
@@ -150,7 +150,7 @@ class SettingsVendor extends React.Component
 							<InputZipCode
 								className="form-control input-sm"
 								value={ vendor.zip }
-								handleFormChange={ this.onHandleFormChange }
+								handleFormChange={ this.onHandleFormChange.bind(this, 'zip') }
 								required=""
 							/>
 						</div>

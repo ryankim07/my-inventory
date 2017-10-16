@@ -11,6 +11,7 @@
 
 namespace AppBundle\Controller\Vehicles;
 
+use AppBundle\Entity\Vehicles\ManufacturersEntity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,8 +45,12 @@ class ManufacturersController extends FOSRestController
      */
     public function getListAction()
     {
-        $service = $this->get('Manufacturers');
-        $results = $service->findAll();
+        /*$service = $this->get('Manufacturers');
+        $results = $service->findAll();*/
+
+        $results = $this->getDoctrine()
+            ->getRepository(ManufacturersEntity::class)
+            ->findAllManufacturers();
 
         return $results;
     }

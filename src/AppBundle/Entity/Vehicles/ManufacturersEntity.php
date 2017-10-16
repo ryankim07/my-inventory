@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\Vehicles\Api\VehiclesRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\Vehicles\Api\ManufacturersRepository")
  * @ORM\Table(name="manufacturers")
  */
 class ManufacturersEntity

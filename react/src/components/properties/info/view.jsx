@@ -45,7 +45,7 @@ class PropertyInfoView extends React.Component
 						common_walls: '',
 						facing_direction: '',
 						others: ''
-					}
+					};
 
 				property.features = features;
 			break;
@@ -59,7 +59,7 @@ class PropertyInfoView extends React.Component
 						exterior: '',
 						foundation: '',
 						others: ''
-					}
+					};
 
 				property.exterior_features = features;
 			break;
@@ -78,7 +78,7 @@ class PropertyInfoView extends React.Component
 						fireplace: '',
 						flooring: '',
 						others: ''
-					}
+					};
 
 				property.interior_features = features;
 			break;
@@ -142,7 +142,7 @@ class PropertyInfoView extends React.Component
 			<div>
 				<h4>Property Details</h4>
 				<div>
-					<button onClick={ this.props.onHandleMainPanel.bind(this, property.id, 'rooms-list') }>View Rooms</button>
+					<button onClick={ this.props.onHandleMainPanel.bind(this, property.id, 'rooms-list') }><i className="fa fa-search" aria-hidden="true"/> View</button>
 				</div>
 				<ul>
 					<li>
@@ -188,7 +188,7 @@ class PropertyInfoView extends React.Component
 			<div>
 				<h4>Property Features</h4>
 				<div>
-					<button onClick={ this.handleRightPanel.bind(this, features, featuresRightPanel) }><i className="fa fa-pencil" aria-hidden="true"/> Edit property features</button>
+					<button onClick={ this.handleRightPanel.bind(this, features, featuresRightPanel) }><i className="fa fa-pencil" aria-hidden="true"/> Edit</button>
 				</div>
 				<ul>
 					<li>
@@ -230,7 +230,7 @@ class PropertyInfoView extends React.Component
 			<div>
 				<h4>Exterior Features</h4>
 				<div>
-					<button onClick={ this.handleRightPanel.bind(this, exteriorFeatures, exteriorFeaturesRightPanel) }><i className="fa fa-pencil" aria-hidden="true"/> Edit exterior features</button>
+					<button onClick={ this.handleRightPanel.bind(this, exteriorFeatures, exteriorFeaturesRightPanel) }><i className="fa fa-pencil" aria-hidden="true"/> Edit</button>
 				</div>
 				<ul>
 					<li>
@@ -252,7 +252,7 @@ class PropertyInfoView extends React.Component
 			<div>
 				<h4>Interior Features</h4>
 				<div>
-					<button onClick={ this.handleRightPanel.bind(this, interiorFeatures, interiorFeaturesRightPanel) }><i className="fa fa-pencil" aria-hidden="true"/> Edit interior features</button>
+					<button onClick={ this.handleRightPanel.bind(this, interiorFeatures, interiorFeaturesRightPanel) }><i className="fa fa-pencil" aria-hidden="true"/> Edit</button>
 				</div>
 				<ul>
 					<li>

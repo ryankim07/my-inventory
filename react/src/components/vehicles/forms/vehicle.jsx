@@ -10,7 +10,7 @@ class VehicleForm extends React.Component
 
         this.state = {
 			vehicle: this.props.vehicle
-		}
+		};
 
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 		this.handleFormSubmit   = this.handleFormSubmit.bind(this);
@@ -220,11 +220,11 @@ class VehicleForm extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-12">
 						<div className="clearfix">
-							<input type="submit" value="Submit" className="btn"/>
+							<button type="submit" value="Save"><i className="fa fa-floppy-o"/> Save</button>
 						</div>
 					</div>
 				</div>
-			</form>
+			</form>;
 
         return (
 			<div className="row" id="vehicle-form">

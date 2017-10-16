@@ -69,9 +69,9 @@ class StatesDropdown extends React.Component
 
         return (
             <select
+				className={ this.props.className }
+				value={ this.props.value }
 				onChange={ this.props.handleFormChange.bind(this, 'state') }
-                value={ this.props.state }
-                className={ this.props.className }
                 required={ this.props.required }>
 				<option value="">Select One</option>
 				{ statesOptions }

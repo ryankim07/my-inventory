@@ -200,7 +200,7 @@ class PropertiesDashboard extends React.Component
 				description: '',
 				walls: [wallObj],
 				room_assets: []
-			}
+			};
 
 		if (isEditingMode && room.walls.length === 0) {
 			room.walls.push(wallObj);
@@ -281,6 +281,7 @@ class PropertiesDashboard extends React.Component
 				rightPanelHtml =
 					<PropertyFeaturesForm
 						property={ this.state.property }
+						isEditingMode={ this.state.isEditingMode }
 						onHandleFormSubmit={ this.onHandleFormSubmit }
 						closeRightPanel={ this.closeRightPanel }
 					/>;
@@ -290,6 +291,7 @@ class PropertiesDashboard extends React.Component
 				rightPanelHtml =
 					<PropertyExteriorFeaturesForm
 						property={ this.state.property }
+						isEditingMode={ this.state.isEditingMode }
 						onHandleFormSubmit={ this.onHandleFormSubmit }
 						closeRightPanel={ this.closeRightPanel }
 					/>;
@@ -299,6 +301,7 @@ class PropertiesDashboard extends React.Component
 				rightPanelHtml =
 					<PropertyInteriorFeaturesForm
 						property={ this.state.property }
+						isEditingMode={ this.state.isEditingMode }
 						onHandleFormSubmit={ this.onHandleFormSubmit }
 						closeRightPanel={ this.closeRightPanel }
 					/>;
@@ -313,7 +316,7 @@ class PropertiesDashboard extends React.Component
 						isEditingMode={ this.state.isEditingMode }
 						onHandleFormSubmit={ this.onHandleFormSubmit }
 						closeRightPanel={ this.closeRightPanel }
-					/>
+					/>;
 			break;
 
 			// Add new property default right panel
@@ -348,6 +351,6 @@ class PropertiesDashboard extends React.Component
 
 PropertiesDashboard.contextTypes = {
 	router: PropTypes.object.isRequired
-}
+};
 
 export default PropertiesDashboard;

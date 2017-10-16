@@ -146,11 +146,11 @@ class PropertyInteriorFeaturesForm extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-12">
 						<div className="clearfix">
-							<input type="submit" value="Submit" className="btn"/>
+							<button type="submit" value="Save"><i className="fa fa-floppy-o"/> Save</button>
 						</div>
 					</div>
 				</div>
-			</form>
+			</form>;
 
         return (
 			<div className="row" id="exterior-features-form">
@@ -158,7 +158,7 @@ class PropertyInteriorFeaturesForm extends React.Component
 					<div className="panel-heading">
 						<div className="row">
 							<div className="col-xs-10 col-md-10">
-								<span>Add Exterior Features</span>
+								<span>{ !this.props.isEditingMode ? 'Add' : 'Edit' } Interior Features</span>
 							</div>
 							<div className="col-xs-2 col-md-2">
 								<button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true"/></button>

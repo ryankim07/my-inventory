@@ -149,7 +149,7 @@ class PropertyFeaturesForm extends React.Component
 						</div>
 					</div>
 				</div>
-			</form>
+			</form>;
 
         return (
 			<div className="row" id="exterior-features-form">
@@ -157,7 +157,7 @@ class PropertyFeaturesForm extends React.Component
 					<div className="panel-heading">
 						<div className="row">
 							<div className="col-xs-10 col-md-10">
-								<span>Add Exterior Features</span>
+								<span>{ !this.props.isEditingMode ? 'Add' : 'Edit' } Features</span>
 							</div>
 							<div className="col-xs-2 col-md-2">
 								<button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true"/></button>

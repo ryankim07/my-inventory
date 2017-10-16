@@ -1,7 +1,6 @@
 import React from 'react';
-import classNames from 'classnames';
-import InputText from '../../../helper/forms/input_text';
-import StatesDropdown from '../../../helper/states_dropdown';
+import InputZipCode from '../../../helper/forms/input_zip_code';
+import StatesDropdown from '../../../helper/forms/states_dropdown';
 import { upperFirstLetter, phoneFormat, urlFormat } from "../../../helper/utils"
 
 class SettingsVendor extends React.Component
@@ -11,8 +10,7 @@ class SettingsVendor extends React.Component
         super(props);
 
         this.state = {
-			vendor: this.props.vendor,
-			submit: true
+			vendor: this.props.vendor
 		};
 
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
@@ -23,8 +21,7 @@ class SettingsVendor extends React.Component
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.vendor !== this.props.vendor) {
 			this.setState({
-				vendor: nextProps.vendor,
-				submit: true
+				vendor: nextProps.vendor
 			});
 		}
 	}
@@ -33,7 +30,6 @@ class SettingsVendor extends React.Component
     onHandleFormChange(propertyName, event) {
     	let vendor 	    = this.state.vendor;
         let chosenValue = event.target.value;
-        let submit      = true;
 
         switch (propertyName) {
 			case 'company':
@@ -47,11 +43,6 @@ class SettingsVendor extends React.Component
 				vendor[propertyName] = phoneFormat(chosenValue);
 			break;
 
-			case 'zip':
-				let regex = /^(?:\d{5})?$/;
-				submit = regex.test(chosenValue);
-			break;
-
 			case 'url':
 				vendor[propertyName] = urlFormat(chosenValue);
 			break;
@@ -61,8 +52,7 @@ class SettingsVendor extends React.Component
         }
 
         this.setState({
-			vendor: vendor,
-			submit: submit
+			vendor: vendor
         });
     }
 
@@ -84,12 +74,6 @@ class SettingsVendor extends React.Component
 			);
 		});
 
-		// Submit className
-		let submitClass = classNames({
-			'btn': true,
-			'disabled': !this.state.submit
-		});
-
 		let vendorForm =
 			<form onSubmit={ this.handleFormSubmit }>
 				<div className="form-group">
@@ -97,9 +81,9 @@ class SettingsVendor extends React.Component
 						<label className="control-label">Category</label>
 						<div className="input-group">
 							<select
+								className="form-control input-sm"
 								onChange={ this.onHandleFormChange.bind(this, 'category_id') }
-								value={ vendor.category_id }
-								className="form-control input-sm">
+								value={ vendor.category_id }>
 								<option value="">Select One</option>
 								{ categoryOptions }
 							</select>
@@ -112,9 +96,9 @@ class SettingsVendor extends React.Component
 						<div className="input-group">
 							<input
 								type="text"
+								className="form-control input-sm"
 								onChange={ this.onHandleFormChange.bind(this, 'company') }
 								value={ vendor.company }
-								className="form-control input-sm"
 								required="required"
 							/>
 						</div>
@@ -126,9 +110,9 @@ class SettingsVendor extends React.Component
 						<div className="input-group">
 							<input
 								type="text"
+								className="form-control input-sm"
 								onChange={ this.onHandleFormChange.bind(this, 'street') }
 								value={ vendor.street }
-								className="form-control input-sm"
 							/>
 						</div>
 					</div>
@@ -139,9 +123,9 @@ class SettingsVendor extends React.Component
 						<div className="input-group">
 							<input
 								type="text"
+								className="form-control input-sm"
 								onChange={ this.onHandleFormChange.bind(this, 'city') }
 								value={ vendor.city }
-								className="form-control input-sm"
 							/>
 						</div>
 					</div>
@@ -151,9 +135,10 @@ class SettingsVendor extends React.Component
 						<label className="control-label">State</label>
 						<div className="input-group">
 							<StatesDropdown
-								state={ vendor.state }
-								handleFormChange={ this.onHandleFormChange }
 								className="form-control input-sm"
+								value={ vendor.state }
+								handleFormChange={ this.onHandleFormChange }
+								required=""
 							/>
 						</div>
 					</div>
@@ -162,14 +147,11 @@ class SettingsVendor extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Zip</label>
 						<div className="input-group">
-							<InputText
-								uniqueName="zip"
+							<InputZipCode
+								className="form-control input-sm"
 								value={ vendor.zip }
-								required={ false }
-								minCharacters={ 5 }
-								onChange={ this.onHandleFormChange }
-								errorMessage="Zip code is invalid"
-								emptyMessage=""
+								handleFormChange={ this.onHandleFormChange }
+								required=""
 							/>
 						</div>
 					</div>
@@ -179,9 +161,9 @@ class SettingsVendor extends React.Component
 						<label className="control-label">Country</label>
 						<div className="input-group">
 							<select
+								className="form-control input-sm"
 								onChange={ this.onHandleFormChange.bind(this, 'country') }
-								value={ vendor.country }
-								className="form-control input-sm">
+								value={ vendor.country }>
 								<option value="">Select One</option>
 								<option value="US">United States</option>
 							</select>
@@ -193,10 +175,11 @@ class SettingsVendor extends React.Component
 						<label className="control-label">Phone</label>
 						<div className="input-group">
 							<input
-								type="text"
+								type="tel"
+								className="form-control input-sm"
 								onChange={ this.onHandleFormChange.bind(this, 'phone') }
 								value={ vendor.phone }
-								className="form-control input-sm"
+								pattern="^(\d{3}) \d{3}-\d{4}$"
 							/>
 						</div>
 					</div>
@@ -207,9 +190,9 @@ class SettingsVendor extends React.Component
 						<div className="input-group">
 							<input
 								type="text"
+								className="form-control input-sm"
 								onChange={ this.onHandleFormChange.bind(this, 'contact') }
 								value={ vendor.contact }
-								className="form-control input-sm"
 							/>
 						</div>
 					</div>
@@ -220,9 +203,9 @@ class SettingsVendor extends React.Component
 						<div className="input-group">
 							<input
 								type="text"
+								className="form-control input-sm"
 								onChange={ this.onHandleFormChange.bind(this, 'url') }
 								value={ vendor.url }
-								className="form-control input-sm"
 							/>
 						</div>
 					</div>
@@ -250,7 +233,7 @@ class SettingsVendor extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-12">
 						<div className="clearfix">
-							<input type="submit" value="Submit" className={ submitClass }/>
+							<button type="submit" value="Save" className="btn"><i className="fa fa-floppy-o"/> Save</button>
 						</div>
 					</div>
 				</div>

@@ -63,7 +63,7 @@ class PropertyRoomForm extends React.Component
 
 	onHandleWallsChange(propertyName, event) {
 		let room        = this.state.room;
-		let walls       = room.walls
+		let walls       = room.walls;
 		let chosenValue = event.target.value;
 		let id			= propertyName.match(/\d+$/)[0];
 		let field 		= propertyName.split(/_(.*)/)[0];
@@ -278,11 +278,11 @@ class PropertyRoomForm extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-12">
 						<div className="clearfix">
-							<input type="submit" value="Submit" className="btn"/>
+							<button type="submit" value="Save"><i className="fa fa-floppy-o"/> Save</button>
 						</div>
 					</div>
 				</div>
-			</form>
+			</form>;
 
         return (
 			<div className="row" id="room-form">

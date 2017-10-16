@@ -1,5 +1,6 @@
 import React from 'react';
-import StatesDropdown from '../../../helper/states_dropdown';
+import InputZipCode from '../../../helper/forms/input_zip_code';
+import StatesDropdown from '../../../helper/forms/states_dropdown';
 import { upperFirstLetter } from '../../../helper/utils';
 
 class PropertyAddressForm extends React.Component
@@ -40,9 +41,9 @@ class PropertyAddressForm extends React.Component
 						<div className="input-group">
 							<input
 								type="text"
+								className="form-control input-sm"
 								onChange={ this.handleFormChange.bind(this, 'street') }
 								value={ address.street }
-								className="form-control input-sm"
 								required="required"
 							/>
 						</div>
@@ -54,9 +55,9 @@ class PropertyAddressForm extends React.Component
 						<div className="input-group">
 							<input
 								type="text"
+								className="form-control input-sm"
 								onChange={ this.handleFormChange.bind(this, 'city') }
 								value={ address.city }
-								className="form-control input-sm"
 								required="required"
 							/>
 						</div>
@@ -67,9 +68,9 @@ class PropertyAddressForm extends React.Component
 						<label className="control-label">State</label>
 						<div className="input-group">
 						<StatesDropdown
-							state={ address.state }
-							handleFormChange={ this.handleFormChange }
 							className="form-control input-sm"
+							value={ address.state }
+							handleFormChange={ this.handleFormChange.bind(this, 'state') }
 							required="required"
 						/>
 						</div>
@@ -79,11 +80,10 @@ class PropertyAddressForm extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Zip</label>
 						<div className="input-group">
-							<input
-								type="text"
-								onChange={ this.handleFormChange.bind(this, 'zip') }
-								value={ address.zip }
+							<InputZipCode
 								className="form-control input-sm"
+								value={ address.zip }
+								handleFormChange={ this.handleFormChange.bind(this, 'zip') }
 								required="required"
 							/>
 						</div>
@@ -94,9 +94,9 @@ class PropertyAddressForm extends React.Component
 						<label className="control-label">County</label>
 						<div className="input-group">
 								<select
+									className="form-control input-sm"
 									onChange={ this.handleFormChange.bind(this, 'county') }
-									value={ address.county }
-									className="form-control input-sm">
+									value={ address.county }>
 								<option value="">Select One</option>
 								<option value="Los Angeles County">Los Angeles County</option>
 								<option value="Orange County">Orange County</option>
@@ -109,9 +109,9 @@ class PropertyAddressForm extends React.Component
 						<label className="control-label">Country</label>
 						<div className="input-group">
 								<select
+									className="form-control input-sm"
 									onChange={ this.handleFormChange.bind(this, 'country') }
-									value={ address.country }
-									className="form-control input-sm">
+									value={ address.country }>
 								<option value="">Select One</option>
 								<option value="US">United States</option>
 							</select>
@@ -124,9 +124,9 @@ class PropertyAddressForm extends React.Component
 						<div className="input-group">
 							<input
 								type="text"
+								className="form-control input-sm"
 								onChange={ this.handleFormChange.bind(this, 'subdivision') }
 								value={ address.subdivision }
-								className="form-control input-sm"
 							/>
 						</div>
 					</div>

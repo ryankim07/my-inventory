@@ -111,7 +111,7 @@ class PropertiesList extends React.Component
 								<span>Properties List</span>
 							</div>
 							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.handleRightPanel.bind(this, false) }><i className="fa fa-plus" aria-hidden="true"/></button>
+								<button onClick={ this.handleRightPanel.bind(this, false) }><i className="fa fa-plus" aria-hidden="true"/> <i className="fa fa-home" aria-hidden="true"/></button>
 							</div>
 						</div>
 					</div>

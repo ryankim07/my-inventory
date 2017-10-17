@@ -3,6 +3,7 @@ import TogglingRows from '../../helper/table/toggling_rows';
 
 class PropertiesAddressList extends React.Component
 {
+	// Render
 	render() {
 		let properties    = this.props.properties;
 		let addressesHtml = properties.map((property, propertyIndex) => {

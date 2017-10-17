@@ -5,7 +5,7 @@ import Api from '../services/Api';
 let VehiclesAction = {
 	getVehiclesAndManufacturers: function() {
 		Api
-			.getMultiple('http://mcs.dev/api/vehicles', 'http://mcs.dev/api/manufacturers/list')
+			.getMultiple('http://mcs.dev/api/vehicles', 'http://mcs.dev/api/manufacturers')
 			.then(function ([vehicles, manufacturers])  {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.RECEIVE_VEHICLES_AND_MANUFACTURERS,

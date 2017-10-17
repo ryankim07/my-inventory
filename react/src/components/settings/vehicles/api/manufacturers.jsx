@@ -35,15 +35,15 @@ class SettingsManufacturersList extends React.Component
 	// Handle input changes
 	onHandleFormChange(event) {
 		let searchText = event.target.value;
-		let mfgs    = this.state.clonedMfgs;
-		let results = mfgs.filter(function (list) {
+		let mfgs       = this.state.clonedMfgs;
+		let results    = mfgs.filter(function (list) {
 			return list.mfg.match(new RegExp(searchText, 'gi'));
 		});
 
 		this.setState({
 			manufacturers: searchText.replace(/\s/g, '').length ? results : mfgs,
 			searchText: searchText,
-			isSearch: true
+			isSearch: searchText === "" ? false : true
 		});
 	}
 
@@ -137,7 +137,7 @@ class SettingsManufacturersList extends React.Component
 								{ mfgsHtml }
 							</tbody>
 						</table>
-						{ paginationHtml }
+						{ this.state.isSearch ? null : paginationHtml }
 					</div>
 				</div>
 			</div>

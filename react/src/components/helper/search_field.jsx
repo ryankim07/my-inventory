@@ -15,8 +15,6 @@ class SearchField extends React.Component
     /// Handle input changes
 	clearInput(event) {
 		event.preventDefault();
-
-	    this.refs.search.value = '';
 		this.props.onHandleFormChange(event);
     }
 
@@ -24,7 +22,6 @@ class SearchField extends React.Component
         return (
             <div className="input-group col-lg-12" id={ ['search-', this.props.searchType].join(' ') }>
                 <input
-                    ref="search"
                     type="text"
                     value={ this.props.searchText }
                     onChange={ this.props.onHandleFormChange.bind(this) }

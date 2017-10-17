@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\Vehicles;
+namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\Vehicles\Api\ManufacturersRepository")
- * @ORM\Table(name="manufacturers")
+ * @ORM\Table(name="vehicles.manufacturers")
  */
 class ManufacturersEntity
 {

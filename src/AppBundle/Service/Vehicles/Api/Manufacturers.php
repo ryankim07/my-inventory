@@ -12,8 +12,8 @@
 namespace AppBundle\Service\Vehicles\Api;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\Vehicles\ManufacturersEntity;
-use AppBundle\Entity\Vehicles\ManufacturerModelsEntity;
+use AppBundle\Entity\ManufacturersEntity;
+use AppBundle\Entity\ManufacturerModelsEntity;
 
 class Manufacturers
 {

@@ -1,4 +1,6 @@
 /**
+ * Toggling Rows
+ *
  * Required props
  *
  * selectedItem: current selected item

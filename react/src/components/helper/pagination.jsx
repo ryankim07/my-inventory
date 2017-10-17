@@ -1,5 +1,13 @@
 /**
  * Pagination component
+ *
+ * Required props
+ *
+ * page: page number
+ * totalCount: total count of all items
+ * totalPages: total pages
+ * limit: items per page
+ * onChangePage: handler for page number
  */
 
 import React from 'react';
@@ -25,10 +33,7 @@ class Pagination extends React.Component
 	}
 
 	// Handle click
-	onHandleClick(propertyName, event) {
-		event.preventDefault();
-
-		let page = event.target.value;
+	onHandleClick(page) {
 		this.setPager(page);
 		this.props.onChangePage(page);
 	}

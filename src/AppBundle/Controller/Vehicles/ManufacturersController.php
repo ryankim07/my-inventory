@@ -12,20 +12,25 @@
 namespace AppBundle\Controller\Vehicles;
 
 use AppBundle\Entity\ManufacturersEntity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
+/**
+ * @Security("is_granted(['ROLE_USER','ROLE_ADMIN'])")
+ */
 class ManufacturersController extends FOSRestController
 {
     /**
      * Get api vehicle by ID
      *
-     * @Rest\Get("/api/manufacturers/{id}", name="manufacturers")
+     * @Rest\Get("/api/manufacturers/{id}", name="manufacturer")
      *
      * @param $id
      * @return View
@@ -41,16 +46,28 @@ class ManufacturersController extends FOSRestController
     /**
      * Get all api vehicles
      *
-     * @Rest\Get("/api/manufacturers/{page}", name="manufacturers_list")
+     * @Rest\Get("/api/manufacturers", name="manufacturers_list")
+     *
+     * @return mixed
+     */
+    public function getListAction()
+    {
+        $service = $this->get('Manufacturers');
+        $results = $service->findAll();
+
+        return $results;
+    }
+
+    /**
+     * Get all paginated api vehicles
+     *
+     * @Rest\Get("/api/manufacturers/page/{page}", defaults={"page" = 1}, name="paginated_manufacturers_list")
      *
      * @param $page
      * @return mixed
      */
-    public function getListAction($page = 1)
+    public function getPaginatedListAction($page)
     {
-        /*$service = $this->get('Manufacturers');
-        $results = $service->findAll();*/
-
         $results = $this->getDoctrine()
             ->getRepository(ManufacturersEntity::class)
             ->findAllManufacturers($page);

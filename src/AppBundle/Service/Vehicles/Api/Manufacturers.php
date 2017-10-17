@@ -28,7 +28,7 @@ class Manufacturers
     public function __construct(EntityManager $entityManager)
     {
         $this->em = $entityManager;
-        $this->repo = $this->em->getRepository('AppBundle\Entity\Vehicles\ManufacturersEntity');
+        $this->repo = $this->em->getRepository(ManufacturersEntity::class);
     }
 
     /**

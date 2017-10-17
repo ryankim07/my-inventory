@@ -87,3 +87,6 @@ services:
     File_Uploader:
         class: AppBundle\Service\FileUploader
         arguments: ["%assets_dir%"]
+
+    Pagination:
+        class: AppBundle\Repository\Helper\Pagination

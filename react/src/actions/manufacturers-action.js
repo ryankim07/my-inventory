@@ -3,9 +3,9 @@ import ActionConstants from '../constants/action-constants';
 import Api from '../services/Api';
 
 let ManufacturersAction = {
-    getManufacturers: function() {
+    getManufacturers: function(page) {
         Api
-            .get('http://mcs.dev/api/manufacturers')
+            .get('http://mcs.dev/api/manufacturers/page/' + page)
             .then(function(resp) {
                 AppDispatcher.handleViewAction({
                     actionType: ActionConstants.RECEIVE_MANUFACTURERS,

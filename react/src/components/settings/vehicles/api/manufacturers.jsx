@@ -2,9 +2,11 @@ import React from 'react';
 import SearchField from '../../../helper/search_field';
 import TogglingRows from '../../../helper/table/toggling_rows';
 import Loader from '../../../helper/loader';
+import Pagination from "../../../helper/pagination";
 
 class SettingsManufacturersList extends React.Component
 {
+	// Constructor
 	constructor(props) {
 		super(props);
 
@@ -18,6 +20,7 @@ class SettingsManufacturersList extends React.Component
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 	}
 
+	// Next state change
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.manufacturers !== this.state.manufacturers) {
 			this.setState({
@@ -44,26 +47,26 @@ class SettingsManufacturersList extends React.Component
 		});
 	}
 
+	// Render
 	render() {
         let mfgsHtml = [];
+		let paginationHtml = null;
 
 		// If loading is complete
         if (!this.props.loader) {
         	let manufacturers = this.state.manufacturers;
 
         	if (!manufacturers || manufacturers.length === 0) {
-				let msg = !this.state.isSearch ? 'Empty list.' : 'Found no matches.';
-
 				mfgsHtml.push(
-					<tr>
-						<td><span>Empty list.</span></td>
+					<tr key="x">
+						<td><span>{ !this.state.isSearch ? 'Empty list.' : 'Found no matches.' }</span></td>
 					</tr>
 				);
 
 			} else {
 				if (this.state.isSearch && this.state.searchText !== '') {
 					mfgsHtml.push(
-						<tr key="b">
+						<tr key="z">
 							<td><span>Found { this.state.manufacturers.length } matches</span></td>
 						</tr>
 					);
@@ -85,6 +88,15 @@ class SettingsManufacturersList extends React.Component
 
 				mfgsHtml.push(allMfgs);
 			}
+
+			paginationHtml =
+				<Pagination
+					page={ this.props.page }
+					totalCount={ this.props.totalCount }
+					totalPages={ this.props.totalPages }
+					limit={ this.props.limit }
+					onChangePage={ this.props.onChangePage }
+				/>;
         } else {
 			mfgsHtml.push(<tr key="l" ><td><Loader/></td></tr>);
         }
@@ -125,6 +137,7 @@ class SettingsManufacturersList extends React.Component
 								{ mfgsHtml }
 							</tbody>
 						</table>
+						{ paginationHtml }
 					</div>
 				</div>
 			</div>

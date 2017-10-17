@@ -4,6 +4,10 @@ import Dispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
 
 let _manufacturers = [];
+let _page = 1;
+let _totalCount = 0;
+let _totalPages = 0;
+let _limit = 0;
 let _rightPanel = false;
 let _storeMsg;
 
@@ -43,13 +47,33 @@ let ManufacturersStore = assign({}, EventEmitter.prototype, {
 			return false;
 		} else {
 			if (results.length !== 0) {
-				_manufacturers = results;
+				_manufacturers = results.list;
+				_page          = results.page;
+				_totalCount    = results.total_count;
+				_totalPages    = results.total_pages;
+				_limit         = results.limit;
 			}
 		}
 	},
 
     getManufacturers: function () {
 		return _manufacturers;
+	},
+
+	getPage: function() {
+		return _page;
+	},
+
+	getTotalCount: function() {
+		return _totalCount;
+	},
+
+	getTotalPages: function() {
+		return _totalPages;
+	},
+
+	getLimit: function() {
+		return _limit;
 	},
 
 	isAuthenticated: function() {

@@ -4,6 +4,7 @@ import { upperFirstLetter } from "../../../../helper/utils"
 
 class SettingsPaint extends React.Component
 {
+	// Constructor
     constructor(props) {
         super(props);
 
@@ -16,6 +17,7 @@ class SettingsPaint extends React.Component
 		this.handleFormSubmit   = this.handleFormSubmit.bind(this);
     }
 
+	// Next state change
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.paint !== this.props.paint) {
 			this.setState({
@@ -57,6 +59,7 @@ class SettingsPaint extends React.Component
 		this.props.onHandleFormSubmit(this.state.paint);
 	}
 
+	// Render
     render() {
 		let paint = this.state.paint;
 

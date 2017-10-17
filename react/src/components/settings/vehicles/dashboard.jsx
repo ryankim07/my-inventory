@@ -21,6 +21,10 @@ class SettingsVehiclesDashboard extends React.Component
 		super(props);
 
 		this.state = {
+			page: 1,
+			totalCount: 0,
+			totalPages: 0,
+			limit: 0,
 			manufacturers: [],
 			mfg: {},
 			model: {},
@@ -40,6 +44,8 @@ class SettingsVehiclesDashboard extends React.Component
 		};
 
 		this._onChange 		 	= this._onChange.bind(this);
+		this.onChangePage       = this.onChangePage.bind(this);
+		this.onHandleSync 		= this.onHandleSync.bind(this);
 		this.onHandleMainPanel 	= this.onHandleMainPanel.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.setFlashMessage 	= this.setFlashMessage.bind(this);
@@ -52,7 +58,7 @@ class SettingsVehiclesDashboard extends React.Component
 	}
 
 	componentDidMount() {
-		ManufacturersAction.getManufacturers();
+		ManufacturersAction.getManufacturers(1);
 	}
 
 	componentWillUnmount() {
@@ -61,9 +67,17 @@ class SettingsVehiclesDashboard extends React.Component
 
 	_onChange() {
 		let manufacturers = ManufacturersStore.getManufacturers();
+		let page          = ManufacturersStore.getPage();
+		let totalCount    = ManufacturersStore.getTotalCount();
+		let totalPages 	  = ManufacturersStore.getTotalPages();
+		let limit         = ManufacturersStore.getLimit();
 
 		this.setState({
 			manufacturers: manufacturers,
+			page: page,
+			totalCount: totalCount,
+			totalPages: totalPages,
+			limit: limit,
 			loader: false,
 			/*mainPanelColumnCss: {
 				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
@@ -71,6 +85,11 @@ class SettingsVehiclesDashboard extends React.Component
 			}*/
 		});
 	}
+
+	onChangePage(page) {
+		ManufacturersAction.getManufacturers(page);
+	}
+
 
 	// Sync API
 	onHandleSync() {
@@ -129,8 +148,13 @@ class SettingsVehiclesDashboard extends React.Component
 				mainPanelHtml =
 					<SettingsManufacturersList
 						loader={ this.state.loader }
+						page={ this.state.page }
+						totalCount={ this.state.totalCount }
+						totalPages={ this.state.totalPages }
+						limit={ this.state.limit }
 						manufacturers={ this.state.manufacturers }
 						mfg={ this.state.mfg }
+						onChangePage={ this.onChangePage }
 						onHandleSync={ this.onHandleSync }
 						onHandleMainPanel={ this.onHandleMainPanel }
 					/>;

@@ -37,7 +37,6 @@ security:
             pattern: ^/registration
             anonymous: true
             stateless: true
-            security: false
 
         main:
             pattern: ^/

@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="vehicles")
+ * @ORM\Table(name="vehicles.vehicles")
  */
 class VehicleEntity
 {

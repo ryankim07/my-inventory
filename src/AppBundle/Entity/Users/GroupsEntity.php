@@ -12,13 +12,13 @@
 namespace AppBundle\Entity\Users;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\Role\Role;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="groups")
+ * @ORM\Table(name="users.groups")
  */
 class GroupsEntity extends Role
 {

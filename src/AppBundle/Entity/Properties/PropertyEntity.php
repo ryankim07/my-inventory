@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="properties")
+ * @ORM\Table(name="houses.properties")
  */
 class PropertyEntity
 {
@@ -80,8 +80,16 @@ class PropertyEntity
     private $parcelNumber;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\PropertyAssetsEntity", mappedBy="property", cascade={"persist", "remove"})
-     * @ORM\OrderBy({"name" = "ASC"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Properties\AssetsEntity", inversedBy="properties", cascade={"persist", "remove"})
+     * @ORM\JoinTable(
+     *  name="houses.property_assets",
+     *  joinColumns={
+     *      @ORM\JoinColumn(name="property_id", referencedColumnName="id")
+     *  },
+     *  inverseJoinColumns={
+     *      @ORM\JoinColumn(name="asset_id", referencedColumnName="id")
+     *  }
+     * )
      */
     private $assets;
 
@@ -355,30 +363,6 @@ class PropertyEntity
     }
 
     /**
-     * Add asset
-     *
-     * @param PropertyAssetsEntity $asset
-     * @return $this
-     */
-    public function addAsset(PropertyAssetsEntity $asset)
-    {
-        $this->assets[] = $asset;
-        $asset->setProperty($this);
-
-        return $this;
-    }
-
-    /**
-     * Remove asset
-     *
-     * @param PropertyAssetsEntity $asset
-     */
-    public function removeAsset(PropertyAssetsEntity $asset)
-    {
-        $this->assets->removeElement($asset);
-    }
-
-    /**
      * Get assets
      *
      * @return ArrayCollection
@@ -386,6 +370,36 @@ class PropertyEntity
     public function getAssets()
     {
         return $this->assets;
+    }
+
+    /**
+     * Add asset
+     *
+     * @param AssetsEntity $asset
+     */
+    public function addAsset(AssetsEntity $asset)
+    {
+        if (true === $this->assets->contains($asset)) {
+            return;
+        }
+
+        $this->assets->add($asset);
+        $asset->addProperty($this);
+    }
+
+    /**
+     * Remove asset
+     *
+     * @param AssetsEntity $asset
+     */
+    public function removeAsset(AssetsEntity $asset)
+    {
+
+        if (false === $this->assets->contains($asset)) {
+            return;
+        }
+        $this->groups->removeElement($asset);
+        $asset->removeProperty($this);
     }
 
     /**

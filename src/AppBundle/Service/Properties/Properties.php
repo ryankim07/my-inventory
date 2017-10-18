@@ -14,7 +14,7 @@ namespace AppBundle\Service\Properties;
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Properties\PropertyEntity;
 use AppBundle\Entity\Properties\AddressEntity;
-use AppBundle\Entity\Properties\PropertyAssetsEntity;
+use AppBundle\Entity\Properties\AssetsEntity;
 use AppBundle\Entity\Properties\RoomsEntity;
 use AppBundle\Entity\Properties\RoomsWallsEntity;
 use AppBundle\Entity\Properties\FeaturesEntity;
@@ -144,7 +144,7 @@ class Properties
             $addressEntity = !$this->existingProperty ?
                 $this->em->getRepository('AppBundle\Entity\Properties\AddressEntity')->findOneByPropertyId($this->entity->getId()) : new AddressEntity();
             $assetEntity   = $this->existingProperty ?
-                $this->em->getRepository('AppBundle\Entity\Properties\PropertyAssetsEntity')->findByPropertyId($this->entity->getId()) : new PropertyAssetsEntity();
+                $this->em->getRepository('AppBundle\Entity\Properties\AssetsEntity')->findByPropertyId($this->entity->getId()) : new AssetsEntity();
 
             // Property entity
             $this->entity->setBuilt($data['built']);

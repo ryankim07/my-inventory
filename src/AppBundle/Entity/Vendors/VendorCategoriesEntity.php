@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="vendors_categories")
+ * @ORM\Table(name="houses.vendors_categories")
  */
 class VendorCategoriesEntity
 {

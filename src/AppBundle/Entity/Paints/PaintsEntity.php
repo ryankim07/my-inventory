@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="paints")
+ * @ORM\Table(name="houses.paints")
  */
 class PaintsEntity
 {

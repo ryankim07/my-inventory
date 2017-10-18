@@ -19,7 +19,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="users")
+ * @ORM\Table(name="users.users")
  */
 class UsersEntity implements AdvancedUserInterface, \Serializable
 {
@@ -74,7 +74,7 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Users\GroupsEntity", inversedBy="users", cascade={"persist", "remove"})
      * @ORM\JoinTable(
-     *  name="users_groups",
+     *  name="users.users_groups",
      *  joinColumns={
      *      @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      *  },

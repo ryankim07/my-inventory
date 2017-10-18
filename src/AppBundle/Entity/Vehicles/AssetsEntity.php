@@ -9,7 +9,7 @@ use AppBundle\Entity\Vehicles\VehicleEntity;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="assets")
+ * @ORM\Table(name="vehicles.assets")
  */
 class AssetsEntity
 {

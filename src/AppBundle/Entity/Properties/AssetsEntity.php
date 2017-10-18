@@ -3,13 +3,14 @@
 namespace AppBundle\Entity\Properties;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="property_assets")
+ * @ORM\Table(name="houses.assets")
  */
-class PropertyAssetsEntity
+class AssetsEntity
 {
     /**
      * @ORM\Column(type="integer")
@@ -17,12 +18,6 @@ class PropertyAssetsEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="integer")
-     * @Assert\NotBlank()
-     */
-    private $propertyId;
     
     /**
      * @ORM\Column(type="string", length=255)
@@ -37,10 +32,17 @@ class PropertyAssetsEntity
     public $path;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Properties\PropertyEntity", inversedBy="assets")
-     * @ORM\JoinColumn(name="property_id", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Properties\PropertyEntity", mappedBy="assets")
      */
-    private $property;
+    private $properties;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->properties = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -53,35 +55,11 @@ class PropertyAssetsEntity
     }
 
     /**
-     * Set propertyId
-     *
-     * @param integer $propertyId
-     *
-     * @return PropertyAssetsEntity
-     */
-    public function setPropertyId($propertyId)
-    {
-        $this->propertyId = $propertyId;
-
-        return $this;
-    }
-
-    /**
-     * Get propertyId
-     *
-     * @return integer
-     */
-    public function getPropertyId()
-    {
-        return $this->propertyId;
-    }
-
-    /**
      * Set name
      *
      * @param string $name
      *
-     * @return PropertyAssetsEntity
+     * @return AssetsEntity
      */
     public function setName($name)
     {
@@ -105,7 +83,7 @@ class PropertyAssetsEntity
      *
      * @param string $path
      *
-     * @return PropertyAssetsEntity
+     * @return AssetsEntity
      */
     public function setPath($path)
     {
@@ -125,26 +103,41 @@ class PropertyAssetsEntity
     }
 
     /**
-     * Set property
+     * Get properties
      *
-     * @param PropertyEntity $property
-     *
-     * @return PropertyAssetsEntity
+     * @return ArrayCollection
      */
-    public function setProperty(PropertyEntity $property = null)
+    public function getProperties()
     {
-        $this->property = $property;
-
-        return $this;
+        return $this->properties;
     }
 
     /**
-     * Get property
+     * Add property
      *
-     * @return PropertyEntity
+     * @param PropertyEntity $property
      */
-    public function getProperty()
+    public function addProperty(PropertyEntity $property)
     {
-        return $this->property;
+        if (true === $this->properties->contains($property)) {
+            return;
+        }
+
+        $this->properties->add($property);
+        $property->addAsset($this);
+    }
+
+    /**
+     * Remove property
+     *
+     * @param PropertyEntity $property
+     */
+    public function removeProperty(PropertyEntity $property)
+    {
+        if (false === $this->properties->contains($property)) {
+            return;
+        }
+        $this->properties->removeElement($property);
+        $property->removeAsset($this);
     }
 }

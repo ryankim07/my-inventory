@@ -17,6 +17,7 @@ let rightPanelDesktopColumnWidth = 'col-md-4';
 
 class SettingsUsersDashboard extends React.Component
 {
+	// Constructor
 	constructor(props) {
 		super(props);
 
@@ -58,6 +59,7 @@ class SettingsUsersDashboard extends React.Component
 		UsersStore.removeChangeListener(this._onChange);
 	}
 
+	// Next state change
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.location.action !== 'POP') {
 			this.setState({

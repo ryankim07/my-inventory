@@ -5,6 +5,7 @@ import Loader from '../../helper/loader';
 
 class SettingsUsersList extends React.Component
 {
+	// Constructor
 	constructor(props) {
 		super(props);
 
@@ -18,6 +19,7 @@ class SettingsUsersList extends React.Component
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 	}
 
+	// Next state change
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.users !== this.state.users) {
 			this.setState({
@@ -44,6 +46,7 @@ class SettingsUsersList extends React.Component
 		});
 	}
 
+	// Render
 	render() {
         let usersHtml = '';
 

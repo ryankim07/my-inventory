@@ -17,15 +17,17 @@ let rightPanelDesktopColumnWidth = 'col-md-4';
 
 class VehiclesDashboard extends React.Component
 {
+	// Constructor
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			vehicles: [],
-			vehicle: {},
+			vehicle: this.getVehicleState(),
 			manufacturers: [],
 			loader: true,
 			isEditingMode: false,
+			mainPanel: 'list',
 			showRightPanel: false,
 			flashMessage: null,
 			mainPanelColumnCss: {
@@ -46,9 +48,35 @@ class VehiclesDashboard extends React.Component
 		this.closeRightPanel  	= this.closeRightPanel.bind(this);
 	}
 
+	// Get vehicle initial state
+	getVehicleState() {
+		return {
+			id: '',
+			mfg_id: '',
+			mfg: '',
+			model_id: '',
+			model: '',
+			year: '',
+			color: '',
+			vin: '',
+			plate: '',
+			assets: []
+		}
+	}
+
 	componentWillMount() {
 		VehiclesStore.addChangeListener(this._onChange);
 		VehiclesStore.unsetStoreFlashMessage();
+
+		if (this.props.params.section === "add") {
+			this.setState({
+				mainPanel: this.props.params.section,
+				mainPanelColumnCss: {
+					'mobileWidth': rightPanelMobileColumnWidth,
+					'desktopWidth': rightPanelDesktopColumnWidth
+				}
+			});
+		}
 	}
 
 	componentDidMount() {
@@ -60,14 +88,28 @@ class VehiclesDashboard extends React.Component
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.location.action !== 'POP') {
+		if (nextProps.location.action === 'REPLACE' || nextProps.location.action === 'PUSH') {
+			let mainPanel = null;
+
+			switch (nextProps.location.pathname) {
+				case '/vehicles/dashboard/add':
+					mainPanel = 'add';
+				break;
+
+				case '/vehicles/dashboard/list':
+					mainPanel = 'list';
+				break;
+			}
+
 			this.setState({
+				vehicle: this.getVehicleState(),
+				mainPanel: mainPanel,
+				showRightPanel: false,
+				flashMessage: null,
 				mainPanelColumnCss: {
 					'mobileWidth': mainDefaultMobileColumnWidth,
 					'desktopWidth': mainDefaultDesktopColumnWidth
-				},
-				showRightPanel: false,
-				flashMessage: null
+				}
 			});
 		}
 	}
@@ -87,6 +129,7 @@ class VehiclesDashboard extends React.Component
 		this.setState({
 			vehicles: vehicles,
 			manufacturers: manufacturers,
+			mainPanel: this.props.params.section === 'add' ? 'add' : 'list', // Need to set main panel if add new vehicle component is accessed from header
 			showRightPanel: !!openRightPanel,
 			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,
@@ -109,20 +152,7 @@ class VehiclesDashboard extends React.Component
 	// Handle right panel
 	onHandleRightPanel(id) {
 		let isEditingMode = !!id;
-		let vehicle = isEditingMode ?
-			this.state.vehicles.find(obj => obj.id === id) :
-			{
-				id: '',
-				mfg_id: '',
-				mfg: '',
-				model_id: '',
-				model: '',
-				year: '',
-				color: '',
-				vin: '',
-				plate: '',
-				assets: []
-			}
+		let vehicle = isEditingMode ? this.state.vehicles.find(obj => obj.id === id) : this.getVehicleState();
 
 		this.setState({
 			vehicle: vehicle,
@@ -157,24 +187,46 @@ class VehiclesDashboard extends React.Component
 	}
 
 	render() {
-		return (
-			<div className="row">
-				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/>}
+		// Main panel
+		let mainPanelHtml = '';
 
-				<VehiclesMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
+		switch (this.state.mainPanel) {
+			case 'add':
+				mainPanelHtml =
+					<VehicleForm
+						loader={ this.state.loader }
+						vehicle={ this.state.vehicle }
+						manufacturers={ this.state.manufacturers }
+						isEditingMode={ false }
+						onHandleFormSubmit={ this.onHandleFormSubmit }
+						closeRightPanel=""
+					/>;
+				break;
+
+			default:
+				mainPanelHtml =
 					<VehiclesList
 						loader={ this.state.loader }
 						vehicle={ this.state.vehicle }
 						vehicles={ this.state.vehicles }
 						onHandleRightPanel={ this.onHandleRightPanel }
 						onHandleRemove={ this.onHandleRemove }
-					/>
+					/>;
+		}
+
+		return (
+			<div className="row">
+				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/>}
+
+				<VehiclesMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
+					{ mainPanelHtml }
 				</VehiclesMainPanel>
 
 				{
 					this.state.showRightPanel ?
 						<VehiclesRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
 							<VehicleForm
+								loader={ false }
 								vehicle={ this.state.vehicle }
 								manufacturers={ this.state.manufacturers }
 								isEditingMode={ this.state.isEditingMode }

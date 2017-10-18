@@ -59,7 +59,8 @@ class Header extends React.Component
                                 <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Vehicles <span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <Link to="/vehicles/dashboard" className="menu-link"><i className="fa fa-car menu-link-icon" aria-hidden="true"/> All</Link>
+										<Link to="/vehicles/dashboard/add" className="menu-link"><i className="fa fa-car menu-link-icon" aria-hidden="true"/> Add</Link>
+                                        <Link to="/vehicles/dashboard/list" className="menu-link"><i className="fa fa-car menu-link-icon" aria-hidden="true"/> All</Link>
                                     </li>
                                 </ul>
                             </li>
@@ -67,7 +68,7 @@ class Header extends React.Component
                                 <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Properties <span className="caret"/></a>
                                 <ul className="dropdown-menu" role="menu">
                                     <li>
-                                        <Link to="/properties/dashboard" className="menu-link"><i className="fa fa-home menu-link-icon" aria-hidden="true"/> All</Link>
+                                        <Link to="/properties/dashboard/list" className="menu-link"><i className="fa fa-home menu-link-icon" aria-hidden="true"/> All</Link>
                                     </li>
                                 </ul>
                             </li>

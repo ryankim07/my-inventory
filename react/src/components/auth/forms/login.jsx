@@ -101,7 +101,7 @@ class AuthLogin extends React.Component
 						<div className="form-group">
 							<div className="col-xs-12 col-md-12">
 								<div className="clearfix">
-									<button type="submit" value="Save"><i className="fa fa-floppy-o"/> Login</button>
+									<input type="submit" value="Login"/>
 								</div>
 							</div>
 						</div>

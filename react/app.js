@@ -44,38 +44,12 @@ ReactDOM.render(
         <Route component={ Body } onEnter={ requireAuth }>
             <IndexRoute component={ Home }/>
             <Route path="/" component={ Home }/>
-
-            <Route path="/vehicles/dashboard" component={ VehicleDashboard }>
-                <Route path="/vehicle/forms/vehicle" component={ VehicleForm }/>
-                <Route path="/vehicles" component={ VehiclesList }/>
-            </Route>
-
-			<Route path="/properties/dashboard" component={ PropertiesDashboard }>
-				<Route path="/properties/main/forms/property" component={ PropertyForm }/>
-				<Route path="/properties/info/view" component={ PropertyInfoView }/>
-				<Route path="/property/info/forms/features" component={ PropertyFeaturesForm }/>
-				<Route path="/property/info/forms/exterior_features" component={ PropertyExteriorFeaturesForm }/>
-				<Route path="/property/info/forms/interior_features" component={ PropertyInteriorFeaturesForm }/>
-				<Route path="/property/rooms/forms/room" component={ PropertyRoomForm }/>
-				<Route path="/properties/rooms" component={ PropertyRoomsList }/>
-				<Route path="/properties" component={ PropertiesList }/>
-			</Route>
-
-			<Route path="/settings/users/dashboard/:section" component={ SettingsUsersDashboard }>
-				<Route path="/settings/users/list" component={ SettingsUsersList }/>
-			</Route>
-
-			<Route exact path="/settings/vehicles/dashboard/:section" component={ SettingsVehiclesDashboard }>
-				<Route path="/settings/vehicles/api/manufacturers" component={ SettingsManufacturersList }/>
-			</Route>
-
-			<Route exact path="/settings/properties/dashboard/:section" component={ SettingsPropertiesDashboard }>
-				<Route path="/settings/properties/paints/list" component={ SettingsPaintsList }/>
-			</Route>
-
-			<Route exact path="/settings/vendors/dashboard/:section" component={ SettingsVendorsDashboard }>
-				<Route path="/settings/vendors/list" component={ SettingsVendorsList }/>
-			</Route>
+            <Route exact path="/vehicles/dashboard/:section" component={ VehicleDashboard }/>
+			<Route exact path="/properties/dashboard/:section" component={ PropertiesDashboard }/>
+			<Route exact path="/settings/users/dashboard/:section" component={ SettingsUsersDashboard }/>
+			<Route exact path="/settings/vehicles/dashboard/:section" component={ SettingsVehiclesDashboard }/>
+			<Route exact path="/settings/properties/dashboard/:section" component={ SettingsPropertiesDashboard }/>
+			<Route exact path="/settings/vendors/dashboard/:section" component={ SettingsVendorsDashboard }/>
         </Route>
     </Router>,
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import Uploader from '../../helper/uploader';
+import Loader from '../../helper/loader';
 import { upperFirstLetter } from "../../helper/utils";
 
 class VehicleForm extends React.Component
@@ -131,38 +132,45 @@ class VehicleForm extends React.Component
 						</div>
 					</div>
 				</div>
-				<div>
-					<div className="form-group required">
-						<div className="col-xs-12 col-md-8">
-							<label className="control-label">Manufacturer</label>
-							<div className="input-group">
-								<select
-									onChange={ this.onHandleFormChange.bind(this, 'mfg_id') }
-									value={ vehicle.mfg_id }
-									className="form-control input-sm"
-									required="required">
-									<option value="">Select One</option>
-									{ apiMfgsOptions }
-								</select>
+
+				{
+					// Need to display loader if add new vehicle component is accessed from header
+					!this.props.loader ?
+						<div>
+							<div className="form-group required">
+								<div className="col-xs-12 col-md-8">
+									<label className="control-label">Manufacturer</label>
+									<div className="input-group">
+										<select
+											onChange={this.onHandleFormChange.bind(this, 'mfg_id')}
+											value={vehicle.mfg_id}
+											className="form-control input-sm"
+											required="required">
+											<option value="">Select One</option>
+											{apiMfgsOptions}
+										</select>
+									</div>
+								</div>
 							</div>
-						</div>
-					</div>
-					<div className="form-group required">
-						<div className="col-xs-12 col-md-8">
-							<label className="control-label">Model</label>
-							<div className="input-group">
-								<select
-									onChange={ this.onHandleFormChange.bind(this, 'model_id') }
-									value={ vehicle.model_id }
-									className="form-control input-sm"
-									required="required">
-									<option value="">Select One</option>
-									{ apiModelsOptions }
-								</select>
+							<div className="form-group required">
+								<div className="col-xs-12 col-md-8">
+									<label className="control-label">Model</label>
+									<div className="input-group">
+										<select
+											onChange={this.onHandleFormChange.bind(this, 'model_id')}
+											value={vehicle.model_id}
+											className="form-control input-sm"
+											required="required">
+											<option value="">Select One</option>
+											{apiModelsOptions}
+										</select>
+									</div>
+								</div>
 							</div>
-						</div>
-					</div>
-				</div>
+						</div> :
+						<div><Loader/></div>
+				}
+
 				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Color</label>
@@ -235,7 +243,12 @@ class VehicleForm extends React.Component
 								<span>Vehicle</span>
 							</div>
 							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true"/></button>
+								{
+									this.props.closeRightPanel ?
+										<button onClick={ this.props.closeRightPanel }>
+											<i className="fa fa-window-close" aria-hidden="true"/>
+										</button> : null
+								}
 							</div>
 						</div>
 					</div>

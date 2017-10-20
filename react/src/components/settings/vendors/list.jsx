@@ -45,7 +45,8 @@ class SettingsVendorsList extends React.Component
 	}
 
 	render() {
-        let vendorsHtml = '';
+        let vendorsHtml = null;
+		let searchField = null;
 
 		// If loading is complete
         if (!this.props.loader) {
@@ -78,6 +79,15 @@ class SettingsVendorsList extends React.Component
 						/>
 					);
 				});
+
+				searchField =
+					<SearchField
+						objs={ this.state.vendors }
+						objKey="name"
+						searchType="vendors"
+						searchText={ this.state.searchText }
+						onHandleFormChange={ this.onHandleFormChange }
+					/>
 			}
         } else {
 			vendorsHtml = <tr><td><Loader/></td></tr>;
@@ -99,13 +109,7 @@ class SettingsVendorsList extends React.Component
 					<div className="panel-body">
 						<div className="form-group">
 							<div className="col-xs-12 col-lg-12">
-								<SearchField
-									objs={ this.state.vendors }
-									objKey="name"
-									searchType="vendors"
-									searchText={ this.state.searchText }
-									onHandleFormChange={ this.onHandleFormChange }
-								/>
+								{ searchField }
 							</div>
 						</div>
 						<table className="table">

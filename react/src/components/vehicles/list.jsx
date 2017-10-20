@@ -45,7 +45,8 @@ class VehiclesList extends React.Component
 	}
 
 	render() {
-        let vehiclesHtml = '';
+        let vehiclesHtml = null;
+        let searchField  = null;
 
 		// If loading is complete
         if (!this.props.loader) {
@@ -74,6 +75,15 @@ class VehiclesList extends React.Component
 						/>
 					);
 				});
+
+				searchField =
+					<SearchField
+						objs={ this.state.vehicles }
+						objKey="name"
+						searchType="vehicles"
+						searchText={ this.state.searchText }
+						onHandleFormChange={ this.onHandleFormChange }
+					/>;
 			}
         } else {
             vehiclesHtml = <tr><td><Loader/></td></tr>;
@@ -95,13 +105,7 @@ class VehiclesList extends React.Component
 					<div className="panel-body">
 						<div className="form-group">
 							<div className="col-xs-12 col-lg-12">
-								<SearchField
-									objs={ this.state.vehicles }
-									objKey="name"
-									searchType="vehicles"
-									searchText={ this.state.searchText }
-									onHandleFormChange={ this.onHandleFormChange }
-								/>
+								{ searchField }
 							</div>
 						</div>
 						<table className="table">

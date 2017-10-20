@@ -14,6 +14,7 @@ class VehicleForm extends React.Component
 		};
 
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
+		this.setAssets     		= this.setAssets.bind(this);
 		this.handleFormSubmit   = this.handleFormSubmit.bind(this);
     }
 
@@ -29,7 +30,7 @@ class VehicleForm extends React.Component
     // Handle input changes
     onHandleFormChange(propertyName, event) {
     	let vehicle 	= this.state.vehicle;
-        let chosenValue = propertyName === 'assets' ? event : event.target.value;
+        let chosenValue = event.target.value;
 
         switch (propertyName) {
             case 'mfg_id':
@@ -49,10 +50,6 @@ class VehicleForm extends React.Component
 				vehicle[propertyName] = chosenValue.toUpperCase();
 			break;
 
-			case 'assets':
-				vehicle[propertyName] = chosenValue[0];
-			break;
-
             default:
                 vehicle[propertyName] = upperFirstLetter(chosenValue);
         }
@@ -61,6 +58,15 @@ class VehicleForm extends React.Component
 			vehicle: vehicle
         });
     }
+
+	// Handle assets
+	setAssets(assets) {
+		let property = this.state.property;
+
+		this.setState({
+			property: property['assets'] = assets
+		});
+	}
 
     // Submit
     handleFormSubmit(event) {
@@ -110,9 +116,9 @@ class VehicleForm extends React.Component
 						<label className="control-label">Image</label>
 						<div className="input-group">
 							<Uploader
-								onHandleFormChange={ this.onHandleFormChange }
+								assets={ this.state.vehicle.assets }
 								isEditingMode={ this.props.isEditingMode }
-								assets={ vehicle.assets }
+								setAssets={ this.setAssets }
 							/>
 						</div>
 					</div>

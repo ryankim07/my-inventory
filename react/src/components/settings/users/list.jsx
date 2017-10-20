@@ -48,7 +48,8 @@ class SettingsUsersList extends React.Component
 
 	// Render
 	render() {
-        let usersHtml = '';
+        let usersHtml   = null;
+        let searchField = null;
 
 		// If loading is complete
         if (!this.props.loader) {
@@ -76,6 +77,15 @@ class SettingsUsersList extends React.Component
 						/>
 					);
 				});
+
+				searchField =
+					<SearchField
+						objs={ this.state.users }
+						objKey="firstname"
+						searchType="users"
+						searchText={ this.state.searchText }
+						onHandleFormChange={ this.onHandleFormChange }
+					/>;
 			}
         } else {
             usersHtml = <tr><td><Loader/></td></tr>;
@@ -97,13 +107,7 @@ class SettingsUsersList extends React.Component
 					<div className="panel-body">
 						<div className="form-group">
 							<div className="col-xs-12 col-lg-12">
-								<SearchField
-									objs={ this.state.users }
-									objKey="firstname"
-									searchType="users"
-									searchText={ this.state.searchText }
-									onHandleFormChange={ this.onHandleFormChange }
-								/>
+								{ searchField }
 							</div>
 						</div>
 						<table className="table">

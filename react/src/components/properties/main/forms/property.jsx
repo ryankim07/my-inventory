@@ -13,6 +13,7 @@ class PropertyForm extends React.Component
 		}
 
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
+		this.setAssets     		= this.setAssets.bind(this);
     }
 
 	componentWillReceiveProps(nextProps) {
@@ -26,7 +27,7 @@ class PropertyForm extends React.Component
     // Handle input changes
 	onHandleFormChange(propertyName, event) {
         let property    = this.state.property;
-        let chosenValue = propertyName === 'assets' || propertyName === 'address' ? event : event.target.value;
+        let chosenValue = propertyName === 'address' ? event : event.target.value;
 
         switch (propertyName) {
             case 'finished_area':
@@ -39,16 +40,22 @@ class PropertyForm extends React.Component
                 }
             break;
 
-			case 'assets':
-				property[propertyName] = chosenValue[0];
-			break;
-
             default:
                 property[propertyName] = chosenValue;
         }
 
         this.setState({property: property});
     }
+
+    // Handle assets
+	setAssets(assets) {
+    	let property 	   = this.state.property;
+		property['assets'] = assets;
+
+		this.setState({
+			property: property
+		});
+	}
 
 	// Submit
 	handleFormSubmit(event) {
@@ -99,9 +106,9 @@ class PropertyForm extends React.Component
 						<label className="control-label">Image</label>
 						<div className="input-group">
 							<Uploader
-								onHandleFormChange={ this.onHandleFormChange }
+								assets={ this.state.property.assets }
 								isEditingMode={ this.props.isEditingMode }
-								assets={ property.assets }
+								setAssets={ this.setAssets }
 							/>
 						</div>
 					</div>

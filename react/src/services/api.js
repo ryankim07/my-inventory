@@ -30,25 +30,29 @@ let Api = {
 		return Promise.all([this.get(url1), this.get(url2)]);
 	},
 
-    post: function (url, data, asset) {
+    post: function (url, data, assets) {
         return new Promise(function (resolve, reject) {
-            	request
+			const req = request
 					.post(url)
 					.set('Authorization', 'Bearer ' + AuthStore.getJwt())
-					.field('data', JSON.stringify(data))
-					.attach('file', asset)
-					.end(function(err, res){
-						if (err || res.status !== 200) {
-							let errBody = JSON.parse(res.text);
+					.field('data', JSON.stringify(data));
 
-							reject({
-								status: res.status,
-								msg: errBody.msg
-							});
-						} else {
-							resolve(JSON.parse(res.text));
-						}
+			assets.forEach((asset)=> {
+				req.attach(asset.name, asset);
+			});
+
+			req.end(function(err, res){
+				if (err || res.status !== 200) {
+					let errBody = JSON.parse(res.text);
+
+					reject({
+						status: res.status,
+						msg: errBody.msg
 					});
+				} else {
+					resolve(JSON.parse(res.text));
+				}
+			});
         });
     },
 

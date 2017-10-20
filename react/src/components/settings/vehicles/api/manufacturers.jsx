@@ -49,7 +49,8 @@ class SettingsManufacturersList extends React.Component
 
 	// Render
 	render() {
-        let mfgsHtml = [];
+        let mfgsHtml 	   = [];
+		let searchField    = null;
 		let paginationHtml = null;
 
 		// If loading is complete
@@ -87,16 +88,25 @@ class SettingsManufacturersList extends React.Component
 				});
 
 				mfgsHtml.push(allMfgs);
-			}
 
-			paginationHtml =
-				<Pagination
-					page={ this.props.page }
-					totalCount={ this.props.totalCount }
-					totalPages={ this.props.totalPages }
-					limit={ this.props.limit }
-					onChangePage={ this.props.onChangePage }
-				/>;
+				searchField =
+					<SearchField
+						objs={ this.state.manufacturers }
+						objKey="mfg"
+						searchType="manufacturers"
+						searchText={ this.state.searchText }
+						onHandleFormChange={ this.onHandleFormChange }
+					/>;
+
+				paginationHtml =
+					<Pagination
+						page={ this.props.page }
+						totalCount={ this.props.totalCount }
+						totalPages={ this.props.totalPages }
+						limit={ this.props.limit }
+						onChangePage={ this.props.onChangePage }
+					/>;
+			}
         } else {
 			mfgsHtml.push(<tr key="l" ><td><Loader/></td></tr>);
         }
@@ -117,13 +127,7 @@ class SettingsManufacturersList extends React.Component
 					<div className="panel-body">
 						<div className="form-group">
 							<div className="col-xs-12 col-lg-12">
-								<SearchField
-									objs={ this.state.manufacturers }
-									objKey="mfg"
-									searchType="manufacturers"
-									searchText={ this.state.searchText }
-									onHandleFormChange={ this.onHandleFormChange }
-								/>
+								{ searchField }
 							</div>
 						</div>
 						<table className="table">

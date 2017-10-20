@@ -1,4 +1,5 @@
 import React from 'react';
+import ImageGallery from 'react-image-gallery';
 import Previous from '../../helper/previous';
 
 let featuresRightPanel 	 	   = 'features';
@@ -7,6 +8,7 @@ let interiorFeaturesRightPanel = 'interior-features';
 
 class PropertyInfoView extends React.Component
 {
+	// Constructor
 	constructor(props) {
 		super(props);
 
@@ -15,6 +17,7 @@ class PropertyInfoView extends React.Component
 		};
 	}
 
+	// Next state change
 	// When component from same route are unmounting and need to remount
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.property !== this.state.property) {
@@ -24,7 +27,7 @@ class PropertyInfoView extends React.Component
 		}
 	}
 
-	// Toggle panel for add or edit
+	// Handle right panel
 	handleRightPanel(obj, rightPanel) {
 		let property 	  = this.state.property;
 		let isEditingMode = !!obj;
@@ -87,12 +90,22 @@ class PropertyInfoView extends React.Component
 		this.props.onHandleRightPanel(property, true, rightPanel);
 	}
 
+	// Render
 	render() {
 		let property 		 = this.props.property;
 		let address  		 = property.address === undefined || Object.keys(property.address).length === 0 ? null : property.address;
 		let features		 = property.features === undefined || property.features.id === "" ? null : property.features;
 		let exteriorFeatures = property.exterior_features === undefined || property.exterior_features.id === "" ? null : property.exterior_features;
 		let interiorFeatures = property.interior_features === undefined || property.interior_features.id === "" ? null : property.interior_features;
+		let assets			 = property.assets;
+
+		// Gallery
+		let gallery = assets.map(asset => {
+			asset['original']  = asset.path;
+			asset['thumbnail'] = '';
+
+			return(asset);
+		});
 
 		let propertyFeaturesBtn = features === null ?
 			<button onClick={ this.handleRightPanel.bind(this, false, featuresRightPanel) }><i className="fa fa-plus" aria-hidden="true"/> Add Property Features</button> : null;
@@ -305,6 +318,10 @@ class PropertyInfoView extends React.Component
 					</div>
 					<div className="panel-body">
 						<div>
+							<ImageGallery
+								items={ gallery }
+								slideInterval={ 2000 }
+							/>
 							<div>
 								{ propertyFeaturesBtn }
 								{ exteriorFeaturesBtn }

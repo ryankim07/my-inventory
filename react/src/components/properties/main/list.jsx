@@ -83,21 +83,33 @@ class PropertiesList extends React.Component
 	}
 
 	render() {
-		let propertiesHtml = '';
+		let propertiesHtml = null;
+		let searchField    = null;
 
 		// If loading is complete
         if (!this.props.loader) {
 			let properties = this.state.properties;
 
-			propertiesHtml = !properties || properties.length === 0 ?
-				<div><span>Empty list.</span></div> :
-				<PropertyAddressList
-					properties={ properties }
-					property={ this.props.property }
-					handleRightPanel={ this.handleRightPanel }
-					onHandleMainPanel={ this.props.onHandleMainPanel }
-					onHandleRemove={ this.props.onHandleRemove }
+			if (!properties || properties.length === 0) {
+				<div><span>Empty list.</span></div>
+			} else {
+				propertiesHtml = <PropertyAddressList
+					properties={properties}
+					property={this.props.property}
+					handleRightPanel={this.handleRightPanel}
+					onHandleMainPanel={this.props.onHandleMainPanel}
+					onHandleRemove={this.props.onHandleRemove}
 				/>
+
+				searchField =
+					<SearchField
+						objs={ this.state.properties }
+						objKey="street"
+						searchType="properties"
+						searchText={ this.state.searchText }
+						onHandleFormChange={ this.onHandleFormChange }
+					/>;
+			}
         } else {
             propertiesHtml = <div><Loader/></div>;
         }
@@ -118,13 +130,7 @@ class PropertiesList extends React.Component
 					<div className="panel-body">
 						<div className="form-group">
 							<div className="col-xs-12 col-lg-12">
-								<SearchField
-									objs={ this.state.properties }
-									objKey="street"
-									searchType="properties"
-									searchText={ this.state.searchText }
-									onHandleFormChange={ this.onHandleFormChange }
-								/>
+								{ searchField }
 							</div>
 						</div>
 						{ propertiesHtml }

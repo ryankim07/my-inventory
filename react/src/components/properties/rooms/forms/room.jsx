@@ -6,6 +6,7 @@ import { numberFormat, upperFirstLetter, arrayDiff } from "../../../helper/utils
 
 class PropertyRoomForm extends React.Component
 {
+	// Constructor
     constructor(props) {
         super(props);
 
@@ -23,6 +24,7 @@ class PropertyRoomForm extends React.Component
         this.onHandleAddWall     = this.onHandleAddWall.bind(this);
     }
 
+	// Component mounting
     componentWillMount() {
 		this.setState({
 			disableAddWallsBtn: this.shouldDisableAddWallBtn(this.state.room.walls),
@@ -30,6 +32,7 @@ class PropertyRoomForm extends React.Component
 		});
 	}
 
+	// Next state change
 	componentWillReceiveProps(nextProps) {
     	if (nextProps.room !== this.props.room) {
 			this.setState({
@@ -61,6 +64,7 @@ class PropertyRoomForm extends React.Component
 		this.setState({room: room});
 	}
 
+	// Handle walls change
 	onHandleWallsChange(propertyName, event) {
 		let room        = this.state.room;
 		let walls       = room.walls;
@@ -126,6 +130,7 @@ class PropertyRoomForm extends React.Component
 		});
 	}
 
+	// Remove wall
 	onHandleRemoveWall(index, event) {
 		event.preventDefault();
 
@@ -170,6 +175,7 @@ class PropertyRoomForm extends React.Component
 		return disable;
 	}
 
+	// Render
 	render() {
     	let room 			   = this.state.room;
     	let disableAddWallsBtn = this.state.disableAddWallsBtn;

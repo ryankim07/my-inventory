@@ -101,43 +101,4 @@ class AssetsEntity
     {
         return $this->path;
     }
-
-    /**
-     * Get properties
-     *
-     * @return ArrayCollection
-     */
-    public function getProperties()
-    {
-        return $this->properties;
-    }
-
-    /**
-     * Add property
-     *
-     * @param PropertyEntity $property
-     */
-    public function addProperty(PropertyEntity $property)
-    {
-        if (true === $this->properties->contains($property)) {
-            return;
-        }
-
-        $this->properties->add($property);
-        $property->addAsset($this);
-    }
-
-    /**
-     * Remove property
-     *
-     * @param PropertyEntity $property
-     */
-    public function removeProperty(PropertyEntity $property)
-    {
-        if (false === $this->properties->contains($property)) {
-            return;
-        }
-        $this->properties->removeElement($property);
-        $property->removeAsset($this);
-    }
 }

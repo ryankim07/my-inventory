@@ -137,14 +137,8 @@ class Properties
             $op  = !$this->existingProperty ? 'added' : 'updated';
             $msg = "Property successfully {$op}.";
 
-            // Upload asset
-            $assets        = $data['assets'];
-            $assetFullPath = !is_null($assets) ? $this->fileUploader->upload($assets) : null;
-
-            $addressEntity = !$this->existingProperty ?
+            $addressEntity = $this->existingProperty ?
                 $this->em->getRepository('AppBundle\Entity\Properties\AddressEntity')->findOneByPropertyId($this->entity->getId()) : new AddressEntity();
-            $assetEntity   = $this->existingProperty ?
-                $this->em->getRepository('AppBundle\Entity\Properties\AssetsEntity')->findByPropertyId($this->entity->getId()) : new AssetsEntity();
 
             // Property entity
             $this->entity->setBuilt($data['built']);
@@ -171,20 +165,22 @@ class Properties
             }
 
             // Assets entity
-            if (!is_null($assets)) {
-                if (!$this->existingProperty) {
-                    $assetEntity->setName($assets->getClientOriginalName());
-                    $assetEntity->setPath($assetFullPath);
-                    $this->entity->addAsset($assetEntity);
-                } else {
-                    foreach($assetEntity as $asset) {
-                        $asset->setName($assets->getClientOriginalName());
-                        $asset->setPath($assetFullPath);
-                        $this->entity->addAsset($asset);
-                    }
+            if (!is_null($data['assets'])) {
+
+                $this->entity->removeAllAssets();
+
+                foreach ($data['assets'] as $asset) {
+                    // Upload asset
+                    $assetFullPath = $this->fileUploader->upload($asset);
+
+                    $assetsEntity = new AssetsEntity();
+                    $assetsEntity->setName($asset->getClientOriginalName());
+                    $assetsEntity->setPath($assetFullPath);
+                    $this->entity->addAsset($assetsEntity);
                 }
             }
 
+            // Save
             if (!$this->existingProperty) {
                 $this->em->persist($this->entity);
             }

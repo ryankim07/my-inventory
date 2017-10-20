@@ -157,7 +157,7 @@ class Vehicles
         // Upload asset
         $assets        = $data['assets'];
         $assetFullPath = !is_null($assets) ? $this->fileUploader->upload($assets) : null;
-        $assetEntity   = $this->existingVehicle ?
+        $assetsEntity  = $this->existingVehicle ?
             $this->em->getRepository('AppBundle\Entity\Vehicles\AssetsEntity')->findOneByVehicleId($this->entity->getId()) : new AssetsEntity();
 
         // Vehicle entity
@@ -172,14 +172,14 @@ class Vehicles
 
         if (!is_null($assets)) {
             if (!$this->existingVehicle) {
-                $assetEntity->setName($assets->getClientOriginalName());
-                $assetEntity->setPath($assetFullPath);
-                $this->entity->addAsset($assetEntity);
+                $assetsEntity->setName($assets->getClientOriginalName());
+                $assetsEntity->setPath($assetFullPath);
             } else {
-                $assetEntity->setName($assetEntity->getName());
-                $assetEntity->setPath($assetFullPath);
-                $this->entity->addAsset($assetEntity);
+                $assetsEntity->setName($assetsEntity->getName());
+                $assetsEntity->setPath($assetFullPath);
             }
+
+            $this->entity->addAsset($assetsEntity);
         }
 
         if (!$this->existingVehicle) {

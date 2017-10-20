@@ -28,7 +28,7 @@ class AddressEntity
     private $id;
 
     /**
-     * @ORM\Column(type="integer", length=11)
+     * @ORM\Column(type="integer")
      * @Assert\NotBlank()
      */
     private $propertyId;

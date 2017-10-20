@@ -77,7 +77,7 @@ class PropertiesController extends FOSRestController
     {
         // Request param
         $data           = json_decode(stripslashes($request->get('data')), true);
-        $data['assets'] = $request->files->get('file');
+        $data['assets'] = $request->files->all();
 
         $service = $this->get('Properties');
 

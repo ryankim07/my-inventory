@@ -80,7 +80,7 @@ class PropertyEntity
     private $parcelNumber;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Properties\AssetsEntity", inversedBy="properties", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Properties\AssetsEntity", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\JoinTable(
      *  name="houses.property_assets",
      *  joinColumns={
@@ -90,6 +90,8 @@ class PropertyEntity
      *      @ORM\JoinColumn(name="asset_id", referencedColumnName="id")
      *  }
      * )
+     *
+     * orphanRemoval - this is necessary to remove rows from the 2nd table besides the 3rd table
      */
     private $assets;
 
@@ -363,46 +365,6 @@ class PropertyEntity
     }
 
     /**
-     * Get assets
-     *
-     * @return ArrayCollection
-     */
-    public function getAssets()
-    {
-        return $this->assets;
-    }
-
-    /**
-     * Add asset
-     *
-     * @param AssetsEntity $asset
-     */
-    public function addAsset(AssetsEntity $asset)
-    {
-        if (true === $this->assets->contains($asset)) {
-            return;
-        }
-
-        $this->assets->add($asset);
-        $asset->addProperty($this);
-    }
-
-    /**
-     * Remove asset
-     *
-     * @param AssetsEntity $asset
-     */
-    public function removeAsset(AssetsEntity $asset)
-    {
-
-        if (false === $this->assets->contains($asset)) {
-            return;
-        }
-        $this->groups->removeElement($asset);
-        $asset->removeProperty($this);
-    }
-
-    /**
      * Set address
      *
      * @param AddressEntity $address
@@ -588,5 +550,55 @@ class PropertyEntity
     public function addNonAddedRooms($rooms)
     {
         $this->nonAddedRooms = $rooms;
+    }
+
+    /**
+     * Add asset
+     *
+     * @param AssetsEntity $asset
+     */
+    public function addAsset(AssetsEntity $asset)
+    {
+        if (true === $this->assets->contains($asset)) {
+            return;
+        }
+
+        $this->assets[] = $asset;
+    }
+
+    /**
+     * Remove all assets
+     */
+    public function removeAllAssets()
+    {
+        if ($this->assets->count() > 0) {
+            foreach ($this->assets as $existingAsset) {
+                $this->removeAsset($existingAsset);
+            }
+        }
+    }
+
+    /**
+     * Remove asset
+     *
+     * @param AssetsEntity $asset
+     */
+    public function removeAsset(AssetsEntity $asset)
+    {
+        if (false === $this->assets->contains($asset)) {
+            return;
+        }
+
+        $this->assets->removeElement($asset);
+    }
+
+    /**
+     * Get assets
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAssets()
+    {
+        return $this->assets;
     }
 }

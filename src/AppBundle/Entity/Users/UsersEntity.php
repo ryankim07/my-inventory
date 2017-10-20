@@ -72,7 +72,7 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
     private $createdOn;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Users\GroupsEntity", inversedBy="users", cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Users\GroupsEntity", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\JoinTable(
      *  name="users.users_groups",
      *  joinColumns={
@@ -82,6 +82,8 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
      *      @ORM\JoinColumn(name="group_id", referencedColumnName="id")
      *  }
      * )
+     *
+     *  orphanRemoval - this is necessary to remove rows from the 2nd table besides the 3rd table
      */
     private $groups;
 

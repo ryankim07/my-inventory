@@ -13,14 +13,14 @@ namespace AppBundle\Service\Vehicles;
 
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Vehicles\VehicleEntity;
-use AppBundle\Entity\Vehicles\AssetsEntity;
 use AppBundle\Service\Vehicles\Api\Manufacturers;
-use AppBundle\Service\FileUploader;
+use AppBundle\Service\Helper\Assets;
 
 class Vehicles
 {
     private $em;
     private $repo;
+    private $assetsService;
     private $mfgsService;
     private $fileUploader;
     private $mfg;
@@ -32,14 +32,16 @@ class Vehicles
      *
      * @param EntityManager $entityManager
      * @param Manufacturers $mfgsService
-     * @param FileUploader $fileUploader
+     * @param Assets $assetsService
      */
-    public function __construct(EntityManager $entityManager, Manufacturers $mfgsService, FileUploader $fileUploader)
+    public function __construct(EntityManager $entityManager,
+                                Manufacturers $mfgsService,
+                                Assets $assetsService)
     {
-        $this->em           = $entityManager;
-        $this->repo         = $this->em->getRepository('AppBundle\Entity\Vehicles\VehicleEntity');
-        $this->mfgsService  = $mfgsService;
-        $this->fileUploader = $fileUploader;
+        $this->em            = $entityManager;
+        $this->repo          = $this->em->getRepository('AppBundle\Entity\Vehicles\VehicleEntity');
+        $this->mfgsService   = $mfgsService;
+        $this->assetsService = $assetsService;
     }
 
     /**
@@ -170,17 +172,8 @@ class Vehicles
         $this->entity->setVin($data['vin']);
         $this->entity->setPlate($data['plate']);
 
-        if (!is_null($assets)) {
-            if (!$this->existingVehicle) {
-                $assetsEntity->setName($assets->getClientOriginalName());
-                $assetsEntity->setPath($assetFullPath);
-            } else {
-                $assetsEntity->setName($assetsEntity->getName());
-                $assetsEntity->setPath($assetFullPath);
-            }
-
-            $this->entity->addAsset($assetsEntity);
-        }
+        // Assets entity
+        $this->entity = $this->assetsService->save('AppBundle\Entity\Vehicles\AssetsEntity', $this->entity, $data['assets']);
 
         if (!$this->existingVehicle) {
             $this->em->persist($this->entity);

@@ -9,7 +9,7 @@
  * @module  MyInventory
  */
 
-namespace AppBundle\Service;
+namespace AppBundle\Service\Utils;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

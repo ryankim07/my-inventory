@@ -13,11 +13,13 @@ namespace AppBundle\Service\Paints;
 
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Paints\PaintsEntity;
+use AppBundle\Service\Helper\Assets;
 
 class Paints
 {
     private $em;
     private $repo;
+    private $assetsService;
     private $entity;
     private $existingPaint;
 
@@ -25,11 +27,14 @@ class Paints
      * Constructor
      *
      * @param EntityManager $entityManager
+     * @param Assets $assetsService
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager,
+                                Assets $assetsService)
     {
-        $this->em   = $entityManager;
-        $this->repo = $this->em->getRepository('AppBundle\Entity\Paints\PaintsEntity');
+        $this->em            = $entityManager;
+        $this->repo          = $this->em->getRepository('AppBundle\Entity\Paints\PaintsEntity');
+        $this->assetsService = $assetsService;
     }
 
     /**
@@ -134,6 +139,9 @@ class Paints
         $this->entity->setHex($data['hex']);
         $this->entity->setRgb($data['rgb']);
         $this->entity->setNotes($data['notes']);
+
+        // Assets entity
+        $this->entity = $this->assetsService->save('AppBundle\Entity\Paints\AssetsEntity', $this->entity, $data['assets']);
 
         if (!$this->existingPaint) {
             $this->em->persist($this->entity);

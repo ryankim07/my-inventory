@@ -11,8 +11,10 @@
 
 namespace AppBundle\Entity\Paints;
 
+use AppBundle\Entity\Properties\AssetsEntity;
 use AppBundle\Entity\Vendors\VendorsEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -74,6 +76,30 @@ class PaintsEntity
      * @ORM\JoinColumn(name="vendor_id", referencedColumnName="id")
      */
     private $vendor;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Properties\AssetsEntity", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\JoinTable(
+     *  name="houses.paint_assets",
+     *  joinColumns={
+     *      @ORM\JoinColumn(name="paint_id", referencedColumnName="id")
+     *  },
+     *  inverseJoinColumns={
+     *      @ORM\JoinColumn(name="asset_id", referencedColumnName="id")
+     *  }
+     * )
+     *
+     * orphanRemoval - this is necessary to remove rows from the 2nd table besides the 3rd table
+     */
+    private $assets;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->assets = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -299,5 +325,58 @@ class PaintsEntity
     public function getVendor()
     {
         return $this->vendor;
+    }
+
+    /**
+     * Add asset
+     *
+     * @param AssetsEntity $asset
+     * @return $this|void
+     */
+    public function addAsset(AssetsEntity $asset)
+    {
+        if (true === $this->assets->contains($asset)) {
+            return;
+        }
+
+        $this->assets[] = $asset;
+
+        return $this;
+    }
+
+    /**
+     * Remove all assets
+     */
+    public function removeAllAssets()
+    {
+        if ($this->assets->count() > 0) {
+            foreach ($this->assets as $existingAsset) {
+                $this->removeAsset($existingAsset);
+            }
+        }
+    }
+
+    /**
+     * Remove asset
+     *
+     * @param AssetsEntity $asset
+     */
+    public function removeAsset(AssetsEntity $asset)
+    {
+        if (false === $this->assets->contains($asset)) {
+            return;
+        }
+
+        $this->assets->removeElement($asset);
+    }
+
+    /**
+     * Get assets
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAssets()
+    {
+        return $this->assets;
     }
 }

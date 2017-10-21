@@ -42,11 +42,6 @@ class GroupsEntity extends Role
     private $role;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Users\UsersEntity", mappedBy="groups")
-     */
-    private $users;
-
-    /**
      * Get id
      *
      * @return integer
@@ -105,44 +100,5 @@ class GroupsEntity extends Role
     public function getRole()
     {
         return $this->role;
-    }
-
-    /**
-     * Get groups
-     *
-     * @return ArrayCollection
-     */
-    public function getUsers()
-    {
-        return $this->users;
-    }
-
-    /**
-     * Add user
-     *
-     * @param UsersEntity $user
-     */
-    public function addUser(UsersEntity $user)
-    {
-        if (true === $this->users->contains($user)) {
-            return;
-        }
-
-        $this->users->add($user);
-        $user->addGroup($this);
-    }
-
-    /**
-     * Remove user
-     *
-     * @param UsersEntity $user
-     */
-    public function removeUser(UsersEntity $user)
-    {
-        if (false === $this->users->contains($user)) {
-            return;
-        }
-        $this->users->removeElement($user);
-        $user->removeGroup($this);
     }
 }

@@ -564,6 +564,8 @@ class PropertyEntity
         }
 
         $this->assets[] = $asset;
+
+        return $this;
     }
 
     /**

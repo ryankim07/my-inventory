@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="houses.assets")
+ * @ORM\Table(name="paints.assets")
  */
 class AssetsEntity
 {
@@ -30,14 +30,6 @@ class AssetsEntity
      * @Assert\NotBlank
      */
     public $path;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->properties = new ArrayCollection();
-    }
 
     /**
      * Get id

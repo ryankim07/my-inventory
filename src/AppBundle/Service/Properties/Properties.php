@@ -14,21 +14,20 @@ namespace AppBundle\Service\Properties;
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Properties\PropertyEntity;
 use AppBundle\Entity\Properties\AddressEntity;
-use AppBundle\Entity\Properties\AssetsEntity;
 use AppBundle\Entity\Properties\RoomsEntity;
 use AppBundle\Entity\Properties\RoomsWallsEntity;
 use AppBundle\Entity\Properties\FeaturesEntity;
 use AppBundle\Entity\Properties\ExteriorFeaturesEntity;
 use AppBundle\Entity\Properties\InteriorFeaturesEntity;
 use AppBundle\Service\Configuration\Properties\Rooms as ConfiguredRooms;
-use AppBundle\Service\FileUploader;
+use AppBundle\Service\Helper\Assets;
 
 class Properties
 {
     private $em;
     private $repo;
     private $configuredRoomsService;
-    private $fileUploader;
+    private $assetsService;
     private $entity;
     private $existingProperty;
     private $existingRoom;
@@ -41,16 +40,16 @@ class Properties
      *
      * @param EntityManager $entityManager
      * @param ConfiguredRooms $configuredRoomsService
-     * @param FileUploader $fileUploader
+     * @param Assets $assetsService
      */
     public function __construct(EntityManager $entityManager,
                                 ConfiguredRooms $configuredRoomsService,
-                                FileUploader $fileUploader)
+                                Assets $assetsService)
     {
         $this->em                     = $entityManager;
         $this->repo                   = $this->em->getRepository('AppBundle\Entity\Properties\PropertyEntity');
         $this->configuredRoomsService = $configuredRoomsService;
-        $this->fileUploader           = $fileUploader;
+        $this->assetsService           = $assetsService;
     }
 
     /**
@@ -165,20 +164,7 @@ class Properties
             }
 
             // Assets entity
-            if (!is_null($data['assets'])) {
-
-                $this->entity->removeAllAssets();
-
-                foreach ($data['assets'] as $asset) {
-                    // Upload asset
-                    $assetFullPath = $this->fileUploader->upload($asset);
-
-                    $assetsEntity = new AssetsEntity();
-                    $assetsEntity->setName($asset->getClientOriginalName());
-                    $assetsEntity->setPath($assetFullPath);
-                    $this->entity->addAsset($assetsEntity);
-                }
-            }
+            $this->entity = $this->assetsService->save('AppBundle\Entity\Properties\AssetsEntity', $this->entity, $data['assets']);
 
             // Save
             if (!$this->existingProperty) {

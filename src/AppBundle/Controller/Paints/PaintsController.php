@@ -58,6 +58,9 @@ class PaintsController extends FOSRestController
         // Request param
         $data = json_decode(stripslashes($request->get('data')), true);
 
+        // Add assets
+        $data['assets'] = $request->files->all();
+
         // Call service to save
         $service = $this->get('Paints');
         $results = $service->save($data);

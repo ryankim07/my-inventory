@@ -72,8 +72,18 @@ class VehicleEntity
     private $plate;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Vehicles\AssetsEntity", mappedBy="vehicles", cascade={"persist", "remove"})
-     * @ORM\OrderBy({"name" = "ASC"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Vehicles\VehicleAssetsEntity", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\JoinTable(
+     *  name="vehicles.vehicles_assets",
+     *  joinColumns={
+     *      @ORM\JoinColumn(name="property_id", referencedColumnName="id")
+     *  },
+     *  inverseJoinColumns={
+     *      @ORM\JoinColumn(name="asset_id", referencedColumnName="id")
+     *  }
+     * )
+     *
+     * orphanRemoval - this is necessary to remove rows from the 2nd table besides the 3rd table
      */
     private $assets;
 
@@ -290,10 +300,10 @@ class VehicleEntity
     /**
      * Add asset
      *
-     * @param AssetsEntity $asset
+     * @param VehicleAssetsEntity $asset
      * @return $this
      */
-    public function addAsset(AssetsEntity $asset)
+    public function addAsset(VehicleAssetsEntity $asset)
     {
         $this->assets[] = $asset;
         $asset->setVehicles($this);
@@ -304,9 +314,9 @@ class VehicleEntity
     /**
      * Remove asset
      *
-     * @param AssetsEntity $asset
+     * @param VehicleAssetsEntity $asset
      */
-    public function removeAsset(AssetsEntity $asset)
+    public function removeAsset(VehicleAssetsEntity $asset)
     {
         $this->assets->removeElement($asset);
     }

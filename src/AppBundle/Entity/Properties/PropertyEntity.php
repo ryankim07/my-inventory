@@ -80,9 +80,9 @@ class PropertyEntity
     private $parcelNumber;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Properties\AssetsEntity", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Properties\PropertyAssetsEntity", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\JoinTable(
-     *  name="houses.property_assets",
+     *  name="houses.properties_assets",
      *  joinColumns={
      *      @ORM\JoinColumn(name="property_id", referencedColumnName="id")
      *  },
@@ -555,9 +555,10 @@ class PropertyEntity
     /**
      * Add asset
      *
-     * @param AssetsEntity $asset
+     * @param PropertyAssetsEntity $asset
+     * @return $this|void
      */
-    public function addAsset(AssetsEntity $asset)
+    public function addAsset(PropertyAssetsEntity $asset)
     {
         if (true === $this->assets->contains($asset)) {
             return;
@@ -583,9 +584,9 @@ class PropertyEntity
     /**
      * Remove asset
      *
-     * @param AssetsEntity $asset
+     * @param PropertyAssetsEntity $asset
      */
-    public function removeAsset(AssetsEntity $asset)
+    public function removeAsset(PropertyAssetsEntity $asset)
     {
         if (false === $this->assets->contains($asset)) {
             return;

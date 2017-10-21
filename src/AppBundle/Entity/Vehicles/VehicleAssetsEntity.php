@@ -11,7 +11,7 @@ use AppBundle\Entity\Vehicles\VehicleEntity;
  * @ORM\Entity
  * @ORM\Table(name="vehicles.assets")
  */
-class AssetsEntity
+class VehicleAssetsEntity
 {
     /**
      * @ORM\Column(type="integer")

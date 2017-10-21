@@ -107,9 +107,6 @@ class Paints
             $msg = "Paint successfully {$op}.";
 
             // Save or update paint
-            $this->_save($data);
-
-            // Save or update paint
             if (!$this->_save($data)) {
                 $msg = "Paint could not be {$op}.";
             };
@@ -131,6 +128,7 @@ class Paints
      */
     private function _save($data)
     {
+        // Paint entity
         $this->entity->setVendorId($data['vendor_id']);
         $this->entity->setBrand($data['brand']);
         $this->entity->setName($data['name']);
@@ -141,7 +139,7 @@ class Paints
         $this->entity->setNotes($data['notes']);
 
         // Assets entity
-        $this->entity = $this->assetsService->save('AppBundle\Entity\Paints\AssetsEntity', $this->entity, $data['assets']);
+        $this->entity = $this->assetsService->save('AppBundle\Entity\Paints\PaintAssetsEntity', $this->entity, $data['assets']);
 
         if (!$this->existingPaint) {
             $this->em->persist($this->entity);

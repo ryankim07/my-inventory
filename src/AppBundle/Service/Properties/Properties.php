@@ -164,7 +164,7 @@ class Properties
             }
 
             // Assets entity
-            $this->entity = $this->assetsService->save('AppBundle\Entity\Properties\AssetsEntity', $this->entity, $data['assets']);
+            $this->entity = $this->assetsService->save('AppBundle\Entity\Properties\PropertyAssetsEntity', $this->entity, $data['assets']);
 
             // Save
             if (!$this->existingProperty) {

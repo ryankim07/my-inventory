@@ -156,12 +156,6 @@ class Vehicles
      */
     private function _save($data)
     {
-        // Upload asset
-        $assets        = $data['assets'];
-        $assetFullPath = !is_null($assets) ? $this->fileUploader->upload($assets) : null;
-        $assetsEntity  = $this->existingVehicle ?
-            $this->em->getRepository('AppBundle\Entity\Vehicles\AssetsEntity')->findOneByVehicleId($this->entity->getId()) : new AssetsEntity();
-
         // Vehicle entity
         $this->entity->setMfgId($data['mfg_id']);
         $this->entity->setMfg($this->mfg->getMfg());
@@ -173,7 +167,7 @@ class Vehicles
         $this->entity->setPlate($data['plate']);
 
         // Assets entity
-        $this->entity = $this->assetsService->save('AppBundle\Entity\Vehicles\AssetsEntity', $this->entity, $data['assets']);
+        $this->entity = $this->assetsService->save('AppBundle\Entity\Vehicles\VehicleAssetsEntity', $this->entity, $data['assets']);
 
         if (!$this->existingVehicle) {
             $this->em->persist($this->entity);

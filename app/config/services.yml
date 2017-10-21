@@ -43,11 +43,7 @@ services:
     # Vehicles Service
     Vehicles:
         class: AppBundle\Service\Vehicles\Vehicles
-        arguments: ["@doctrine.orm.vehicles_entity_manager", "@Manufacturers", "@File_Uploader"]
-
-    Assets:
-        class: AppBundle\Service\Vehicles\Assets
-        arguments: ["@doctrine.orm.vehicles_entity_manager", "@File_Uploader"]
+        arguments: ["@doctrine.orm.vehicles_entity_manager", "@Manufacturers", "@Assets"]
 
     Rooms:
         class: AppBundle\Service\Properties\Rooms
@@ -70,11 +66,11 @@ services:
 
     Properties:
         class: AppBundle\Service\Properties\Properties
-        arguments: ["@doctrine.orm.houses_entity_manager", "@Configured_Rooms", "@File_Uploader"]
+        arguments: ["@doctrine.orm.houses_entity_manager", "@Configured_Rooms", "@Assets"]
 
     Paints:
         class: AppBundle\Service\Paints\Paints
-        arguments: ["@doctrine.orm.houses_entity_manager"]
+        arguments: ["@doctrine.orm.houses_entity_manager", "@Assets"]
 
     Vendors:
         class: AppBundle\Service\Vendors\Vendors
@@ -85,8 +81,12 @@ services:
         arguments: ["@doctrine.orm.houses_entity_manager"]
 
     File_Uploader:
-        class: AppBundle\Service\FileUploader
+        class: AppBundle\Service\Utils\FileUploader
         arguments: ["%assets_dir%"]
 
     Pagination:
         class: AppBundle\Repository\Helper\Pagination
+
+    Assets:
+        class: AppBundle\Service\Helper\Assets
+        arguments: ["@File_Uploader"]

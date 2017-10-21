@@ -305,10 +305,25 @@ class VehicleEntity
      */
     public function addAsset(VehicleAssetsEntity $asset)
     {
+        if (true === $this->assets->contains($asset)) {
+            return;
+        }
+
         $this->assets[] = $asset;
-        $asset->setVehicles($this);
 
         return $this;
+    }
+
+    /**
+     * Remove all assets
+     */
+    public function removeAllAssets()
+    {
+        if ($this->assets->count() > 0) {
+            foreach ($this->assets as $existingAsset) {
+                $this->removeAsset($existingAsset);
+            }
+        }
     }
 
     /**
@@ -318,6 +333,10 @@ class VehicleEntity
      */
     public function removeAsset(VehicleAssetsEntity $asset)
     {
+        if (false === $this->assets->contains($asset)) {
+            return;
+        }
+
         $this->assets->removeElement($asset);
     }
 

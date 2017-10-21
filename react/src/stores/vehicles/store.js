@@ -7,6 +7,7 @@ import ActionConstants from '../../constants/action-constants';
 let _vehicles = [];
 let _vehicle = {};
 let _manufacturers = [];
+let _loadList = false;
 let _rightPanel = false;
 let _storeMsg;
 
@@ -57,6 +58,7 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
 		}
 
 		_vehicles.push(results.vehicle);
+		_loadList = true;
 		_storeMsg = results.msg;
 		_rightPanel = false;
 	},
@@ -99,6 +101,14 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
 		}
 
 		return true;
+	},
+
+	loadList: function () {
+		return _loadList;
+	},
+
+	setLoadList: function () {
+		_loadList = true;
 	},
 
 	getStoreFlashMessage: function() {

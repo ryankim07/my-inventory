@@ -24,6 +24,7 @@ let rightPanelDesktopColumnWidth = 'col-md-4';
 
 class PropertiesDashboard extends React.Component
 {
+	// Constructor
 	constructor(props) {
 		super(props);
 
@@ -57,15 +58,41 @@ class PropertiesDashboard extends React.Component
 		this.closeRightPanel    	= this.closeRightPanel.bind(this);
 	}
 
+	// Get room walls initial state
+	getWallState() {
+		return {
+			id: '',
+			room_id: '',
+			paint_id: '',
+			name: ''
+		}
+	}
+
+	// Get room initial state
+	getRoomState(propertyId) {
+		return {
+			id: '',
+			property_id: propertyId,
+			name: '',
+			total_area: '',
+			description: '',
+			walls: [this.getWallState()],
+			assets: []
+		}
+	}
+
+	// Mounting component
 	componentWillMount() {
 		PropertiesStore.addChangeListener(this._onChange);
 		PropertiesStore.unsetStoreFlashMessage();
 	}
 
+	// Mounted component
 	componentDidMount() {
 		PropertiesAction.getPropertiesAndPaints();
 	}
 
+	// Unmount component
 	componentWillUnmount() {
 		PropertiesStore.removeChangeListener(this._onChange);
 	}
@@ -159,7 +186,7 @@ class PropertiesDashboard extends React.Component
 		});
 	}
 
-	// Handle right panel
+	// Handle default right panel
 	onHandleRightPanel(property, isEditingMode, rightPanel) {
 		this.setState({
 			property: property,
@@ -173,7 +200,7 @@ class PropertiesDashboard extends React.Component
 		});
 	}
 
-	// Handle add and edit from rooms list
+	// Handle room right panel
 	onHandleRightRoomPanel(id) {
 		let isEditingMode = !!id;
 
@@ -182,28 +209,12 @@ class PropertiesDashboard extends React.Component
 		// we need to clone object to stop js original object reference
 		let rooms = JSON.parse(JSON.stringify(this.state.property.rooms));
 
-		let wallObj  = {
-			id: '',
-			room_id: '',
-			paint_id: '',
-			name: ''
-		};
-
 		// Instantiate new object or load existing object if found
 		let room = isEditingMode ?
-			rooms.find(obj => obj.id === id) :
-			{
-				id: '',
-				property_id: this.state.property.id,
-				name: '',
-				total_area: '',
-				description: '',
-				walls: [wallObj],
-				assets: []
-			};
+			rooms.find(obj => obj.id === id) : this.getRoomState(this.state.property.id);
 
 		if (isEditingMode && room.walls.length === 0) {
-			room.walls.push(wallObj);
+			room.walls.push(this.getWallState());
 		}
 
 		this.setState({

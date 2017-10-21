@@ -53,7 +53,7 @@ class VehiclesController extends FOSRestController
     {
         // Request param
         $data           = json_decode(stripslashes($request->get('data')), true);
-        $data['assets'] = $request->files->get('file');
+        $data['assets'] = $request->files->all();
 
         // Call service to save
         $service = $this->get('Vehicles');

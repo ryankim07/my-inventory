@@ -28,7 +28,7 @@ class Assets
     }
 
     /**
-     * Save or update entity
+     * Save or update asset
      *
      * @param $class - The class name of the asset object
      * @param $entity - the object where the asset is being saved
@@ -56,5 +56,18 @@ class Assets
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
         }
+    }
+
+    /**
+     * Remove asset
+     *
+     * @param $asset
+     * @return bool
+     */
+    public function remove($asset)
+    {
+        $this->fileUploader->removeUpload($asset);
+
+        return true;
     }
 }

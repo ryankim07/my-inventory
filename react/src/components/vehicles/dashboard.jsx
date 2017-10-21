@@ -125,6 +125,7 @@ class VehiclesDashboard extends React.Component
 		let flashMessage 	= VehiclesStore.getStoreFlashMessage();
 		let isAuthenticated = VehiclesStore.isAuthenticated();
 		let openRightPanel  = VehiclesStore.showRightPanel();
+		let loadList        = VehiclesStore.loadList();
 
 		if (!isAuthenticated){
 			this.context.router.push("/auth/forms/login");
@@ -134,7 +135,7 @@ class VehiclesDashboard extends React.Component
 		this.setState({
 			vehicles: vehicles,
 			manufacturers: manufacturers,
-			mainPanel: this.props.params.section === 'add' ? 'add' : 'list', // Need to set main panel if add new vehicle component is accessed from header
+			mainPanel: loadList ? 'list' : this.state.mainPanel, // Need to set main panel if add new vehicle component is accessed from header
 			showRightPanel: !!openRightPanel,
 			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,

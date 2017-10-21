@@ -194,16 +194,13 @@ class Vehicles
             $vehicle = $this->repo->find($id);
             $assets  = $vehicle->getAssets();
 
+            // Delete assets
             foreach($assets as $asset) {
-                if ($asset->getVehicleId() == $id) {
-                    $this->fileUploader->removeUpload($asset->getPath());
-                    $this->em->remove($asset);
-                    break;
-                } else {
-                    continue;
-                }
+                $this->assetsService->remove($asset->getPath());
+                $this->em->remove($asset);
             }
 
+            // Delete vehicle
             $this->em->remove($vehicle);
             $this->em->flush();
 
@@ -217,7 +214,7 @@ class Vehicles
     }
 
     /**
-     * Find either by ID or VIN
+     * Find vehicle either by ID or VIN
      *
      * @param $id
      * @param $vin

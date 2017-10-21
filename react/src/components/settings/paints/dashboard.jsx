@@ -4,8 +4,8 @@ import PaintsAction from '../../../actions/paints-action';
 import PaintsStore from '../../../stores/paints/store';
 import SettingsMainPanel from './../main_panel';
 import SettingsRightPanel from './../right_panel';
-import SettingsPaintsList from './paints/list';
-import SettingsPaint from './paints/forms/paint';
+import SettingsPaintsList from './../paints/list';
+import SettingsPaint from './../paints/forms/paint';
 import FlashMessage from '../../helper/flash_message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -17,12 +17,13 @@ let rightPanelDesktopColumnWidth = 'col-md-4';
 
 class SettingsPropertiesDashboard extends React.Component
 {
+	// Constructor
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			paints: [],
-			paint: {},
+			paint: this.getPaintState(),
 			vendors: [],
 			isEditingMode: false,
 			loader: true,
@@ -46,19 +47,39 @@ class SettingsPropertiesDashboard extends React.Component
 		this.closeRightPanel 	= this.closeRightPanel.bind(this);
 	}
 
+	// Get paint initial state
+	getPaintState() {
+		return {
+			id: '',
+			vendor_id: '',
+			brand: '',
+			name: '',
+			number: '',
+			color: '',
+			hex: '',
+			rgb: '',
+			notes: '',
+			assets: []
+		}
+	}
+
+	// Mounting component
 	componentWillMount() {
 		PaintsStore.addChangeListener(this._onChange);
 		PaintsStore.unsetStoreFlashMessage();
 	}
 
+	// Mounted component
 	componentDidMount() {
 		PaintsAction.getPaintsAndVendors();
 	}
 
+	// Unmount component
 	componentWillUnmount() {
 		PaintsStore.removeChangeListener(this._onChange);
 	}
 
+	// Store change
 	_onChange() {
 		let paints		    = PaintsStore.getPaints();
 		let vendors			= PaintsStore.getVendors();
@@ -97,18 +118,8 @@ class SettingsPropertiesDashboard extends React.Component
 	onHandleRightPanel(id) {
 		let isEditingMode = !!id;
 		let paint = isEditingMode ?
-			this.state.paints.find(obj => obj.id === id) :
-			{
-				id: '',
-				vendor_id: '',
-				brand: '',
-				name: '',
-				number: '',
-				color: '',
-				hex: '',
-				rgb: '',
-				notes: ''
-			};
+			this.state.paints.find(obj => obj.id === id) : this.getPaintState();
+
 
 		this.setState({
 			paint: paint,
@@ -142,33 +153,38 @@ class SettingsPropertiesDashboard extends React.Component
 		});
 	}
 
+	// Render
 	render() {
+		// Main panel
+		let mainPanelHtml =
+			<SettingsPaintsList
+				loader={ this.state.loader }
+				paints={ this.state.paints }
+				paint={ this.state.paint }
+				onHandleRightPanel={ this.onHandleRightPanel }
+				onHandleRemove={ this.onHandleRemove }
+			/>;
+
+		// Right panel
+		let rightPanelHtml = this.state.showRightPanel ?
+			<SettingsPaint
+				paint={ this.state.paint }
+				vendors={ this.state.vendors }
+				isEditingMode={ this.state.isEditingMode }
+				onHandleFormSubmit={ this.onHandleFormSubmit }
+				closeRightPanel={ this.closeRightPanel }
+			/> : null;
+
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/>}
 
 				<SettingsMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
-					<SettingsPaintsList
-						loader={ this.state.loader }
-						paints={ this.state.paints }
-						paint={ this.state.paint }
-						onHandleRightPanel={ this.onHandleRightPanel }
-						onHandleRemove={ this.onHandleRemove }
-					/>
+					{ mainPanelHtml }
 				</SettingsMainPanel>
-
-				{
-					this.state.showRightPanel ?
-						<SettingsRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
-							<SettingsPaint
-								paint={ this.state.paint }
-								vendors={ this.state.vendors }
-								isEditingMode={ this.state.isEditingMode }
-								onHandleFormSubmit={ this.onHandleFormSubmit }
-								closeRightPanel={ this.closeRightPanel }
-							/>
-						</SettingsRightPanel> : null
-				}
+				<SettingsRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
+					{ rightPanelHtml }
+				</SettingsRightPanel>
 			</div>
 		)
 	}

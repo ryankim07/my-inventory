@@ -1,6 +1,6 @@
 import React from 'react';
-//import Uploader from '../../../helper/uploader';
-import { upperFirstLetter } from "../../../../helper/utils"
+import Uploader from '../../../helper/uploader';
+import { upperFirstLetter } from "../../../helper/utils"
 
 class SettingsPaint extends React.Component
 {
@@ -14,6 +14,7 @@ class SettingsPaint extends React.Component
 		};
 
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
+		this.setAssets     		= this.setAssets.bind(this);
 		this.handleFormSubmit   = this.handleFormSubmit.bind(this);
     }
 
@@ -52,6 +53,16 @@ class SettingsPaint extends React.Component
         this.setState({paint: paint});
     }
 
+	// Handle assets
+	setAssets(assets) {
+		let paint = this.state.paint;
+		paint['assets'] = assets;
+
+		this.setState({
+			paint: paint
+		});
+	}
+
     // Submit
     handleFormSubmit(event) {
 		event.preventDefault();
@@ -67,7 +78,28 @@ class SettingsPaint extends React.Component
 			<form onSubmit={ this.handleFormSubmit }>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Image</label>
+						<div className="input-group">
+							<Uploader
+								assets={ this.state.paint.assets }
+								isEditingMode={ this.props.isEditingMode }
+								setAssets={ this.setAssets }
+							/>
+						</div>
+					</div>
+				</div>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Vendor</label>
+						<div className="input-group">
+							<input
+								type="text"
+								onChange={ this.onHandleFormChange.bind(this, 'vendor') }
+								value="1"
+								className="form-control input-sm"
+								required="required"
+							/>
+						</div>
 					</div>
 				</div>
 				<div className="form-group required">

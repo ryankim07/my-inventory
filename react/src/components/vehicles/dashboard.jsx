@@ -64,6 +64,7 @@ class VehiclesDashboard extends React.Component
 		}
 	}
 
+	// Mounting component
 	componentWillMount() {
 		VehiclesStore.addChangeListener(this._onChange);
 		VehiclesStore.unsetStoreFlashMessage();
@@ -79,14 +80,17 @@ class VehiclesDashboard extends React.Component
 		}
 	}
 
+	// Mounted component
 	componentDidMount() {
 		VehiclesAction.getVehiclesAndManufacturers();
 	}
 
+	// Unmount component
 	componentWillUnmount() {
 		VehiclesStore.removeChangeListener(this._onChange);
 	}
 
+	// Next state change
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.location.action === 'REPLACE' || nextProps.location.action === 'PUSH') {
 			let mainPanel = null;
@@ -114,6 +118,7 @@ class VehiclesDashboard extends React.Component
 		}
 	}
 
+	// Store change
 	_onChange() {
 		let vehicles 		= VehiclesStore.getVehicles();
 		let manufacturers	= VehiclesStore.getManufacturers();
@@ -186,6 +191,7 @@ class VehiclesDashboard extends React.Component
 		});
 	}
 
+	// Render
 	render() {
 		// Main panel
 		let mainPanelHtml = '';
@@ -214,6 +220,17 @@ class VehiclesDashboard extends React.Component
 					/>;
 		}
 
+		// Right panel
+		let rightPanelHtml = this.state.showRightPanel ?
+			<VehicleForm
+				loader={ false }
+				vehicle={ this.state.vehicle }
+				manufacturers={ this.state.manufacturers }
+				isEditingMode={ this.state.isEditingMode }
+				onHandleFormSubmit={ this.onHandleFormSubmit }
+				closeRightPanel={ this.closeRightPanel }
+			/> : null;
+
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/>}
@@ -221,20 +238,9 @@ class VehiclesDashboard extends React.Component
 				<VehiclesMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }
 				</VehiclesMainPanel>
-
-				{
-					this.state.showRightPanel ?
-						<VehiclesRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
-							<VehicleForm
-								loader={ false }
-								vehicle={ this.state.vehicle }
-								manufacturers={ this.state.manufacturers }
-								isEditingMode={ this.state.isEditingMode }
-								onHandleFormSubmit={ this.onHandleFormSubmit }
-								closeRightPanel={ this.closeRightPanel }
-							/>
-						</VehiclesRightPanel> : null
-				}
+				<VehiclesRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
+					{ rightPanelHtml }
+				</VehiclesRightPanel>
 			</div>
 		)
 	}

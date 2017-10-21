@@ -49,7 +49,7 @@ class PropertyForm extends React.Component
 
     // Handle assets
 	setAssets(assets) {
-    	let property 	   = this.state.property;
+    	let property = this.state.property;
 		property['assets'] = assets;
 
 		this.setState({

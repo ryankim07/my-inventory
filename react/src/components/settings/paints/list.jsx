@@ -1,7 +1,7 @@
 import React from 'react';
-import SearchField from '../../../helper/search_field';
-import TogglingRows from '../../../helper/table/toggling_rows';
-import Loader from '../../../helper/loader';
+import SearchField from '../../helper/search_field';
+import TogglingRows from '../../helper/table/toggling_rows';
+import Loader from '../../helper/loader';
 
 class SettingsPaintsList extends React.Component
 {

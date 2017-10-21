@@ -2,7 +2,8 @@ import React from 'react';
 import NonAddedRoomsDropdown from '../../rooms/forms/non_added_rooms_dropdown';
 import PropertyRoomWallsDropdown from '../../rooms/forms/walls_dropdown';
 import PropertyPaintsDropdown from '../../rooms/forms/paints_dropdown';
-import { numberFormat, upperFirstLetter, arrayDiff } from "../../../helper/utils";
+import Uploader from '../../../helper/uploader';
+import { numberFormat, upperFirstLetter, arrayDiff } from '../../../helper/utils';
 
 class PropertyRoomForm extends React.Component
 {
@@ -22,6 +23,7 @@ class PropertyRoomForm extends React.Component
         this.onHandleFormChange  = this.onHandleFormChange.bind(this);
         this.onHandleWallsChange = this.onHandleWallsChange.bind(this);
         this.onHandleAddWall     = this.onHandleAddWall.bind(this);
+		this.setAssets     		 = this.setAssets.bind(this);
     }
 
 	// Component mounting
@@ -41,6 +43,16 @@ class PropertyRoomForm extends React.Component
 				disableAddWallsBtn: this.shouldDisableAddWallBtn(nextProps.room.walls)
 			});
 		}
+	}
+
+	// Handle assets
+	setAssets(assets) {
+		let room = this.state.room;
+		room['assets'] = assets;
+
+		this.setState({
+			room: room
+		});
 	}
 
 	// Handle input changes
@@ -228,6 +240,18 @@ class PropertyRoomForm extends React.Component
 
 		let roomForm =
 			<form onSubmit={ this.handleFormSubmit }>
+				<div className="form-group">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Image</label>
+						<div className="input-group">
+							<Uploader
+								assets={ room.assets }
+								isEditingMode={ this.props.isEditingMode }
+								setAssets={ this.setAssets }
+							/>
+						</div>
+					</div>
+				</div>
 				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Room Name</label>

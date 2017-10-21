@@ -23,7 +23,7 @@ let PropertiesAction = {
 
 	addProperty: function(data) {
 		Api
-			.post('http://mcs.dev/api/property', data, data.assets)
+			.post('http://mcs.dev/api/property', data)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.ADD_PROPERTY,
@@ -40,7 +40,7 @@ let PropertiesAction = {
 
 	updateProperty: function(data) {
 		Api
-			.post('http://mcs.dev/api/property', data, data.assets)
+			.post('http://mcs.dev/api/property', data)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.UPDATE_PROPERTY,

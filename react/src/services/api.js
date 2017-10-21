@@ -30,7 +30,9 @@ let Api = {
 		return Promise.all([this.get(url1), this.get(url2)]);
 	},
 
-    post: function (url, data, assets) {
+    post: function (url, data) {
+    	let assets = data.assets;
+
         return new Promise(function (resolve, reject) {
 			const req = request
 					.post(url)

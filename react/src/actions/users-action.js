@@ -39,7 +39,7 @@ let UsersAction = {
 
 	updateUser: function(data) {
 		Users
-			.post('http://mcs.dev/api/user', data, data.assets)
+			.post('http://mcs.dev/api/user', data)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.UPDATE_USER,

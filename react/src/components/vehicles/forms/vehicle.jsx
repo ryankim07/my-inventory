@@ -61,10 +61,11 @@ class VehicleForm extends React.Component
 
 	// Handle assets
 	setAssets(assets) {
-		let property = this.state.property;
+		let vehicle = this.state.vehicle;
+		vehicle['assets'] = assets
 
 		this.setState({
-			property: property['assets'] = assets
+			vehicle: vehicle
 		});
 	}
 
@@ -116,7 +117,7 @@ class VehicleForm extends React.Component
 						<label className="control-label">Image</label>
 						<div className="input-group">
 							<Uploader
-								assets={ this.state.vehicle.assets }
+								assets={ vehicle.assets }
 								isEditingMode={ this.props.isEditingMode }
 								setAssets={ this.setAssets }
 							/>

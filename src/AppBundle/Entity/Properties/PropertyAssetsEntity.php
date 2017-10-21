@@ -32,14 +32,6 @@ class PropertyAssetsEntity
     public $path;
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->properties = new ArrayCollection();
-    }
-
-    /**
      * Get id
      *
      * @return integer
@@ -50,11 +42,10 @@ class PropertyAssetsEntity
     }
 
     /**
-     * Set name
+     *  Set name
      *
-     * @param string $name
-     *
-     * @return AssetsEntity
+     * @param $name
+     * @return $this
      */
     public function setName($name)
     {
@@ -76,9 +67,8 @@ class PropertyAssetsEntity
     /**
      * Set path
      *
-     * @param string $path
-     *
-     * @return AssetsEntity
+     * @param $path
+     * @return $this
      */
     public function setPath($path)
     {

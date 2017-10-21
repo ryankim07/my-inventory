@@ -199,7 +199,7 @@ class PropertiesDashboard extends React.Component
 				total_area: '',
 				description: '',
 				walls: [wallObj],
-				room_assets: []
+				assets: []
 			};
 
 		if (isEditingMode && room.walls.length === 0) {

@@ -63,17 +63,28 @@ class RoomsEntity
     private $walls;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\RoomAssetsEntity", mappedBy="rooms", cascade={"persist", "remove"})
-     * @ORM\OrderBy({"name" = "ASC"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Properties\PropertyAssetsEntity", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\JoinTable(
+     *  name="houses.rooms_assets",
+     *  joinColumns={
+     *      @ORM\JoinColumn(name="room_id", referencedColumnName="id")
+     *  },
+     *  inverseJoinColumns={
+     *      @ORM\JoinColumn(name="asset_id", referencedColumnName="id")
+     *  }
+     * )
+     *
+     * orphanRemoval - this is necessary to remove rows from the 2nd table besides the 3rd table
      */
-    private $roomAssets;
+    private $assets;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->walls = new ArrayCollection();
+        $this->walls  = new ArrayCollection();
+        $this->assets = new ArrayCollection();
     }
 
     /**
@@ -207,6 +218,20 @@ class RoomsEntity
     }
 
     /**
+     * Set property
+     *
+     * @param PropertyEntity $property
+     *
+     * @return RoomsEntity
+     */
+    public function setProperty(PropertyEntity $property = null)
+    {
+        $this->property = $property;
+
+        return $this;
+    }
+
+    /**
      * Add wall
      *
      * @param RoomsWallsEntity $wall
@@ -242,51 +267,55 @@ class RoomsEntity
     }
 
     /**
-     * Set property
+     * Add asset
      *
-     * @param PropertyEntity $property
-     *
-     * @return RoomsEntity
+     * @param PropertyAssetsEntity $asset
+     * @return $this|void
      */
-    public function setProperty(PropertyEntity $property = null)
+    public function addAsset(PropertyAssetsEntity $asset)
     {
-        $this->property = $property;
+        if (true === $this->assets->contains($asset)) {
+            return;
+        }
+
+        $this->assets[] = $asset;
 
         return $this;
     }
 
     /**
-     * Add roomAsset
-     *
-     * @param RoomAssetsEntity $roomAsset
-     *
-     * @return RoomsEntity
+     * Remove all assets
      */
-    public function addRoomAsset(RoomAssetsEntity $roomAsset)
+    public function removeAllAssets()
     {
-        $this->roomAssets[] = $roomAsset;
-        $roomAsset->setRooms($this);
-
-        return $this;
+        if ($this->assets->count() > 0) {
+            foreach ($this->assets as $existingAsset) {
+                $this->removeAsset($existingAsset);
+            }
+        }
     }
 
     /**
-     * Remove roomAsset
+     * Remove asset
      *
-     * @param RoomAssetsEntity $roomAsset
+     * @param PropertyAssetsEntity $asset
      */
-    public function removeRoomAsset(RoomAssetsEntity $roomAsset)
+    public function removeAsset(PropertyAssetsEntity $asset)
     {
-        $this->roomAssets->removeElement($roomAsset);
+        if (false === $this->assets->contains($asset)) {
+            return;
+        }
+
+        $this->assets->removeElement($asset);
     }
 
     /**
-     * Get roomAssets
+     * Get assets
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getRoomAssets()
+    public function getAssets()
     {
-        return $this->roomAssets;
+        return $this->assets;
     }
 }

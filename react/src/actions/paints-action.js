@@ -40,7 +40,7 @@ let PaintsAction = {
 
 	addPaint: function(data) {
 		Api
-			.post('http://mcs.dev/api/paint', data, data.assets)
+			.post('http://mcs.dev/api/paint', data)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.ADD_PAINT,
@@ -57,7 +57,7 @@ let PaintsAction = {
 
 	updatePaint: function(data) {
 		Api
-			.post('http://mcs.dev/api/paint', data, data.assets)
+			.post('http://mcs.dev/api/paint', data)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.UPDATE_PAINT,

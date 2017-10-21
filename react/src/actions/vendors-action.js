@@ -40,7 +40,7 @@ let VendorsAction = {
 
 	addVendor: function(data) {
 		Api
-			.post('http://mcs.dev/api/vendor', data, data.assets)
+			.post('http://mcs.dev/api/vendor', data)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.ADD_VENDOR,
@@ -57,7 +57,7 @@ let VendorsAction = {
 
 	updateVendor: function(data) {
 		Api
-			.post('http://mcs.dev/api/vendor', data, data.assets)
+			.post('http://mcs.dev/api/vendor', data)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.UPDATE_VENDOR,

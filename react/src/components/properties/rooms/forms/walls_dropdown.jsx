@@ -1,5 +1,5 @@
 import React from 'react';
-import { upperFirstLetter } from "../../../helper/utils";
+import { upperFirstLetter } from '../../../helper/utils';
 
 class PropertyRoomWallsDropdown extends React.Component
 {

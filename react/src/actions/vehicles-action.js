@@ -23,7 +23,7 @@ let VehiclesAction = {
 
 	addVehicle: function(data) {
 		Api
-			.post('http://mcs.dev/api/vehicle', data, data.assets)
+			.post('http://mcs.dev/api/vehicle', data)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.ADD_VEHICLE,
@@ -40,7 +40,7 @@ let VehiclesAction = {
 
 	updateVehicle: function(data) {
 		Api
-			.post('http://mcs.dev/api/vehicle', data, data.assets)
+			.post('http://mcs.dev/api/vehicle', data)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.UPDATE_VEHICLE,

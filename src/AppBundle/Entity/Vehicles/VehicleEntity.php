@@ -76,7 +76,7 @@ class VehicleEntity
      * @ORM\JoinTable(
      *  name="vehicles.vehicles_assets",
      *  joinColumns={
-     *      @ORM\JoinColumn(name="property_id", referencedColumnName="id")
+     *      @ORM\JoinColumn(name="vehicle_id", referencedColumnName="id")
      *  },
      *  inverseJoinColumns={
      *      @ORM\JoinColumn(name="asset_id", referencedColumnName="id")

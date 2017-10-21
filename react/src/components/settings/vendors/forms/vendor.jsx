@@ -1,7 +1,7 @@
 import React from 'react';
 import InputZipCode from '../../../helper/forms/input_zip_code';
 import StatesDropdown from '../../../helper/forms/states_dropdown';
-import { upperFirstLetter, phoneFormat, urlFormat } from "../../../helper/utils"
+import { upperFirstLetter, phoneFormat, urlFormat } from '../../../helper/utils';
 
 class SettingsVendor extends React.Component
 {

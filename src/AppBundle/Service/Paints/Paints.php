@@ -139,7 +139,7 @@ class Paints
         $this->entity->setNotes($data['notes']);
 
         // Assets entity
-        $this->entity = $this->assetsService->save('AppBundle\Entity\Paints\PaintAssetsEntity', $this->entity, $data['assets']);
+        $this->entity = $this->assetsService->save('AppBundle\Entity\Properties\PropertyAssetsEntity', $this->entity, $data['assets']);
 
         if (!$this->existingPaint) {
             $this->em->persist($this->entity);

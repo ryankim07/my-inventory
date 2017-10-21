@@ -1,7 +1,7 @@
 import React from 'react';
 import PropertyAddressForm from './../../address/forms/address';
 import Uploader from '../../../helper/uploader';
-import { numberFormat } from "../../../helper/utils";
+import { numberFormat } from '../../../helper/utils';
 
 class PropertyForm extends React.Component
 {
@@ -22,6 +22,16 @@ class PropertyForm extends React.Component
 				property: nextProps.property
 			});
 		}
+	}
+
+	// Handle assets
+	setAssets(assets) {
+		let property = this.state.property;
+		property['assets'] = assets;
+
+		this.setState({
+			property: property
+		});
 	}
 
     // Handle input changes
@@ -46,16 +56,6 @@ class PropertyForm extends React.Component
 
         this.setState({property: property});
     }
-
-    // Handle assets
-	setAssets(assets) {
-    	let property = this.state.property;
-		property['assets'] = assets;
-
-		this.setState({
-			property: property
-		});
-	}
 
 	// Submit
 	handleFormSubmit(event) {
@@ -106,7 +106,7 @@ class PropertyForm extends React.Component
 						<label className="control-label">Image</label>
 						<div className="input-group">
 							<Uploader
-								assets={ this.state.property.assets }
+								assets={ property.assets }
 								isEditingMode={ this.props.isEditingMode }
 								setAssets={ this.setAssets }
 							/>

@@ -11,6 +11,7 @@
 
 namespace AppBundle\Entity\Paints;
 
+use AppBundle\Entity\Properties\PropertyAssetsEntity;
 use AppBundle\Entity\Vendors\VendorsEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -80,7 +81,7 @@ class PaintsEntity
     private $vendor;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Paints\PaintAssetsEntity", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Properties\PropertyAssetsEntity", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\JoinTable(
      *  name="houses.paints_assets",
      *  joinColumns={
@@ -332,10 +333,10 @@ class PaintsEntity
     /**
      * Add asset
      *
-     * @param PaintAssetsEntity $asset
+     * @param PropertyAssetsEntity $asset
      * @return $this|void
      */
-    public function addAsset(PaintAssetsEntity $asset)
+    public function addAsset(PropertyAssetsEntity $asset)
     {
         if (true === $this->assets->contains($asset)) {
             return;
@@ -361,9 +362,9 @@ class PaintsEntity
     /**
      * Remove asset
      *
-     * @param PaintAssetsEntity $asset
+     * @param PropertyAssetsEntity $asset
      */
-    public function removeAsset(PaintAssetsEntity $asset)
+    public function removeAsset(PropertyAssetsEntity $asset)
     {
         if (false === $this->assets->contains($asset)) {
             return;

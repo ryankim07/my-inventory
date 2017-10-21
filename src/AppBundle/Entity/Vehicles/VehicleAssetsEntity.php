@@ -21,12 +21,6 @@ class VehicleAssetsEntity
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Assert\NotBlank()
-     */
-    private $vehicleId;
-    
-    /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      */
@@ -39,12 +33,6 @@ class VehicleAssetsEntity
     public $path;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vehicles\VehicleEntity", inversedBy="assets")
-     * @ORM\JoinColumn(name="vehicle_id", referencedColumnName="id")
-     */
-    private $vehicles;
-
-    /**
      * Get id
      *
      * @return integer
@@ -52,29 +40,6 @@ class VehicleAssetsEntity
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Get vehicle ID
-     *
-     * @return integer
-     */
-    public function getVehicleId()
-    {
-        return $this->vehicleId;
-    }
-
-    /**
-     * Set vehicle ID
-     *
-     * @param $vehicleId
-     * @return $this
-     */
-    public function setVehicleId($vehicleId)
-    {
-        $this->vehicleId = $vehicleId;
-
-        return $this;
     }
 
     /**
@@ -121,28 +86,5 @@ class VehicleAssetsEntity
     public function getPath()
     {
         return $this->path;
-    }
-
-    /**
-     * Set vehicles
-     *
-     * @param \AppBundle\Entity\Vehicles\VehicleEntity|null $vehicles
-     * @return $this
-     */
-    public function setVehicles(VehicleEntity $vehicles = null)
-    {
-        $this->vehicles = $vehicles;
-
-        return $this;
-    }
-
-    /**
-     * Get vehicles
-     *
-     * @return mixed
-     */
-    public function getVehicles()
-    {
-        return $this->vehicles;
     }
 }

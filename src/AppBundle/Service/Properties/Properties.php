@@ -274,6 +274,9 @@ class Properties
             $this->entity->setDescription($data["description"]);
             $property->addRoom($this->entity);
 
+            // Assets entity
+            $this->entity = $this->assetsService->save('AppBundle\Entity\Properties\PropertyAssetsEntity', $this->entity, $data['assets']);
+
             if (!$this->existingRoom) {
                 $this->em->persist($property);
             }

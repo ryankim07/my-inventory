@@ -1,6 +1,6 @@
 import React from 'react';
 import Uploader from '../../../helper/uploader';
-import { upperFirstLetter } from "../../../helper/utils"
+import { upperFirstLetter } from '../../../helper/utils';
 
 class SettingsPaint extends React.Component
 {
@@ -81,7 +81,7 @@ class SettingsPaint extends React.Component
 						<label className="control-label">Image</label>
 						<div className="input-group">
 							<Uploader
-								assets={ this.state.paint.assets }
+								assets={ paint.assets }
 								isEditingMode={ this.props.isEditingMode }
 								setAssets={ this.setAssets }
 							/>

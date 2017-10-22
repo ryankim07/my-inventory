@@ -152,10 +152,19 @@ class PropertiesDashboard extends React.Component
 	onHandleFormSubmit(obj, type) {
 		obj.obj_type = type;
 
-		if (!this.state.isEditingMode) {
-			PropertiesAction.addProperty(obj);
-		} else {
-			PropertiesAction.updateProperty(obj);
+		switch (type) {
+			case 'features':
+			case 'exterior_features':
+			case 'interior_features':
+				PropertiesAction.updateProperty(obj);
+			break;
+
+			default:
+				if (!this.state.isEditingMode) {
+					PropertiesAction.addProperty(obj);
+				} else {
+					PropertiesAction.updateProperty(obj);
+				}
 		}
 	}
 

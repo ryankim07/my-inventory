@@ -4,10 +4,12 @@ import { upperFirstLetter } from "../../helper/utils";
 
 class PropertyRoomsList extends React.Component
 {
+	// Render component again or not
 	shouldComponentUpdate(nextProps, nextState) {
 		return nextProps.property !== this.props.property;
 	}
 
+	// Render
 	render() {
 		let propertyId = this.props.property.id;
         let rooms      = this.props.property.rooms;

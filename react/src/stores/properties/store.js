@@ -101,7 +101,7 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		_rightPanel = false;
 	},
 
-	removeRoom: function(results) {
+	modifyRoom: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
 			return false;
@@ -152,8 +152,10 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
             PropertiesStore.removeProperty(results);
         break;
 
+		case ActionConstants.ADD_PROPERTY_ROOM:
+		case ActionConstants.UPDATE_PROPERTY_ROOM:
 		case ActionConstants.REMOVE_PROPERTY_ROOM:
-			PropertiesStore.removeRoom(results);
+			PropertiesStore.modifyRoom(results);
 		break;
 
 		case ActionConstants.RECEIVE_PROPERTIES_AND_PAINTS:

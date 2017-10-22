@@ -267,6 +267,7 @@ class Properties
                 $this->entity->addWall($wallsEntity);
             }
 
+            // Save or update room
             $this->entity->setPropertyId($data['property_id']);
             $this->entity->setName($data["name"]);
             $this->entity->setTotalArea($data["total_area"]);
@@ -312,17 +313,18 @@ class Properties
             $rooms    = $property->getRooms();
 
             foreach($rooms as $room) {
-                $assets = $room->getAssets();
-
-                // Delete assets
-                if ($assets->count() > 0) {
-                    foreach ($assets as $asset) {
-                        $this->assetsService->remove($asset->getPath());
-                    }
-                }
-
                 if ($room->getId() == $roomId) {
-                    $this->em->remove($room);
+                    $assets = $room->getAssets();
+
+                    // Delete assets
+                    if ($assets->count() > 0) {
+                        foreach ($assets as $asset) {
+                            $this->assetsService->remove($asset->getPath());
+                            $room->removeAsset($asset);
+                        }
+                    }
+
+                    $property->removeRoom($room);
                 }
             }
 

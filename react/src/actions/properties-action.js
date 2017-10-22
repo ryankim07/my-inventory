@@ -26,7 +26,8 @@ let PropertiesAction = {
 			.post('http://mcs.dev/api/property', data)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.ADD_PROPERTY,
+					actionType: data.obj_type === 'rooms' ?
+						ActionConstants.ADD_PROPERTY_ROOM : ActionConstants.ADD_PROPERTY,
 					results: resp
 				});
 			})
@@ -43,7 +44,8 @@ let PropertiesAction = {
 			.post('http://mcs.dev/api/property', data)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.UPDATE_PROPERTY,
+					actionType: data.obj_type === 'rooms' ?
+						ActionConstants.UPDATE_PROPERTY_ROOM : ActionConstants.UPDATE_PROPERTY,
 					results: resp
 				});
 			})

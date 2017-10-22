@@ -101,7 +101,7 @@ class PropertyEntity
     private $address;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\RoomsEntity", mappedBy="property", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\RoomsEntity", mappedBy="property", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\OrderBy({"name" = "ASC"})
      */
     private $rooms;
@@ -365,14 +365,16 @@ class PropertyEntity
     }
 
     /**
-     * Set address
+     * Add address
      *
      * @param AddressEntity $address
-     *
-     * @return PropertyEntity
      */
     public function addAddress(AddressEntity $address)
     {
+        if (true === $this->assets->contains($address)) {
+            return;
+        }
+
         $this->address = $address;
         $address->setProperty($this);
     }
@@ -388,20 +390,6 @@ class PropertyEntity
     }
 
     /**
-     * Set address
-     *
-     * @param AddressEntity $address
-     *
-     * @return PropertyEntity
-     */
-    public function setAddress(AddressEntity $address = null)
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
      * Add room
      *
      * @param RoomsEntity $room
@@ -410,6 +398,10 @@ class PropertyEntity
      */
     public function addRoom(RoomsEntity $room)
     {
+        if (true === $this->rooms->contains($room)) {
+            return;
+        }
+
         $this->rooms[] = $room;
         $room->setProperty($this);
 
@@ -423,6 +415,10 @@ class PropertyEntity
      */
     public function removeRoom(RoomsEntity $room)
     {
+        if (false === $this->rooms->contains($room)) {
+            return;
+        }
+
         $this->rooms->removeElement($room);
     }
 
@@ -437,28 +433,42 @@ class PropertyEntity
     }
 
     /**
+     * Difference generated from added rooms with configured rooms
+     *
+     * @param $rooms
+     */
+    public function addNonAddedRooms($rooms)
+    {
+        $this->nonAddedRooms = $rooms;
+    }
+
+    /**
      * Add features
      *
      * @param FeaturesEntity $features
      */
     public function addFeatures(FeaturesEntity $features)
     {
+        if (true === $this->features->contains($features)) {
+            return;
+        }
+
         $this->features = $features;
         $features->setProperty($this);
     }
 
     /**
-     * Set features
+     * Remove features
      *
      * @param FeaturesEntity $features
-     *
-     * @return PropertyEntity
      */
-    public function setFeatures(FeaturesEntity $features = null)
+    public function removeFeatures(FeaturesEntity $features)
     {
-        $this->features = $features;
+        if (false === $this->features->contains($features)) {
+            return;
+        }
 
-        return $this;
+        $this->features->removeElement($features);
     }
 
     /**
@@ -479,22 +489,26 @@ class PropertyEntity
      */
     public function addExteriorFeatures(ExteriorFeaturesEntity $exteriorFeatures)
     {
+        if (true === $this->exteriorFeatures->contains($exteriorFeatures)) {
+            return;
+        }
+
         $this->exteriorFeatures = $exteriorFeatures;
         $exteriorFeatures->setProperty($this);
     }
 
     /**
-     * Set exterior features
+     * Remove exterior features
      *
      * @param ExteriorFeaturesEntity $exteriorFeatures
-     *
-     * @return PropertyEntity
      */
-    public function setExteriorFeatures(ExteriorFeaturesEntity $exteriorFeatures = null)
+    public function removeExteriorFeatures(ExteriorFeaturesEntity $exteriorFeatures)
     {
-        $this->exteriorFeatures = $exteriorFeatures;
+        if (false === $this->exteriorFeatures->contains($exteriorFeatures)) {
+            return;
+        }
 
-        return $this;
+        $this->exteriorFeatures->removeElement($exteriorFeatures);
     }
 
     /**
@@ -514,22 +528,26 @@ class PropertyEntity
      */
     public function addInteriorFeatures(InteriorFeaturesEntity $interiorFeatures)
     {
+        if (true === $this->interiorFeatures->contains($interiorFeatures)) {
+            return;
+        }
+
         $this->interiorFeatures = $interiorFeatures;
         $interiorFeatures->setProperty($this);
     }
 
     /**
-     * Set interior features
+     * Remove interior features
      *
      * @param InteriorFeaturesEntity $interiorFeatures
-     *
-     * @return PropertyEntity
      */
-    public function setInteriorFeatures(InteriorFeaturesEntity $interiorFeatures = null)
+    public function removeInteriorFeatures(InteriorFeaturesEntity $interiorFeatures)
     {
-        $this->interiorFeatures = $interiorFeatures;
+        if (false === $this->interiorFeatures->contains($interiorFeatures)) {
+            return;
+        }
 
-        return $this;
+        $this->interiorFeatures->removeElement($interiorFeatures);
     }
 
     /**
@@ -540,16 +558,6 @@ class PropertyEntity
     public function getInteriorFeatures()
     {
         return $this->interiorFeatures;
-    }
-
-    /**
-     * Difference generated from added rooms with configured rooms
-     *
-     * @param $rooms
-     */
-    public function addNonAddedRooms($rooms)
-    {
-        $this->nonAddedRooms = $rooms;
     }
 
     /**

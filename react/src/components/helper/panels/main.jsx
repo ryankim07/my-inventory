@@ -1,6 +1,6 @@
 import React from 'react';
 
-class PropertiesMainPanel extends React.Component
+class MainPanel extends React.Component
 {
 	render() {
 		return (
@@ -11,4 +11,4 @@ class PropertiesMainPanel extends React.Component
 	}
 }
 
-export default PropertiesMainPanel;
+export default MainPanel;

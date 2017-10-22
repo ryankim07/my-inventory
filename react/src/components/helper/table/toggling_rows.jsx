@@ -8,10 +8,10 @@
  * defaultBackground: optional
  * togglingBackground: optional
  * addViewBtn: true or false (optional)
- * addEditBtn: true or false (optional)
- * addRemoveBtn: true or false (optional)
  * handleViewPanel: required when addViewBtn is set to true
+ * addEditBtn: true or false (optional)
  * handleEditPanel: required when addRemoveBtn is set to true
+ * addRemoveBtn: true or false (optional)
  * handleRemove: required when addRemoveBtn is set to true
  */
 

@@ -7,7 +7,6 @@
  * header: header text
  * iconBtn: Fontawesome icon attribute
  * onClick: method to handle on click event
- * showPreviousBtn: true or false
  * previousRoute: the route to be taken if show previous button is enabled
  */
 
@@ -18,9 +17,10 @@ class DisplayPanel extends React.Component
 {
 	// Render
 	render() {
-		let buttonHtml = this.props.showPreviousBtn ?
-			<Previous route={ this.props.previousRoute }/> :
-			<button onClick={ this.props.onClick }><i className={ this.props.iconBtn } aria-hidden="true"/></button>
+		let previousBtn = this.props.previousRoute !== "" ?
+			<Previous route={ this.props.previousRoute }/> : null;
+		let clickBtn    = this.props.onClick !== "" ?
+			<button onClick={ this.props.onClick }><i className={ this.props.iconBtn } aria-hidden="true"/></button> : null;
 
 		return (
 			<div className="row" id={ this.props.id }>
@@ -31,7 +31,8 @@ class DisplayPanel extends React.Component
 								<span>{ this.props.header }</span>
 							</div>
 							<div className="col-xs-2 col-md-2">
-								{ buttonHtml }
+								{ previousBtn }
+								{ clickBtn }
 							</div>
 						</div>
 					</div>

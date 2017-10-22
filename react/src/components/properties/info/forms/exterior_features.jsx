@@ -2,6 +2,7 @@ import React from 'react';
 
 class PropertyExteriorFeaturesForm extends React.Component
 {
+	// Constructor
     constructor(props) {
         super(props);
 
@@ -12,6 +13,7 @@ class PropertyExteriorFeaturesForm extends React.Component
 		this.handleFormChange = this.handleFormChange.bind(this);
     }
 
+	// Handle form change
 	handleFormChange(propertyName, event) {
 		let exteriorFeatures = this.state.exteriorFeatures;
 		exteriorFeatures[propertyName] = event.target.value;
@@ -19,13 +21,14 @@ class PropertyExteriorFeaturesForm extends React.Component
 		this.setState({exteriorFeatures: exteriorFeatures});
 	}
 
-    // Submit
+	// Handle form submit
     handleFormSubmit(event) {
 		event.preventDefault();
 
 		this.props.onHandleFormSubmit(this.state.exteriorFeatures, 'exterior_features');
     }
 
+    // Render
 	render() {
 		let exteriorFeatures = this.state.exteriorFeatures;
 
@@ -85,23 +88,7 @@ class PropertyExteriorFeaturesForm extends React.Component
 			</form>;
 
         return (
-			<div className="row" id="exterior-features-form">
-				<div className="panel panel-info">
-					<div className="panel-heading">
-						<div className="row">
-							<div className="col-xs-10 col-md-10">
-								<span>{ !this.props.isEditingMode ? 'Add' : 'Edit' } Exterior Features</span>
-							</div>
-							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true"/></button>
-							</div>
-						</div>
-					</div>
-					<div className="panel-body">
-						{ exteriorFeaturesForm }
-					</div>
-				</div>
-			</div>
+			{ exteriorFeaturesForm }
         );
     }
 }

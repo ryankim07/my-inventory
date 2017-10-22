@@ -2,8 +2,9 @@ import React from 'react';
 import { PropTypes } from 'prop-types'
 import PropertiesAction from '../../actions/properties-action';
 import PropertiesStore from '../../stores/properties/store';
-import PropertiesMainPanel from './main_panel';
-import PropertiesRightPanel from './right_panel';
+import MainPanel from '../helper/panels/main';
+import DisplayPanel from '../helper/panels/display';
+import RightPanel from '../helper/panels/right';
 import PropertyForm from './main/forms/property';
 import PropertiesList from './main/list';
 import PropertyInfoView from './info/view';
@@ -260,37 +261,62 @@ class PropertiesDashboard extends React.Component
 	render() {
 		// Main panel
 		let mainPanelHtml = '';
+		let additionalHeader = this.state.isEditingMode ? 'Add' : 'Edit';
 
 		switch (this.state.mainPanel) {
 			case 'info':
 				mainPanelHtml =
-					<PropertyInfoView
-						property={ this.state.property }
-						onHandleRightPanel={ this.onHandleRightPanel }
-						onHandleMainPanel={ this.onHandleMainPanel }
-					/>;
+					<DisplayPanel
+						id="property-view"
+						header="Property Information"
+						additionalHeader=""
+						iconBtn="fa fa-window-close"
+						onClick=""
+						previousRoute="/properties">
+						<PropertyInfoView
+							property={ this.state.property }
+							onHandleRightPanel={ this.onHandleRightPanel }
+							onHandleMainPanel={ this.onHandleMainPanel }
+						/>
+					</DisplayPanel>;
 			break;
 
 			case 'rooms-list':
 				mainPanelHtml =
-					<PropertyRoomsList
-						property={ this.state.property }
-						onHandleRightRoomPanel={ this.onHandleRightRoomPanel }
-						onHandleFormSubmit={ this.onHandleFormSubmit }
-						onHandleRemoveRoom={ this.onHandleRemoveRoom }
-					/>;
+					<DisplayPanel
+						id="rooms-main"
+						header="Properties Rooms List"
+						additionalHeader=""
+						iconBtn="fa fa-plus"
+						onClick={ this.onHandleRightRoomPanel.bind(this, false) }
+						previousRoute="/properties/info/view">
+						<PropertyRoomsList
+							property={ this.state.property }
+							onHandleRightRoomPanel={ this.onHandleRightRoomPanel }
+							onHandleFormSubmit={ this.onHandleFormSubmit }
+							onHandleRemoveRoom={ this.onHandleRemoveRoom }
+						/>
+					</DisplayPanel>;
 			break;
 
 			default:
 				mainPanelHtml =
-					<PropertiesList
-						loader={ this.state.loader }
-						property={ this.state.property }
-						properties={ this.state.properties }
-						onHandleMainPanel={ this.onHandleMainPanel }
-						onHandleRightPanel={ this.onHandleRightPanel }
-						onHandleRemove={ this.onHandleRemove }
-					/>;
+					<DisplayPanel
+						id="properties-main"
+						header="Properties List"
+						additionalHeader=""
+						iconBtn="fa fa-plus"
+						onClick={ this.handleRightPanel.bind(this, false) }
+						previousRoute="">
+						<PropertiesList
+							loader={ this.state.loader }
+							property={ this.state.property }
+							properties={ this.state.properties }
+							onHandleMainPanel={ this.onHandleMainPanel }
+							onHandleRightPanel={ this.onHandleRightPanel }
+							onHandleRemove={ this.onHandleRemove }
+						/>
+					</DisplayPanel>;
 		}
 
 		// Right panel
@@ -299,70 +325,105 @@ class PropertiesDashboard extends React.Component
 		switch (this.state.rightPanel) {
 			case 'features':
 				rightPanelHtml =
-					<PropertyFeaturesForm
-						property={ this.state.property }
-						isEditingMode={ this.state.isEditingMode }
-						onHandleFormSubmit={ this.onHandleFormSubmit }
-						closeRightPanel={ this.closeRightPanel }
-					/>;
+					<DisplayPanel
+						id="features-form"
+						header="Features"
+						additionalHeader={ additionalHeader }
+						iconBtn="fa fa-window-close"
+						onClick={ this.props.closeRightPanel }
+						previousRoute="">
+						<PropertyFeaturesForm
+							property={ this.state.property }
+							onHandleFormSubmit={ this.onHandleFormSubmit }
+							closeRightPanel={ this.closeRightPanel }
+						/>
+					</DisplayPanel>;
 				break;
 
 			case 'exterior-features':
 				rightPanelHtml =
-					<PropertyExteriorFeaturesForm
-						property={ this.state.property }
-						isEditingMode={ this.state.isEditingMode }
-						onHandleFormSubmit={ this.onHandleFormSubmit }
-						closeRightPanel={ this.closeRightPanel }
-					/>;
+					<DisplayPanel
+						id="exterior-features-form"
+						header="Exterior Features"
+						additionalHeader={ additionalHeader }
+						iconBtn="fa fa-window-close"
+						onClick={ this.props.closeRightPanel }
+						previousRoute="">
+						<PropertyExteriorFeaturesForm
+							property={ this.state.property }
+							onHandleFormSubmit={ this.onHandleFormSubmit }
+							closeRightPanel={ this.closeRightPanel }
+						/>
+					</DisplayPanel>;
 			break;
 
 			case 'interior-features':
 				rightPanelHtml =
-					<PropertyInteriorFeaturesForm
-						property={ this.state.property }
-						isEditingMode={ this.state.isEditingMode }
-						onHandleFormSubmit={ this.onHandleFormSubmit }
-						closeRightPanel={ this.closeRightPanel }
-					/>;
+					<DisplayPanel
+						id="interior-features-form"
+						header="Interior Features"
+						additionalHeader={ additionalHeader }
+						iconBtn="fa fa-window-close"
+						onClick={ this.props.closeRightPanel }
+						previousRoute="">
+						<PropertyInteriorFeaturesForm
+							property={ this.state.property }
+							onHandleFormSubmit={ this.onHandleFormSubmit }
+							closeRightPanel={ this.closeRightPanel }
+						/>
+					</DisplayPanel>;
 			break;
 
 			case 'room':
 				rightPanelHtml =
-					<PropertyRoomForm
-						room={ this.state.room }
-						nonAddedRooms={ this.state.property.non_added_rooms }
-						paints={ this.state.paints }
-						isEditingMode={ this.state.isEditingMode }
-						onHandleFormSubmit={ this.onHandleFormSubmit }
-						closeRightPanel={ this.closeRightPanel }
-					/>;
+					<DisplayPanel
+						id="room-form"
+						header="Room"
+						additionalHeader={ additionalHeader }
+						iconBtn="fa fa-window-close"
+						onClick={ this.props.closeRightPanel }
+						previousRoute="">
+						<PropertyRoomForm
+							room={ this.state.room }
+							nonAddedRooms={ this.state.property.non_added_rooms }
+							paints={ this.state.paints }
+							isEditingMode={ this.state.isEditingMode }
+							onHandleFormSubmit={ this.onHandleFormSubmit }
+							closeRightPanel={ this.closeRightPanel }/>
+					</DisplayPanel>;
 			break;
 
 			// Add new property default right panel
 			default:
 				rightPanelHtml =
-					<PropertyForm
-						property={ this.state.property }
-						isEditingMode={ this.state.isEditingMode }
-						onHandleFormSubmit={ this.onHandleFormSubmit }
-						closeRightPanel={ this.closeRightPanel }
-					/>;
+					<DisplayPanel
+						id="property-form"
+						header="Property"
+						iconBtn="fa fa-window-close"
+						onClick={ this.props.closeRightPanel }
+						previousRoute="">
+						<PropertyForm
+							property={ this.state.property }
+							isEditingMode={ this.state.isEditingMode }
+							onHandleFormSubmit={ this.onHandleFormSubmit }
+							closeRightPanel={ this.closeRightPanel }
+						/>
+					</DisplayPanel>;
 		}
 
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage } alertType="alert-success"/>}
 
-				<PropertiesMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
+				<MainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }
-				</PropertiesMainPanel>
+				</MainPanel>
 
 				{
 					this.state.showRightPanel ?
-						<PropertiesRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
+						<RightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
 							{ rightPanelHtml }
-						</PropertiesRightPanel> : null
+						</RightPanel> : null
 				}
 			</div>
 		)

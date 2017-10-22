@@ -1,7 +1,5 @@
 import React from 'react';
-import SearchField from '../../helper/search_field';
 import PropertyAddressList from './../address/list';
-import Loader from '../../helper/loader';
 
 class PropertiesList extends React.Component
 {
@@ -83,60 +81,17 @@ class PropertiesList extends React.Component
 	}
 
 	render() {
-		let propertiesHtml = null;
-		let searchField    = null;
-
-		// If loading is complete
-        if (!this.props.loader) {
-			let properties = this.state.properties;
-
-			if (!properties || properties.length === 0) {
-				<div><span>Empty list.</span></div>
-			} else {
-				propertiesHtml = <PropertyAddressList
-					properties={properties}
-					property={this.props.property}
-					handleRightPanel={this.handleRightPanel}
-					onHandleMainPanel={this.props.onHandleMainPanel}
-					onHandleRemove={this.props.onHandleRemove}
-				/>
-
-				searchField =
-					<SearchField
-						objs={ this.state.properties }
-						objKey="street"
-						searchType="properties"
-						searchText={ this.state.searchText }
-						onHandleFormChange={ this.onHandleFormChange }
-					/>;
-			}
-        } else {
-            propertiesHtml = <div><Loader/></div>;
-        }
-
-        return (
-			<div className="row" id="properties-main">
-				<div className="panel panel-info">
-					<div className="panel-heading">
-						<div className="row">
-							<div className="col-xs-10 col-md-10">
-								<span>Properties List</span>
-							</div>
-							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.handleRightPanel.bind(this, false) }><i className="fa fa-plus" aria-hidden="true"/> <i className="fa fa-home" aria-hidden="true"/></button>
-							</div>
-						</div>
-					</div>
-					<div className="panel-body">
-						<div className="form-group">
-							<div className="col-xs-12 col-lg-12">
-								{ searchField }
-							</div>
-						</div>
-						{ propertiesHtml }
-					</div>
-				</div>
-			</div>
+		return (
+			<PropertyAddressList
+				loader={ this.props.loader }
+				properties={ this.state.properties }
+				property={ this.props.property }
+				handleRightPanel={ this.handleRightPanel }
+				onHandleMainPanel={ this.props.onHandleMainPanel }
+				onHandleRemove={ this.props.onHandleRemove }
+				searchText={ this.state.searchText }
+				onHandleFormChange={ this.onHandleFormChange }
+			/>
         )
     }
 }

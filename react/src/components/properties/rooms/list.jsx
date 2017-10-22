@@ -31,6 +31,7 @@ class PropertyRoomsList extends React.Component
 			});
 
         return (
+			{ roomsHtml }
 			<div className="row" id="rooms-main">
 				<div className="panel panel-info">
 					<div className="panel-heading">
@@ -54,7 +55,7 @@ class PropertyRoomsList extends React.Component
 							</tr>
 							</thead>
 							<tbody>
-							{ roomsHtml }
+
 							</tbody>
 						</table>
 					</div>

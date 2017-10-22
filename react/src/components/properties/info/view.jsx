@@ -1,6 +1,5 @@
 import React from 'react';
 import ImageGallery from 'react-image-gallery';
-import Previous from '../../helper/previous';
 
 let featuresRightPanel 	 	   = 'features';
 let exteriorFeaturesRightPanel = 'exterior-features';
@@ -304,38 +303,23 @@ class PropertyInfoView extends React.Component
 			</div> : null;
 
 		return (
-			<div className="row" id="property-view">
-				<div className="panel panel-info">
-					<div className="panel-heading">
-						<div className="row">
-							<div className="col-xs-10 col-md-10">
-								<span>Property Information</span>
-							</div>
-							<div className="col-xs-2 col-md-2">
-								<Previous route="/properties"/>
-							</div>
-						</div>
-					</div>
-					<div className="panel-body">
-						<div>
-							<ImageGallery
-								items={ gallery }
-								slideInterval={ 2000 }
-							/>
-							<div>
-								{ propertyFeaturesBtn }
-								{ exteriorFeaturesBtn }
-								{ interiorFeaturesBtn }
-							</div>
-
-							{ addressHtml }
-							{ detailsHtml }
-							{ featuresHtml }
-							{ exteriorFeaturesHtml }
-							{ interiorFeaturesHtml }
-						</div>
-					</div>
+			<div>
+				<ImageGallery
+					items={ gallery }
+					slideInterval={ 2000 }
+				/>
+				<div>
+					{ propertyFeaturesBtn }
+					{ exteriorFeaturesBtn }
+					{ interiorFeaturesBtn }
 				</div>
+
+				{ addressHtml }
+				{ detailsHtml }
+				{ featuresHtml }
+				{ exteriorFeaturesHtml }
+				{ interiorFeaturesHtml }
+
 			</div>
         );
     }

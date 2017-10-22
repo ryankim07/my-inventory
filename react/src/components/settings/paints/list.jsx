@@ -91,44 +91,30 @@ class SettingsPaintsList extends React.Component
         }
 
         return (
-			<div className="row" id="paints-list">
-				<div className="panel panel-info">
-					<div className="panel-heading">
-						<div className="row">
-							<div className="col-xs-10 col-md-10">
-								<span>Paints List</span>
-							</div>
-							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.props.onHandleRightPanel.bind(this, false) }><i className="fa fa-plus" aria-hidden="true"/></button>
-							</div>
-						</div>
-					</div>
-					<div className="panel-body">
-						<div className="form-group">
-							<div className="col-xs-12 col-lg-12">
-								{ searchField }
-							</div>
-						</div>
-						<table className="table">
-							<thead>
-							<tr>
-								<th>Name</th>
-								<th>Brand</th>
-								<th>Number</th>
-								<th>Color</th>
-								<th>HEX</th>
-								<th>RGB</th>
-								<th>Actions</th>
-								<th>Notes</th>
-								<th/>
-							</tr>
-							</thead>
-							<tbody>
-								{ paintsHtml }
-							</tbody>
-						</table>
+			<div>
+				<div className="form-group">
+					<div className="col-xs-12 col-lg-12">
+						{ searchField }
 					</div>
 				</div>
+				<table className="table">
+					<thead>
+					<tr>
+						<th>Name</th>
+						<th>Brand</th>
+						<th>Number</th>
+						<th>Color</th>
+						<th>HEX</th>
+						<th>RGB</th>
+						<th>Actions</th>
+						<th>Notes</th>
+						<th/>
+					</tr>
+					</thead>
+					<tbody>
+					{ paintsHtml }
+					</tbody>
+				</table>
 			</div>
         )
     }

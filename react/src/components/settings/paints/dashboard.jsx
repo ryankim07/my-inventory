@@ -2,8 +2,9 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import PaintsAction from '../../../actions/paints-action';
 import PaintsStore from '../../../stores/paints/store';
-import SettingsMainPanel from './../main_panel';
-import SettingsRightPanel from './../right_panel';
+import MainPanel from '../../helper/panels/main';
+import DisplayPanel from '../../helper/panels/display';
+import RightPanel from '../../helper/panels/right';
 import SettingsPaintsList from './../paints/list';
 import SettingsPaint from './../paints/forms/paint';
 import FlashMessage from '../../helper/flash_message';
@@ -157,34 +158,52 @@ class SettingsPaintsDashboard extends React.Component
 	render() {
 		// Main panel
 		let mainPanelHtml =
-			<SettingsPaintsList
-				loader={ this.state.loader }
-				paint={ this.state.paint }
-				paints={ this.state.paints }
-				onHandleRightPanel={ this.onHandleRightPanel }
-				onHandleRemove={ this.onHandleRemove }
-			/>;
+			<DisplayPanel
+				id="paints-list"
+				header="Paints List"
+				additionalHeader=""
+				iconBtn="fa fa-plus"
+				onClick={ this.onHandleRightPanel.bind(this, false) }
+				showPreviousBtn={ false }
+				previousRoute="">
+				<SettingsPaintsList
+					loader={ this.state.loader }
+					paint={ this.state.paint }
+					paints={ this.state.paints }
+					onHandleRightPanel={ this.onHandleRightPanel }
+					onHandleRemove={ this.onHandleRemove }
+				/>
+			</DisplayPanel>;
 
 		// Right panel
 		let rightPanelHtml = this.state.showRightPanel ?
-			<SettingsPaint
-				paint={ this.state.paint }
-				vendors={ this.state.vendors }
-				isEditingMode={ this.state.isEditingMode }
-				onHandleFormSubmit={ this.onHandleFormSubmit }
-				closeRightPanel={ this.closeRightPanel }
-			/> : null;
+			<DisplayPanel
+				id="paint-form"
+				header="Paint"
+				additionalHeader={ !this.state.isEditingMode ? "Add" : "Edit" }
+				iconBtn="fa fa-window-close"
+				onClick={ this.closeRightPanel }
+				showPreviousBtn={ false }
+				previousRoute="">
+				<SettingsPaint
+					paint={ this.state.paint }
+					vendors={ this.state.vendors }
+					isEditingMode={ this.props.isEditingMode }
+					onHandleFormSubmit={ this.onHandleFormSubmit }
+					closeRightPanel={ this.closeRightPanel }
+				/>
+			</DisplayPanel> : null;
 
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/>}
 
-				<SettingsMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
+				<MainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }
-				</SettingsMainPanel>
-				<SettingsRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
+				</MainPanel>
+				<RightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
 					{ rightPanelHtml }
-				</SettingsRightPanel>
+				</RightPanel>
 			</div>
 		)
 	}

@@ -22,7 +22,7 @@ import SettingsUsersDashboard from './src/components/settings/users/dashboard';
 import SettingsUsersList from './src/components/settings/users/list';
 import SettingsVehiclesDashboard from './src/components/settings/vehicles/dashboard';
 import SettingsManufacturersList from './src/components/settings/vehicles/api/manufacturers';
-import SettingsPropertiesDashboard from './src/components/settings/paints/dashboard';
+import SettingsPaintsDashboard from './src/components/settings/paints/dashboard';
 import SettingsPaintsList from './src/components/settings/paints/list';
 import SettingsVendorsDashboard from './src/components/settings/vendors/dashboard';
 import SettingsVendorsList from './src/components/settings/vendors/list';
@@ -69,7 +69,7 @@ ReactDOM.render(
 				<Route path="/settings/vehicles/api/manufacturers" component={ SettingsManufacturersList }/>
 			</Route>
 
-			<Route exact path="/settings/paints/dashboard/:section" component={ SettingsPropertiesDashboard }>
+			<Route exact path="/settings/paints/dashboard/:section" component={ SettingsPaintsDashboard }>
 				<Route path="/settings/paints/list" component={ SettingsPaintsList }/>
 			</Route>
 

@@ -17,12 +17,13 @@ let rightPanelDesktopColumnWidth = 'col-md-4';
 
 class SettingsVendorsDashboard extends React.Component
 {
+	// Constructor
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			vendors: [],
-			vendor: {},
+			vendor: this.getVendorState(),
 			categories: [],
 			loader: true,
 			isEditingMode: false,
@@ -47,19 +48,41 @@ class SettingsVendorsDashboard extends React.Component
 		this.closeRightPanel 	= this.closeRightPanel.bind(this);
 	}
 
+	// Get vendor initial state
+	getVendorState() {
+		return {
+			id: '',
+			category_id: '',
+			company: '',
+			street: '',
+			city: '',
+			state: '',
+			zip: '',
+			country: '',
+			phone: '',
+			contact: '',
+			url: '',
+			notes: ''
+		}
+	}
+
+	// When mounting component
 	componentWillMount() {
 		VendorsStore.addChangeListener(this._onChange);
 		VendorsStore.unsetStoreFlashMessage();
 	}
 
+	// Mounted component
 	componentDidMount() {
 		VendorsAction.getVendorsAndCategories();
 	}
 
+	// When un-mounting component
 	componentWillUnmount() {
 		VendorsStore.removeChangeListener(this._onChange);
 	}
 
+	// Store change
 	_onChange() {
 		let vendors 		= VendorsStore.getVendors();
 		let categories		= VendorsStore.getCategories();
@@ -98,21 +121,7 @@ class SettingsVendorsDashboard extends React.Component
 	onHandleRightPanel(id) {
 		let isEditingMode = !!id;
 		let vendor = isEditingMode ?
-			this.state.vendors.find(obj => obj.id === id) :
-			{
-				id: '',
-				category_id: '',
-				company: '',
-				street: '',
-				city: '',
-				state: '',
-				zip: '',
-				country: '',
-				phone: '',
-				contact: '',
-				url: '',
-				notes: ''
-			};
+			this.state.vendors.find(obj => obj.id === id) : this.getVendorState();
 
 		this.setState({
 			vendor: vendor,
@@ -146,32 +155,38 @@ class SettingsVendorsDashboard extends React.Component
 		});
 	}
 
+	// Render
 	render() {
+		// Main panel
+		let mainPanelHtml =
+			<SettingsVendorsList
+				loader={ this.state.loader }
+				vendor={ this.state.vendor }
+				vendors={ this.state.vendors }
+				onHandleRightPanel={ this.onHandleRightPanel }
+				onHandleRemove={ this.onHandleRemove }
+			/>;
+
+		// Right panel
+		let rightPanelHtml = this.state.showRightPanel ?
+			<SettingsVendor
+				vendor={ this.state.vendor }
+				categories={ this.state.categories }
+				isEditingMode={ this.state.isEditingMode }
+				onHandleFormSubmit={ this.onHandleFormSubmit }
+				closeRightPanel={ this.closeRightPanel }
+			/> : null;
+
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/>}
 
 				<SettingsMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
-					<SettingsVendorsList
-						loader={ this.state.loader }
-						vendor={ this.state.vendor }
-						vendors={ this.state.vendors }
-						onHandleRightPanel={ this.onHandleRightPanel }
-						onHandleRemove={ this.onHandleRemove }
-					/>
+					{ mainPanelHtml }
 				</SettingsMainPanel>
-
-				{
-					this.state.showRightPanel ?
-						<SettingsRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
-							<SettingsVendor
-								vendor={ this.state.vendor }
-								categories={ this.state.categories }
-								onHandleFormSubmit={ this.onHandleFormSubmit }
-								closeRightPanel={ this.closeRightPanel }
-							/>
-						</SettingsRightPanel> : null
-				}
+				<SettingsRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
+					{ rightPanelHtml }
+				</SettingsRightPanel>
 			</div>
 		)
 	}

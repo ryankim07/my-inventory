@@ -15,7 +15,7 @@ let mainShrinkedDesktopColumnWidth = 'col-md-8';
 let rightPanelMobileColumnWidth = 'col-xs-4';
 let rightPanelDesktopColumnWidth = 'col-md-4';
 
-class SettingsPropertiesDashboard extends React.Component
+class SettingsPaintsDashboard extends React.Component
 {
 	// Constructor
 	constructor(props) {
@@ -134,7 +134,7 @@ class SettingsPropertiesDashboard extends React.Component
 
 	// Handle delete
 	onHandleRemove(id) {
-		PaintsAction.removeVendor(id);
+		PaintsAction.removePaint(id);
 	}
 
 	// Set flash message
@@ -159,8 +159,8 @@ class SettingsPropertiesDashboard extends React.Component
 		let mainPanelHtml =
 			<SettingsPaintsList
 				loader={ this.state.loader }
-				paints={ this.state.paints }
 				paint={ this.state.paint }
+				paints={ this.state.paints }
 				onHandleRightPanel={ this.onHandleRightPanel }
 				onHandleRemove={ this.onHandleRemove }
 			/>;
@@ -190,8 +190,8 @@ class SettingsPropertiesDashboard extends React.Component
 	}
 }
 
-SettingsPropertiesDashboard.contextTypes = {
+SettingsPaintsDashboard.contextTypes = {
 	router: PropTypes.object.isRequired
 };
 
-export default SettingsPropertiesDashboard;
+export default SettingsPaintsDashboard;

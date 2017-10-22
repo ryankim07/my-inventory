@@ -93,7 +93,7 @@ class VendorsController extends FOSRestController
      * @param $id
      * @return View
      */
-    public function deletePropertyAction($id)
+    public function deleteAction($id)
     {
         $service = $this->get('Vendors');
         $results = $service->delete($id);

@@ -195,9 +195,11 @@ class Vehicles
             $assets  = $vehicle->getAssets();
 
             // Delete assets
-            foreach($assets as $asset) {
-                $this->assetsService->remove($asset->getPath());
-                $this->em->remove($asset);
+            if ($assets->count() > 0) {
+                foreach ($assets as $asset) {
+                    $this->assetsService->remove($asset->getPath());
+                    $vehicle->removeAsset($asset);
+                }
             }
 
             // Delete vehicle

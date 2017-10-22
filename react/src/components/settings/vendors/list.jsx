@@ -99,7 +99,7 @@ class SettingsVendorsList extends React.Component
 					<div className="panel-heading">
 						<div className="row">
 							<div className="col-xs-10 col-md-10">
-								<span>Paints List</span>
+								<span>Vendors List</span>
 							</div>
 							<div className="col-xs-2 col-md-2">
 								<button onClick={ this.props.onHandleRightPanel.bind(this, false) }><i className="fa fa-plus" aria-hidden="true"/></button>

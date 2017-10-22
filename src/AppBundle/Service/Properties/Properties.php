@@ -203,16 +203,15 @@ class Properties
             $property = $this->repo->find($id);
             $assets   = $property->getAssets();
 
-            foreach($assets as $asset) {
-                if ($asset->getPropertyId() == $id) {
-                    $this->fileUploader->removeUpload($asset->getPath());
-                    $this->em->remove($asset);
-                    break;
-                } else {
-                    continue;
+            // Delete assets
+            if ($assets->count() > 0) {
+                foreach ($assets as $asset) {
+                    $this->assetsService->remove($asset->getPath());
+                    $property->removeAsset($asset);
                 }
             }
 
+            // Remove property
             $this->em->remove($property);
             $this->em->flush();
 
@@ -313,6 +312,15 @@ class Properties
             $rooms    = $property->getRooms();
 
             foreach($rooms as $room) {
+                $assets = $room->getAssets();
+
+                // Delete assets
+                if ($assets->count() > 0) {
+                    foreach ($assets as $asset) {
+                        $this->assetsService->remove($asset->getPath());
+                    }
+                }
+
                 if ($room->getId() == $roomId) {
                     $this->em->remove($room);
                 }

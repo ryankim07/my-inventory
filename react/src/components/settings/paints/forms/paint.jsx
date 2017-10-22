@@ -50,7 +50,9 @@ class SettingsPaint extends React.Component
 				paint[propertyName] = chosenValue;
         }
 
-        this.setState({paint: paint});
+        this.setState({
+			paint: paint
+        });
     }
 
 	// Handle assets

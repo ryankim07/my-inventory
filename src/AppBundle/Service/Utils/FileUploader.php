@@ -84,7 +84,7 @@ class FileUploader
     {
         return null === $this->path
             ? null
-            : $this->getUploadDir().'/' . $this->path;
+            : $this->getUploadDir() . '/' . $this->path;
     }
 
     /**
@@ -109,7 +109,7 @@ class FileUploader
 
     protected function getRootDir()
     {
-        return __DIR__ . '/../../../web';
+        return __DIR__ . '/../../../../web';
     }
 
     /**

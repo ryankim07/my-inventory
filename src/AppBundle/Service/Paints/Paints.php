@@ -163,8 +163,18 @@ class Paints
         }
 
         try {
-            $paint = $this->repo->find($id);
+            $paint  = $this->repo->find($id);
+            $assets = $paint->getAssets();
 
+            // Delete assets
+            if ($assets->count() > 0) {
+                foreach ($assets as $asset) {
+                    $this->assetsService->remove($asset->getPath());
+                    $paint->removeAsset($asset);
+                }
+            }
+
+            // Remove paint
             $this->em->remove($paint);
             $this->em->flush();
 

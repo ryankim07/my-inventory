@@ -387,7 +387,7 @@ class PropertiesDashboard extends React.Component
 							room={ this.state.room }
 							nonAddedRooms={ this.state.property.non_added_rooms }
 							paints={ this.state.paints }
-							isEditingMode={ this.state.isEditingMode }
+							isEditingMode={ this.props.isEditingMode }
 							onHandleFormSubmit={ this.onHandleFormSubmit }
 							closeRightPanel={ this.closeRightPanel }/>
 					</DisplayPanel>;
@@ -399,6 +399,7 @@ class PropertiesDashboard extends React.Component
 					<DisplayPanel
 						id="property-form"
 						header="Property"
+						additionalHeader={ additionalHeader }
 						iconBtn="fa fa-window-close"
 						onClick={ this.props.closeRightPanel }
 						previousRoute="">
@@ -409,7 +410,10 @@ class PropertiesDashboard extends React.Component
 							closeRightPanel={ this.closeRightPanel }
 						/>
 					</DisplayPanel>;
+
 		}
+
+		rightPanelHtml = this.state.showRightPanel ? rightPanelHtml : null;
 
 		return (
 			<div className="row">
@@ -418,13 +422,9 @@ class PropertiesDashboard extends React.Component
 				<MainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }
 				</MainPanel>
-
-				{
-					this.state.showRightPanel ?
-						<RightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
-							{ rightPanelHtml }
-						</RightPanel> : null
-				}
+				<RightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
+					{ rightPanelHtml }
+				</RightPanel>
 			</div>
 		)
 	}

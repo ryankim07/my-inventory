@@ -1,4 +1,5 @@
 import React from 'react';
+import Modal from '../helper/modal';
 import SearchField from '../helper/search_field';
 import TogglingRows from '../helper/table/toggling_rows';
 import Loader from '../helper/loader';
@@ -12,7 +13,7 @@ class VehiclesList extends React.Component
 			vehicles: this.props.vehicles,
 			clonedVehicles: JSON.parse(JSON.stringify(this.props.vehicles)),
 			searchText: '',
-			isSearch: false,
+			isSearch: false
 		};
 
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
@@ -45,8 +46,9 @@ class VehiclesList extends React.Component
 	}
 
 	render() {
-        let vehiclesHtml = null;
-        let searchField  = null;
+        let vehiclesHtml 	= null;
+        let searchField  	= null;
+        let modalWindowHtml = null;
 
 		// If loading is complete
         if (!this.props.loader) {
@@ -55,6 +57,7 @@ class VehiclesList extends React.Component
         	if (!vehicles || vehicles.length === 0) {
 				vehiclesHtml = <tr><td><span>Empty list.</span></td></tr>;
 			} else {
+        		// Show all vehicles
 				vehiclesHtml = vehicles.map((vehicle, vehicleIndex) => {
 					return (
 						<TogglingRows
@@ -68,6 +71,8 @@ class VehiclesList extends React.Component
 								vehicle.vin,
 								vehicle.plate
 							] }
+							addViewBtn={ true }
+							handleViewPanel={ this.props.onHandleModal.bind(this, vehicle.id) }
 							addEditBtn={ true }
 							handleEditPanel={ this.props.onHandleRightPanel.bind(this, vehicle.id) }
 							addRemoveBtn={ true }
@@ -76,6 +81,7 @@ class VehiclesList extends React.Component
 					);
 				});
 
+				// Search field
 				searchField =
 					<SearchField
 						objs={ this.state.vehicles }
@@ -84,48 +90,43 @@ class VehiclesList extends React.Component
 						searchText={ this.state.searchText }
 						onHandleFormChange={ this.onHandleFormChange }
 					/>;
+
+
+
+				// Modal window
+				modalWindowHtml = this.props.showModal ?
+					<Modal closeModal={ this.props.closeModal }>
+						<h1>{ this.props.vehicle.mfg }</h1>
+					</Modal> : null;
 			}
         } else {
             vehiclesHtml = <tr><td><Loader/></td></tr>;
         }
 
         return (
-			<div className="row" id="vehicles-list">
-				<div className="panel panel-info">
-					<div className="panel-heading">
-						<div className="row">
-							<div className="col-xs-10 col-md-10">
-								<span>Vehicle List</span>
-							</div>
-							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.props.onHandleRightPanel.bind(this, false) }><i className="fa fa-plus" aria-hidden="true"/></button>
-							</div>
-						</div>
-					</div>
-					<div className="panel-body">
-						<div className="form-group">
-							<div className="col-xs-12 col-lg-12">
-								{ searchField }
-							</div>
-						</div>
-						<table className="table">
-							<thead>
-							<tr>
-								<th>Manufacturer</th>
-								<th>Model</th>
-								<th>Year</th>
-								<th>Color</th>
-								<th>Vin</th>
-								<th>Plate</th>
-								<th>Actions</th>
-							</tr>
-							</thead>
-							<tbody>
-							{ vehiclesHtml }
-							</tbody>
-						</table>
+			<div>
+				<div className="form-group">
+					<div className="col-xs-12 col-lg-12">
+						{ searchField }
 					</div>
 				</div>
+				<table className="table">
+				<thead>
+				<tr>
+					<th>Manufacturer</th>
+					<th>Model</th>
+					<th>Year</th>
+					<th>Color</th>
+					<th>Vin</th>
+					<th>Plate</th>
+					<th>Actions</th>
+				</tr>
+				</thead>
+				<tbody>
+					{ vehiclesHtml }
+				</tbody>
+				</table>
+				{ modalWindowHtml }
 			</div>
         )
     }

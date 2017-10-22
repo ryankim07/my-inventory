@@ -1,6 +1,6 @@
 import React from 'react';
 
-class VehiclesRightPanel extends React.Component
+class RightPanel extends React.Component
 {
 	render() {
 		return (
@@ -11,4 +11,4 @@ class VehiclesRightPanel extends React.Component
 	}
 }
 
-export default VehiclesRightPanel;
+export default RightPanel;

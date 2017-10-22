@@ -2,8 +2,9 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import VehiclesAction from '../../actions/vehicles-action';
 import VehiclesStore from '../../stores/vehicles/store';
-import VehiclesMainPanel from './main_panel';
-import VehiclesRightPanel from './right_panel';
+import MainPanel from '../helper/panels/main';
+import DisplayPanel from '../helper/panels/display';
+import RightPanel from '../helper/panels/right';
 import VehicleForm from './forms/vehicle';
 import VehiclesList from './list';
 import FlashMessage from '../helper/flash_message';
@@ -30,6 +31,7 @@ class VehiclesDashboard extends React.Component
 			mainPanel: 'list',
 			showRightPanel: false,
 			flashMessage: null,
+			showModal: false,
 			mainPanelColumnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
@@ -43,6 +45,8 @@ class VehiclesDashboard extends React.Component
 		this._onChange 		  	= this._onChange.bind(this);
 		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
+		this.onHandleModal 		= this.onHandleModal.bind(this);
+		this.closeModal         = this.closeModal.bind(this);
 		this.onHandleRemove 	= this.onHandleRemove.bind(this);
 		this.setFlashMessage  	= this.setFlashMessage.bind(this);
 		this.closeRightPanel  	= this.closeRightPanel.bind(this);
@@ -176,6 +180,23 @@ class VehiclesDashboard extends React.Component
 		VehiclesAction.removeVehicle(id);
 	}
 
+	// Handle view
+	onHandleModal(id) {
+		let vehicle= this.state.vehicles.find(obj => obj.id === id);
+
+		this.setState({
+			vehicle: vehicle,
+			showModal: !this.state.showModal
+		});
+	}
+
+	// Close modal
+	closeModal() {
+		this.setState({
+			showModal: !this.state.showModal
+		});
+	}
+
 	// Set flash message
 	setFlashMessage(msg) {
 		this.setState({flashMessage: msg});
@@ -212,13 +233,24 @@ class VehiclesDashboard extends React.Component
 
 			default:
 				mainPanelHtml =
-					<VehiclesList
-						loader={ this.state.loader }
-						vehicle={ this.state.vehicle }
-						vehicles={ this.state.vehicles }
-						onHandleRightPanel={ this.onHandleRightPanel }
-						onHandleRemove={ this.onHandleRemove }
-					/>;
+					<DisplayPanel
+						id="vehicles-list"
+						header="Vehicle List"
+						iconBtn="fa fa-plus"
+						onClick={ this.onHandleRightPanel.bind(this, false) }
+						showPreviousBtn={ false }
+						previousRoute="">
+						<VehiclesList
+							loader={ this.state.loader }
+							vehicle={ this.state.vehicle }
+							vehicles={ this.state.vehicles }
+							showModal={ this.state.showModal }
+							onHandleRightPanel={ this.onHandleRightPanel }
+							onHandleRemove={ this.onHandleRemove }
+							onHandleModal={ this.onHandleModal }
+							closeModal={ this.closeModal }
+						/>
+					</DisplayPanel>;
 		}
 
 		// Right panel
@@ -236,12 +268,12 @@ class VehiclesDashboard extends React.Component
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/>}
 
-				<VehiclesMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
+				<MainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }
-				</VehiclesMainPanel>
-				<VehiclesRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
+				</MainPanel>
+				<RightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
 					{ rightPanelHtml }
-				</VehiclesRightPanel>
+				</RightPanel>
 			</div>
 		)
 	}

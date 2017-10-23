@@ -94,46 +94,32 @@ class SettingsVendorsList extends React.Component
         }
 
         return (
-			<div className="row" id="vendors-list">
-				<div className="panel panel-info">
-					<div className="panel-heading">
-						<div className="row">
-							<div className="col-xs-10 col-md-10">
-								<span>Vendors List</span>
-							</div>
-							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.props.onHandleRightPanel.bind(this, false) }><i className="fa fa-plus" aria-hidden="true"/></button>
-							</div>
-						</div>
-					</div>
-					<div className="panel-body">
-						<div className="form-group">
-							<div className="col-xs-12 col-lg-12">
-								{ searchField }
-							</div>
-						</div>
-						<table className="table">
-							<thead>
-							<tr>
-								<th>Company</th>
-								<th>Street</th>
-								<th>City</th>
-								<th>State</th>
-								<th>Zip</th>
-								<th>Phone</th>
-								<th>Contact</th>
-								<th>Country</th>
-								<th>Url</th>
-								<th>Notes</th>
-								<th/>
-							</tr>
-							</thead>
-							<tbody>
-								{ vendorsHtml }
-							</tbody>
-						</table>
+			<div>
+				<div className="form-group">
+					<div className="col-xs-12 col-lg-12">
+						{ searchField }
 					</div>
 				</div>
+				<table className="table">
+					<thead>
+					<tr>
+						<th>Company</th>
+						<th>Street</th>
+						<th>City</th>
+						<th>State</th>
+						<th>Zip</th>
+						<th>Phone</th>
+						<th>Contact</th>
+						<th>Country</th>
+						<th>Url</th>
+						<th>Notes</th>
+						<th/>
+					</tr>
+					</thead>
+					<tbody>
+					{ vendorsHtml }
+					</tbody>
+				</table>
 			</div>
         )
     }

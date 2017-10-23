@@ -240,23 +240,7 @@ class SettingsVendor extends React.Component
 			</form>;
 
         return (
-			<div className="row" id="vendor-form">
-				<div className="panel panel-info">
-					<div className="panel-heading">
-						<div className="row">
-							<div className="col-xs-10 col-md-10">
-								<span>Vendor</span>
-							</div>
-							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true"/></button>
-							</div>
-						</div>
-					</div>
-					<div className="panel-body">
-						{ vendorForm }
-					</div>
-				</div>
-			</div>
+			{ vendorForm }
         );
     }
 }

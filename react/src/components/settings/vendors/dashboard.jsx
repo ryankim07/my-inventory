@@ -2,8 +2,9 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import VendorsAction from '../../../actions/vendors-action';
 import VendorsStore from '../../../stores/vendors/store';
-import SettingsMainPanel from './../main_panel';
-import SettingsRightPanel from './../right_panel';
+import MainPanel from '../../helper/panels/main';
+import DisplayPanel from '../../helper/panels/display';
+import RightPanel from '../../helper/panels/right';
 import SettingsVendorsList from './../vendors/list';
 import SettingsVendor from './../vendors/forms/vendor';
 import FlashMessage from '../../helper/flash_message';
@@ -159,34 +160,51 @@ class SettingsVendorsDashboard extends React.Component
 	render() {
 		// Main panel
 		let mainPanelHtml =
-			<SettingsVendorsList
-				loader={ this.state.loader }
-				vendor={ this.state.vendor }
-				vendors={ this.state.vendors }
-				onHandleRightPanel={ this.onHandleRightPanel }
-				onHandleRemove={ this.onHandleRemove }
-			/>;
+			<DisplayPanel
+				id="vendors-list"
+				header="Vendors List"
+				additionalHeader=""
+				iconBtn="fa fa-plus"
+				onClick={ this.onHandleRightPanel.bind(this, false) }
+				showPreviousBtn={ false }
+				previousRoute="">
+				<SettingsVendorsList
+					loader={ this.state.loader }
+					vendor={ this.state.vendor }
+					vendors={ this.state.vendors }
+					onHandleRightPanel={ this.onHandleRightPanel }
+					onHandleRemove={ this.onHandleRemove }
+				/>
+			</DisplayPanel>;
 
 		// Right panel
 		let rightPanelHtml = this.state.showRightPanel ?
-			<SettingsVendor
-				vendor={ this.state.vendor }
-				categories={ this.state.categories }
-				isEditingMode={ this.state.isEditingMode }
-				onHandleFormSubmit={ this.onHandleFormSubmit }
-				closeRightPanel={ this.closeRightPanel }
-			/> : null;
+			<DisplayPanel
+				id="vendor-form"
+				header="Vendor"
+				additionalHeader={ !this.state.isEditingMode ? "Add" : "Edit" }
+				iconBtn="fa fa-window-close"
+				onClick={ this.closeRightPanel }
+				showPreviousBtn={ false }
+				previousRoute="">
+				<SettingsVendor
+					vendor={ this.state.vendor }
+					categories={ this.state.categories }
+					onHandleFormSubmit={ this.onHandleFormSubmit }
+					closeRightPanel={ this.closeRightPanel }
+				/>
+			</DisplayPanel> : null;
 
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/>}
 
-				<SettingsMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
+				<MainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }
-				</SettingsMainPanel>
-				<SettingsRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
+				</MainPanel>
+				<RightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
 					{ rightPanelHtml }
-				</SettingsRightPanel>
+				</RightPanel>
 			</div>
 		)
 	}

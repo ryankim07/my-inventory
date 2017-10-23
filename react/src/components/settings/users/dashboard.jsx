@@ -2,8 +2,9 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import UsersAction from '../../../actions/users-action';
 import UsersStore from '../../../stores/users/store';
-import SettingsMainPanel from './../main_panel';
-import SettingsRightPanel from './../right_panel';
+import MainPanel from '../../helper/panels/main';
+import DisplayPanel from '../../helper/panels/display';
+import RightPanel from '../../helper/panels/right';
 import SettingsUser from './../users/forms/user';
 import SettingsUsersList from './../users/list';
 import FlashMessage from '../../helper/flash_message';
@@ -172,31 +173,49 @@ class SettingsUsersDashboard extends React.Component
 	}
 
 	render() {
+		// Main panel
+		let mainPanelHtml =
+			<DisplayPanel
+				id="users-list"
+				header="Users List"
+				additionalHeader=""
+				iconBtn="fa fa-plus"
+				onClick={ this.onHandleRightPanel.bind(this, false) }
+				showPreviousBtn={ false }
+				previousRoute="">
+				<SettingsUsersList
+					loader={ this.state.loader }
+					user={ this.state.user }
+					users={ this.state.users }
+					onHandleRightPanel={ this.onHandleRightPanel }
+					onHandleRemove={ this.onHandleRemove }/>
+			</DisplayPanel>;
+
+		// Right panel
+		let rightPanelHtml = this.state.showRightPanel ?
+			<DisplayPanel
+				id="user-form"
+				header="User"
+				additionalHeader={ !this.state.isEditingMode ? "Add" : "Edit" }
+				iconBtn="fa fa-window-close"
+				onClick={ this.closeRightPanel }
+				showPreviousBtn={ false }
+				previousRoute="">
+				<SettingsUser
+					user={ this.state.user }
+					onHandleFormSubmit={ this.onHandleFormSubmit }/>
+			</DisplayPanel> : null;
+
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/>}
 
-				<SettingsMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
-					<SettingsUsersList
-						loader={ this.state.loader }
-						user={ this.state.user }
-						users={ this.state.users }
-						onHandleRightPanel={ this.onHandleRightPanel }
-						onHandleRemove={ this.onHandleRemove }
-					/>
-				</SettingsMainPanel>
-
-				{
-					this.state.showRightPanel ?
-						<SettingsRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
-							<SettingsUser
-								user={ this.state.user }
-								isEditingMode={ this.state.isEditingMode }
-								onHandleFormSubmit={ this.onHandleFormSubmit }
-								closeRightPanel={ this.closeRightPanel }
-							/>
-						</SettingsRightPanel> : null
-				}
+				<MainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
+					{ mainPanelHtml }
+				</MainPanel>
+				<RightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
+					{ rightPanelHtml }
+				</RightPanel>
 			</div>
 		)
 	}

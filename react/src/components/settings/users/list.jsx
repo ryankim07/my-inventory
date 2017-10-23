@@ -92,40 +92,26 @@ class SettingsUsersList extends React.Component
         }
 
         return (
-			<div className="row" id="users-list">
-				<div className="panel panel-info">
-					<div className="panel-heading">
-						<div className="row">
-							<div className="col-xs-10 col-md-10">
-								<span>Users List</span>
-							</div>
-							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.props.onHandleRightPanel.bind(this, false) }><i className="fa fa-user-plus" aria-hidden="true"/> New</button>
-							</div>
-						</div>
-					</div>
-					<div className="panel-body">
-						<div className="form-group">
-							<div className="col-xs-12 col-lg-12">
-								{ searchField }
-							</div>
-						</div>
-						<table className="table">
-							<thead>
-							<tr>
-								<th>First Name</th>
-								<th>Last Name</th>
-								<th>Username</th>
-								<th>Email</th>
-								<th>Active</th>
-							</tr>
-							</thead>
-							<tbody>
-								{ usersHtml }
-							</tbody>
-						</table>
+			<div>
+				<div className="form-group">
+					<div className="col-xs-12 col-lg-12">
+						{ searchField }
 					</div>
 				</div>
+				<table className="table">
+					<thead>
+					<tr>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<th>Username</th>
+						<th>Email</th>
+						<th>Active</th>
+					</tr>
+					</thead>
+					<tbody>
+					{ usersHtml }
+					</tbody>
+				</table>
 			</div>
         )
     }

@@ -2,6 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import AuthStore from '../../../stores/auth/store';
 import AuthAction from '../../../actions/auth-action';
+import DisplayPanel from '../../helper/panels/display';
 import FlashMessage from '../../helper/flash_message';
 
 class AuthLogin extends React.Component
@@ -111,26 +112,17 @@ class AuthLogin extends React.Component
 
 		return (
 			<div className="row">
-				{
-					!this.state.flashMessage ?
-						null : <FlashMessage message={ this.state.flashMessage } alertType="alert-danger"/>
-				}
+				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-danger"/> }
 
-				<div className="row" id="login-form">
-					<div className="panel panel-info">
-						<div className="panel-heading">
-							<div className="row">
-								<div className="col-xs-10 col-md-10">
-									<span>Login</span>
-								</div>
-								<div className="col-xs-2 col-md-2"/>
-							</div>
-						</div>
-						<div className="panel-body">
-							{ loginForm }
-						</div>
-					</div>
-				</div>
+				<DisplayPanel
+					id="login-form"
+					header="Login"
+					additionalHeader=""
+					iconBtn="fa fa-window-close"
+					onClick={ this.closeRightPanel }
+					previousRoute="">
+					{ loginForm }
+				</DisplayPanel>
 			</div>
 		);
 	}

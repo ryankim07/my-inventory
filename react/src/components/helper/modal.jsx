@@ -3,6 +3,7 @@
  */
 
 import React from 'react';
+import DisplayPanel from '../helper/panels/display';
 
 class Modal extends React.Component
 {
@@ -21,25 +22,17 @@ class Modal extends React.Component
 		};
 
 		return (
-            <div className="" style={ backdropStyle }>
-                <div className="row" id="view-vehicle">
-                    <div className="panel panel-info">
-                        <div className="panel-heading">
-                            <div className="row">
-                                <div className="col-xs-10 col-md-10">
-                                    <span>Vehicle</span>
-                                </div>
-                                <div className="col-xs-2 col-md-2">
-                                    <button onClick={ this.props.closeModal.bind(this) }><i className="fa fa-close" aria-hidden="true"/></button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="panel-body">
-							{ this.props.children }
-                        </div>
-                    </div>
-                </div>
-            </div>
+			<div className="" style={ backdropStyle }>
+				<DisplayPanel
+					id="view-vehicle"
+					header="Vehicle"
+					additionalHeader={ additionalHeader }
+					iconBtn="fa fa-window-close"
+					onClick={ this.props.closeModal.bind(this) }
+					previousRoute="">
+					{ this.props.children }
+				</DisplayPanel>
+			</div>
 		);
     }
 }

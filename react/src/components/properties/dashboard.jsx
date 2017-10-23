@@ -409,7 +409,7 @@ class PropertiesDashboard extends React.Component
 
 		return (
 			<div className="row">
-				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage } alertType="alert-success"/>}
+				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage } alertType="alert-success"/> }
 
 				<MainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }

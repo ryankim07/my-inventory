@@ -78,43 +78,29 @@ class SettingsManufacturerModelsList extends React.Component
 		}
 
         return (
-			<div className="row" id="manufacturers-models-list">
-				<div className="panel panel-info">
-					<div className="panel-heading">
-						<div className="row">
-							<div className="col-xs-10 col-md-10">
-								<span>{ this.props.mfg } Models List</span>
-							</div>
-							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.props.closeRightPanel }><i className="fa fa-window-close" aria-hidden="true"/></button>
-							</div>
-						</div>
-					</div>
-					<div className="panel-body">
-						<div className="form-group">
-							<div className="col-xs-12 col-lg-12">
-								<SearchField
-									objs={ this.state.models }
-									objKey="model"
-									searchType="models"
-									searchText={ this.state.searchText }
-									onHandleFormChange={ this.onHandleFormChange }
-								/>
-							</div>
-						</div>
-						<table className="table">
-							<thead>
-							<tr>
-								<th>Model</th>
-								<th/>
-							</tr>
-							</thead>
-							<tbody>
-								{ modelsHtml }
-							</tbody>
-						</table>
+			<div>
+				<div className="form-group">
+					<div className="col-xs-12 col-lg-12">
+						<SearchField
+							objs={ this.state.models }
+							objKey="model"
+							searchType="models"
+							searchText={ this.state.searchText }
+							onHandleFormChange={ this.onHandleFormChange }
+						/>
 					</div>
 				</div>
+				<table className="table">
+					<thead>
+					<tr>
+						<th>Model</th>
+						<th/>
+					</tr>
+					</thead>
+					<tbody>
+					{ modelsHtml }
+					</tbody>
+				</table>
 			</div>
         )
     }

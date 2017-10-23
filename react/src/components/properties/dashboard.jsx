@@ -276,8 +276,7 @@ class PropertiesDashboard extends React.Component
 						<PropertyInfoView
 							property={ this.state.property }
 							onHandleRightPanel={ this.onHandleRightPanel }
-							onHandleMainPanel={ this.onHandleMainPanel }
-						/>
+							onHandleMainPanel={ this.onHandleMainPanel }/>
 					</DisplayPanel>;
 			break;
 
@@ -294,8 +293,7 @@ class PropertiesDashboard extends React.Component
 							property={ this.state.property }
 							onHandleRightRoomPanel={ this.onHandleRightRoomPanel }
 							onHandleFormSubmit={ this.onHandleFormSubmit }
-							onHandleRemoveRoom={ this.onHandleRemoveRoom }
-						/>
+							onHandleRemoveRoom={ this.onHandleRemoveRoom }/>
 					</DisplayPanel>;
 			break;
 
@@ -314,8 +312,7 @@ class PropertiesDashboard extends React.Component
 							properties={ this.state.properties }
 							onHandleMainPanel={ this.onHandleMainPanel }
 							onHandleRightPanel={ this.onHandleRightPanel }
-							onHandleRemove={ this.onHandleRemove }
-						/>
+							onHandleRemove={ this.onHandleRemove }/>
 					</DisplayPanel>;
 		}
 
@@ -330,13 +327,12 @@ class PropertiesDashboard extends React.Component
 						header="Features"
 						additionalHeader={ additionalHeader }
 						iconBtn="fa fa-window-close"
-						onClick={ this.props.closeRightPanel }
+						onClick={ this.closeRightPanel }
 						previousRoute="">
 						<PropertyFeaturesForm
 							property={ this.state.property }
 							onHandleFormSubmit={ this.onHandleFormSubmit }
-							closeRightPanel={ this.closeRightPanel }
-						/>
+							closeRightPanel={ this.closeRightPanel }/>
 					</DisplayPanel>;
 				break;
 
@@ -352,8 +348,7 @@ class PropertiesDashboard extends React.Component
 						<PropertyExteriorFeaturesForm
 							property={ this.state.property }
 							onHandleFormSubmit={ this.onHandleFormSubmit }
-							closeRightPanel={ this.closeRightPanel }
-						/>
+							closeRightPanel={ this.closeRightPanel }/>
 					</DisplayPanel>;
 			break;
 
@@ -369,8 +364,7 @@ class PropertiesDashboard extends React.Component
 						<PropertyInteriorFeaturesForm
 							property={ this.state.property }
 							onHandleFormSubmit={ this.onHandleFormSubmit }
-							closeRightPanel={ this.closeRightPanel }
-						/>
+							closeRightPanel={ this.closeRightPanel }/>
 					</DisplayPanel>;
 			break;
 
@@ -407,10 +401,8 @@ class PropertiesDashboard extends React.Component
 							property={ this.state.property }
 							isEditingMode={ this.state.isEditingMode }
 							onHandleFormSubmit={ this.onHandleFormSubmit }
-							closeRightPanel={ this.closeRightPanel }
-						/>
+							closeRightPanel={ this.closeRightPanel }/>
 					</DisplayPanel>;
-
 		}
 
 		rightPanelHtml = this.state.showRightPanel ? rightPanelHtml : null;

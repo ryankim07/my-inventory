@@ -255,14 +255,22 @@ class VehiclesDashboard extends React.Component
 
 		// Right panel
 		let rightPanelHtml = this.state.showRightPanel ?
-			<VehicleForm
-				loader={ false }
-				vehicle={ this.state.vehicle }
-				manufacturers={ this.state.manufacturers }
-				isEditingMode={ this.state.isEditingMode }
-				onHandleFormSubmit={ this.onHandleFormSubmit }
-				closeRightPanel={ this.closeRightPanel }
-			/> : null;
+			<DisplayPanel
+				id="vehicle-form"
+				header="Vehicle"
+				additionalHeader={ additionalHeader }
+				iconBtn="fa fa-window-close"
+				onClick={ this.closeRightPanel }
+				previousRoute="">
+				<VehicleForm
+					loader={ false }
+					vehicle={ this.state.vehicle }
+					manufacturers={ this.state.manufacturers }
+					isEditingMode={ this.state.isEditingMode }
+					onHandleFormSubmit={ this.onHandleFormSubmit }
+					closeRightPanel={ this.closeRightPanel }
+				/>
+			</DisplayPanel> : null;
 
 		return (
 			<div className="row">

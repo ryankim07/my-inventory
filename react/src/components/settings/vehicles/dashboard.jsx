@@ -2,8 +2,9 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import ManufacturersAction from '../../../actions/manufacturers-action';
 import ManufacturersStore from '../../../stores/vehicles/mfgs-store';
-import SettingsMainPanel from './../main_panel';
-import SettingsRightPanel from './../right_panel';
+import MainPanel from '../../helper/panels/main';
+import DisplayPanel from '../../helper/panels/display';
+import RightPanel from '../../helper/panels/right';
 import SettingsManufacturersList from './../vehicles/api/manufacturers';
 import SettingsManufacturerModelsList from './../vehicles/api/models';
 import FlashMessage from '../../helper/flash_message';
@@ -146,41 +147,55 @@ class SettingsVehiclesDashboard extends React.Component
 		switch (this.state.mainPanel) {
 			case 'manufacturers':
 				mainPanelHtml =
-					<SettingsManufacturersList
-						loader={ this.state.loader }
-						page={ this.state.page }
-						totalCount={ this.state.totalCount }
-						totalPages={ this.state.totalPages }
-						limit={ this.state.limit }
-						manufacturers={ this.state.manufacturers }
-						mfg={ this.state.mfg }
-						onChangePage={ this.onChangePage }
-						onHandleSync={ this.onHandleSync }
-						onHandleMainPanel={ this.onHandleMainPanel }
-					/>;
+					<DisplayPanel
+						id="api-manufacturers-list"
+						header="API Vehicle List"
+						additionalHeader=""
+						iconBtn="fa fa-cloud-download"
+						onClick={ this.props.onHandleSync.bind(this) }
+						showPreviousBtn={ false }
+						previousRoute="">
+						<SettingsManufacturersList
+							loader={ this.state.loader }
+							page={ this.state.page }
+							totalCount={ this.state.totalCount }
+							totalPages={ this.state.totalPages }
+							limit={ this.state.limit }
+							manufacturers={ this.state.manufacturers }
+							mfg={ this.state.mfg }
+							onChangePage={ this.onChangePage }
+							onHandleSync={ this.onHandleSync }
+							onHandleMainPanel={ this.onHandleMainPanel }/>
+					</DisplayPanel>;
 			break;
 		}
+
+		let rightPanelHtml = this.state.showRightPanel ?
+			<DisplayPanel
+				id="manufacturers-models-list"
+				header={ this.state.mfg.mfg `Models List` }
+				additionalHeader=""
+				iconBtn="fa fa-window-close"
+				onClick={ this.closeRightPanel }
+				showPreviousBtn={ false }
+				previousRoute="">
+				<SettingsManufacturerModelsList
+					models={ this.state.mfg.models }
+					model={ this.state.model }
+					onHandleRightPanel={ this.onHandleRightPanel }
+					closeRightPanel={ this.closeRightPanel }/>
+			</DisplayPanel> : null;
 
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/>}
 
-				<SettingsMainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
+				<MainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }
-				</SettingsMainPanel>
-
-				{
-					this.state.showRightPanel ?
-						<SettingsRightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
-							<SettingsManufacturerModelsList
-								mfg={ this.state.mfg.mfg }
-								models={ this.state.mfg.models }
-								model={ this.state.model }
-								onHandleRightPanel={ this.onHandleRightPanel }
-								closeRightPanel={ this.closeRightPanel }
-							/>
-						</SettingsRightPanel> : null
-				}
+				</MainPanel>
+				<RightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
+					{ rightPanelHtml }
+				</RightPanel>
 			</div>
 		)
 	}

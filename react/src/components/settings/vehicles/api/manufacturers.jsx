@@ -112,38 +112,24 @@ class SettingsManufacturersList extends React.Component
         }
 
         return (
-			<div className="row" id="api-manufacturers-list">
-				<div className="panel panel-info">
-					<div className="panel-heading">
-						<div className="row">
-							<div className="col-xs-10 col-md-10">
-								<span>API Vehicle List</span>
-							</div>
-							<div className="col-xs-2 col-md-2">
-								<button onClick={ this.props.onHandleSync.bind(this) }><i className="fa fa-cloud-download" aria-hidden="true"/> Sync</button>
-							</div>
-						</div>
-					</div>
-					<div className="panel-body">
-						<div className="form-group">
-							<div className="col-xs-12 col-lg-12">
-								{ searchField }
-							</div>
-						</div>
-						<table className="table">
-							<thead>
-							<tr>
-								<th>Manufacturer</th>
-								<th/>
-							</tr>
-							</thead>
-							<tbody>
-								{ mfgsHtml }
-							</tbody>
-						</table>
-						{ this.state.isSearch ? null : paginationHtml }
+			<div>
+				<div className="form-group">
+					<div className="col-xs-12 col-lg-12">
+						{ searchField }
 					</div>
 				</div>
+				<table className="table">
+					<thead>
+					<tr>
+						<th>Manufacturer</th>
+						<th/>
+					</tr>
+					</thead>
+					<tbody>
+					{ mfgsHtml }
+					</tbody>
+				</table>
+				{ this.state.isSearch ? null : paginationHtml }
 			</div>
         )
     }

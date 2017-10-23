@@ -79,11 +79,7 @@ class SettingsVehiclesDashboard extends React.Component
 			totalCount: totalCount,
 			totalPages: totalPages,
 			limit: limit,
-			loader: false,
-			/*mainPanelColumnCss: {
-				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
-				'desktopWidth': openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
-			}*/
+			loader: false
 		});
 	}
 
@@ -152,7 +148,7 @@ class SettingsVehiclesDashboard extends React.Component
 						header="API Vehicle List"
 						additionalHeader=""
 						iconBtn="fa fa-cloud-download"
-						onClick={ this.state.onHandleSync.bind(this) }
+						onClick={ this.onHandleSync.bind(this) }
 						showPreviousBtn={ false }
 						previousRoute="">
 						<SettingsManufacturersList

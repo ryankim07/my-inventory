@@ -304,7 +304,7 @@ class PropertiesDashboard extends React.Component
 						header="Properties List"
 						additionalHeader=""
 						iconBtn="fa fa-plus"
-						onClick={ this.handleRightPanel.bind(this, false) }
+						onClick={ this.onHandleRightPanel.bind(this, false) }
 						previousRoute="">
 						<PropertiesList
 							loader={ this.state.loader }
@@ -343,7 +343,7 @@ class PropertiesDashboard extends React.Component
 						header="Exterior Features"
 						additionalHeader={ additionalHeader }
 						iconBtn="fa fa-window-close"
-						onClick={ this.state.closeRightPanel }
+						onClick={ this.closeRightPanel }
 						previousRoute="">
 						<PropertyExteriorFeaturesForm
 							property={ this.state.property }
@@ -359,7 +359,7 @@ class PropertiesDashboard extends React.Component
 						header="Interior Features"
 						additionalHeader={ additionalHeader }
 						iconBtn="fa fa-window-close"
-						onClick={ this.state.closeRightPanel }
+						onClick={ this.closeRightPanel }
 						previousRoute="">
 						<PropertyInteriorFeaturesForm
 							property={ this.state.property }
@@ -375,7 +375,7 @@ class PropertiesDashboard extends React.Component
 						header="Room"
 						additionalHeader={ additionalHeader }
 						iconBtn="fa fa-window-close"
-						onClick={ this.state.closeRightPanel }
+						onClick={ this.closeRightPanel }
 						previousRoute="">
 						<PropertyRoomForm
 							room={ this.state.room }
@@ -395,7 +395,7 @@ class PropertiesDashboard extends React.Component
 						header="Property"
 						additionalHeader={ additionalHeader }
 						iconBtn="fa fa-window-close"
-						onClick={ this.state.closeRightPanel }
+						onClick={ this.closeRightPanel }
 						previousRoute="">
 						<PropertyForm
 							property={ this.state.property }

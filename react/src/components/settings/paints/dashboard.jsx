@@ -188,7 +188,7 @@ class SettingsPaintsDashboard extends React.Component
 				<SettingsPaint
 					paint={ this.state.paint }
 					vendors={ this.state.vendors }
-					isEditingMode={ this.props.isEditingMode }
+					isEditingMode={ this.state.isEditingMode }
 					onHandleFormSubmit={ this.onHandleFormSubmit }
 					closeRightPanel={ this.closeRightPanel }
 				/>

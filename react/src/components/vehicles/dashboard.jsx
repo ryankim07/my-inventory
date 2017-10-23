@@ -7,6 +7,7 @@ import DisplayPanel from '../helper/panels/display';
 import RightPanel from '../helper/panels/right';
 import VehicleForm from './forms/vehicle';
 import VehiclesList from './list';
+import Modal from '../helper/modal';
 import FlashMessage from '../helper/flash_message';
 
 let mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -221,21 +222,30 @@ class VehiclesDashboard extends React.Component
 		switch (this.state.mainPanel) {
 			case 'add':
 				mainPanelHtml =
-					<VehicleForm
-						loader={ this.state.loader }
-						vehicle={ this.state.vehicle }
-						manufacturers={ this.state.manufacturers }
-						isEditingMode={ false }
-						onHandleFormSubmit={ this.onHandleFormSubmit }
-						closeRightPanel=""
-					/>;
-				break;
+					<DisplayPanel
+						id="vehicle-form"
+						header="Vehicle"
+						additionalHeader="Add"
+						iconBtn=""
+						onClick=""
+						previousRoute="">
+						<VehicleForm
+							loader={ this.state.loader }
+							vehicle={ this.state.vehicle }
+							manufacturers={ this.state.manufacturers }
+							isEditingMode={ false }
+							onHandleFormSubmit={ this.onHandleFormSubmit }
+							closeRightPanel=""
+						/>
+					</DisplayPanel>;
+			break;
 
 			default:
 				mainPanelHtml =
 					<DisplayPanel
 						id="vehicles-list"
 						header="Vehicle List"
+						additionalHeader=""
 						iconBtn="fa fa-plus"
 						onClick={ this.onHandleRightPanel.bind(this, false) }
 						showPreviousBtn={ false }
@@ -244,11 +254,9 @@ class VehiclesDashboard extends React.Component
 							loader={ this.state.loader }
 							vehicle={ this.state.vehicle }
 							vehicles={ this.state.vehicles }
-							showModal={ this.state.showModal }
 							onHandleRightPanel={ this.onHandleRightPanel }
 							onHandleRemove={ this.onHandleRemove }
 							onHandleModal={ this.onHandleModal }
-							closeModal={ this.closeModal }
 						/>
 					</DisplayPanel>;
 		}
@@ -258,7 +266,7 @@ class VehiclesDashboard extends React.Component
 			<DisplayPanel
 				id="vehicle-form"
 				header="Vehicle"
-				additionalHeader={ additionalHeader }
+				additionalHeader={ !this.state.isEditingMode ? "Add" : "Edit" }
 				iconBtn="fa fa-window-close"
 				onClick={ this.closeRightPanel }
 				previousRoute="">
@@ -272,12 +280,22 @@ class VehiclesDashboard extends React.Component
 				/>
 			</DisplayPanel> : null;
 
+		// Modal window
+		let modalWindowHtml = this.state.showModal ?
+			<Modal
+				id="view-vehicle"
+				header={ this.state.vehicle.mfg + ` ` + this.state.vehicle.model }
+				closeModal={ this.closeModal }>
+				<h1>{ this.state.vehicle.mfg }</h1>
+			</Modal> : null;
+
 		return (
 			<div className="row">
 				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/> }
 
 				<MainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }
+					{ modalWindowHtml }
 				</MainPanel>
 				<RightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
 					{ rightPanelHtml }

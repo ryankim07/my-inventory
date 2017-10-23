@@ -155,7 +155,7 @@ class PropertyFeaturesForm extends React.Component
 			</form>;
 
         return (
-			{ featuresForm }
+			<div>{ featuresForm }</div>
         );
     }
 }

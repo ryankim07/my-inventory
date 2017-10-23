@@ -1,5 +1,4 @@
 import React from 'react';
-import Modal from '../helper/modal';
 import SearchField from '../helper/search_field';
 import TogglingRows from '../helper/table/toggling_rows';
 import Loader from '../helper/loader';
@@ -48,7 +47,6 @@ class VehiclesList extends React.Component
 	render() {
         let vehiclesHtml 	= null;
         let searchField  	= null;
-        let modalWindowHtml = null;
 
 		// If loading is complete
         if (!this.props.loader) {
@@ -90,14 +88,6 @@ class VehiclesList extends React.Component
 						searchText={ this.state.searchText }
 						onHandleFormChange={ this.onHandleFormChange }
 					/>;
-
-
-
-				// Modal window
-				modalWindowHtml = this.props.showModal ?
-					<Modal closeModal={ this.props.closeModal }>
-						<h1>{ this.props.vehicle.mfg }</h1>
-					</Modal> : null;
 			}
         } else {
             vehiclesHtml = <tr><td><Loader/></td></tr>;
@@ -126,7 +116,6 @@ class VehiclesList extends React.Component
 					{ vehiclesHtml }
 				</tbody>
 				</table>
-				{ modalWindowHtml }
 			</div>
         )
     }

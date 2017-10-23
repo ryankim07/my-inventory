@@ -34,7 +34,12 @@ class PropertyAddressForm extends React.Component
     	let address = this.props.address;
 
         return (
+
 			<div>
+				<hr/>
+				<p>Address Information</p>
+				<hr/>
+
 				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Street</label>

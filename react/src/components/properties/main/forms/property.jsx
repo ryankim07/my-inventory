@@ -241,11 +241,6 @@ class PropertyForm extends React.Component
 						</div>
 					</div>
 				</div>
-				<div>
-					<hr/>
-					<p>Address Information</p>
-					<hr/>
-				</div>
 
 				<PropertyAddressForm
 					address={ property.address }
@@ -274,7 +269,7 @@ class PropertyForm extends React.Component
 			</form>
 
         return (
-			{ propertyForm }
+			<div>{ propertyForm }</div>
         );
     }
 }

@@ -242,7 +242,7 @@ class VehicleForm extends React.Component
 			</form>;
 
         return (
-			{ vehicleForm }
+			<div>{ vehicleForm }</div>
         );
     }
 }

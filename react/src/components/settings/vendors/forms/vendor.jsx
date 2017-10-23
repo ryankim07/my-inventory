@@ -240,7 +240,7 @@ class SettingsVendor extends React.Component
 			</form>;
 
         return (
-			{ vendorForm }
+			<div>{ vendorForm }</div>
         );
     }
 }

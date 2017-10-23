@@ -1,5 +1,11 @@
 /**
- * Spinning loader component
+ * Modal component
+ *
+ * Required props
+ *
+ * id: the ID
+ * header: header text
+ * onClick: method to handle on click event
  */
 
 import React from 'react';
@@ -24,9 +30,9 @@ class Modal extends React.Component
 		return (
 			<div className="" style={ backdropStyle }>
 				<DisplayPanel
-					id="view-vehicle"
-					header="Vehicle"
-					additionalHeader={ additionalHeader }
+					id={ this.props.id }
+					header={ this.props.header }
+					additionalHeader=""
 					iconBtn="fa fa-window-close"
 					onClick={ this.props.closeModal.bind(this) }
 					previousRoute="">

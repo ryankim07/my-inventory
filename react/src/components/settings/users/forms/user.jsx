@@ -248,7 +248,7 @@ class SettingsUser extends React.Component
 			</form>;
 
 		return (
-			{ userForm }
+			<div>{ userForm }</div>
 		);
 	}
 }

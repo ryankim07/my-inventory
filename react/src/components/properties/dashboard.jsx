@@ -343,7 +343,7 @@ class PropertiesDashboard extends React.Component
 						header="Exterior Features"
 						additionalHeader={ additionalHeader }
 						iconBtn="fa fa-window-close"
-						onClick={ this.props.closeRightPanel }
+						onClick={ this.state.closeRightPanel }
 						previousRoute="">
 						<PropertyExteriorFeaturesForm
 							property={ this.state.property }
@@ -359,7 +359,7 @@ class PropertiesDashboard extends React.Component
 						header="Interior Features"
 						additionalHeader={ additionalHeader }
 						iconBtn="fa fa-window-close"
-						onClick={ this.props.closeRightPanel }
+						onClick={ this.state.closeRightPanel }
 						previousRoute="">
 						<PropertyInteriorFeaturesForm
 							property={ this.state.property }
@@ -375,13 +375,13 @@ class PropertiesDashboard extends React.Component
 						header="Room"
 						additionalHeader={ additionalHeader }
 						iconBtn="fa fa-window-close"
-						onClick={ this.props.closeRightPanel }
+						onClick={ this.state.closeRightPanel }
 						previousRoute="">
 						<PropertyRoomForm
 							room={ this.state.room }
 							nonAddedRooms={ this.state.property.non_added_rooms }
 							paints={ this.state.paints }
-							isEditingMode={ this.props.isEditingMode }
+							isEditingMode={ this.state.isEditingMode }
 							onHandleFormSubmit={ this.onHandleFormSubmit }
 							closeRightPanel={ this.closeRightPanel }/>
 					</DisplayPanel>;
@@ -395,7 +395,7 @@ class PropertiesDashboard extends React.Component
 						header="Property"
 						additionalHeader={ additionalHeader }
 						iconBtn="fa fa-window-close"
-						onClick={ this.props.closeRightPanel }
+						onClick={ this.state.closeRightPanel }
 						previousRoute="">
 						<PropertyForm
 							property={ this.state.property }

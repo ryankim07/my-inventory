@@ -88,7 +88,7 @@ class PropertyExteriorFeaturesForm extends React.Component
 			</form>;
 
         return (
-			{ exteriorFeaturesForm }
+			<div>{ exteriorFeaturesForm }</div>
         );
     }
 }

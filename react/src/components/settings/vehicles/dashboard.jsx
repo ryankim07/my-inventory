@@ -152,7 +152,7 @@ class SettingsVehiclesDashboard extends React.Component
 						header="API Vehicle List"
 						additionalHeader=""
 						iconBtn="fa fa-cloud-download"
-						onClick={ this.props.onHandleSync.bind(this) }
+						onClick={ this.state.onHandleSync.bind(this) }
 						showPreviousBtn={ false }
 						previousRoute="">
 						<SettingsManufacturersList

@@ -156,7 +156,7 @@ class PropertyInteriorFeaturesForm extends React.Component
 			</form>;
 
         return (
-			{ interiorFeaturesForm }
+			<div>{ interiorFeaturesForm }</div>
         );
     }
 }

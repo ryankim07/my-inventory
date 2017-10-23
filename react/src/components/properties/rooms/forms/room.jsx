@@ -316,7 +316,7 @@ class PropertyRoomForm extends React.Component
 			</form>;
 
         return (
-			{ roomForm }
+			<div>{ roomForm }</div>
         );
     }
 }

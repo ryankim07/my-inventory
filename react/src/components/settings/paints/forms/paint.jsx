@@ -223,7 +223,7 @@ class SettingsPaint extends React.Component
 			</form>;
 
         return (
-			{ paintForm }
+			<div>{ paintForm }</div>
         );
     }
 }

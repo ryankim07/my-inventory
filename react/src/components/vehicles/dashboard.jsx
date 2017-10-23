@@ -284,7 +284,7 @@ class VehiclesDashboard extends React.Component
 		let modalWindowHtml = this.state.showModal ?
 			<Modal
 				id="view-vehicle"
-				header={ this.state.vehicle.mfg + ` ` + this.state.vehicle.model }
+				header={ this.state.vehicle.mfg + " " + this.state.vehicle.model }
 				closeModal={ this.closeModal }>
 				<h1>{ this.state.vehicle.mfg }</h1>
 			</Modal> : null;

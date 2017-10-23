@@ -169,7 +169,7 @@ class SettingsVehiclesDashboard extends React.Component
 		let rightPanelHtml = this.state.showRightPanel ?
 			<DisplayPanel
 				id="manufacturers-models-list"
-				header={ this.state.mfg.mfg `Models List` }
+				header={ this.state.mfg.mfg + " Models List" }
 				additionalHeader=""
 				iconBtn="fa fa-window-close"
 				onClick={ this.closeRightPanel }

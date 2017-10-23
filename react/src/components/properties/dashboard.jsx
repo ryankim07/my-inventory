@@ -82,6 +82,54 @@ class PropertiesDashboard extends React.Component
 		}
 	}
 
+	// Get vehicle initial state
+	getVehicleState() {
+		return {
+			id: '',
+			mfg_id: '',
+			mfg: '',
+			model_id: '',
+			model: '',
+			year: '',
+			color: '',
+			vin: '',
+			plate: '',
+			assets: []
+		}
+	}
+
+	// Get property initial state
+	getPropertyState() {
+		return {
+			id: '',
+			style: '',
+			beds: '',
+			baths: '',
+			finished_area: '',
+			unfinished_area: '',
+			total_area: '',
+			floors: '',
+			built: '',
+			parcel_number: '',
+			address: {
+				id: '',
+				property_id: '',
+				street: '',
+				city: '',
+				state: '',
+				zip: '',
+				county: '',
+				country: '',
+				subdivision: ''
+			},
+			features: {},
+			exteriorFeatures: {},
+			interiorFeatures: {},
+			rooms: [],
+			assets: []
+		}
+	}
+
 	// Mounting component
 	componentWillMount() {
 		PropertiesStore.addChangeListener(this._onChange);
@@ -197,7 +245,11 @@ class PropertiesDashboard extends React.Component
 	}
 
 	// Handle default right panel
-	onHandleRightPanel(property, isEditingMode, rightPanel) {
+	onHandleRightPanel(id, rightPanel) {
+		let isEditingMode = !!id;
+		let property = isEditingMode ?
+			this.state.properties.find(obj => obj.id === id) : this.getPropertyState();
+
 		this.setState({
 			property: property,
 			rightPanel: rightPanel,

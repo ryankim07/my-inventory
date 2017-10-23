@@ -14,7 +14,6 @@ class PropertiesList extends React.Component
 		};
 
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
-		this.handleRightPanel 	= this.handleRightPanel.bind(this);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -43,50 +42,13 @@ class PropertiesList extends React.Component
 		});
 	}
 
-	// Toggle panel for add or edit
-	handleRightPanel(id) {
-		let isEditingMode = !!id;
-		let property = isEditingMode ?
-			this.state.clonedProperties.find(obj => obj.id === id) :
-			{
-				id: '',
-				style: '',
-				beds: '',
-				baths: '',
-				finished_area: '',
-				unfinished_area: '',
-				total_area: '',
-				floors: '',
-				built: '',
-				parcel_number: '',
-				address: {
-					id: '',
-					property_id: '',
-					street: '',
-					city: '',
-					state: '',
-					zip: '',
-					county: '',
-					country: '',
-					subdivision: ''
-				},
-				features: {},
-				exteriorFeatures: {},
-				interiorFeatures: {},
-				rooms: [],
-				assets: []
-			}
-
-		this.props.onHandleRightPanel(property, isEditingMode, 'property-form');
-	}
-
 	render() {
 		return (
 			<PropertyAddressList
 				loader={ this.props.loader }
 				properties={ this.state.properties }
 				property={ this.props.property }
-				handleRightPanel={ this.handleRightPanel }
+				onHandleRightPanel={ this.props.onHandleRightPanel }
 				onHandleMainPanel={ this.props.onHandleMainPanel }
 				onHandleRemove={ this.props.onHandleRemove }
 				searchText={ this.state.searchText }

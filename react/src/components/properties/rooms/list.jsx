@@ -31,7 +31,7 @@ class PropertyRoomsList extends React.Component
 			});
 
         return (
-			{ roomsHtml }
+			<div>{ roomsHtml }</div>
         )
     }
 }

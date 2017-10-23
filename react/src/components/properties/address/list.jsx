@@ -34,7 +34,7 @@ class PropertiesAddressList extends React.Component
 							addViewBtn={true}
 							handleViewPanel={this.props.onHandleMainPanel.bind(this, property.address.property_id, 'info')}
 							addEditBtn={true}
-							handleEditPanel={this.props.handleRightPanel.bind(this, property.address.property_id)}
+							handleEditPanel={this.props.onHandleRightPanel.bind(this, property.address.property_id, 'property-form')}
 							addRemoveBtn={true}
 							handleRemove={this.props.onHandleRemove.bind(this, property.address.property_id)}
 						/>

@@ -5,6 +5,7 @@ import AuthStore from '../stores/auth/store';
 
 class Header extends React.Component
 {
+	// Constructor
 	constructor(props) {
 		super(props);
 
@@ -16,6 +17,7 @@ class Header extends React.Component
 		};
 	}
 
+	// Mounting component
 	componentWillMount() {
 		let jwt = jwtDecode(AuthStore.getToken());
 		let user = false;
@@ -41,6 +43,7 @@ class Header extends React.Component
         });
 	}
 
+	// Render
     render() {
         return (
             <div className="navbar navbar-inverse navbar-fixed-top">

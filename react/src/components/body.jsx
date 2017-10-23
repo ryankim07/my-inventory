@@ -4,6 +4,7 @@ import Footer from './footer';
 
 class Body extends React.Component
 {
+    //Render
     render() {
 		return (
             <div className="app">

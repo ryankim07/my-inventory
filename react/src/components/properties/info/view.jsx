@@ -1,6 +1,5 @@
 import React from 'react';
-import ImageGallery from 'react-image-gallery';
-import "react-image-gallery/styles/css/image-gallery.css";
+import Gallery from '../../helper/gallery';
 
 let featuresRightPanel 	 	   = 'features';
 let exteriorFeaturesRightPanel = 'exterior-features';
@@ -97,15 +96,6 @@ class PropertyInfoView extends React.Component
 		let features		 = property.features === undefined || property.features.id === "" ? null : property.features;
 		let exteriorFeatures = property.exterior_features === undefined || property.exterior_features.id === "" ? null : property.exterior_features;
 		let interiorFeatures = property.interior_features === undefined || property.interior_features.id === "" ? null : property.interior_features;
-		let assets			 = property.assets;
-
-		// Gallery
-		let gallery = assets.map(asset => {
-			asset['original']  = asset.path;
-			asset['thumbnail'] = '';
-
-			return(asset);
-		});
 
 		let propertyFeaturesBtn = features === null ?
 			<button onClick={ this.handleRightPanel.bind(this, false, featuresRightPanel) }><i className="fa fa-plus" aria-hidden="true"/> Add Property Features</button> : null;
@@ -305,10 +295,7 @@ class PropertyInfoView extends React.Component
 
 		return (
 			<div>
-				<ImageGallery
-					items={ gallery }
-					slideInterval={ 2000 }
-				/>
+				<Gallery assets={ property.assets }/>
 				<div>
 					{ propertyFeaturesBtn }
 					{ exteriorFeaturesBtn }

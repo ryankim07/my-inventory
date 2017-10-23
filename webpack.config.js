@@ -21,11 +21,17 @@ var config = {
                 query: {
                     presets: ['es2015', 'react']
                 }
-            }]
+            },
+			{
+				test: /\.css$/,
+				include: /node_modules/,
+				loaders: ['style-loader', 'css-loader']
+			}
+		]
     },
     // Recognize extensions when importing separate components
     resolve: {
-        extensions: ['.js', '.jsx']
+        extensions: ['.js', '.jsx', '.css']
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin()

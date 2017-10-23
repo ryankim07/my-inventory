@@ -9,7 +9,7 @@
  * @module  MyInventory
  */
 
-namespace AppBundle\Entity\Properties;
+namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -73,7 +73,7 @@ class AddressEntity
     private $subdivision;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Properties\PropertyEntity", inversedBy="address")
+     * @ORM\OneToOne(targetEntity="PropertiesEntity", inversedBy="address")
      * @ORM\JoinColumn(name="property_id", referencedColumnName="id")
      */
     private $property;
@@ -275,10 +275,10 @@ class AddressEntity
     /**
      * Set property
      *
-     * @param PropertyEntity $property
+     * @param PropertiesEntity $property
      * @return $this
      */
-    public function setProperty(PropertyEntity $property)
+    public function setProperty(PropertiesEntity $property)
     {
         $this->property = $property;
 
@@ -288,7 +288,7 @@ class AddressEntity
     /**
      * Get property
      *
-     * @return \AppBundle\Entity\Properties\PropertyEntity
+     * @return \PropertiesEntity
      */
     public function getProperty()
     {

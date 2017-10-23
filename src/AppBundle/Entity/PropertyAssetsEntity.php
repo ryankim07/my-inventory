@@ -1,17 +1,16 @@
 <?php
 
-namespace AppBundle\Entity\Vehicles;
+namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
-use AppBundle\Entity\Vehicles\VehicleEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="vehicles.assets")
+ * @ORM\Table(name="houses.assets")
  */
-class VehicleAssetsEntity
+class PropertyAssetsEntity
 {
     /**
      * @ORM\Column(type="integer")
@@ -19,7 +18,7 @@ class VehicleAssetsEntity
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
+    
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
@@ -43,7 +42,7 @@ class VehicleAssetsEntity
     }
 
     /**
-     * Set name
+     *  Set name
      *
      * @param $name
      * @return $this

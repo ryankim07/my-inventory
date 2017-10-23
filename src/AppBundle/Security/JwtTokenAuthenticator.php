@@ -12,6 +12,7 @@
 namespace AppBundle\Security;
 
 use Doctrine\ORM\EntityManager;
+use AppBundle\Entity\UsersEntity;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\TokenExtractor\AuthorizationHeaderTokenExtractor;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
@@ -66,7 +67,7 @@ class JwtTokenAuthenticator extends AbstractGuardAuthenticator
             $username = $data['username'];
 
             return $this->em
-                ->getRepository('AppBundle\Entity\Users\UsersEntity')
+                ->getRepository(UsersEntity::class)
                 ->findOneBy(['username' => $username]);
 
         } catch (JWTDecodeFailureException $e) {

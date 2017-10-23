@@ -12,13 +12,14 @@
 namespace AppBundle\Service\Properties;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\Properties\PropertyEntity;
-use AppBundle\Entity\Properties\AddressEntity;
-use AppBundle\Entity\Properties\RoomsEntity;
-use AppBundle\Entity\Properties\RoomsWallsEntity;
-use AppBundle\Entity\Properties\FeaturesEntity;
-use AppBundle\Entity\Properties\ExteriorFeaturesEntity;
-use AppBundle\Entity\Properties\InteriorFeaturesEntity;
+use AppBundle\Entity\PropertiesEntity;
+use AppBundle\Entity\PropertyAssetsEntity;
+use AppBundle\Entity\AddressEntity;
+use AppBundle\Entity\RoomsEntity;
+use AppBundle\Entity\RoomsWallsEntity;
+use AppBundle\Entity\FeaturesEntity;
+use AppBundle\Entity\ExteriorFeaturesEntity;
+use AppBundle\Entity\InteriorFeaturesEntity;
 use AppBundle\Service\Configuration\Properties\Rooms as ConfiguredRooms;
 use AppBundle\Service\Helper\Assets;
 
@@ -47,7 +48,7 @@ class Properties
                                 Assets $assetsService)
     {
         $this->em                     = $entityManager;
-        $this->repo                   = $this->em->getRepository('AppBundle\Entity\Properties\PropertyEntity');
+        $this->repo                   = $this->em->getRepository(PropertiesEntity::class);
         $this->configuredRoomsService = $configuredRoomsService;
         $this->assetsService           = $assetsService;
     }
@@ -131,13 +132,13 @@ class Properties
 
         try {
             $this->existingProperty = $this->find($data['id']);
-            $this->entity           = $this->existingProperty ? $this->existingProperty : new PropertyEntity();
+            $this->entity           = $this->existingProperty ? $this->existingProperty : new PropertiesEntity();
 
             $op  = !$this->existingProperty ? 'added' : 'updated';
             $msg = "Property successfully {$op}.";
 
             $addressEntity = $this->existingProperty ?
-                $this->em->getRepository('AppBundle\Entity\Properties\AddressEntity')->findOneByPropertyId($this->entity->getId()) : new AddressEntity();
+                $this->em->getRepository(AddressEntity::class)->findOneByPropertyId($this->entity->getId()) : new AddressEntity();
 
             // Property entity
             $this->entity->setBuilt($data['built']);
@@ -164,7 +165,7 @@ class Properties
             }
 
             // Assets entity
-            $this->entity = $this->assetsService->save('AppBundle\Entity\Properties\PropertyAssetsEntity', $this->entity, $data['assets']);
+            $this->entity = $this->assetsService->save(PropertyAssetsEntity::class, $this->entity, $data);
 
             // Save
             if (!$this->existingProperty) {
@@ -237,7 +238,7 @@ class Properties
         }
 
         try {
-            $this->existingRoom = $this->em->getRepository('AppBundle\Entity\Properties\RoomsEntity')->find($data['id']);
+            $this->existingRoom = $this->em->getRepository(RoomsEntity::class)->find($data['id']);
             $this->entity       = $this->existingRoom ? $this->existingRoom : new RoomsEntity();
 
             $op  = !$this->existingRoom ? 'added' : 'updated';
@@ -259,7 +260,7 @@ class Properties
                 }
 
                 $wallsEntity = !empty($wall["id"]) ?
-                    $this->em->getRepository('AppBundle\Entity\Properties\RoomsWallsEntity')->find($wall["id"]) : new RoomsWallsEntity();
+                    $this->em->getRepository(RoomsWallsEntity::class)->find($wall["id"]) : new RoomsWallsEntity();
 
                 $wallsEntity->setRoomId($this->entity->getId());
                 $wallsEntity->setPaintId((int) $wall['paint_id']);
@@ -275,7 +276,7 @@ class Properties
             $property->addRoom($this->entity);
 
             // Assets entity
-            $this->entity = $this->assetsService->save('AppBundle\Entity\Properties\PropertyAssetsEntity', $this->entity, $data['assets']);
+            $this->entity = $this->assetsService->save(PropertyAssetsEntity::class, $this->entity, $data);
 
             if (!$this->existingRoom) {
                 $this->em->persist($property);
@@ -355,7 +356,7 @@ class Properties
         }
 
         try {
-            $this->existingFeatures = $this->em->getRepository('AppBundle\Entity\Properties\FeaturesEntity')->find($data['id']);
+            $this->existingFeatures = $this->em->getRepository(FeaturesEntity::class)->find($data['id']);
             $this->entity           = $this->existingFeatures ? $this->existingFeatures : new FeaturesEntity();
 
             $op  = !$this->existingFeatures ? 'added' : 'updated';
@@ -433,7 +434,7 @@ class Properties
         }
 
         try {
-            $this->existingExteriorFeatures = $this->em->getRepository('AppBundle\Entity\Properties\ExteriorFeaturesEntity')->find($data['id']);
+            $this->existingExteriorFeatures = $this->em->getRepository(ExteriorFeaturesEntity::class)->find($data['id']);
             $this->entity                   = $this->existingExteriorFeatures ? $this->existingExteriorFeatures : new ExteriorFeaturesEntity();
 
             $op  = !$this->existingExteriorFeatures ? 'added' : 'updated';
@@ -506,7 +507,7 @@ class Properties
         }
 
         try {
-            $this->existingInteriorFeatures = $this->em->getRepository('AppBundle\Entity\Properties\InteriorFeaturesEntity')->find($data['id']);
+            $this->existingInteriorFeatures = $this->em->getRepository(InteriorFeaturesEntity::class)->find($data['id']);
             $this->entity                   = $this->existingInteriorFeatures ? $this->existingInteriorFeatures : new InteriorFeaturesEntity();
 
             $op  = !$this->existingInteriorFeatures ? 'added' : 'updated';

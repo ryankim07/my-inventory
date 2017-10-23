@@ -38,10 +38,14 @@ class Assets
     public function save($class, $entity, $data)
     {
         try {
-            if (!is_null($data)) {
-                $entity->removeAllAssets();
+            // Remove and keep existing assets
+            if (!is_null($data['assets'])) {
+                $entity->removeAllAssets($data['assets']);
+            }
 
-                foreach ($data as $asset) {
+            // Add new assets
+            if (!is_null($data['new_assets'])) {
+                foreach ($data['new_assets'] as $asset) {
                     // Upload asset
                     $assetFullPath = $this->fileUploader->upload($asset);
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity\Vendors;
+namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -26,7 +26,7 @@ class VendorCategoriesEntity
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Vendors\VendorsEntity", mappedBy="category", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="VendorsEntity", mappedBy="category", cascade={"persist"})
      */
     private $vendors;
 

@@ -12,7 +12,8 @@
 namespace AppBundle\Service\Paints;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\Paints\PaintsEntity;
+use AppBundle\Entity\PaintsEntity;
+use AppBundle\Entity\PropertyAssetsEntity;
 use AppBundle\Service\Helper\Assets;
 
 class Paints
@@ -33,7 +34,7 @@ class Paints
                                 Assets $assetsService)
     {
         $this->em            = $entityManager;
-        $this->repo          = $this->em->getRepository('AppBundle\Entity\Paints\PaintsEntity');
+        $this->repo          = $this->em->getRepository(PaintsEntity::class);
         $this->assetsService = $assetsService;
     }
 
@@ -139,7 +140,7 @@ class Paints
         $this->entity->setNotes($data['notes']);
 
         // Assets entity
-        $this->entity = $this->assetsService->save('AppBundle\Entity\Properties\PropertyAssetsEntity', $this->entity, $data['assets']);
+        $this->entity = $this->assetsService->save(PropertyAssetsEntity::class, $this->entity, $data);
 
         if (!$this->existingPaint) {
             $this->em->persist($this->entity);

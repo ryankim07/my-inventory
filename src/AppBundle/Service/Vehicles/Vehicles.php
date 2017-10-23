@@ -12,7 +12,8 @@
 namespace AppBundle\Service\Vehicles;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\Vehicles\VehicleEntity;
+use AppBundle\Entity\VehiclesEntity;
+use AppBundle\Entity\VehicleAssetsEntity;
 use AppBundle\Service\Vehicles\Api\Manufacturers;
 use AppBundle\Service\Helper\Assets;
 
@@ -39,7 +40,7 @@ class Vehicles
                                 Assets $assetsService)
     {
         $this->em            = $entityManager;
-        $this->repo          = $this->em->getRepository('AppBundle\Entity\Vehicles\VehicleEntity');
+        $this->repo          = $this->em->getRepository(VehiclesEntity::class);
         $this->mfgsService   = $mfgsService;
         $this->assetsService = $assetsService;
     }
@@ -107,7 +108,7 @@ class Vehicles
 
         try {
             $this->existingVehicle = $this->findByIdOrVin($data['id'], $data['vin']);
-            $this->entity          = $this->existingVehicle ? $this->existingVehicle : new VehicleEntity();
+            $this->entity          = $this->existingVehicle ? $this->existingVehicle : new VehiclesEntity();
 
             $this->mfg = $this->mfgsService->find($data['mfg_id']);
             $models    = $this->mfg->getModels();
@@ -167,7 +168,7 @@ class Vehicles
         $this->entity->setPlate($data['plate']);
 
         // Assets entity
-        $this->entity = $this->assetsService->save('AppBundle\Entity\Vehicles\VehicleAssetsEntity', $this->entity, $data['assets']);
+        $this->entity = $this->assetsService->save(VehicleAssetsEntity::class, $this->entity, $data);
 
         if (!$this->existingVehicle) {
             $this->em->persist($this->entity);
@@ -220,7 +221,7 @@ class Vehicles
      *
      * @param $id
      * @param $vin
-     * @return VehicleEntity|null|object
+     * @return VehiclesEntity|null|object
      */
     private function findByIdOrVin($id, $vin)
     {

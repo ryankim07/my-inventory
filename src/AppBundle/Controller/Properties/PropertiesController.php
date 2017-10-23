@@ -11,7 +11,6 @@
 
 namespace AppBundle\Controller\Properties;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +18,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
@@ -78,8 +78,8 @@ class PropertiesController extends FOSRestController
         // Request param
         $data = json_decode(stripslashes($request->get('data')), true);
 
-        // Add assets
-        $data['assets'] = $request->files->all();
+        // Add new assets
+        $data['new_assets'] = $request->files->all();
 
         $service = $this->get('Properties');
 

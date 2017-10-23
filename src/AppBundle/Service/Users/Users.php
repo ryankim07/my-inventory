@@ -12,9 +12,9 @@
 namespace AppBundle\Service\Users;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\Users\UsersEntity;
-use AppBundle\Entity\Users\GroupsEntity;
-use AppBundle\Entity\Users\UsersRegistrationEntity;
+use AppBundle\Entity\UsersEntity;
+use AppBundle\Entity\GroupsEntity;
+use AppBundle\Entity\UsersRegistrationEntity;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 class Users
@@ -32,7 +32,7 @@ class Users
     public function __construct(EntityManager $entityManager)
     {
         $this->em   = $entityManager;
-        $this->repo = $this->em->getRepository('AppBundle\Entity\Users\UsersEntity');
+        $this->repo = $this->em->getRepository(UsersEntity::class);
     }
 
     /**
@@ -135,7 +135,7 @@ class Users
 
         // Add groups
         $groupsEntity = $this->existingUser ?
-            $this->em->getRepository('AppBundle\Entity\Users\GroupsEntity')->findOneByUsername($this->entity->getUsername()) : new GroupsEntity();
+            $this->em->getRepository(GroupsEntity::class)->findOneByUsername($this->entity->getUsername()) : new GroupsEntity();
 
         if (!is_null($data['groups'])) {
             foreach($data['groups'] as $group) {
@@ -190,7 +190,7 @@ class Users
     {
         try {
             $registration = $this->em
-                ->getRepository('AppBundle\Entity\Users\UsersRegistrationEntity')
+                ->getRepository(UsersRegistrationEntity::class)
                 ->findOneBy([
                     'email' => $email,
                     'code'  => $code

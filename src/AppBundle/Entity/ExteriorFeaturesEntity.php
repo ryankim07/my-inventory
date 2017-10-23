@@ -9,7 +9,7 @@
  * @module  MyInventory
  */
 
-namespace AppBundle\Entity\Properties;
+namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -49,7 +49,7 @@ class ExteriorFeaturesEntity
     private $others;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Properties\PropertyEntity", inversedBy="exteriorFeatures")
+     * @ORM\OneToOne(targetEntity="PropertiesEntity", inversedBy="exteriorFeatures")
      * @ORM\JoinColumn(name="property_id", referencedColumnName="id")
      */
     private $property;
@@ -163,11 +163,11 @@ class ExteriorFeaturesEntity
     /**
      * Set property
      *
-     * @param PropertyEntity $property
+     * @param PropertiesEntity $property
      *
      * @return PropertyExteriorFeatures
      */
-    public function setProperty(PropertyEntity $property = null)
+    public function setProperty(PropertiesEntity $property = null)
     {
         $this->property = $property;
 
@@ -177,7 +177,7 @@ class ExteriorFeaturesEntity
     /**
      * Get property
      *
-     * @return PropertyEntity
+     * @return PropertiesEntity
      */
     public function getProperty()
     {

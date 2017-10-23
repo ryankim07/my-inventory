@@ -1,7 +1,8 @@
 <?php
 
-namespace AppBundle\Entity\Vehicles;
+namespace AppBundle\Entity;
 
+use AppBundle\Entity\AbstractAssetsEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity
  * @ORM\Table(name="vehicles.vehicles")
  */
-class VehicleEntity
+class VehiclesEntity extends AbstractAssetsEntity
 {
     /**
      * @ORM\Column(type="integer", length=11)
@@ -72,7 +73,7 @@ class VehicleEntity
     private $plate;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Vehicles\VehicleAssetsEntity", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="VehicleAssetsEntity", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\JoinTable(
      *  name="vehicles.vehicles_assets",
      *  joinColumns={
@@ -85,7 +86,7 @@ class VehicleEntity
      *
      * orphanRemoval - this is necessary to remove rows from the 2nd table besides the 3rd table
      */
-    private $assets;
+    protected $assets;
 
     /**
      * Constructor
@@ -315,18 +316,6 @@ class VehicleEntity
     }
 
     /**
-     * Remove all assets
-     */
-    public function removeAllAssets()
-    {
-        if ($this->assets->count() > 0) {
-            foreach ($this->assets as $existingAsset) {
-                $this->removeAsset($existingAsset);
-            }
-        }
-    }
-
-    /**
      * Remove asset
      *
      * @param VehicleAssetsEntity $asset
@@ -338,15 +327,5 @@ class VehicleEntity
         }
 
         $this->assets->removeElement($asset);
-    }
-
-    /**
-     * Get assets
-     *
-     * @return ArrayCollection
-     */
-    public function getAssets()
-    {
-        return $this->assets;
     }
 }

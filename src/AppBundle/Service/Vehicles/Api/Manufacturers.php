@@ -117,7 +117,7 @@ class Manufacturers
                 foreach ($mfg['models'] as $model) {
                     $modelId       = $model['model_id'];
                     $modelName     = $model['model'];
-                    $existingModel = $this->em->getRepository('AppBundle\Entity\Vehicles\ManufacturerModelsEntity')->findOneBy(
+                    $existingModel = $this->em->getRepository(ManufacturerModelsEntity::class)->findOneBy(
                         array('modelId' => $modelId, 'model' => $modelName)
                     );
 

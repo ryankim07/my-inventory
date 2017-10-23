@@ -12,7 +12,7 @@
 namespace AppBundle\Service\Vendors;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\Vendors\VendorCategoriesEntity;
+use AppBundle\Entity\VendorCategoriesEntity;
 
 class VendorCategories
 {
@@ -29,7 +29,7 @@ class VendorCategories
     public function __construct(EntityManager $entityManager)
     {
         $this->em   = $entityManager;
-        $this->repo = $this->em->getRepository('AppBundle\Entity\Vendors\VendorCategoriesEntity');
+        $this->repo = $this->em->getRepository(VendorCategoriesEntity::class);
     }
 
     /**

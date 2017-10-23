@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Entity\Vendors;
+namespace AppBundle\Entity;
 
-use AppBundle\Entity\Paints\PaintsEntity;
+use AppBundle\Entity\PaintsEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -79,12 +79,12 @@ class VendorsEntity
     private $notes;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Paints\PaintsEntity", mappedBy="vendor", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="PaintsEntity", mappedBy="vendor", cascade={"persist", "remove"})
      */
     private $paints;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vendors\VendorCategoriesEntity", inversedBy="vendors")
+     * @ORM\ManyToOne(targetEntity="VendorCategoriesEntity", inversedBy="vendors")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $category;

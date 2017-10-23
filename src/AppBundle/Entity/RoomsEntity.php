@@ -9,8 +9,9 @@
  * @module  MyInventory
  */
 
-namespace AppBundle\Entity\Properties;
+namespace AppBundle\Entity;
 
+use AppBundle\Entity\AbstractAssetsEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -19,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="houses.rooms")
  */
-class RoomsEntity
+class RoomsEntity extends AbstractAssetsEntity
 {
     /**
      * @ORM\Column(type="integer")
@@ -51,19 +52,19 @@ class RoomsEntity
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Properties\PropertyEntity", inversedBy="rooms")
+     * @ORM\ManyToOne(targetEntity="PropertiesEntity", inversedBy="rooms")
      * @ORM\JoinColumn(name="property_id", referencedColumnName="id")
      */
     private $property;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\RoomsWallsEntity", mappedBy="rooms", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="RoomsWallsEntity", mappedBy="rooms", cascade={"persist", "remove"})
      * @ORM\OrderBy({"name" = "ASC"})
      */
     private $walls;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Properties\PropertyAssetsEntity", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="PropertyAssetsEntity", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\JoinTable(
      *  name="houses.rooms_assets",
      *  joinColumns={
@@ -76,7 +77,7 @@ class RoomsEntity
      *
      * orphanRemoval - this is necessary to remove rows from the 2nd table besides the 3rd table
      */
-    private $assets;
+    protected $assets;
 
     /**
      * Constructor
@@ -196,11 +197,11 @@ class RoomsEntity
     /**
      * Set property
      *
-     * @param PropertyEntity $property
+     * @param PropertiesEntity $property
      *
      * @return RoomsEntity
      */
-    public function addProperty(PropertyEntity $property = null)
+    public function addProperty(PropertiesEntity $property = null)
     {
         $this->property = $property;
 
@@ -210,7 +211,7 @@ class RoomsEntity
     /**
      * Get property
      *
-     * @return PropertyEntity
+     * @return PropertiesEntity
      */
     public function getProperty()
     {
@@ -220,11 +221,11 @@ class RoomsEntity
     /**
      * Set property
      *
-     * @param PropertyEntity $property
+     * @param PropertiesEntity $property
      *
      * @return RoomsEntity
      */
-    public function setProperty(PropertyEntity $property = null)
+    public function setProperty(PropertiesEntity $property = null)
     {
         $this->property = $property;
 
@@ -284,18 +285,6 @@ class RoomsEntity
     }
 
     /**
-     * Remove all assets
-     */
-    public function removeAllAssets()
-    {
-        if ($this->assets->count() > 0) {
-            foreach ($this->assets as $existingAsset) {
-                $this->removeAsset($existingAsset);
-            }
-        }
-    }
-
-    /**
      * Remove asset
      *
      * @param PropertyAssetsEntity $asset
@@ -307,15 +296,5 @@ class RoomsEntity
         }
 
         $this->assets->removeElement($asset);
-    }
-
-    /**
-     * Get assets
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAssets()
-    {
-        return $this->assets;
     }
 }

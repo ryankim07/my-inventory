@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class PropertyEntity
+ * Class PropertiesEntity
  *
  * Entity class
  *
@@ -9,8 +9,9 @@
  * @module  MyInventory
  */
 
-namespace AppBundle\Entity\Properties;
+namespace AppBundle\Entity;
 
+use AppBundle\Entity\AbstractAssetsEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -19,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="houses.properties")
  */
-class PropertyEntity
+class PropertiesEntity extends AbstractAssetsEntity
 {
     /**
      * @ORM\Column(type="integer")
@@ -80,7 +81,40 @@ class PropertyEntity
     private $parcelNumber;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Properties\PropertyAssetsEntity", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="AddressEntity", mappedBy="property", cascade={"persist", "remove"})
+     */
+    private $address;
+
+    /**
+     * @ORM\OneToMany(targetEntity="RoomsEntity", mappedBy="property", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\OrderBy({"name" = "ASC"})
+     */
+    private $rooms;
+
+    /**
+     * @ORM\OneToOne(targetEntity="ExteriorFeaturesEntity", mappedBy="property", cascade={"persist", "remove"})
+     */
+    private $exteriorFeatures;
+
+    /**
+     * @ORM\OneToOne(targetEntity="InteriorFeaturesEntity", mappedBy="property", cascade={"persist", "remove"})
+     */
+    private $interiorFeatures;
+
+    /**
+     * @ORM\OneToOne(targetEntity="FeaturesEntity", mappedBy="property", cascade={"persist", "remove"})
+     */
+    private $features;
+
+    /**
+     * Non mapped property
+     *
+     * @var ArrayCollection
+     */
+    private $nonAddedRooms;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="PropertyAssetsEntity", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\JoinTable(
      *  name="houses.properties_assets",
      *  joinColumns={
@@ -93,40 +127,7 @@ class PropertyEntity
      *
      * orphanRemoval - this is necessary to remove rows from the 2nd table besides the 3rd table
      */
-    private $assets;
-
-    /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Properties\AddressEntity", mappedBy="property", cascade={"persist", "remove"})
-     */
-    private $address;
-
-    /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Properties\RoomsEntity", mappedBy="property", orphanRemoval=true, cascade={"persist", "remove"})
-     * @ORM\OrderBy({"name" = "ASC"})
-     */
-    private $rooms;
-
-    /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Properties\ExteriorFeaturesEntity", mappedBy="property", cascade={"persist", "remove"})
-     */
-    private $exteriorFeatures;
-
-    /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Properties\InteriorFeaturesEntity", mappedBy="property", cascade={"persist", "remove"})
-     */
-    private $interiorFeatures;
-
-    /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Properties\FeaturesEntity", mappedBy="property", cascade={"persist", "remove"})
-     */
-    private $features;
-
-    /**
-     * Non mapped property
-     *
-     * @var ArrayCollection
-     */
-    private $nonAddedRooms;
+    protected $assets;
 
     /**
      * Constructor
@@ -153,7 +154,7 @@ class PropertyEntity
      *
      * @param integer $built
      *
-     * @return PropertyEntity
+     * @return PropertiesEntity
      */
     public function setBuilt($built)
     {
@@ -177,7 +178,7 @@ class PropertyEntity
      *
      * @param string $style
      *
-     * @return PropertyEntity
+     * @return PropertiesEntity
      */
     public function setStyle($style)
     {
@@ -201,7 +202,7 @@ class PropertyEntity
      *
      * @param integer $floors
      *
-     * @return PropertyEntity
+     * @return PropertiesEntity
      */
     public function setFloors($floors)
     {
@@ -225,7 +226,7 @@ class PropertyEntity
      *
      * @param integer $beds
      *
-     * @return PropertyEntity
+     * @return PropertiesEntity
      */
     public function setBeds($beds)
     {
@@ -249,7 +250,7 @@ class PropertyEntity
      *
      * @param integer $baths
      *
-     * @return PropertyEntity
+     * @return PropertiesEntity
      */
     public function setBaths($baths)
     {
@@ -273,7 +274,7 @@ class PropertyEntity
      *
      * @param string $finishedArea
      *
-     * @return PropertyEntity
+     * @return PropertiesEntity
      */
     public function setFinishedArea($finishedArea)
     {
@@ -297,7 +298,7 @@ class PropertyEntity
      *
      * @param string $unfinishedArea
      *
-     * @return PropertyEntity
+     * @return PropertiesEntity
      */
     public function setUnfinishedArea($unfinishedArea)
     {
@@ -321,7 +322,7 @@ class PropertyEntity
      *
      * @param string $totalArea
      *
-     * @return PropertyEntity
+     * @return PropertiesEntity
      */
     public function setTotalArea($totalArea)
     {
@@ -345,7 +346,7 @@ class PropertyEntity
      *
      * @param string $parcelNumber
      *
-     * @return PropertyEntity
+     * @return PropertiesEntity
      */
     public function setParcelNumber($parcelNumber)
     {
@@ -394,7 +395,7 @@ class PropertyEntity
      *
      * @param RoomsEntity $room
      *
-     * @return PropertyEntity
+     * @return PropertiesEntity
      */
     public function addRoom(RoomsEntity $room)
     {
@@ -578,18 +579,6 @@ class PropertyEntity
     }
 
     /**
-     * Remove all assets
-     */
-    public function removeAllAssets()
-    {
-        if ($this->assets->count() > 0) {
-            foreach ($this->assets as $existingAsset) {
-                $this->removeAsset($existingAsset);
-            }
-        }
-    }
-
-    /**
      * Remove asset
      *
      * @param PropertyAssetsEntity $asset
@@ -601,15 +590,5 @@ class PropertyEntity
         }
 
         $this->assets->removeElement($asset);
-    }
-
-    /**
-     * Get assets
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAssets()
-    {
-        return $this->assets;
     }
 }

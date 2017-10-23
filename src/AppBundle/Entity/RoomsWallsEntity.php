@@ -9,7 +9,7 @@
  * @module  MyInventory
  */
 
-namespace AppBundle\Entity\Properties;
+namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -46,7 +46,7 @@ class RoomsWallsEntity
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Properties\RoomsEntity", inversedBy="rooms_walls")
+     * @ORM\ManyToOne(targetEntity="RoomsEntity", inversedBy="rooms_walls")
      * @ORM\JoinColumn(name="room_id", referencedColumnName="id")
      */
     private $rooms;
@@ -136,7 +136,7 @@ class RoomsWallsEntity
     /**
      * Set rooms
      *
-     * @param \AppBundle\Entity\Properties\RoomsEntity $rooms
+     * @param RoomsEntity $rooms
      *
      * @return RoomsWallsEntity
      */
@@ -150,7 +150,7 @@ class RoomsWallsEntity
     /**
      * Get rooms
      *
-     * @return \AppBundle\Entity\Properties\RoomsEntity
+     * @return RoomsEntity
      */
     public function getRooms()
     {

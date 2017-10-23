@@ -9,10 +9,11 @@
  * @module  MyInventory
  */
 
-namespace AppBundle\Entity\Paints;
+namespace AppBundle\Entity;
 
-use AppBundle\Entity\Properties\PropertyAssetsEntity;
-use AppBundle\Entity\Vendors\VendorsEntity;
+use AppBundle\Entity\PropertyAssetsEntity;
+use AppBundle\Entity\VendorsEntity;
+use AppBundle\Entity\AbstractAssetsEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -21,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="houses.paints")
  */
-class PaintsEntity
+class PaintsEntity extends AbstractAssetsEntity
 {
     /**
      * @ORM\Column(type="integer")
@@ -75,13 +76,13 @@ class PaintsEntity
     private $notes;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vendors\VendorsEntity", inversedBy="paints")
+     * @ORM\ManyToOne(targetEntity="VendorsEntity", inversedBy="paints")
      * @ORM\JoinColumn(name="vendor_id", referencedColumnName="id")
      */
     private $vendor;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Properties\PropertyAssetsEntity", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity="PropertyAssetsEntity", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\JoinTable(
      *  name="houses.paints_assets",
      *  joinColumns={
@@ -94,7 +95,7 @@ class PaintsEntity
      *
      * orphanRemoval - this is necessary to remove rows from the 2nd table besides the 3rd table
      */
-    private $assets;
+    protected $assets;
 
     /**
      * Constructor
@@ -348,18 +349,6 @@ class PaintsEntity
     }
 
     /**
-     * Remove all assets
-     */
-    public function removeAllAssets()
-    {
-        if ($this->assets->count() > 0) {
-            foreach ($this->assets as $existingAsset) {
-                $this->removeAsset($existingAsset);
-            }
-        }
-    }
-
-    /**
      * Remove asset
      *
      * @param PropertyAssetsEntity $asset
@@ -371,15 +360,5 @@ class PaintsEntity
         }
 
         $this->assets->removeElement($asset);
-    }
-
-    /**
-     * Get assets
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAssets()
-    {
-        return $this->assets;
     }
 }

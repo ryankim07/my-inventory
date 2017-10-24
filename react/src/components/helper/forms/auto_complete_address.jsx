@@ -57,7 +57,7 @@ class AutoCompleteAddress extends React.Component
 			input: {
 				display: 'inline-block',
 				width: '100%',
-				padding: '6px',
+				padding: '5px',
 				border: '2px solid #dce4ec'
 			},
 			autocompleteContainer: {

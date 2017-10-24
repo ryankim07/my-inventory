@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import AutoCompleteAddress from "../../../helper/forms/auto_complete_address";
 import InputZipCode from '../../../helper/forms/input_zip_code';
 import StatesDropdown from '../../../helper/forms/states_dropdown';
+import CountriesDropdown from '../../../helper/forms/countries_dropdown';
 import { upperFirstLetter, phoneFormat, urlFormat, checkAddressInputFields } from '../../../helper/utils';
 
 class SettingsVendor extends React.Component
@@ -152,7 +153,7 @@ class SettingsVendor extends React.Component
 							<StatesDropdown
 								className="form-control input-sm"
 								value={ vendor.state }
-								handleFormChange={ this.onHandleFormChange.bind(this, 'state') }
+								onHandleFormChange={ this.onHandleFormChange.bind(this, 'state') }
 								required={ classNames({'required': this.state.isRequiredField }) }
 							/>
 						</div>
@@ -165,7 +166,7 @@ class SettingsVendor extends React.Component
 							<InputZipCode
 								className="form-control input-sm"
 								value={ vendor.zip }
-								handleFormChange={ this.onHandleFormChange.bind(this, 'zip') }
+								onHandleFormChange={ this.onHandleFormChange.bind(this, 'zip') }
 								required={ classNames({'required': this.state.isRequiredField }) }
 							/>
 						</div>
@@ -175,14 +176,12 @@ class SettingsVendor extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Country</label>
 						<div className="input-group">
-							<select
+							<CountriesDropdown
 								className="form-control input-sm"
-								onChange={ this.onHandleFormChange.bind(this, 'country') }
 								value={ vendor.country }
-								required={ classNames({'required': this.state.isRequiredField }) }>
-								<option value="">Select One</option>
-								<option value="United States">United States</option>
-							</select>
+								onHandleFormChange={ this.onHandleFormChange.bind(this, 'country') }
+								required={ classNames({'required': this.state.isRequiredField }) }
+							/>
 						</div>
 					</div>
 				</div>

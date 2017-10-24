@@ -7,7 +7,7 @@ class InputZipCode extends React.Component
 			<input
 				type="text"
 				className={ this.props.className }
-				onChange={ this.props.handleFormChange }
+				onChange={ this.props.onHandleFormChange }
 				value={ this.props.value }
 				pattern="^\d{5}$"
 				title="Zip code should contain 5 digits"

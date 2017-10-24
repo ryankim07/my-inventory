@@ -1,4 +1,6 @@
 import React from 'react';
+import classNames from 'classnames';
+import AutoCompleteAddress from "../../../helper/forms/auto_complete_address";
 import InputZipCode from '../../../helper/forms/input_zip_code';
 import StatesDropdown from '../../../helper/forms/states_dropdown';
 import { upperFirstLetter } from '../../../helper/utils';
@@ -8,30 +10,53 @@ class PropertyAddressForm extends React.Component
 	constructor(props) {
 		super(props);
 
+		this.state = {
+			address: this.props.address,
+			isRequiredField: false
+		};
+
+		this.parentObjSetter  = this.parentObjSetter.bind(this);
 		this.handleFormChange = this.handleFormChange.bind(this);
+	}
+
+	// Vendor object setter
+	parentObjSetter(obj) {
+		this.setState(obj);
 	}
 
 	// Handle input changes
     handleFormChange(propertyName, event) {
-        let address     = this.props.address;
-        let chosenValue = event.target.value;
+        let address         = this.state.address;
+		let chosenValue     = propertyName === 'street' ? event : event.target.value;
+		let isRequiredField = this.state.isRequiredField;
 
         switch (propertyName) {
-            case 'street':
-            case 'city':
             case 'subdivision':
                 address[propertyName] = upperFirstLetter(chosenValue);
             break;
+
+			case 'street':
+			case 'city':
+			case 'state':
+			case 'zip':
+			case 'country':
+				address[propertyName] = chosenValue;
+				isRequiredField = checkAddressInputFields(address);
+			break;
 
             default:
                 address[propertyName] = chosenValue;
         }
 
+		this.setState({
+			isRequiredField: isRequiredField
+		});
+
         this.props.onHandleFormChange('address', address);
     }
 
 	render() {
-    	let address = this.props.address;
+    	let address = this.state.address;
 
         return (
 
@@ -40,21 +65,19 @@ class PropertyAddressForm extends React.Component
 				<p>Address Information</p>
 				<hr/>
 
-				<div className="form-group required">
+				<div className={ classNames('form-group', {'required': this.state.isRequiredField }) }>
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Street</label>
-						<div className="input-group">
-							<input
-								type="text"
-								className="form-control input-sm"
-								onChange={ this.handleFormChange.bind(this, 'street') }
-								value={ address.street }
-								required="required"
-							/>
-						</div>
+						<AutoCompleteAddress
+							parentObjName="address"
+							parentObj={ address }
+							parentObjSetter={ this.parentObjSetter }
+							onHandleFormChange={ this.handleFormChange.bind(this) }
+							required={ classNames({'required': this.state.isRequiredField }) }
+						/>
 					</div>
 				</div>
-				<div className="form-group required">
+				<div className={ classNames('form-group', {'required': this.state.isRequiredField }) }>
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">City</label>
 						<div className="input-group">
@@ -63,12 +86,12 @@ class PropertyAddressForm extends React.Component
 								className="form-control input-sm"
 								onChange={ this.handleFormChange.bind(this, 'city') }
 								value={ address.city }
-								required="required"
+								required={ classNames({'required': this.state.isRequiredField }) }
 							/>
 						</div>
 					</div>
 				</div>
-				<div className="form-group required">
+				<div className={ classNames('form-group', {'required': this.state.isRequiredField }) }>
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">State</label>
 						<div className="input-group">
@@ -76,12 +99,12 @@ class PropertyAddressForm extends React.Component
 							className="form-control input-sm"
 							value={ address.state }
 							handleFormChange={ this.handleFormChange.bind(this, 'state') }
-							required="required"
+							required={ classNames({'required': this.state.isRequiredField }) }
 						/>
 						</div>
 					</div>
 				</div>
-				<div className="form-group required">
+				<div className={ classNames('form-group', {'required': this.state.isRequiredField }) }>
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Zip</label>
 						<div className="input-group">
@@ -89,7 +112,7 @@ class PropertyAddressForm extends React.Component
 								className="form-control input-sm"
 								value={ address.zip }
 								handleFormChange={ this.handleFormChange.bind(this, 'zip') }
-								required="required"
+								required={ classNames({'required': this.state.isRequiredField }) }
 							/>
 						</div>
 					</div>
@@ -101,7 +124,8 @@ class PropertyAddressForm extends React.Component
 								<select
 									className="form-control input-sm"
 									onChange={ this.handleFormChange.bind(this, 'county') }
-									value={ address.county }>
+									value={ address.county }
+									required="">
 								<option value="">Select One</option>
 								<option value="Los Angeles County">Los Angeles County</option>
 								<option value="Orange County">Orange County</option>
@@ -109,14 +133,15 @@ class PropertyAddressForm extends React.Component
 						</div>
 					</div>
 				</div>
-				<div className="form-group">
+				<div className={ classNames('form-group', {'required': this.state.isRequiredField }) }>
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Country</label>
 						<div className="input-group">
 								<select
 									className="form-control input-sm"
 									onChange={ this.handleFormChange.bind(this, 'country') }
-									value={ address.country }>
+									value={ address.country }
+									required={ classNames({'required': this.state.isRequiredField }) }>
 								<option value="">Select One</option>
 								<option value="US">United States</option>
 							</select>

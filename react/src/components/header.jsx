@@ -45,6 +45,49 @@ class Header extends React.Component
 
 	// Render
     render() {
+		// Settings HTML
+		let settingsHtml = this.state.admin ?
+			<li className="dropdown">
+				<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Settings <span className="caret"/></a>
+				<ul className="dropdown-menu">
+					<li className="dropdown dropdown-submenu">
+						<a href="#" className="dropdown-toggle" data-toggle="dropdown">API Vehicles</a>
+						<ul className="dropdown-menu">
+							<li><Link to="/settings/vehicles/dashboard/manufacturers"><i className="fa fa-car menu-link-icon" aria-hidden="true"/> List</Link></li>
+						</ul>
+					</li>
+					<li className="dropdown dropdown-submenu">
+						<a href="#" className="dropdown-toggle" data-toggle="dropdown">Paints</a>
+						<ul className="dropdown-menu">
+							<li><Link to="/settings/paints/dashboard/paints-list"><i className="fa fa-paint-brush menu-link-icon" aria-hidden="true"/> List</Link></li>
+						</ul>
+					</li>
+					<li className="dropdown dropdown-submenu">
+						<a href="#" className="dropdown-toggle" data-toggle="dropdown">Vendors</a>
+						<ul className="dropdown-menu">
+							<li><Link to="/settings/vendors/dashboard/vendors"><i className="fa fa-shopping-bag menu-link-icon" aria-hidden="true"/> List</Link></li>
+						</ul>
+					</li>
+					<li className="dropdown-submenu">
+						<a href="#" className="dropdown-toggle" data-toggle="dropdown">Users</a>
+						<ul className="dropdown-menu">
+							<li><Link to="/settings/users/dashboard/users"><i className="fa fa-users menu-link-icon" aria-hidden="true"/> List</Link></li>
+						</ul>
+					</li>
+				</ul>
+			</li> : null;
+
+			// Testing HTML
+			let testingHtml = this.state.admin ?
+				<li className="dropdown">
+					<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Test <span className="caret"/></a>
+					<ul className="dropdown-menu" role="menu">
+						<li>
+							<Link to="/test/component" className="menu-link"><i className="fa fa-home menu-link-icon" aria-hidden="true"/> Component</Link>
+						</li>
+					</ul>
+				</li> : null;
+
         return (
             <div className="navbar navbar-inverse navbar-fixed-top">
                 <div className="container-fluid">
@@ -76,38 +119,9 @@ class Header extends React.Component
                                 </ul>
                             </li>
 
-                            {
-                                this.state.admin ?
-                                    <li className="dropdown">
-                                        <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Settings <span className="caret"/></a>
-                                        <ul className="dropdown-menu">
-                                            <li className="dropdown dropdown-submenu">
-                                                <a href="#" className="dropdown-toggle" data-toggle="dropdown">API Vehicles</a>
-                                                <ul className="dropdown-menu">
-                                                    <li><Link to="/settings/vehicles/dashboard/manufacturers"><i className="fa fa-car menu-link-icon" aria-hidden="true"/> List</Link></li>
-                                                </ul>
-                                            </li>
-                                            <li className="dropdown dropdown-submenu">
-                                                <a href="#" className="dropdown-toggle" data-toggle="dropdown">Paints</a>
-                                                <ul className="dropdown-menu">
-													<li><Link to="/settings/paints/dashboard/paints-list"><i className="fa fa-paint-brush menu-link-icon" aria-hidden="true"/> List</Link></li>
-                                                </ul>
-                                            </li>
-                                            <li className="dropdown dropdown-submenu">
-                                                <a href="#" className="dropdown-toggle" data-toggle="dropdown">Vendors</a>
-                                                <ul className="dropdown-menu">
-                                                    <li><Link to="/settings/vendors/dashboard/vendors"><i className="fa fa-shopping-bag menu-link-icon" aria-hidden="true"/> List</Link></li>
-                                                </ul>
-                                            </li>
-											<li className="dropdown-submenu">
-												<a href="#" className="dropdown-toggle" data-toggle="dropdown">Users</a>
-												<ul className="dropdown-menu">
-													<li><Link to="/settings/users/dashboard/users"><i className="fa fa-users menu-link-icon" aria-hidden="true"/> List</Link></li>
-												</ul>
-											</li>
-										</ul>
-                                    </li> : null
-                            }
+                            { settingsHtml}
+							{ testingHtml }
+
                         </ul>
                         <ul className="nav navbar-nav navbar-right">
                             <li className="dropdown">

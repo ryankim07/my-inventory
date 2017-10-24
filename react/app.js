@@ -26,6 +26,7 @@ import SettingsPaintsDashboard from './src/components/settings/paints/dashboard'
 import SettingsPaintsList from './src/components/settings/paints/list';
 import SettingsVendorsDashboard from './src/components/settings/vendors/dashboard';
 import SettingsVendorsList from './src/components/settings/vendors/list';
+import TestComponent from './src/components/test/component';
 
 function requireAuth(nextState, replace)
 {
@@ -76,6 +77,8 @@ ReactDOM.render(
 			<Route exact path="/settings/vendors/dashboard/:section" component={ SettingsVendorsDashboard }>
 				<Route path="/settings/vendors/list" component={ SettingsVendorsList }/>
 			</Route>
+
+			<Route exact path="/test/component" component={ TestComponent }/>
         </Route>
     </Router>,
 

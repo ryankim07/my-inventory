@@ -9,12 +9,12 @@ import SettingsPaintsList from './../paints/list';
 import SettingsPaint from './../paints/forms/paint';
 import FlashMessage from '../../helper/flash_message';
 
-let mainDefaultMobileColumnWidth = 'col-xs-12';
-let mainDefaultDesktopColumnWidth = 'col-md-12';
-let mainShrinkedMobileColumnWidth = 'col-xs-8';
-let mainShrinkedDesktopColumnWidth = 'col-md-8';
-let rightPanelMobileColumnWidth = 'col-xs-4';
-let rightPanelDesktopColumnWidth = 'col-md-4';
+const mainDefaultMobileColumnWidth = 'col-xs-12';
+const mainDefaultDesktopColumnWidth = 'col-md-12';
+const mainShrinkedMobileColumnWidth = 'col-xs-8';
+const mainShrinkedDesktopColumnWidth = 'col-md-8';
+const rightPanelMobileColumnWidth = 'col-xs-4';
+const rightPanelDesktopColumnWidth = 'col-md-4';
 
 class SettingsPaintsDashboard extends React.Component
 {

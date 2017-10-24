@@ -12,22 +12,17 @@ import React from 'react';
 
 class SearchField extends React.Component
 {
-    /// Handle input changes
-	clearInput(event) {
-		event.preventDefault();
-		this.props.onHandleFormChange(event);
-    }
-
-    render() {
+    // Render
+	render() {
         return (
             <div className="input-group col-lg-12" id={ ['search-', this.props.searchType].join(' ') }>
+				<i className="fa fa-search fa-2x" aria-hidden="true"/>
                 <input
                     type="text"
                     value={ this.props.searchText }
                     onChange={ this.props.onHandleFormChange.bind(this) }
                     className="form-control"
                 />
-                <button onClick={ this.clearInput.bind(this) }><i className="fa fa-eraser" aria-hidden="true"/> Clear</button>
             </div>
         );
     }

@@ -113,3 +113,28 @@ export function urlFormat(url) {
 		return 'http://' + url;
 	}
 }
+
+/**
+ * Check if all address fields are empty or not
+ *
+ * @param obj
+ * @returns {boolean}
+ */
+export function checkAddressInputFields(obj) {
+	let totalFields = 5;
+	let emptyFields = 0;
+
+	Object.keys(obj).forEach(function(key) {
+		switch (key) {
+			case 'street':
+			case 'city':
+			case 'state':
+			case 'zip':
+			case 'country':
+				emptyFields = obj[key].trim() === "" ? emptyFields + 1 : emptyFields;
+			break;
+		}
+	});
+
+	return emptyFields < totalFields ? true : false;
+}

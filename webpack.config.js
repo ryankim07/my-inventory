@@ -26,7 +26,10 @@ var config = {
 				test: /\.css$/,
 				include: /node_modules/,
 				loaders: ['style-loader', 'css-loader']
-			}
+			},
+			{   test: /.(png|jpg)$/,
+                loader: 'url-loader?limit=8192'
+			},
 		]
     },
     // Recognize extensions when importing separate components

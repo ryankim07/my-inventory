@@ -149,8 +149,7 @@ export function labelValueJsonGenerator(list, label, value) {
 	return list.map(obj => {
 		return ({
 			label: obj[label],
-			value: obj[label],
-			id: obj[value]
+			value: obj[value],
 		});
 	});
 }

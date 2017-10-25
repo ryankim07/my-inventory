@@ -1,5 +1,4 @@
 import React from 'react';
-import DisplayPanel from '../../../helper/panels/display';
 import NonAddedRoomsDropdown from '../../rooms/forms/non_added_rooms_dropdown';
 import PropertyRoomWallsDropdown from '../../rooms/forms/walls_dropdown';
 import PropertyPaintsDropdown from '../../rooms/forms/paints_dropdown';
@@ -246,9 +245,13 @@ class PropertyRoomForm extends React.Component
 						<label className="control-label">Image</label>
 						<div className="input-group">
 							<Uploader
-								assets={ room.assets }
-								isEditingMode={ this.props.isEditingMode }
-								setAssets={ this.setAssets }
+								inputProps={
+									{
+										assets: vehicle.assets,
+										isEditingMode: this.props.isEditingMode,
+										setAssets: this.setAssets
+									}
+								}
 							/>
 						</div>
 					</div>

@@ -15,7 +15,7 @@ class Uploader extends React.Component
 {
 	// Dragging and dropping.  Need to pass array to create reject object in backend
 	onHandleDrop(propertyName, chosenAssets) {
-		let assets = this.props.assets;
+		let assets = this.props.inputProps.assets;
 
 		chosenAssets.map(chosenAsset => {
 			let chosenAssetName = chosenAsset.name;
@@ -30,23 +30,23 @@ class Uploader extends React.Component
 			assets.push(chosenAsset);
 		});
 
-		this.props.setAssets(assets);
+		this.props.inputProps.setAssets(assets);
 	}
 
 	// Remove asset
 	onHandleRemove(index, event) {
 		event.preventDefault();
 
-		let assets = this.props.assets;
+		let assets = this.props.inputProps.assets;
 		assets.splice(index, 1);
 
-		this.props.setAssets(assets);
+		this.props.inputProps.setAssets(assets);
 	}
 
 	// Render
 	render() {
 		// Set preview
-		let assets	   = this.props.assets;
+		let assets	   = this.props.inputProps.assets;
 		let assetField =
 			assets.map((asset, assetIndex) => {
 				let path = asset.path ? asset.path : asset.preview;

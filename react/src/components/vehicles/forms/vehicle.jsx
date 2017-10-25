@@ -1,11 +1,10 @@
 import React from 'react';
-import AutoComplete from "../../helper/forms/auto_complete";
 import AbstractDropdown from "../../helper/forms/abstract_dropdown";
 import YearsDropdown from '../../helper/forms/years_dropdown';
 import VehicleColorsDropdown  from '../../helper/forms/vehicle_colors_dropdown';
 import Uploader from '../../helper/uploader';
 import Loader from '../../helper/loader';
-import { upperFirstLetter, labelValueJsonGenerator } from "../../helper/utils";
+import { upperFirstLetter } from "../../helper/utils";
 
 class VehicleForm extends React.Component
 {
@@ -17,10 +16,8 @@ class VehicleForm extends React.Component
 			vehicle: this.props.vehicle
 		};
 
-		this.onHandleFormChange 	  = this.onHandleFormChange.bind(this);
-		this.onHandleAutoInputChanges = this.onHandleAutoInputChanges.bind(this);
-		this.setAssets     			  = this.setAssets.bind(this);
-		this.handleFormSubmit   	  = this.handleFormSubmit.bind(this);
+		this.setAssets     	  = this.setAssets.bind(this);
+		this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
 
     // Next state change
@@ -64,10 +61,11 @@ class VehicleForm extends React.Component
         });
     }
 
-    // Handle when selected field is ID value
-    onHandleAutoInputChanges(value) {
+    // Handle when dropdown field is selected
+    onHandleAutoSelectChanges(value) {
+		let vehicle = this.state.vehicle;
 		this.setState({
-			vehicle: vehicle
+			vehicle: vehicle['year'] = value
 		});
 	}
 
@@ -160,9 +158,13 @@ class VehicleForm extends React.Component
 						<label className="control-label">Image</label>
 						<div className="input-group">
 							<Uploader
-								assets={ vehicle.assets }
-								isEditingMode={ this.props.isEditingMode }
-								setAssets={ this.setAssets }
+								inputProps={
+									{
+										assets: vehicle.assets,
+										isEditingMode: this.props.isEditingMode,
+										setAssets: this.setAssets
+									}
+								}
 							/>
 						</div>
 					</div>
@@ -170,20 +172,20 @@ class VehicleForm extends React.Component
 				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Year</label>
-						<div className="input-group">
-							<YearsDropdown
-								inputProps={
-									{
-										fromYear: 2010,
-										toYear: (new Date()).getFullYear(),
-										className: "form-control input-sm",
-										value: vehicle.years,
-										onChange: this.onHandleFormChange.bind(this, 'years'),
-										required: "required"
-									}
+						<YearsDropdown
+							inputProps={
+								{
+									className: "form-control input-sm",
+									fromYear: 2010,
+									toYear: (new Date()).getFullYear(),
+									type: 'auto',
+									value: vehicle.year,
+									onChange: this.onHandleFormChange.bind(this, 'year'),
+									onSelect: this.onHandleAutoSelectChanges.bind(this),
+									required: "required"
 								}
-							/>
-						</div>
+							}
+						/>
 					</div>
 				</div>
 
@@ -196,10 +198,9 @@ class VehicleForm extends React.Component
 							<VehicleColorsDropdown
 								inputProps={
 									{
-										className: "form-control input-sm",
-										value: vehicle.years,
-										onChange: this.onHandleFormChange.bind(this, 'color'),
-										required: "required"
+										assets: vehicle.assets,
+										isEditingMode: this.props.isEditingMode,
+										setAssets: this.setAssets
 									}
 								}
 							/>

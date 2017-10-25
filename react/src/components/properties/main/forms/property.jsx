@@ -101,9 +101,13 @@ class PropertyForm extends React.Component
 						<label className="control-label">Image</label>
 						<div className="input-group">
 							<Uploader
-								assets={ property.assets }
-								isEditingMode={ this.props.isEditingMode }
-								setAssets={ this.setAssets }
+								inputProps={
+									{
+										assets: vehicle.assets,
+										isEditingMode: this.props.isEditingMode,
+										setAssets: this.setAssets
+									}
+								}
 							/>
 						</div>
 					</div>

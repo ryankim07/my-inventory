@@ -1,81 +1,86 @@
 /**
  * States dropdown component
+ *
+ * Required props
+ *
+ * className: class name,
+ * value: the value to be selected,
+ * required: "required" or "",
+ * onChange: handler for form changes
  */
 
 import React from 'react';
+import AbstractDropdown from './abstract_dropdown';
 
 class StatesDropdown extends React.Component
 {
+	// Render
     render() {
 		let states = [
-			{ "key": "AL", "value": "Alabama" },
-			{ "key": "AK", "value": "Alaska" },
-			{ "key": "AZ", "value": "Arizona" },
-			{ "key": "AR", "value": "Arkansas" },
-			{ "key": "CA", "value": "California" },
-			{ "key": "CO", "value": "Colorado" },
-			{ "key": "CT", "value": "Connecticut" },
-			{ "key": "DE", "value": "Delaware" },
-			{ "key": "DC", "value": "District Of Columbia" },
-			{ "key": "FL", "value": "Florida" },
-			{ "key": "GA", "value": "Georgia" },
-			{ "key": "HI", "value": "Hawaii" },
-			{ "key": "ID", "value": "Idaho" },
-			{ "key": "IL", "value": "Illinois" },
-			{ "key": "IN", "value": "Indiana" },
-			{ "key": "IA", "value": "Iowa" },
-			{ "key": "KS", "value": "Kansas" },
-			{ "key": "KY", "value": "Kentucky" },
-			{ "key": "LA", "value": "Louisiana" },
-			{ "key": "ME", "value": "Maine" },
-			{ "key": "MD", "value": "Maryland" },
-			{ "key": "MA", "value": "Massachusetts" },
-			{ "key": "MI", "value": "Michigan" },
-			{ "key": "MN", "value": "Minnesota" },
-			{ "key": "MS", "value": "Mississippi" },
-			{ "key": "MO", "value": "Missouri" },
-			{ "key": "MT", "value": "Montana" },
-			{ "key": "NE", "value": "Nebraska" },
-			{ "key": "NV", "value": "Nevada" },
-			{ "key": "NH", "value": "New Hampshire" },
-			{ "key": "NJ", "value": "New Jersey" },
-			{ "key": "NM", "value": "New Mexico" },
-			{ "key": "NY", "value": "New York" },
-			{ "key": "NC", "value": "North Carolina" },
-			{ "key": "ND", "value": "North Dakota" },
-			{ "key": "OH", "value": "Ohio" },
-			{ "key": "OK", "value": "Oklahoma" },
-			{ "key": "OR", "value": "Oregon" },
-			{ "key": "PA", "value": "Pennsylvania" },
-			{ "key": "RI", "value": "Rhode Island" },
-			{ "key": "SC", "value": "South Carolina" },
-			{ "key": "SD", "value": "South Dakota" },
-			{ "key": "TN", "value": "Tennessee" },
-			{ "key": "TX", "value": "Texas" },
-			{ "key": "UT", "value": "Utah" },
-			{ "key": "VT", "value": "Vermont" },
-			{ "key": "VA", "value": "Virginia" },
-			{ "key": "WA", "value": "Washington" },
-			{ "key": "WV", "value": "West Virginia" },
-			{ "key": "WI", "value": "Wisconsin" },
-			{ "key": "WY", "value": "Wyoming"}
+			{ "value": "AL", "label": "Alabama" },
+			{ "value": "AK", "label": "Alaska" },
+			{ "value": "AZ", "label": "Arizona" },
+			{ "value": "AR", "label": "Arkansas" },
+			{ "value": "CA", "label": "California" },
+			{ "value": "CO", "label": "Colorado" },
+			{ "value": "CT", "label": "Connecticut" },
+			{ "value": "DE", "label": "Delaware" },
+			{ "value": "DC", "label": "District Of Columbia" },
+			{ "value": "FL", "label": "Florida" },
+			{ "value": "GA", "label": "Georgia" },
+			{ "value": "HI", "label": "Hawaii" },
+			{ "value": "ID", "label": "Idaho" },
+			{ "value": "IL", "label": "Illinois" },
+			{ "value": "IN", "label": "Indiana" },
+			{ "value": "IA", "label": "Iowa" },
+			{ "value": "KS", "label": "Kansas" },
+			{ "value": "KY", "label": "Kentucky" },
+			{ "value": "LA", "label": "Louisiana" },
+			{ "value": "ME", "label": "Maine" },
+			{ "value": "MD", "label": "Maryland" },
+			{ "value": "MA", "label": "Massachusetts" },
+			{ "value": "MI", "label": "Michigan" },
+			{ "value": "MN", "label": "Minnesota" },
+			{ "value": "MS", "label": "Mississippi" },
+			{ "value": "MO", "label": "Missouri" },
+			{ "value": "MT", "label": "Montana" },
+			{ "value": "NE", "label": "Nebraska" },
+			{ "value": "NV", "label": "Nevada" },
+			{ "value": "NH", "label": "New Hampshire" },
+			{ "value": "NJ", "label": "New Jersey" },
+			{ "value": "NM", "label": "New Mexico" },
+			{ "value": "NY", "label": "New York" },
+			{ "value": "NC", "label": "North Carolina" },
+			{ "value": "ND", "label": "North Dakota" },
+			{ "value": "OH", "label": "Ohio" },
+			{ "value": "OK", "label": "Oklahoma" },
+			{ "value": "OR", "label": "Oregon" },
+			{ "value": "PA", "label": "Pennsylvania" },
+			{ "value": "RI", "label": "Rhode Island" },
+			{ "value": "SC", "label": "South Carolina" },
+			{ "value": "SD", "label": "South Dakota" },
+			{ "value": "TN", "label": "Tennessee" },
+			{ "value": "TX", "label": "Texas" },
+			{ "value": "UT", "label": "Utah" },
+			{ "value": "VT", "label": "Vermont" },
+			{ "value": "VA", "label": "Virginia" },
+			{ "value": "WA", "label": "Washington" },
+			{ "value": "WV", "label": "West Virginia" },
+			{ "value": "WI", "label": "Wisconsin" },
+			{ "value": "WY", "label": "Wyoming"}
 		];
 
 		let statesOptions = states.map((state, stateIndex) => {
 			return (
-				<option key={ stateIndex } value={ state.key }>{ state.value }</option>
+				<option key={ stateIndex } value={ state.value }>{ state.label }</option>
 			);
 		});
 
         return (
-            <select
-				className={ this.props.className }
-				value={ this.props.value }
-				onChange={ this.props.onHandleFormChange }
-                required={ this.props.required }>
+			<AbstractDropdown inputProps={ this.props.inputProps }>
 				<option value="">Select One</option>
 				{ statesOptions }
-            </select>
+            </AbstractDropdown>
         );
     }
 }

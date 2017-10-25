@@ -1,5 +1,6 @@
 import React from 'react';
 import PropertyAddressForm from './../../address/forms/address';
+import YearsDropdown from '../../../helper/forms/years_dropdown';
 import Uploader from '../../../helper/uploader';
 import { numberFormat } from '../../../helper/utils';
 
@@ -66,15 +67,9 @@ class PropertyForm extends React.Component
 
 	render() {
 		let property  	  = this.state.property;
-        let builtOptions  = [];
 		let bedsOptions   = [];
 		let bathsOptions  = [];
 		let floorsOptions = [];
-
-		// Built options
-		for (let i = 1970; i <= 2050; i++) {
-			builtOptions.push(<option key={ 'y-' + i } value={ i }>{ i }</option>)
-		}
 
 		// Bed options
 		for (let j = 0; j <= 15; j++) {
@@ -117,14 +112,18 @@ class PropertyForm extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Built</label>
 						<div className="input-group">
-							<select
-								onChange={ this.onHandleFormChange.bind(this, 'built') }
-								value={ property.built }
-								className="form-control input-sm"
-								required="required">
-								<option value="">Select One</option>
-								{ builtOptions }
-							</select>
+							<YearsDropdown
+								inputProps={
+									{
+										fromYear: 1970,
+										toYear: (new Date()).getFullYear(),
+										className: "form-control input-sm",
+										value: property.built,
+										required: "required",
+										onChange: this.onHandleFormChange.bind(this, 'built')
+									}
+								}
+							/>
 						</div>
 					</div>
 				</div>

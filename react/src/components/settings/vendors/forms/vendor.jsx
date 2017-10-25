@@ -124,10 +124,10 @@ class SettingsVendor extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Street</label>
 						<AutoCompleteAddress
-							parentObjName="vendor"
-							parentObj={ vendor }
-							parentObjSetter={ this.parentObjSetter }
-							onHandleFormChange={ this.onHandleFormChange.bind(this) }
+							list={ vendor }
+							listObjName="vendor"
+							listObjSetter={ this.parentObjSetter }
+							onChange={ this.onHandleFormChange.bind(this) }
 							required={ classNames({'required': this.state.isRequiredField }) }
 						/>
 					</div>
@@ -151,10 +151,14 @@ class SettingsVendor extends React.Component
 						<label className="control-label">State</label>
 						<div className="input-group">
 							<StatesDropdown
-								className="form-control input-sm"
-								value={ vendor.state }
-								onHandleFormChange={ this.onHandleFormChange.bind(this, 'state') }
-								required={ classNames({'required': this.state.isRequiredField }) }
+								inputProps={
+									{
+										className: "form-control input-sm",
+										value: address.state,
+										onChange: this.handleFormChange.bind(this, 'state'),
+										required: classNames({'required': this.state.isRequiredField})
+									}
+								}
 							/>
 						</div>
 					</div>

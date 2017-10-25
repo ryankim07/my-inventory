@@ -1,7 +1,11 @@
 import React from 'react';
+import AutoComplete from "../../helper/forms/auto_complete";
+import AbstractDropdown from "../../helper/forms/abstract_dropdown";
+import YearsDropdown from '../../helper/forms/years_dropdown';
+import VehicleColorsDropdown  from '../../helper/forms/vehicle_colors_dropdown';
 import Uploader from '../../helper/uploader';
 import Loader from '../../helper/loader';
-import { upperFirstLetter } from "../../helper/utils";
+import { upperFirstLetter, labelValueJsonGenerator } from "../../helper/utils";
 
 class VehicleForm extends React.Component
 {
@@ -13,9 +17,10 @@ class VehicleForm extends React.Component
 			vehicle: this.props.vehicle
 		};
 
-		this.onHandleFormChange = this.onHandleFormChange.bind(this);
-		this.setAssets     		= this.setAssets.bind(this);
-		this.handleFormSubmit   = this.handleFormSubmit.bind(this);
+		this.onHandleFormChange 	  = this.onHandleFormChange.bind(this);
+		this.onHandleAutoInputChanges = this.onHandleAutoInputChanges.bind(this);
+		this.setAssets     			  = this.setAssets.bind(this);
+		this.handleFormSubmit   	  = this.handleFormSubmit.bind(this);
     }
 
     // Next state change
@@ -59,6 +64,13 @@ class VehicleForm extends React.Component
         });
     }
 
+    // Handle when selected field is ID value
+    onHandleAutoInputChanges(value) {
+		this.setState({
+			vehicle: vehicle
+		});
+	}
+
 	// Handle assets
 	setAssets(assets) {
 		let vehicle = this.state.vehicle;
@@ -78,37 +90,68 @@ class VehicleForm extends React.Component
 
 	// Render
     render() {
-    	let manufacturers = this.props.manufacturers;
+		let manufacturers = this.props.manufacturers;
 		let vehicle       = this.state.vehicle;
-		let defaultMfgId  = parseInt(vehicle.mfg_id);
-		let yearsOptions  = [];
+		let defaultMfgId  = vehicle.mfg_id !== "" ? parseInt(vehicle.mfg_id) : false;
 
-		// Years options
-		for (let i = 2014; i <= 2020; i++) {
-			yearsOptions.push(<option key={ 'y-' + i } value={ i }>{ i }</option>)
-		}
-
-		// Get api vehicles list
-		let apiMfgsOptions = manufacturers.map((mfgs, mfgIndex) => {
-			return (
-				<option key={ mfgIndex } value={ mfgs.id }>{ mfgs.mfg }</option>
-			);
+		// Generate json list of manufacturers
+		let mfgOptions = manufacturers.map((mfgs, mfgIndex) => {
+			return (<option key={ mfgIndex } value={ mfgs.id }>{ mfgs.mfg }</option>);
 		});
 
 		// Get selected choice from api vehicles dropdown
-		let selectedMfg = manufacturers.filter(manufacturer => {
-			return manufacturer.id === defaultMfgId
-		});
+		let selectedMfg = manufacturers.length > 0 && defaultMfgId ?
+			manufacturers.filter(manufacturer => {
+				return manufacturer.id === defaultMfgId
+			}) : false;
 
-		// Models options by ID
-		let apiModelsOptions = '';
-		if (selectedMfg.length !== 0) {
-			apiModelsOptions = selectedMfg[0].models.map((manufacturer, modelIndex) => {
-				return (
-					<option key={ modelIndex } value={ manufacturer.model_id }>{ manufacturer.model }</option>
-				);
-			});
-		}
+		// Generate json list of models
+		let modelsOptions = selectedMfg ? selectedMfg[0].models.map((manufacturer, modelIndex) => {
+			return (<option key={ modelIndex } value={ manufacturer.model_id }>{ manufacturer.model }</option>);
+		}) : '';
+
+		// Need to display loader if add new vehicle component is accessed from header
+		let mfgAndModelsFields = !this.props.loader ?
+			<div>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Manufacturer</label>
+						<div className="input-group">
+							<AbstractDropdown
+								inputProps={
+									{
+										className: "form-control input-sm",
+										value: vehicle.mfg,
+										onChange: this.onHandleFormChange.bind(this, 'mfg_id'),
+										required: "required"
+									}
+								}>
+								<option value="">Select One</option>
+								{ mfgOptions }
+							</AbstractDropdown>
+						</div>
+					</div>
+				</div>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Model</label>
+						<div className="input-group">
+							<AbstractDropdown
+								inputProps={
+									{
+										className: "form-control input-sm",
+										value: vehicle.model,
+										onChange: this.onHandleFormChange.bind(this, 'model_id'),
+										required: "required"
+									}
+								}>
+								<option value="">Select One</option>
+								{ modelsOptions }
+							</AbstractDropdown>
+						</div>
+					</div>
+				</div>
+			</div> : <div><Loader/></div>;
 
 		let vehicleForm =
 			<form onSubmit={ this.handleFormSubmit }>
@@ -128,73 +171,38 @@ class VehicleForm extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Year</label>
 						<div className="input-group">
-							<select
-								onChange={ this.onHandleFormChange.bind(this, 'year') }
-								value={ vehicle.year }
-								className="form-control input-sm"
-								required="required">
-								<option value="">Select One</option>
-								{yearsOptions}
-							</select>
+							<YearsDropdown
+								inputProps={
+									{
+										fromYear: 2010,
+										toYear: (new Date()).getFullYear(),
+										className: "form-control input-sm",
+										value: vehicle.years,
+										onChange: this.onHandleFormChange.bind(this, 'years'),
+										required: "required"
+									}
+								}
+							/>
 						</div>
 					</div>
 				</div>
 
-				{
-					// Need to display loader if add new vehicle component is accessed from header
-					!this.props.loader ?
-						<div>
-							<div className="form-group required">
-								<div className="col-xs-12 col-md-8">
-									<label className="control-label">Manufacturer</label>
-									<div className="input-group">
-										<select
-											onChange={this.onHandleFormChange.bind(this, 'mfg_id')}
-											value={vehicle.mfg_id}
-											className="form-control input-sm"
-											required="required">
-											<option value="">Select One</option>
-											{apiMfgsOptions}
-										</select>
-									</div>
-								</div>
-							</div>
-							<div className="form-group required">
-								<div className="col-xs-12 col-md-8">
-									<label className="control-label">Model</label>
-									<div className="input-group">
-										<select
-											onChange={this.onHandleFormChange.bind(this, 'model_id')}
-											value={vehicle.model_id}
-											className="form-control input-sm"
-											required="required">
-											<option value="">Select One</option>
-											{apiModelsOptions}
-										</select>
-									</div>
-								</div>
-							</div>
-						</div> :
-						<div><Loader/></div>
-				}
+				{ mfgAndModelsFields }
 
 				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Color</label>
 						<div className="input-group">
-							<select
-								onChange={ this.onHandleFormChange.bind(this, 'color') }
-								value={ vehicle.color }
-								className="form-control input-sm"
-								required="required">
-								<option value="">Select One</option>
-								<option value="white">White</option>
-								<option value="black">Black</option>
-								<option value="silver">Silver</option>
-								<option value="red">Red</option>
-								<option value="yellow">Yellow</option>
-								<option value="orange">Orange</option>
-							</select>
+							<VehicleColorsDropdown
+								inputProps={
+									{
+										className: "form-control input-sm",
+										value: vehicle.years,
+										onChange: this.onHandleFormChange.bind(this, 'color'),
+										required: "required"
+									}
+								}
+							/>
 						</div>
 					</div>
 				</div>

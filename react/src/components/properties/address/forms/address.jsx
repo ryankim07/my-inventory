@@ -71,10 +71,10 @@ class PropertyAddressForm extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Street</label>
 						<AutoCompleteAddress
-							parentObjName="address"
-							parentObj={ address }
-							parentObjSetter={ this.parentObjSetter }
-							onHandleFormChange={ this.handleFormChange.bind(this) }
+							list={ address }
+							listObjObjName="address"
+							listObjObjSetter={ this.parentObjSetter }
+							onChange={ this.handleFormChange.bind(this) }
 							required={ classNames({'required': this.state.isRequiredField }) }
 						/>
 					</div>
@@ -98,10 +98,14 @@ class PropertyAddressForm extends React.Component
 						<label className="control-label">State</label>
 						<div className="input-group">
 							<StatesDropdown
-								className="form-control input-sm"
-								value={ address.state }
-								onHandleFormChange={ this.handleFormChange.bind(this, 'state') }
-								required={ classNames({'required': this.state.isRequiredField }) }
+								inputProps={
+									{
+										className: "form-control input-sm",
+										value: address.state,
+										onChange: this.handleFormChange.bind(this, 'state'),
+										required: classNames({'required': this.state.isRequiredField})
+									}
+								}
 							/>
 						</div>
 					</div>

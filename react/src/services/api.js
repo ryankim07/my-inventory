@@ -39,7 +39,7 @@ let Api = {
 					.set('Authorization', 'Bearer ' + AuthStore.getJwt())
 					.field('data', JSON.stringify(data));
 
-			assets.forEach((asset)=> {
+			assets.forEach((asset) => {
 				req.attach(asset.name, asset);
 			});
 

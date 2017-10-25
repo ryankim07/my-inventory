@@ -1,31 +1,38 @@
 /**
  * Countries dropdown component
+ *
+ * Required props
+ *
+ * className: class name,
+ * value: the value to be selected,
+ * required: "required" or "",
+ * onChange: handler for form changes
  */
 
 import React from 'react';
+import AbstractDropdown from './abstract_dropdown';
 
 class CountriesDropdown extends React.Component
 {
+	// Render
     render() {
 		let countries = [
-			{ "key": "United States", "value": "United States" }
+			{ "value": "United States", "label": "United States" },
+			{ "value": "South Korea", "label": "South Korea" },
+			{ "value": "Brazil", "label": "Brazil" },
 		];
 
 		let countriesOptions = countries.map((country, countryIndex) => {
 			return (
-				<option key={ countryIndex } value={ country.key }>{ country.value }</option>
+				<option key={ countryIndex } value={ country.value }>{ country.label }</option>
 			);
 		});
 
         return (
-            <select
-				className={ this.props.className }
-				value={ this.props.value }
-				onChange={ this.props.onHandleFormChange }
-                required={ this.props.required }>
+			<AbstractDropdown inputProps={ this.props.inputProps }>
 				<option value="">Select One</option>
 				{ countriesOptions }
-            </select>
+            </AbstractDropdown>
         );
     }
 }

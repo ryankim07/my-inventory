@@ -10,10 +10,9 @@
  */
 export function numberFormat(value)
 {
-	let num         = value.toString().replace(/,/gi, "").split("").reverse().join("");
-	let replacement = removeRougeChar(num.replace(/(.{3})/g,"$1,").split("").reverse().join(""));
+	let num = value.toString().replace(/,/gi, "").split("").reverse().join("");
 
-	return replacement;
+	 return removeRougeChar(num.replace(/(.{3})/g,"$1,").split("").reverse().join(""));
 }
 
 /**
@@ -137,4 +136,21 @@ export function checkAddressInputFields(obj) {
 	});
 
 	return emptyFields < totalFields ? true : false;
+}
+
+/**
+ * Generate a label and value JSON list
+ *
+ * @param list
+ * @param label
+ * @param value
+ */
+export function labelValueJsonGenerator(list, label, value) {
+	return list.map(obj => {
+		return ({
+			label: obj[label],
+			value: obj[label],
+			id: obj[value]
+		});
+	});
 }

@@ -1,32 +1,37 @@
 /**
  * Counties dropdown component
+ *
+ * Required props
+ *
+ * className: class name,
+ * value: the value to be selected,
+ * required: "required" or "",
+ * onChange: handler for form changes
  */
 
 import React from 'react';
+import AbstractDropdown from './abstract_dropdown';
 
 class CountiesDropdown extends React.Component
 {
+	// Render
     render() {
 		let counties = [
-			{ "key": "Orange County", "value": "Orange County" },
-			{ "key": "Los Angeles County", "value": "Los Angeles County" }
+			{ "value": "Orange County", "label": "Orange County" },
+			{ "value": "Los Angeles County", "label": "Los Angeles County" }
 		];
 
 		let countiesOptions = counties.map((county, countyIndex) => {
 			return (
-				<option key={ countyIndex } value={ county.key }>{ county.value }</option>
+				<option key={ countyIndex } value={ county.value }>{ county.label }</option>
 			);
 		});
 
         return (
-            <select
-				className={ this.props.className }
-				value={ this.props.value }
-				onChange={ this.props.onHandleFormChange }
-                required={ this.props.required }>
+			<AbstractDropdown inputProps={ this.props.inputProps }>
 				<option value="">Select One</option>
 				{ countiesOptions }
-            </select>
+            </AbstractDropdown>
         );
     }
 }

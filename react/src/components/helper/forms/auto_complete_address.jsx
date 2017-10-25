@@ -3,8 +3,10 @@
  *
  * Required props
  *
- * parentObj: the parent object
- * parentObjSetter: handler to set object
+ * list: the parent object
+ * listObjName: name of the parent object
+ * listObjSetter: handler to set object
+ * onHandleFormChange: handler for form changes
  */
 
 import React from 'react';
@@ -14,7 +16,7 @@ class AutoCompleteAddress extends React.Component
 {
 	// Handle form change
     onChange(address) {
-		this.props.onHandleFormChange('street', address);
+		this.props.onChange('street', address);
     }
 
 	// Handle select
@@ -29,23 +31,23 @@ class AutoCompleteAddress extends React.Component
 		 */
 		let objs = {};
 		let addressParts = address.split(',');
-		let parentObj    = this.props.parentObj;
-		parentObj.street  = addressParts[0].trim();
-		parentObj.city 	  = addressParts[1].trim();
-		parentObj.state   = addressParts[2].trim();
-		parentObj.country = addressParts[3].trim();
+		let list     = this.props.list;
+		list.street  = addressParts[0].trim();
+		list.city 	 = addressParts[1].trim();
+		list.state   = addressParts[2].trim();
+		list.country = addressParts[3].trim();
 
 		// Set the objects for parent state
-		objs[this.props.parentObjName] = parentObj;
+		objs[this.props.listName] = list;
 		objs['isRequiredField'] = true;
 
-		this.props.parentObjSetter(objs);
+		this.props.listObjSetter(objs);
 	}
 
     // Render
     render() {
 		const inputProps = {
-			value: this.props.parentObj.street,
+			value: this.props.list.street,
 			onChange: this.onChange.bind(this),
 		};
 

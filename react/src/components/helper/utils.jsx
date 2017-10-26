@@ -137,19 +137,3 @@ export function checkAddressInputFields(obj) {
 
 	return emptyFields < totalFields ? true : false;
 }
-
-/**
- * Generate a label and value JSON list
- *
- * @param list
- * @param label
- * @param value
- */
-export function labelValueJsonGenerator(list, label, value) {
-	return list.map(obj => {
-		return ({
-			label: obj[label],
-			value: obj[value],
-		});
-	});
-}

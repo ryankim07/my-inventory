@@ -151,15 +151,6 @@ class VehiclesDashboard extends React.Component
 		});
 	}
 
-	// Handle submit
-	onHandleFormSubmit(vehicle) {
-		if (!this.state.isEditingMode) {
-			VehiclesAction.addVehicle(vehicle);
-		} else {
-			VehiclesAction.updateVehicle(vehicle);
-		}
-	}
-
 	// Handle right panel
 	onHandleRightPanel(id) {
 		let isEditingMode = !!id;
@@ -174,11 +165,6 @@ class VehiclesDashboard extends React.Component
 				'desktopWidth': mainShrinkedDesktopColumnWidth
 			}
 		});
-	}
-
-	// Handle delete
-	onHandleRemove(id) {
-		VehiclesAction.removeVehicle(id);
 	}
 
 	// Handle view
@@ -212,6 +198,20 @@ class VehiclesDashboard extends React.Component
 				'desktopWidth': mainDefaultDesktopColumnWidth
 			}
 		});
+	}
+
+	// Handle delete
+	onHandleRemove(id) {
+		VehiclesAction.removeVehicle(id);
+	}
+
+	// Handle submit
+	onHandleFormSubmit(vehicle) {
+		if (!this.state.isEditingMode) {
+			VehiclesAction.addVehicle(vehicle);
+		} else {
+			VehiclesAction.updateVehicle(vehicle);
+		}
 	}
 
 	// Render

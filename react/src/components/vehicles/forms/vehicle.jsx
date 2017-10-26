@@ -64,8 +64,10 @@ class VehicleForm extends React.Component
     // Handle when dropdown field is selected
     onHandleAutoSelectChanges(value) {
 		let vehicle = this.state.vehicle;
+		vehicle['year'] = value;
+
 		this.setState({
-			vehicle: vehicle['year'] = value
+			vehicle: vehicle
 		});
 	}
 
@@ -119,7 +121,7 @@ class VehicleForm extends React.Component
 								inputProps={
 									{
 										className: "form-control input-sm",
-										value: vehicle.mfg,
+										value: vehicle.mfg_id,
 										onChange: this.onHandleFormChange.bind(this, 'mfg_id'),
 										required: "required"
 									}
@@ -138,7 +140,7 @@ class VehicleForm extends React.Component
 								inputProps={
 									{
 										className: "form-control input-sm",
-										value: vehicle.model,
+										value: vehicle.model_id,
 										onChange: this.onHandleFormChange.bind(this, 'model_id'),
 										required: "required"
 									}
@@ -177,7 +179,7 @@ class VehicleForm extends React.Component
 								{
 									className: "form-control input-sm",
 									fromYear: 2010,
-									toYear: (new Date()).getFullYear(),
+									toYear: (new Date()).getFullYear() + 1,
 									type: 'auto',
 									value: vehicle.year,
 									onChange: this.onHandleFormChange.bind(this, 'year'),
@@ -198,9 +200,10 @@ class VehicleForm extends React.Component
 							<VehicleColorsDropdown
 								inputProps={
 									{
-										assets: vehicle.assets,
-										isEditingMode: this.props.isEditingMode,
-										setAssets: this.setAssets
+										className: "form-control input-sm",
+										value: vehicle.color,
+										onChange: this.onHandleFormChange.bind(this, 'color'),
+										required: "required"
 									}
 								}
 							/>

@@ -13,7 +13,6 @@
 
 import React from 'react';
 import AbstractDropdown from './abstract_dropdown';
-import { yearsGenerator } from "../../helper/utils";
 import AutoComplete from "./auto_complete";
 
 class YearsDropdown extends React.Component

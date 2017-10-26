@@ -14,10 +14,12 @@ import ReactAutocomplete from 'react-autocomplete';
 
 class AutoComplete extends React.Component
 {
-	// Handle select
-	/*onHandleSelect(value){
-		this.props.inputProps.onSelect(value);
-	}*/
+	shouldItemRender(item, value) {
+		let labelStr = item.label.toString();
+		let valueStr = value.toString();
+
+		return labelStr.toLowerCase().indexOf(valueStr.toLowerCase()) > -1
+	}
 
     // Render
     render() {
@@ -47,9 +49,7 @@ class AutoComplete extends React.Component
 					renderMenu={ (items, value) =>
 						<div style={ { menuStyle } } children={ items }/>
 					}
-					shouldItemRender={ (item, value) =>
-						item.label.toLowerCase().indexOf(value.toLowerCase()) > -1
-					}
+					shouldItemRender={ this.shouldItemRender }
 					getItemValue={ (item) =>
 						item.value
 					}

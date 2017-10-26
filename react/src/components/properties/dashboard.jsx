@@ -197,36 +197,6 @@ class PropertiesDashboard extends React.Component
 		});
 	}
 
-	// Handle submit
-	onHandleFormSubmit(obj, type) {
-		obj.obj_type = type;
-
-		switch (type) {
-			case 'features':
-			case 'exterior_features':
-			case 'interior_features':
-				PropertiesAction.updateProperty(obj);
-			break;
-
-			default:
-				if (!this.state.isEditingMode) {
-					PropertiesAction.addProperty(obj);
-				} else {
-					PropertiesAction.updateProperty(obj);
-				}
-		}
-	}
-
-	// Handle delete
-	onHandleRemove(id) {
-		PropertiesAction.removeProperty(id);
-	}
-
-	// Handle delete
-	onHandleRemoveRoom(propertyId, roomId) {
-		PropertiesAction.removePropertyRoom(propertyId, roomId);
-	}
-
 	// Handle main panel
 	// ID will determine the state in which next panel should display
 	onHandleMainPanel(id, panel) {
@@ -307,6 +277,36 @@ class PropertiesDashboard extends React.Component
 	// Set flash message
 	setFlashMessage($msg) {
 		this.setState({flashMessage: $msg})
+	}
+
+	// Handle delete
+	onHandleRemove(id) {
+		PropertiesAction.removeProperty(id);
+	}
+
+	// Handle delete
+	onHandleRemoveRoom(propertyId, roomId) {
+		PropertiesAction.removePropertyRoom(propertyId, roomId);
+	}
+
+	// Handle submit
+	onHandleFormSubmit(obj, type) {
+		obj.obj_type = type;
+
+		switch (type) {
+			case 'features':
+			case 'exterior_features':
+			case 'interior_features':
+				PropertiesAction.updateProperty(obj);
+				break;
+
+			default:
+				if (!this.state.isEditingMode) {
+					PropertiesAction.addProperty(obj);
+				} else {
+					PropertiesAction.updateProperty(obj);
+				}
+		}
 	}
 
 	// Render

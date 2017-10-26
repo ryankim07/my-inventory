@@ -97,15 +97,6 @@ class SettingsUsersDashboard extends React.Component
 		});
 	}
 
-	// Handle submit
-	onHandleFormSubmit(user) {
-		if (!this.state.isEditingMode) {
-			UsersAction.addUser(user);
-		} else {
-			UsersAction.updateUser(user);
-		}
-	}
-
 	// Handle right panel
 	onHandleRightPanel(id) {
 		let isEditingMode = !!id;
@@ -151,11 +142,6 @@ class SettingsUsersDashboard extends React.Component
 		});
 	}
 
-	// Handle delete
-	onHandleRemove(id) {
-		UsersAction.removeUser(id);
-	}
-
 	// Set flash message
 	setFlashMessage(msg) {
 		this.setState({flashMessage: msg});
@@ -172,6 +158,21 @@ class SettingsUsersDashboard extends React.Component
 		});
 	}
 
+	// Handle delete
+	onHandleRemove(id) {
+		UsersAction.removeUser(id);
+	}
+
+	// Handle submit
+	onHandleFormSubmit(user) {
+		if (!this.state.isEditingMode) {
+			UsersAction.addUser(user);
+		} else {
+			UsersAction.updateUser(user);
+		}
+	}
+
+	// Render
 	render() {
 		// Main panel
 		let mainPanelHtml =

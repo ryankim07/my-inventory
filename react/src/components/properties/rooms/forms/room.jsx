@@ -247,7 +247,7 @@ class PropertyRoomForm extends React.Component
 							<Uploader
 								inputProps={
 									{
-										assets: vehicle.assets,
+										assets: room.assets,
 										isEditingMode: this.props.isEditingMode,
 										setAssets: this.setAssets
 									}

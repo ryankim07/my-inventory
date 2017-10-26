@@ -17,8 +17,8 @@ class SettingsVendor extends React.Component
 			isRequiredField: false
 		};
 
-        this.parentObjSetter  = this.parentObjSetter.bind(this);
-		this.handleFormSubmit = this.handleFormSubmit.bind(this);
+        this.onHandleSelect   = this.onHandleSelect.bind(this);
+        this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
 
     // When it receives new values
@@ -26,11 +26,6 @@ class SettingsVendor extends React.Component
 		if (nextProps.vendor !== this.props.vendor) {
 			this.setState({ vendor: nextProps.vendor });
 		}
-	}
-
-	// Vendor object setter
-	parentObjSetter(obj) {
-		this.setState(obj);
 	}
 
     // Handle input changes
@@ -51,7 +46,7 @@ class SettingsVendor extends React.Component
 			case 'zip':
 			case 'country':
 				vendor[propertyName] = chosenValue;
-				isRequiredField = checkAddressInputFields(vendor);
+				isRequiredField = !this.state.isEditingMode ? false : checkAddressInputFields(vendor);
 				vendor[propertyName] = propertyName === 'city' ? upperFirstLetter(chosenValue) : chosenValue;
 			break;
 
@@ -72,6 +67,13 @@ class SettingsVendor extends React.Component
 			isRequiredField: isRequiredField
 		});
     }
+
+	// Handle auto complete select
+	onHandleSelect(updated) {
+		let vendor = this.state.vendor;
+
+		this.setState({ vendor: _.assign(vendor, updated) });
+	}
 
     // Submit
     handleFormSubmit(event) {
@@ -123,13 +125,19 @@ class SettingsVendor extends React.Component
 				<div className={ classNames('form-group', {'required': this.state.isRequiredField }) }>
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Street</label>
-						<AutoCompleteAddress
-							list={ vendor }
-							listObjName="vendor"
-							listObjSetter={ this.parentObjSetter }
-							onChange={ this.onHandleFormChange.bind(this) }
-							required={ classNames({'required': this.state.isRequiredField }) }
-						/>
+						<div className="input-group">
+							<AutoCompleteAddress
+								inputProps = {
+									{
+										value: vendor.street,
+										inputIds: ['street', 'city', 'state', 'zip', 'country'],
+										onChange: this.onHandleFormChange.bind(this, 'vendor'),
+										onSelect: this.onHandleSelect,
+										required: classNames({'required': this.state.isRequiredField })
+									}
+								}
+							/>
+						</div>
 					</div>
 				</div>
 				<div className={ classNames('form-group', {'required': this.state.isRequiredField }) }>
@@ -154,7 +162,7 @@ class SettingsVendor extends React.Component
 								inputProps={
 									{
 										className: "form-control input-sm",
-										value: address.state,
+										value: vendor.state,
 										onChange: this.handleFormChange.bind(this, 'state'),
 										required: classNames({'required': this.state.isRequiredField})
 									}
@@ -168,10 +176,14 @@ class SettingsVendor extends React.Component
 						<label className="control-label">Zip</label>
 						<div className="input-group">
 							<InputZipCode
-								className="form-control input-sm"
-								value={ vendor.zip }
-								onHandleFormChange={ this.onHandleFormChange.bind(this, 'zip') }
-								required={ classNames({'required': this.state.isRequiredField }) }
+								inputProps={
+									{
+										className: "form-control input-sm",
+										value: vendor.zip,
+										onChange: this.handleFormChange.bind(this, 'zip'),
+										required: classNames({'required': this.state.isRequiredField})
+									}
+								}
 							/>
 						</div>
 					</div>
@@ -181,10 +193,14 @@ class SettingsVendor extends React.Component
 						<label className="control-label">Country</label>
 						<div className="input-group">
 							<CountriesDropdown
-								className="form-control input-sm"
-								value={ vendor.country }
-								onHandleFormChange={ this.onHandleFormChange.bind(this, 'country') }
-								required={ classNames({'required': this.state.isRequiredField }) }
+								inputProps={
+									{
+										className: "form-control input-sm",
+										value: vendor.country,
+										onChange: this.handleFormChange.bind(this, 'country'),
+										required: classNames({'required': this.state.isRequiredField})
+									}
+								}
 							/>
 						</div>
 					</div>

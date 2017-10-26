@@ -106,15 +106,6 @@ class SettingsPaintsDashboard extends React.Component
 		});
 	}
 
-	// Handle submit
-	onHandleFormSubmit(paint) {
-		if (!this.state.isEditingMode) {
-			PaintsAction.addPaint(paint);
-		} else {
-			PaintsAction.updatePaint(paint);
-		}
-	}
-
 	// Handle right panel
 	onHandleRightPanel(id) {
 		let isEditingMode = !!id;
@@ -133,11 +124,6 @@ class SettingsPaintsDashboard extends React.Component
 		});
 	}
 
-	// Handle delete
-	onHandleRemove(id) {
-		PaintsAction.removePaint(id);
-	}
-
 	// Set flash message
 	setFlashMessage(msg) {
 		this.setState({flashMessage: msg});
@@ -152,6 +138,20 @@ class SettingsPaintsDashboard extends React.Component
 				'desktopWidth': mainDefaultDesktopColumnWidth
 			}
 		});
+	}
+
+	// Handle delete
+	onHandleRemove(id) {
+		PaintsAction.removePaint(id);
+	}
+
+	// Handle submit
+	onHandleFormSubmit(paint) {
+		if (!this.state.isEditingMode) {
+			PaintsAction.addPaint(paint);
+		} else {
+			PaintsAction.updatePaint(paint);
+		}
 	}
 
 	// Render

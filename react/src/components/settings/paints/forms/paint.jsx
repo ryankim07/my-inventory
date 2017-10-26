@@ -85,7 +85,7 @@ class SettingsPaint extends React.Component
 							<Uploader
 								inputProps={
 									{
-										assets: vehicle.assets,
+										assets: paint.assets,
 										isEditingMode: this.props.isEditingMode,
 										setAssets: this.setAssets
 									}

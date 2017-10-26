@@ -118,8 +118,8 @@ class AuthLogin extends React.Component
 					id="login-form"
 					header="Login"
 					additionalHeader=""
-					iconBtn="fa fa-window-close"
-					onClick={ this.closeRightPanel }
+					iconBtn=""
+					onClick=""
 					previousRoute="">
 					{ loginForm }
 				</DisplayPanel>

@@ -13,8 +13,7 @@ class PropertyForm extends React.Component
 			property: this.props.property
 		}
 
-		this.onHandleFormChange = this.onHandleFormChange.bind(this);
-		this.setAssets     		= this.setAssets.bind(this);
+		this.setAssets = this.setAssets.bind(this);
     }
 
 	componentWillReceiveProps(nextProps) {
@@ -38,7 +37,7 @@ class PropertyForm extends React.Component
     // Handle input changes
 	onHandleFormChange(propertyName, event) {
         let property    = this.state.property;
-        let chosenValue = propertyName === 'address' ? event : event.target.value;
+        let chosenValue = event.target.value;
 
         switch (propertyName) {
             case 'finished_area':
@@ -103,7 +102,7 @@ class PropertyForm extends React.Component
 							<Uploader
 								inputProps={
 									{
-										assets: vehicle.assets,
+										assets: property.assets,
 										isEditingMode: this.props.isEditingMode,
 										setAssets: this.setAssets
 									}
@@ -119,12 +118,12 @@ class PropertyForm extends React.Component
 							<YearsDropdown
 								inputProps={
 									{
+										className: "form-control input-sm",
 										fromYear: 1970,
 										toYear: (new Date()).getFullYear(),
-										className: "form-control input-sm",
 										value: property.built,
-										required: "required",
-										onChange: this.onHandleFormChange.bind(this, 'built')
+										onChange: this.onHandleFormChange.bind(this, 'built'),
+										required: "required"
 									}
 								}
 							/>
@@ -246,8 +245,7 @@ class PropertyForm extends React.Component
 				</div>
 
 				<PropertyAddressForm
-					address={ property.address }
-					onHandleFormChange={ this.onHandleFormChange }
+					inputProps = { { address: property.address } }
 				/>
 
 				<div className="form-group">

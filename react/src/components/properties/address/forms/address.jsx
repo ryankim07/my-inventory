@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import classNames from 'classnames';
 import AutoCompleteAddress from "../../../helper/forms/auto_complete_address";
 import InputZipCode from '../../../helper/forms/input_zip_code';
@@ -13,17 +14,11 @@ class PropertyAddressForm extends React.Component
 		super(props);
 
 		this.state = {
-			address: this.props.address,
+			address: this.props.inputProps.address,
 			isRequiredField: false
 		};
 
-		this.parentObjSetter  = this.parentObjSetter.bind(this);
-		this.handleFormChange = this.handleFormChange.bind(this);
-	}
-
-	// Vendor object setter
-	parentObjSetter(obj) {
-		this.setState(obj);
+		this.onHandleSelect = this.onHandleSelect.bind(this);
 	}
 
 	// Handle input changes
@@ -43,7 +38,7 @@ class PropertyAddressForm extends React.Component
 			case 'zip':
 			case 'country':
 				address[propertyName] = chosenValue;
-				isRequiredField = checkAddressInputFields(address);
+				isRequiredField = !this.state.isEditingMode ? false : checkAddressInputFields(address);
 			break;
 
             default:
@@ -51,11 +46,17 @@ class PropertyAddressForm extends React.Component
         }
 
 		this.setState({
+			address: address,
 			isRequiredField: isRequiredField
 		});
-
-        this.props.onHandleFormChange('address', address);
     }
+
+	// Handle auto complete select
+	onHandleSelect(updated) {
+		let address = this.state.address;
+
+		this.setState({ address: _.assign(address, updated) });
+	}
 
 	render() {
     	let address = this.state.address;
@@ -70,13 +71,19 @@ class PropertyAddressForm extends React.Component
 				<div className={ classNames('form-group', {'required': this.state.isRequiredField }) }>
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Street</label>
-						<AutoCompleteAddress
-							list={ address }
-							listObjObjName="address"
-							listObjObjSetter={ this.parentObjSetter }
-							onChange={ this.handleFormChange.bind(this) }
-							required={ classNames({'required': this.state.isRequiredField }) }
-						/>
+						<div className="input-group">
+							<AutoCompleteAddress
+								inputProps = {
+									{
+										value: address.street,
+										inputIds: ['street', 'city', 'state', 'zip', 'county', 'country'],
+										onChange: this.handleFormChange.bind(this, 'street'),
+										onSelect: this.onHandleSelect,
+										required: "required"
+									}
+								}
+							/>
+						</div>
 					</div>
 				</div>
 				<div className={ classNames('form-group', {'required': this.state.isRequiredField }) }>
@@ -115,10 +122,14 @@ class PropertyAddressForm extends React.Component
 						<label className="control-label">Zip</label>
 						<div className="input-group">
 							<InputZipCode
-								className="form-control input-sm"
-								value={ address.zip }
-								onHandleFormChange={ this.handleFormChange.bind(this, 'zip') }
-								required={ classNames({'required': this.state.isRequiredField }) }
+								inputProps={
+									{
+										className: "form-control input-sm",
+										value: address.zip,
+										onChange: this.handleFormChange.bind(this, 'zip'),
+										required: classNames({'required': this.state.isRequiredField})
+									}
+								}
 							/>
 						</div>
 					</div>
@@ -128,10 +139,14 @@ class PropertyAddressForm extends React.Component
 						<label className="control-label">County</label>
 						<div className="input-group">
 							<CountiesDropdown
-								className="form-control input-sm"
-								value={ address.county }
-								onHandleFormChange={ this.handleFormChange.bind(this, 'county') }
-								required=""
+								inputProps={
+									{
+										className: "form-control input-sm",
+										value: address.county,
+										onChange: this.handleFormChange.bind(this, 'county'),
+										required: ""
+									}
+								}
 							/>
 						</div>
 					</div>
@@ -141,10 +156,14 @@ class PropertyAddressForm extends React.Component
 						<label className="control-label">Country</label>
 						<div className="input-group">
 							<CountriesDropdown
-								className="form-control input-sm"
-								value={ address.country }
-								onHandleFormChange={ this.handleFormChange.bind(this, 'country') }
-								required={ classNames({'required': this.state.isRequiredField }) }
+								inputProps={
+									{
+										className: "form-control input-sm",
+										value: address.country,
+										onChange: this.handleFormChange.bind(this, 'country'),
+										required: classNames({'required': this.state.isRequiredField })
+									}
+								}
 							/>
 						</div>
 					</div>

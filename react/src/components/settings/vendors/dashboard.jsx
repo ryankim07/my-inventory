@@ -109,15 +109,6 @@ class SettingsVendorsDashboard extends React.Component
 		});
 	}
 
-	// Handle submit
-	onHandleFormSubmit(vehicle) {
-		if (!this.state.isEditingMode) {
-			VendorsAction.addVendor(vehicle);
-		} else {
-			VendorsAction.updateVendor(vehicle);
-		}
-	}
-
 	// Handle right panel
 	onHandleRightPanel(id) {
 		let isEditingMode = !!id;
@@ -135,11 +126,6 @@ class SettingsVendorsDashboard extends React.Component
 		});
 	}
 
-	// Handle delete
-	onHandleRemove(id) {
-		VendorsAction.removeVendor(id);
-	}
-
 	// Set flash message
 	setFlashMessage(msg) {
 		this.setState({flashMessage: msg});
@@ -154,6 +140,20 @@ class SettingsVendorsDashboard extends React.Component
 				'desktopWidth': mainDefaultDesktopColumnWidth
 			}
 		});
+	}
+
+	// Handle delete
+	onHandleRemove(id) {
+		VendorsAction.removeVendor(id);
+	}
+
+	// Handle submit
+	onHandleFormSubmit(vehicle) {
+		if (!this.state.isEditingMode) {
+			VendorsAction.addVendor(vehicle);
+		} else {
+			VendorsAction.updateVendor(vehicle);
+		}
 	}
 
 	// Render

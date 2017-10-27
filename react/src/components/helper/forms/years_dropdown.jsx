@@ -1,13 +1,13 @@
 /**
  * States dropdown component
  *
- * Required props
+ * Required props:
  *
- * fromYear: the year to start,
- * toYear: the year to end,
- * className: class name,
- * value: the value to be selected,
- * required: "required" or "",
+ * fromYear: the year to start
+ * toYear: the year to end
+ * className: class name
+ * value: the value to be selected
+ * required: "required" or ""
  * onChange: handler for form changes
  */
 
@@ -54,7 +54,7 @@ class YearsDropdown extends React.Component
 				inputProps={
 					{
 						list: this.state.yearsOptions,
-						value: this.props.inputProps.value,
+						value: this.props.inputProps.value.toString(),
 						onChange: this.props.inputProps.onChange,
 						onSelect: this.props.inputProps.onSelect
 					}

@@ -1,11 +1,11 @@
 /**
  * States dropdown component
  *
- * Required props
+ * Required props:
  *
- * className: class name,
- * value: the value to be selected,
- * required: "required" or "",
+ * className: class name
+ * value: the value to be selected
+ * required: "required" or ""
  * onChange: handler for form changes
  */
 

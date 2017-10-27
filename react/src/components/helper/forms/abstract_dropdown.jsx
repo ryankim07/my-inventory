@@ -1,12 +1,5 @@
 /**
- * States dropdown component
- *
- * Required props
- *
- * className: class name,
- * value: the value to be selected,
- * required: "required" or "",
- * onChange: handler for form changes
+ * Dropdown abstract component
  */
 
 import React from 'react';
@@ -17,6 +10,7 @@ class AbstractDropdown extends React.Component
     render() {
 		return (
             <select
+				name={ this.props.inputProps.name }
 				className={ this.props.inputProps.className }
 				value={ this.props.inputProps.value }
 				onChange={ this.props.inputProps.onChange }

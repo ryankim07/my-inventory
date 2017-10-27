@@ -3,6 +3,7 @@
  *
  * Required props:
  *
+ * name: name of the input field
  * list: the parent object
  * listObjName: name of the parent object
  * listObjSetter: handler to set object
@@ -136,10 +137,10 @@ class AutoCompleteAddress extends React.Component
 	render() {
 		return (
 			<input
+				name={ this.props.inputProps.name }
 				ref="autoStreet"
 				type="text"
 				className="form-control"
-				onFocus={ this.geoLocate }
 				value={ this.props.inputProps.value }
 				onChange={ this.props.inputProps.onChange }
 				required={ this.props.inputProps.required }

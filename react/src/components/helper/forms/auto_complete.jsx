@@ -1,7 +1,7 @@
 /**
  * Auto complete component
  *
- * Required props
+ * Required props:
  *
  * list: the parent object
  * value: current or selected value

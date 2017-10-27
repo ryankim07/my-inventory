@@ -1,5 +1,5 @@
 /**
- * Zip code input component
+ * Url input component
  *
  * Required props:
  *
@@ -15,23 +15,21 @@
 
 import React from 'react';
 
-class InputZipCode extends React.Component
+class InputUrl extends React.Component
 {
 	// Render
 	render() {
 		return (
 			<input
 				name={ this.props.inputProps.name }
-				type="text"
+				type="url"
 				className={ this.props.inputProps.className }
 				value={ this.props.inputProps.value }
 				onChange={ this.props.inputProps.onChange }
-				title="Zip code should contain 5 digits"
-				pattern="^\d{5}$"
 				required={ this.props.inputProps.required }
 			/>
 		);
 	}
 }
 
-export default InputZipCode;
+export default InputUrl;

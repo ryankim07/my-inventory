@@ -31,7 +31,7 @@ let Api = {
 	},
 
     post: function (url, data) {
-    	let assets = data.assets;
+    	const assets = data.assets !== undefined ? data.assets : false;
 
         return new Promise(function (resolve, reject) {
 			const req = request
@@ -39,9 +39,11 @@ let Api = {
 					.set('Authorization', 'Bearer ' + AuthStore.getJwt())
 					.field('data', JSON.stringify(data));
 
-			assets.forEach((asset) => {
-				req.attach(asset.name, asset);
-			});
+			if (assets) {
+				assets.forEach((asset) => {
+					req.attach(asset.name, asset);
+				});
+			}
 
 			req.end(function(err, res){
 				if (err || res.status !== 200) {

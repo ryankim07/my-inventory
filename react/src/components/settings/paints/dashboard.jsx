@@ -45,7 +45,7 @@ class SettingsPaintsDashboard extends React.Component
 		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.setFlashMessage 	= this.setFlashMessage.bind(this);
-		this.closeRightPanel 	= this.closeRightPanel.bind(this);
+		this.onCloseRightPanel 	= this.onCloseRightPanel.bind(this);
 	}
 
 	// Get paint initial state
@@ -130,7 +130,7 @@ class SettingsPaintsDashboard extends React.Component
 	}
 
 	// Close right panel
-	closeRightPanel() {
+	onCloseRightPanel() {
 		this.setState({
 			showRightPanel: false,
 			mainPanelColumnCss: {
@@ -182,7 +182,7 @@ class SettingsPaintsDashboard extends React.Component
 				header="Paint"
 				additionalHeader={ !this.state.isEditingMode ? "Add" : "Edit" }
 				iconBtn="fa fa-window-close"
-				onClick={ this.closeRightPanel }
+				onClick={ this.onCloseRightPanel }
 				showPreviousBtn={ false }
 				previousRoute="">
 				<SettingsPaint
@@ -190,7 +190,7 @@ class SettingsPaintsDashboard extends React.Component
 					vendors={ this.state.vendors }
 					isEditingMode={ this.state.isEditingMode }
 					onHandleFormSubmit={ this.onHandleFormSubmit }
-					closeRightPanel={ this.closeRightPanel }
+					onCloseRightPanel={ this.onCloseRightPanel }
 				/>
 			</DisplayPanel> : null;
 

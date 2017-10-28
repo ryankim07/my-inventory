@@ -16,6 +16,21 @@ let mainShrinkedDesktopColumnWidth = 'col-md-8';
 let rightPanelMobileColumnWidth = 'col-xs-4';
 let rightPanelDesktopColumnWidth = 'col-md-4';
 
+const intialVendorObj = {
+	id: '',
+	category_id: '',
+	company: '',
+	street: '',
+	city: '',
+	state: '',
+	zip: '',
+	country: '',
+	phone: '',
+	contact: '',
+	url: '',
+	notes: ''
+};
+
 class SettingsVendorsDashboard extends React.Component
 {
 	// Constructor
@@ -24,7 +39,7 @@ class SettingsVendorsDashboard extends React.Component
 
 		this.state = {
 			vendors: [],
-			vendor: this.getVendorState(),
+			vendor: intialVendorObj,
 			categories: [],
 			loader: true,
 			isEditingMode: false,
@@ -42,32 +57,17 @@ class SettingsVendorsDashboard extends React.Component
 		};
 
 		this._onChange 		 	= this._onChange.bind(this);
+		this.onHandleFormChange = this.onHandleFormChange.bind(this);
+		this.onHandleSearch     = this.onHandleSearch.bind(this);
 		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.onHandleRemove 	= this.onHandleRemove.bind(this);
+		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
 		this.setFlashMessage 	= this.setFlashMessage.bind(this);
-		this.closeRightPanel 	= this.closeRightPanel.bind(this);
+		this.onCloseRightPanel 	= this.onCloseRightPanel.bind(this);
 	}
 
-	// Get vendor initial state
-	getVendorState() {
-		return {
-			id: '',
-			category_id: '',
-			company: '',
-			street: '',
-			city: '',
-			state: '',
-			zip: '',
-			country: '',
-			phone: '',
-			contact: '',
-			url: '',
-			notes: ''
-		}
-	}
-
-	// When mounting component
+	// Mounting component
 	componentWillMount() {
 		VendorsStore.addChangeListener(this._onChange);
 		VendorsStore.unsetStoreFlashMessage();
@@ -78,7 +78,7 @@ class SettingsVendorsDashboard extends React.Component
 		VendorsAction.getVendorsAndCategories();
 	}
 
-	// When un-mounting component
+	// Unmounting component
 	componentWillUnmount() {
 		VendorsStore.removeChangeListener(this._onChange);
 	}
@@ -113,7 +113,7 @@ class SettingsVendorsDashboard extends React.Component
 	onHandleRightPanel(id) {
 		let isEditingMode = !!id;
 		let vendor = isEditingMode ?
-			this.state.vendors.find(obj => obj.id === id) : this.getVendorState();
+			this.state.vendors.find(obj => obj.id === id) : intialVendorObj;
 
 		this.setState({
 			vendor: vendor,
@@ -126,20 +126,14 @@ class SettingsVendorsDashboard extends React.Component
 		});
 	}
 
-	// Set flash message
-	setFlashMessage(msg) {
-		this.setState({flashMessage: msg});
+	// Handle form change
+	onHandleFormChange(vendor) {
+		this.setState({vendor: vendor});
 	}
 
-	// Close right panel
-	closeRightPanel() {
-		this.setState({
-			showRightPanel: false,
-			mainPanelColumnCss: {
-				'mobileWidth': mainDefaultMobileColumnWidth,
-				'desktopWidth': mainDefaultDesktopColumnWidth
-			}
-		});
+	// Handle search
+	onHandleSearch(vendors) {
+		this.setState({vendors: vendors});
 	}
 
 	// Handle delete
@@ -148,12 +142,32 @@ class SettingsVendorsDashboard extends React.Component
 	}
 
 	// Handle submit
-	onHandleFormSubmit(vehicle) {
+	onHandleFormSubmit(event) {
+		event.preventDefault();
+
+		let vendor = this.state.vendor;
+
 		if (!this.state.isEditingMode) {
-			VendorsAction.addVendor(vehicle);
+			VendorsAction.addVendor(vendor);
 		} else {
-			VendorsAction.updateVendor(vehicle);
+			VendorsAction.updateVendor(vendor);
 		}
+	}
+
+	// Set flash message
+	setFlashMessage(msg) {
+		this.setState({flashMessage: msg});
+	}
+
+	// Close right panel
+	onCloseRightPanel() {
+		this.setState({
+			showRightPanel: false,
+			mainPanelColumnCss: {
+				'mobileWidth': mainDefaultMobileColumnWidth,
+				'desktopWidth': mainDefaultDesktopColumnWidth
+			}
+		});
 	}
 
 	// Render
@@ -172,6 +186,8 @@ class SettingsVendorsDashboard extends React.Component
 					loader={ this.state.loader }
 					vendor={ this.state.vendor }
 					vendors={ this.state.vendors }
+					onChange={ this.onHandleFormChange }
+					onSearch={ this.onHandleSearch }
 					onHandleRightPanel={ this.onHandleRightPanel }
 					onHandleRemove={ this.onHandleRemove }
 				/>
@@ -184,14 +200,16 @@ class SettingsVendorsDashboard extends React.Component
 				header="Vendor"
 				additionalHeader={ !this.state.isEditingMode ? "Add" : "Edit" }
 				iconBtn="fa fa-window-close"
-				onClick={ this.closeRightPanel }
+				onClick={ this.onCloseRightPanel }
 				showPreviousBtn={ false }
 				previousRoute="">
 				<SettingsVendor
 					vendor={ this.state.vendor }
 					categories={ this.state.categories }
 					onHandleFormSubmit={ this.onHandleFormSubmit }
-					closeRightPanel={ this.closeRightPanel }
+					onCloseRightPanel={ this.onCloseRightPanel }
+					onChange={ this.onHandleFormChange }
+					onSubmit={ this.onHandleFormSubmit}
 				/>
 			</DisplayPanel> : null;
 

@@ -10,43 +10,28 @@ class SettingsPaintsList extends React.Component
 
 		this.state = {
 			paints: this.props.paints,
-			clonedPaints: JSON.parse(JSON.stringify(this.props.paints)),
-			searchText: '',
-			isSearch: false,
+			clonedPaints: JSON.parse(JSON.stringify(this.props.paints))
 		};
-
-		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.paints !== this.state.paints) {
 			this.setState({
 				manufacturers: nextProps.paints,
-				clonedPaints: JSON.parse(JSON.stringify(nextProps.paints)),
-				searchText: '',
-				isSearch: false
+				clonedPaints: JSON.parse(JSON.stringify(nextProps.paints))
 			});
 		}
 	}
 
-	// Handle input changes
-	onHandleFormChange(event) {
-		let searchText = event.target.value;
-		let paints     = this.state.clonedPaints;
-		let results = paints.filter(function (list) {
-			return list.name.match(new RegExp(searchText, 'gi'));
-		});
-
+	// Handle search
+	onHandleSearch(results) {
 		this.setState({
-			paints: searchText.replace(/\s/g, '').length ? results : paints,
-			searchText: searchText,
-			isSearch: true
+			paints: results
 		});
 	}
 
 	render() {
-        let paintsHtml  = null;
-		let searchField = null;
+        let paintsHtml = null;
 
 		// If loading is complete
         if (!this.props.loader) {
@@ -76,15 +61,6 @@ class SettingsPaintsList extends React.Component
 						/>
 					);
 				});
-
-				searchField =
-					<SearchField
-						objs={ this.state.paints }
-						objKey="name"
-						searchType="paints"
-						searchText={ this.state.searchText }
-						onHandleFormChange={ this.onHandleFormChange }
-					/>;
 			}
         } else {
 			paintsHtml = <tr><td><Loader/></td></tr>;
@@ -94,7 +70,15 @@ class SettingsPaintsList extends React.Component
 			<div>
 				<div className="form-group">
 					<div className="col-xs-12 col-lg-12">
-						{ searchField }
+						<SearchField
+							inputProps={
+								{
+									objs: this.state.paints,
+									searchType: "name",
+									onChange: this.onHandleSearch.bind(this)
+								}
+							}
+						/>
 					</div>
 				</div>
 				<table className="table">

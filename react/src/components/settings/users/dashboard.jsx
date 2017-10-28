@@ -44,7 +44,7 @@ class SettingsUsersDashboard extends React.Component
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.onHandleRemove 	= this.onHandleRemove.bind(this);
 		this.setFlashMessage  	= this.setFlashMessage.bind(this);
-		this.closeRightPanel  	= this.closeRightPanel.bind(this);
+		this.onCloseRightPanel  	= this.onCloseRightPanel.bind(this);
 	}
 
 	componentWillMount() {
@@ -148,7 +148,7 @@ class SettingsUsersDashboard extends React.Component
 	}
 
 	// Close right panel
-	closeRightPanel() {
+	onCloseRightPanel() {
 		this.setState({
 			showRightPanel: false,
 			mainPanelColumnCss: {
@@ -199,7 +199,7 @@ class SettingsUsersDashboard extends React.Component
 				header="User"
 				additionalHeader={ !this.state.isEditingMode ? "Add" : "Edit" }
 				iconBtn="fa fa-window-close"
-				onClick={ this.closeRightPanel }
+				onClick={ this.onCloseRightPanel }
 				showPreviousBtn={ false }
 				previousRoute="">
 				<SettingsUser

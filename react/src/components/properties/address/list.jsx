@@ -8,11 +8,10 @@ class PropertiesAddressList extends React.Component
 	// Render
 	render() {
 		let addressesHtml = null;
-		let searchField   = null;
 
 		// If loading is complete
-		if (!this.props.loader) {
-			let properties    = this.props.properties;
+		if (!this.props.inputProps.loader) {
+			let properties = this.props.inputProps.properties;
 
 			if (!properties || properties.length === 0) {
 				addressesHtml = <tr><td><span>Empty list.</span></td></tr>;
@@ -21,7 +20,7 @@ class PropertiesAddressList extends React.Component
 					return (
 						<TogglingRows
 							key={propertyIndex}
-							selectedItem={this.props.property.address.id === property.address.id}
+							selectedItem={this.props.inputProps.property.address.id === property.address.id}
 							columnValues={[
 								property.address.street,
 								property.address.city,
@@ -32,24 +31,14 @@ class PropertiesAddressList extends React.Component
 								property.address.subdivision
 							]}
 							addViewBtn={true}
-							handleViewPanel={this.props.onHandleMainPanel.bind(this, property.address.property_id, 'info')}
+							handleViewPanel={this.props.inputProps.onMainPanel.bind(this, property.address.property_id, 'info')}
 							addEditBtn={true}
-							handleEditPanel={this.props.onHandleRightPanel.bind(this, property.address.property_id, 'property-form')}
+							handleEditPanel={this.props.inputProps.onRightPanel.bind(this, property.address.property_id, 'property-form')}
 							addRemoveBtn={true}
-							handleRemove={this.props.onHandleRemove.bind(this, property.address.property_id)}
+							handleRemove={this.props.inputProps.onRemove.bind(this, property.address.property_id)}
 						/>
 					);
 				});
-
-				// Search field
-				searchField =
-					<SearchField
-						objs={ properties }
-						objKey="street"
-						searchType="properties"
-						searchText={ this.props.searchText }
-						onHandleFormChange={ this.props.onHandleFormChange }
-					/>;
 			}
 		} else {
 			addressesHtml = <tr><td><Loader/></td></tr>;
@@ -59,7 +48,15 @@ class PropertiesAddressList extends React.Component
 			<div>
 				<div className="form-group">
 					<div className="col-xs-12 col-lg-12">
-						{ searchField }
+						<SearchField
+							inputProps={
+								{
+									objs: this.props.inputProps.properties,
+									searchType: "street",
+									onChange: this.props.inputProps.onChange.bind(this)
+								}
+							}
+						/>
 					</div>
 				</div>
 				<table className="table">

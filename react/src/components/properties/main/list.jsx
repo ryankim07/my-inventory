@@ -8,51 +8,40 @@ class PropertiesList extends React.Component
 
 		this.state = {
 			properties: this.props.properties,
-			clonedProperties: JSON.parse(JSON.stringify(this.props.properties)),
-			searchText: '',
-			isSearch: false,
+			clonedProperties: JSON.parse(JSON.stringify(this.props.properties))
 		};
-
-		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.properties !== this.state.properties) {
 			this.setState({
 				properties: nextProps.properties,
-				clonedProperties: JSON.parse(JSON.stringify(nextProps.properties)),
-				searchText: '',
-				isSearch: false
+				clonedProperties: JSON.parse(JSON.stringify(nextProps.properties))
 			});
 		}
 	}
 
-	// Handle input changes
-	onHandleFormChange(event) {
-		let searchText = event.target.value;
-		let properties = this.state.clonedProperties;
-		let results = properties.filter(function (list) {
-			return list.address.street.match(new RegExp(searchText, 'gi'));
-		});
-
+	// Handle search
+	onHandleSearch(results) {
 		this.setState({
-			properties: searchText.replace(/\s/g, '').length ? results : properties,
-			searchText: searchText,
-			isSearch: true
+			properties: results
 		});
 	}
 
 	render() {
 		return (
 			<PropertyAddressList
-				loader={ this.props.loader }
-				properties={ this.state.properties }
-				property={ this.props.property }
-				onHandleRightPanel={ this.props.onHandleRightPanel }
-				onHandleMainPanel={ this.props.onHandleMainPanel }
-				onHandleRemove={ this.props.onHandleRemove }
-				searchText={ this.state.searchText }
-				onHandleFormChange={ this.onHandleFormChange }
+				inputProps ={
+					{
+						loader: this.props.loader,
+						properties: this.state.properties,
+						property: this.props.property,
+						onMainPanel: this.props.onHandleMainPanel,
+						onRightPanel: this.props.onHandleRightPanel,
+						onRemove: this.props.onHandleRemove,
+						onChange: this.onHandleSearch.bind(this)
+					}
+				}
 			/>
         )
     }

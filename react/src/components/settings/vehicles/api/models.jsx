@@ -9,43 +9,29 @@ class SettingsManufacturerModelsList extends React.Component
 
 		this.state = {
 			models: this.props.models,
-			clonedModels: JSON.parse(JSON.stringify(this.props.models)),
-			searchText: '',
-			isSearch: false
+			clonedModels: JSON.parse(JSON.stringify(this.props.models))
 		};
-
-		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 	}
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.models !== this.state.models) {
 			this.setState({
 				models: nextProps.models,
-				clonedModels: JSON.parse(JSON.stringify(nextProps.models)),
-				searchText: '',
-				isSearch: false
+				clonedModels: JSON.parse(JSON.stringify(nextProps.models))
 			});
 		}
 	}
 
-	// Handle input changes
-	onHandleFormChange(event) {
-		let searchText = event.target.value;
-		let models     = this.state.clonedModels;
-		let results = models.filter(function (list) {
-			return list.model.match(new RegExp(searchText, 'gi'));
-		});
-
+	// Handle search
+	onHandleSearch(results) {
 		this.setState({
-			models: searchText.replace(/\s/g, '').length ? results : models,
-			searchText: searchText,
-			isSearch: true
+			models: results
 		});
 	}
 
 	render() {
 		let modelsHtml = [];
-		let models = this.state.models;
+		let models     = this.state.models;
 
 		if (!models || models.length === 0) {
 			let msg = !this.state.isSearch ? 'Empty list.' : 'Found no matches.';
@@ -82,12 +68,14 @@ class SettingsManufacturerModelsList extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-lg-12">
 						<SearchField
-							objs={ this.state.models }
-							objKey="model"
-							searchType="models"
-							searchText={ this.state.searchText }
-							onHandleFormChange={ this.onHandleFormChange }
-						/>
+							inputProps={
+								{
+									objs: this.state.models,
+									searchType: "model",
+									onChange: this.onHandleSearch.bind(this)
+								}
+							}
+						/>;
 					</div>
 				</div>
 				<table className="table">

@@ -50,7 +50,7 @@ class VehiclesDashboard extends React.Component
 		this.closeModal         = this.closeModal.bind(this);
 		this.onHandleRemove 	= this.onHandleRemove.bind(this);
 		this.setFlashMessage  	= this.setFlashMessage.bind(this);
-		this.closeRightPanel  	= this.closeRightPanel.bind(this);
+		this.onCloseRightPanel  	= this.onCloseRightPanel.bind(this);
 	}
 
 	// Get vehicle initial state
@@ -190,7 +190,7 @@ class VehiclesDashboard extends React.Component
 	}
 
 	// Close right panel
-	closeRightPanel() {
+	onCloseRightPanel() {
 		this.setState({
 			showRightPanel: false,
 			mainPanelColumnCss: {
@@ -235,7 +235,7 @@ class VehiclesDashboard extends React.Component
 							manufacturers={ this.state.manufacturers }
 							isEditingMode={ false }
 							onHandleFormSubmit={ this.onHandleFormSubmit }
-							closeRightPanel=""
+							onCloseRightPanel=""
 						/>
 					</DisplayPanel>;
 			break;
@@ -268,7 +268,7 @@ class VehiclesDashboard extends React.Component
 				header="Vehicle"
 				additionalHeader={ !this.state.isEditingMode ? "Add" : "Edit" }
 				iconBtn="fa fa-window-close"
-				onClick={ this.closeRightPanel }
+				onClick={ this.onCloseRightPanel }
 				previousRoute="">
 				<VehicleForm
 					loader={ false }
@@ -276,7 +276,7 @@ class VehiclesDashboard extends React.Component
 					manufacturers={ this.state.manufacturers }
 					isEditingMode={ this.state.isEditingMode }
 					onHandleFormSubmit={ this.onHandleFormSubmit }
-					closeRightPanel={ this.closeRightPanel }
+					onCloseRightPanel={ this.onCloseRightPanel }
 				/>
 			</DisplayPanel> : null;
 

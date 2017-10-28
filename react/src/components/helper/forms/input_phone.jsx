@@ -27,7 +27,7 @@ class InputPhone extends React.Component
 				value={ this.props.inputProps.value }
 				onChange={ this.props.inputProps.onChange }
 				title="Phone should contain the following pattern: (XXX) XXX-XXXX"
-				pattern="^[0-9\-\+\s\(\)]*$"
+				pattern="^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$"
 				required={ this.props.inputProps.required }
 			/>
 		);

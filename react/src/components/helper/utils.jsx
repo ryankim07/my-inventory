@@ -2,6 +2,42 @@
  * Utility Methods
  */
 
+import update from 'react-addons-update';
+import _ from 'lodash';
+
+/**
+ * Prevent state mutation by creating new object with single key and value
+ *
+ * @param originalState
+ * @param name
+ * @param value
+ * @returns {*}
+ */
+export function getSingleModifiedState(originalState, name, value) {
+	return update(originalState, { $merge: { [name]: value } });
+}
+
+/**
+ * Prevent state mutation by creating new object with existing deep nested object
+ *
+ * @param originalState
+ * @param modifiedState
+ * @returns {*}
+ */
+export function getNestedModifiedState(originalState, modifiedState) {
+	return update(originalState, {
+			$apply:
+				function(x) {
+					_.forEach(modifiedState, function (value, key) {
+						x[key] = value;
+					});
+
+					return x;
+				}
+		}
+	);
+}
+
 /**
  * Format thousand format
  *
@@ -123,14 +159,18 @@ export function checkAddressInputFields(obj) {
 	let totalFields = 5;
 	let emptyFields = 0;
 
-	Object.keys(obj).forEach(function(key) {
+	_.forEach(obj, function(value, key) {
 		switch (key) {
 			case 'street':
 			case 'city':
 			case 'state':
 			case 'zip':
 			case 'country':
-				emptyFields = obj[key].trim() === "" ? emptyFields + 1 : emptyFields;
+				if (!_.isEmpty(obj)) {
+					emptyFields = value.trim() === "" ? emptyFields + 1 : emptyFields;
+				} else {
+					emptyFields = 0;
+				}
 			break;
 		}
 	});

@@ -5,48 +5,39 @@ import Loader from '../helper/loader';
 
 class VehiclesList extends React.Component
 {
+	// Constructor
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			vehicles: this.props.vehicles,
-			clonedVehicles: JSON.parse(JSON.stringify(this.props.vehicles)),
-			searchText: '',
-			isSearch: false
+			clonedVehicles: JSON.parse(JSON.stringify(this.props.vehicles))
 		};
 
-		this.onHandleFormChange = this.onHandleFormChange.bind(this);
+		this.onHandleSearch = this.onHandleSearch.bind(this);
 	}
 
+	// Next state change
 	componentWillReceiveProps(nextProps) {
+		console.log('List next props' + nextProps.vehicles);
+		console.log('List current state' + this.state.vehicles);
 		if (nextProps.vehicles !== this.state.vehicles) {
 			this.setState({
 				vehicles: nextProps.vehicles,
-				clonedVehicles: JSON.parse(JSON.stringify(nextProps.vehicles)),
-				searchText: '',
-				isSearch: false
+				clonedVehicles: JSON.parse(JSON.stringify(nextProps.vehicles))
 			});
 		}
 	}
 
-	// Handle input changes
-	onHandleFormChange(event) {
-		let searchText = event.target.value;
-		let vehicles   = this.state.clonedVehicles;
-		let results = vehicles.filter(function (list) {
-			return list.mfg.match(new RegExp(searchText, 'gi'));
-		});
-
+	// Handle search
+	onHandleSearch(results) {
 		this.setState({
-			vehicles: searchText.replace(/\s/g, '').length ? results : vehicles,
-			searchText: searchText,
-			isSearch: true
+			vehicles: results
 		});
 	}
 
 	render() {
-        let vehiclesHtml 	= null;
-        let searchField  	= null;
+        let vehiclesHtml = null;
 
 		// If loading is complete
         if (!this.props.loader) {
@@ -78,16 +69,6 @@ class VehiclesList extends React.Component
 						/>
 					);
 				});
-
-				// Search field
-				searchField =
-					<SearchField
-						objs={ this.state.vehicles }
-						objKey="name"
-						searchType="vehicles"
-						searchText={ this.state.searchText }
-						onHandleFormChange={ this.onHandleFormChange }
-					/>;
 			}
         } else {
             vehiclesHtml = <tr><td><Loader/></td></tr>;
@@ -97,7 +78,15 @@ class VehiclesList extends React.Component
 			<div>
 				<div className="form-group">
 					<div className="col-xs-12 col-lg-12">
-						{ searchField }
+						<SearchField
+							inputProps={
+								{
+									objs: this.state.vehicles,
+									searchType: "mfg",
+									onChange: this.onHandleSearch.bind(this)
+								}
+							}
+						/>
 					</div>
 				</div>
 				<table className="table">

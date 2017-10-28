@@ -2,9 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import AutoCompleteAddress from "../../../helper/forms/auto_complete_address";
 import InputZipCode from '../../../helper/forms/input_zip_code';
+import InputPhone from '../../../helper/forms/input_phone';
+import InputUrl from '../../../helper/forms/input_url'
 import StatesDropdown from '../../../helper/forms/states_dropdown';
 import CountriesDropdown from '../../../helper/forms/countries_dropdown';
-import { upperFirstLetter, phoneFormat, urlFormat, checkAddressInputFields } from '../../../helper/utils';
+import { upperFirstLetter, phoneFormat, urlFormat, checkAddressInputFields, getSingleModifiedState, getNestedModifiedState } from '../../../helper/utils';
 
 class SettingsVendor extends React.Component
 {
@@ -13,31 +15,23 @@ class SettingsVendor extends React.Component
         super(props);
 
         this.state = {
-			vendor: this.props.vendor,
 			isRequiredField: false
 		};
 
-        this.onHandleSelect   = this.onHandleSelect.bind(this);
-        this.handleFormSubmit = this.handleFormSubmit.bind(this);
+        this.onHandleSelect     = this.onHandleSelect.bind(this);
+		this.onHandleFormChange = this.onHandleFormChange.bind(this);
     }
 
-    // When it receives new values
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.vendor !== this.props.vendor) {
-			this.setState({ vendor: nextProps.vendor });
-		}
-	}
-
     // Handle input changes
-    onHandleFormChange(propertyName, event) {
-    	let vendor 	    	= this.state.vendor;
-        let chosenValue 	= propertyName === 'street' ? event : event.target.value;
+    onHandleFormChange(event) {
+    	let name            = event.target.name;
+        let chosenValue 	= event.target.value;
 		let isRequiredField = this.state.isRequiredField;
 
-			switch (propertyName) {
+			switch (name) {
 			case 'company':
 			case 'contact':
-				vendor[propertyName] = upperFirstLetter(chosenValue);
+				chosenValue = upperFirstLetter(chosenValue);
 			break;
 
 			case 'street':
@@ -45,46 +39,30 @@ class SettingsVendor extends React.Component
 			case 'state':
 			case 'zip':
 			case 'country':
-				vendor[propertyName] = chosenValue;
-				isRequiredField = !this.state.isEditingMode ? false : checkAddressInputFields(vendor);
-				vendor[propertyName] = propertyName === 'city' ? upperFirstLetter(chosenValue) : chosenValue;
+				isRequiredField = checkAddressInputFields(chosenValue);
+				chosenValue     = name === 'city' ? upperFirstLetter(chosenValue) : chosenValue;
 			break;
 
 			case 'phone':
-				vendor[propertyName] = phoneFormat(chosenValue);
+				chosenValue = phoneFormat(chosenValue);
 			break;
 
 			case 'url':
-				vendor[propertyName] = urlFormat(chosenValue);
+				chosenValue = urlFormat(chosenValue);
 			break;
-
-			default:
-				vendor[propertyName] = chosenValue;
         }
 
-		this.setState({
-			vendor: vendor,
-			isRequiredField: isRequiredField
-		});
+        this.setState({isRequiredField: isRequiredField});
+		this.props.onChange(getSingleModifiedState(this.props.vendor, name, chosenValue));
     }
 
 	// Handle auto complete select
-	onHandleSelect(updated) {
-		let vendor = this.state.vendor;
-
-		this.setState({ vendor: _.assign(vendor, updated) });
-	}
-
-    // Submit
-    handleFormSubmit(event) {
-		event.preventDefault();
-		this.props.onHandleFormSubmit(this.state.vendor);
+	onHandleSelect(modified) {
+		this.props.onChange(getNestedModifiedState(this.props.vendor, modified));
 	}
 
 	// Render
     render() {
-		let vendor = this.state.vendor;
-
 		// Get api vehicles list
 		let categoryOptions = this.props.categories.map((cat, catIndex) => {
 			return (
@@ -93,15 +71,16 @@ class SettingsVendor extends React.Component
 		});
 
 		let vendorForm =
-			<form onSubmit={ this.handleFormSubmit }>
+			<form onSubmit={ this.props.onSubmit.bind(this) }>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Category</label>
 						<div className="input-group">
 							<select
+								name="category_id"
 								className="form-control input-sm"
-								onChange={ this.onHandleFormChange.bind(this, 'category_id') }
-								value={ vendor.category_id }>
+								onChange={ this.onHandleFormChange.bind(this) }
+								value={ this.props.vendor.category_id }>
 								<option value="">Select One</option>
 								{ categoryOptions }
 							</select>
@@ -113,10 +92,11 @@ class SettingsVendor extends React.Component
 						<label className="control-label">Company</label>
 						<div className="input-group">
 							<input
+								name="company"
 								type="text"
 								className="form-control input-sm"
-								onChange={ this.onHandleFormChange.bind(this, 'company') }
-								value={ vendor.company }
+								onChange={ this.onHandleFormChange.bind(this) }
+								value={ this.props.vendor.company }
 								required="required"
 							/>
 						</div>
@@ -129,9 +109,10 @@ class SettingsVendor extends React.Component
 							<AutoCompleteAddress
 								inputProps = {
 									{
-										value: vendor.street,
+										name: "street",
+										value: this.props.vendor.street,
 										inputIds: ['street', 'city', 'state', 'zip', 'country'],
-										onChange: this.onHandleFormChange.bind(this, 'vendor'),
+										onChange: this.onHandleFormChange.bind(this),
 										onSelect: this.onHandleSelect,
 										required: classNames({'required': this.state.isRequiredField })
 									}
@@ -145,10 +126,11 @@ class SettingsVendor extends React.Component
 						<label className="control-label">City</label>
 						<div className="input-group">
 							<input
+								name="city"
 								type="text"
 								className="form-control input-sm"
-								onChange={ this.onHandleFormChange.bind(this, 'city') }
-								value={ vendor.city }
+								onChange={ this.onHandleFormChange.bind(this) }
+								value={ this.props.vendor.city }
 								required={ classNames({'required': this.state.isRequiredField }) }
 							/>
 						</div>
@@ -161,9 +143,10 @@ class SettingsVendor extends React.Component
 							<StatesDropdown
 								inputProps={
 									{
+										name: "state",
 										className: "form-control input-sm",
-										value: vendor.state,
-										onChange: this.handleFormChange.bind(this, 'state'),
+										value: this.props.vendor.state,
+										onChange: this.onHandleFormChange.bind(this),
 										required: classNames({'required': this.state.isRequiredField})
 									}
 								}
@@ -178,9 +161,10 @@ class SettingsVendor extends React.Component
 							<InputZipCode
 								inputProps={
 									{
+										name: "zip",
 										className: "form-control input-sm",
-										value: vendor.zip,
-										onChange: this.handleFormChange.bind(this, 'zip'),
+										value: this.props.vendor.zip,
+										onChange: this.onHandleFormChange.bind(this),
 										required: classNames({'required': this.state.isRequiredField})
 									}
 								}
@@ -195,9 +179,10 @@ class SettingsVendor extends React.Component
 							<CountriesDropdown
 								inputProps={
 									{
+										name: "country",
 										className: "form-control input-sm",
-										value: vendor.country,
-										onChange: this.handleFormChange.bind(this, 'country'),
+										value: this.props.vendor.country,
+										onChange: this.onHandleFormChange.bind(this),
 										required: classNames({'required': this.state.isRequiredField})
 									}
 								}
@@ -209,12 +194,16 @@ class SettingsVendor extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Phone</label>
 						<div className="input-group">
-							<input
-								type="tel"
-								className="form-control input-sm"
-								onChange={ this.onHandleFormChange.bind(this, 'phone') }
-								value={ vendor.phone }
-								pattern="^(\d{3}) \d{3}-\d{4}$"
+							<InputPhone
+								inputProps={
+									{
+										name: "phone",
+										className: "form-control input-sm",
+										value: this.props.vendor.phone,
+										onChange: this.onHandleFormChange.bind(this),
+										required: ""
+									}
+								}
 							/>
 						</div>
 					</div>
@@ -224,10 +213,11 @@ class SettingsVendor extends React.Component
 						<label className="control-label">Contact</label>
 						<div className="input-group">
 							<input
+								name="contact"
 								type="text"
 								className="form-control input-sm"
-								onChange={ this.onHandleFormChange.bind(this, 'contact') }
-								value={ vendor.contact }
+								onChange={ this.onHandleFormChange.bind(this) }
+								value={ this.props.vendor.contact }
 							/>
 						</div>
 					</div>
@@ -236,11 +226,16 @@ class SettingsVendor extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Url</label>
 						<div className="input-group">
-							<input
-								type="url"
-								className="form-control input-sm"
-								onChange={ this.onHandleFormChange.bind(this, 'url') }
-								value={ vendor.url }
+							<InputUrl
+								inputProps={
+									{
+										name: "url",
+										className: "form-control input-sm",
+										value: this.props.vendor.url,
+										onChange: this.onHandleFormChange.bind(this),
+										required: ""
+									}
+								}
 							/>
 						</div>
 					</div>
@@ -250,10 +245,11 @@ class SettingsVendor extends React.Component
 						<label className="control-label">Notes</label>
 						<div className="input-group">
 								<textarea
+									name="notes"
 									rows="5"
 									className="form-control"
-									onChange={ this.onHandleFormChange.bind(this, 'notes') }
-									value={ vendor.notes }
+									onChange={ this.onHandleFormChange.bind(this) }
+									value={ this.props.vendor.notes }
 								/>
 						</div>
 					</div>
@@ -261,7 +257,7 @@ class SettingsVendor extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input type="hidden" value={ vendor.id }/>
+							<input type="hidden" value={ this.props.vendor.id }/>
 						</div>
 					</div>
 				</div>

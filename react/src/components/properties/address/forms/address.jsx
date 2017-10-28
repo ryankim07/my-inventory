@@ -38,7 +38,7 @@ class PropertyAddressForm extends React.Component
 			case 'zip':
 			case 'country':
 				address[propertyName] = chosenValue;
-				isRequiredField = !this.state.isEditingMode ? false : checkAddressInputFields(address);
+				isRequiredField       = checkAddressInputFields(address);
 			break;
 
             default:

@@ -50,7 +50,7 @@ class SettingsVehiclesDashboard extends React.Component
 		this.onHandleMainPanel 	= this.onHandleMainPanel.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.setFlashMessage 	= this.setFlashMessage.bind(this);
-		this.closeRightPanel 	= this.closeRightPanel.bind(this);
+		this.onCloseRightPanel 	= this.onCloseRightPanel.bind(this);
 	}
 
 	componentWillMount() {
@@ -121,7 +121,7 @@ class SettingsVehiclesDashboard extends React.Component
 	}
 
 	// Close right panel
-	closeRightPanel() {
+	onCloseRightPanel() {
 		this.setState({
 			showRightPanel: false,
 			mainPanelColumnCss: {
@@ -172,14 +172,14 @@ class SettingsVehiclesDashboard extends React.Component
 				header={ this.state.mfg.mfg + " Models List" }
 				additionalHeader=""
 				iconBtn="fa fa-window-close"
-				onClick={ this.closeRightPanel }
+				onClick={ this.onCloseRightPanel }
 				showPreviousBtn={ false }
 				previousRoute="">
 				<SettingsManufacturerModelsList
 					models={ this.state.mfg.models }
 					model={ this.state.model }
 					onHandleRightPanel={ this.onHandleRightPanel }
-					closeRightPanel={ this.closeRightPanel }/>
+					onCloseRightPanel={ this.onCloseRightPanel }/>
 			</DisplayPanel> : null;
 
 		return (

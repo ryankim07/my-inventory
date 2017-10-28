@@ -12,12 +12,8 @@ class SettingsManufacturersList extends React.Component
 
 		this.state = {
 			manufacturers: this.props.manufacturers,
-			clonedMfgs: JSON.parse(JSON.stringify(this.props.manufacturers)),
-			searchText: '',
-			isSearch: false
+			clonedMfgs: JSON.parse(JSON.stringify(this.props.manufacturers))
 		};
-
-		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 	}
 
 	// Next state change
@@ -25,32 +21,21 @@ class SettingsManufacturersList extends React.Component
 		if (nextProps.manufacturers !== this.state.manufacturers) {
 			this.setState({
 				manufacturers: nextProps.manufacturers,
-				clonedMfgs: JSON.parse(JSON.stringify(nextProps.manufacturers)),
-				searchText: '',
-				isSearch: false
+				clonedMfgs: JSON.parse(JSON.stringify(nextProps.manufacturers))
 			});
 		}
 	}
 
-	// Handle input changes
-	onHandleFormChange(event) {
-		let searchText = event.target.value;
-		let mfgs       = this.state.clonedMfgs;
-		let results    = mfgs.filter(function (list) {
-			return list.mfg.match(new RegExp(searchText, 'gi'));
-		});
-
+	// Handle search
+	onHandleSearch(results) {
 		this.setState({
-			manufacturers: searchText.replace(/\s/g, '').length ? results : mfgs,
-			searchText: searchText,
-			isSearch: searchText === "" ? false : true
+			manufacturers: results
 		});
 	}
 
 	// Render
 	render() {
         let mfgsHtml 	   = [];
-		let searchField    = null;
 		let paginationHtml = null;
 
 		// If loading is complete
@@ -89,15 +74,7 @@ class SettingsManufacturersList extends React.Component
 
 				mfgsHtml.push(allMfgs);
 
-				searchField =
-					<SearchField
-						objs={ this.state.manufacturers }
-						objKey="mfg"
-						searchType="manufacturers"
-						searchText={ this.state.searchText }
-						onHandleFormChange={ this.onHandleFormChange }
-					/>;
-
+				// Pagination
 				paginationHtml =
 					<Pagination
 						page={ this.props.page }
@@ -115,7 +92,15 @@ class SettingsManufacturersList extends React.Component
 			<div>
 				<div className="form-group">
 					<div className="col-xs-12 col-lg-12">
-						{ searchField }
+						<SearchField
+							inputProps={
+								{
+									objs: this.state.manufacturers,
+									searchType: "mfg",
+									onChange: this.onHandleSearch.bind(this)
+								}
+							}
+						/>
 					</div>
 				</div>
 				<table className="table">

@@ -5,52 +5,13 @@ import Loader from '../../helper/loader';
 
 class SettingsVendorsList extends React.Component
 {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			vendors: this.props.vendors,
-			clonedVendors: JSON.parse(JSON.stringify(this.props.vendors)),
-			searchText: '',
-			isSearch: false,
-		};
-
-		this.onHandleFormChange = this.onHandleFormChange.bind(this);
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.vendors !== this.state.vendors) {
-			this.setState({
-				vendors: nextProps.vendors,
-				clonedVendors: JSON.parse(JSON.stringify(nextProps.vendors)),
-				searchText: '',
-				isSearch: false
-			});
-		}
-	}
-
-	// Handle input changes
-	onHandleFormChange(event) {
-		let searchText = event.target.value;
-		let vendors    = this.state.clonedVendors;
-		let results = vendors.filter(function (list) {
-			return list.company.match(new RegExp(searchText, 'gi'));
-		});
-
-		this.setState({
-			vendors: searchText.replace(/\s/g, '').length ? results : vendors,
-			searchText: searchText,
-			isSearch: true
-		});
-	}
-
+	// Render
 	render() {
         let vendorsHtml = null;
-		let searchField = null;
 
 		// If loading is complete
         if (!this.props.loader) {
-        	let vendors = this.state.vendors;
+        	let vendors = this.props.vendors;
 
         	if (!vendors || vendors.length === 0) {
 				vendorsHtml = <tr><td><span>Empty list.</span></td></tr>;
@@ -79,15 +40,6 @@ class SettingsVendorsList extends React.Component
 						/>
 					);
 				});
-
-				searchField =
-					<SearchField
-						objs={ this.state.vendors }
-						objKey="name"
-						searchType="vendors"
-						searchText={ this.state.searchText }
-						onHandleFormChange={ this.onHandleFormChange }
-					/>
 			}
         } else {
 			vendorsHtml = <tr><td><Loader/></td></tr>;
@@ -97,7 +49,16 @@ class SettingsVendorsList extends React.Component
 			<div>
 				<div className="form-group">
 					<div className="col-xs-12 col-lg-12">
-						{ searchField }
+						<SearchField
+							inputProps={
+								{
+									objs: this.props.vendors,
+									searchType: "company",
+									onChange: this.props.onChange,
+									onSearch: this.props.onSearch
+								}
+							}
+						/>
 					</div>
 				</div>
 				<table className="table">
@@ -107,12 +68,6 @@ class SettingsVendorsList extends React.Component
 						<th>Street</th>
 						<th>City</th>
 						<th>State</th>
-						<th>Zip</th>
-						<th>Phone</th>
-						<th>Contact</th>
-						<th>Country</th>
-						<th>Url</th>
-						<th>Notes</th>
 						<th/>
 					</tr>
 					</thead>

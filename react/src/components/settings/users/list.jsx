@@ -11,12 +11,8 @@ class SettingsUsersList extends React.Component
 
 		this.state = {
 			users: this.props.users,
-			clonedUsers: JSON.parse(JSON.stringify(this.props.users)),
-			searchText: '',
-			isSearch: false,
+			clonedUsers: JSON.parse(JSON.stringify(this.props.users))
 		};
-
-		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 	}
 
 	// Next state change
@@ -24,32 +20,21 @@ class SettingsUsersList extends React.Component
 		if (nextProps.users !== this.state.users) {
 			this.setState({
 				users: nextProps.users,
-				clonedUsers: JSON.parse(JSON.stringify(nextProps.users)),
-				searchText: '',
-				isSearch: false
+				clonedUsers: JSON.parse(JSON.stringify(nextProps.users))
 			});
 		}
 	}
 
-	// Handle input changes
-	onHandleFormChange(event) {
-		let searchText = event.target.value;
-		let users   = this.state.clonedUsers;
-		let results = users.filter(function (list) {
-			return list.first_name.match(new RegExp(searchText, 'gi'));
-		});
-
+	// Handle search
+	onHandleSearch(results) {
 		this.setState({
-			users: searchText.replace(/\s/g, '').length ? results : users,
-			searchText: searchText,
-			isSearch: true
+			users: results
 		});
 	}
 
 	// Render
 	render() {
-        let usersHtml   = null;
-        let searchField = null;
+        let usersHtml = null;
 
 		// If loading is complete
         if (!this.props.loader) {
@@ -77,15 +62,6 @@ class SettingsUsersList extends React.Component
 						/>
 					);
 				});
-
-				searchField =
-					<SearchField
-						objs={ this.state.users }
-						objKey="firstname"
-						searchType="users"
-						searchText={ this.state.searchText }
-						onHandleFormChange={ this.onHandleFormChange }
-					/>;
 			}
         } else {
             usersHtml = <tr><td><Loader/></td></tr>;
@@ -95,7 +71,15 @@ class SettingsUsersList extends React.Component
 			<div>
 				<div className="form-group">
 					<div className="col-xs-12 col-lg-12">
-						{ searchField }
+						<SearchField
+							inputProps={
+								{
+									objs: this.state.users,
+									searchType: "first_name",
+									onChange: this.onHandleSearch.bind(this)
+								}
+							}
+						/>
 					</div>
 				</div>
 				<table className="table">

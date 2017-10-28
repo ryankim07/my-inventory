@@ -26,7 +26,7 @@ class SettingsVendor extends React.Component
     onHandleFormChange(event) {
     	let name            = event.target.name;
         let chosenValue 	= event.target.value;
-		let isRequiredField = this.state.isRequiredField;
+		let addressFieldsOn = false;
 
 			switch (name) {
 			case 'company':
@@ -39,7 +39,7 @@ class SettingsVendor extends React.Component
 			case 'state':
 			case 'zip':
 			case 'country':
-				isRequiredField = checkAddressInputFields(chosenValue);
+				addressFieldsOn = true;
 				chosenValue     = name === 'city' ? upperFirstLetter(chosenValue) : chosenValue;
 			break;
 
@@ -52,8 +52,13 @@ class SettingsVendor extends React.Component
 			break;
         }
 
-        this.setState({isRequiredField: isRequiredField});
-		this.props.onChange(getSingleModifiedState(this.props.vendor, name, chosenValue));
+        const newObj = getSingleModifiedState(this.props.vendor, name, chosenValue);
+
+        this.setState({
+			isRequiredField: addressFieldsOn ? checkAddressInputFields(newObj) : false
+        });
+
+		this.props.onChange(newObj);
     }
 
 	// Handle auto complete select

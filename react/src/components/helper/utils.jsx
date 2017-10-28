@@ -156,24 +156,10 @@ export function urlFormat(url) {
  * @returns {boolean}
  */
 export function checkAddressInputFields(obj) {
-	let totalFields = 5;
-	let emptyFields = 0;
-
-	_.forEach(obj, function(value, key) {
-		switch (key) {
-			case 'street':
-			case 'city':
-			case 'state':
-			case 'zip':
-			case 'country':
-				if (!_.isEmpty(obj)) {
-					emptyFields = value.trim() === "" ? emptyFields + 1 : emptyFields;
-				} else {
-					emptyFields = 0;
-				}
-			break;
+	return !_.every(
+		_.values(_.pick(obj, ['street', 'city', 'state', 'zip', 'country'])),
+		function(v) {
+			return !v.trim();
 		}
-	});
-
-	return emptyFields < totalFields ? true : false;
+	);
 }

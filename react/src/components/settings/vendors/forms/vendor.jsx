@@ -24,11 +24,11 @@ class SettingsVendor extends React.Component
 
     // Handle input changes
     onHandleFormChange(event) {
-    	let name            = event.target.name;
+		let fieldName 		= event.target.name;
         let chosenValue 	= event.target.value;
 		let addressFieldsOn = false;
 
-			switch (name) {
+		switch (fieldName) {
 			case 'company':
 			case 'contact':
 				chosenValue = upperFirstLetter(chosenValue);
@@ -40,7 +40,7 @@ class SettingsVendor extends React.Component
 			case 'zip':
 			case 'country':
 				addressFieldsOn = true;
-				chosenValue     = name === 'city' ? upperFirstLetter(chosenValue) : chosenValue;
+				chosenValue     = fieldName === 'city' ? upperFirstLetter(chosenValue) : chosenValue;
 			break;
 
 			case 'phone':
@@ -52,7 +52,7 @@ class SettingsVendor extends React.Component
 			break;
         }
 
-        const newObj = getSingleModifiedState(this.props.vendor, name, chosenValue);
+        const newObj = getSingleModifiedState(this.props.vendor, fieldName, chosenValue);
 
         this.setState({
 			isRequiredField: addressFieldsOn ? checkAddressInputFields(newObj) : false
@@ -68,30 +68,8 @@ class SettingsVendor extends React.Component
 
 	// Render
     render() {
-		// Get api vehicles list
-		let categoryOptions = this.props.categories.map((cat, catIndex) => {
-			return (
-				<option key={ catIndex } value={ cat.id }>{ upperFirstLetter(cat.name) }</option>
-			);
-		});
-
 		let vendorForm =
 			<form onSubmit={ this.props.onSubmit.bind(this) }>
-				<div className="form-group">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Category</label>
-						<div className="input-group">
-							<select
-								name="category_id"
-								className="form-control input-sm"
-								onChange={ this.onHandleFormChange.bind(this) }
-								value={ this.props.vendor.category_id }>
-								<option value="">Select One</option>
-								{ categoryOptions }
-							</select>
-						</div>
-					</div>
-				</div>
 				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Company</label>
@@ -269,7 +247,7 @@ class SettingsVendor extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-12">
 						<div className="clearfix">
-							<button type="submit" value="Save" className="btn"><i className="fa fa-floppy-o"/> Save</button>
+							<button type="submit" className="btn"><i className="fa fa-floppy-o"/> Save</button>
 						</div>
 					</div>
 				</div>

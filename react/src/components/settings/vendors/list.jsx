@@ -27,11 +27,7 @@ class SettingsVendorsList extends React.Component
 								vendor.city,
 								vendor.state,
 								vendor.zip,
-								vendor.phone,
-								vendor.contact,
-								vendor.country,
-								vendor.url,
-								vendor.notes
+								vendor.phone
 							] }
 							addEditBtn={ true }
 							handleEditPanel={ this.props.onHandleRightPanel.bind(this, vendor.id) }
@@ -68,6 +64,8 @@ class SettingsVendorsList extends React.Component
 						<th>Street</th>
 						<th>City</th>
 						<th>State</th>
+						<th>Zip</th>
+						<th>Phone</th>
 						<th/>
 					</tr>
 					</thead>

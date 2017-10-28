@@ -18,7 +18,6 @@ let rightPanelDesktopColumnWidth = 'col-md-4';
 
 const intialVendorObj = {
 	id: '',
-	category_id: '',
 	company: '',
 	street: '',
 	city: '',
@@ -78,7 +77,7 @@ class SettingsVendorsDashboard extends React.Component
 		VendorsAction.getVendorsAndCategories();
 	}
 
-	// Unmounting component
+	// Un-mounting component
 	componentWillUnmount() {
 		VendorsStore.removeChangeListener(this._onChange);
 	}

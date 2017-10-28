@@ -2,15 +2,16 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\VendorsEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="houses.vendors_categories")
+ * @ORM\Table(name="houses.categories")
  */
-class VendorCategoriesEntity
+class CategoriesEntity
 {
     /**
      * @ORM\Column(type="integer")
@@ -26,7 +27,7 @@ class VendorCategoriesEntity
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="VendorsEntity", mappedBy="category", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="VendorsEntity", mappedBy="category", cascade={"persist", "remove"})
      */
     private $vendors;
 
@@ -53,7 +54,7 @@ class VendorCategoriesEntity
      *
      * @param string $name
      *
-     * @return VendorCategoriesEntity
+     * @return CategoriesEntity
      */
     public function setName($name)
     {
@@ -75,14 +76,18 @@ class VendorCategoriesEntity
     /**
      * Add vendor
      *
-     * @param VendorsEntity $vendors
+     * @param VendorsEntity $vendor
      *
-     * @return VendorsEntity
+     * @return CategoriesEntity
      */
-    public function addVendor(VendorsEntity $vendors)
+    public function addVendor(VendorsEntity $vendor)
     {
-        $this->vendors[] = $vendors;
-        $vendors->setCategory($this);
+        if (true === $this->vendors->contains($vendor)) {
+            return;
+        }
+
+        $this->vendors[] = $vendor;
+        $vendor->setCategory($this);
 
         return $this;
     }

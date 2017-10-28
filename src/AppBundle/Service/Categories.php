@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class VendorCategories
+ * Class Categories
  *
  * Service class
  *
@@ -9,12 +9,12 @@
  * @module  MyInventory
  */
 
-namespace AppBundle\Service\Vendors;
+namespace AppBundle\Service;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\VendorCategoriesEntity;
+use AppBundle\Entity\CategoriesEntity;
 
-class VendorCategories
+class Categories
 {
     private $em;
     private $repo;
@@ -29,7 +29,7 @@ class VendorCategories
     public function __construct(EntityManager $entityManager)
     {
         $this->em   = $entityManager;
-        $this->repo = $this->em->getRepository(VendorCategoriesEntity::class);
+        $this->repo = $this->em->getRepository(CategoriesEntity::class);
     }
 
     /**
@@ -96,7 +96,7 @@ class VendorCategories
         try {
             $this->existingCategory = $this->find($data['id']);
 
-            $this->entity = $this->existingCategory ? $this->existingCategory : new VendorCategoriesEntity();
+            $this->entity = $this->existingCategory ? $this->existingCategory : new CategoriesEntity();
 
             $op = !$this->existingCategory ? 'added' : 'updated';
             $msg = "Category successfully {$op}.";

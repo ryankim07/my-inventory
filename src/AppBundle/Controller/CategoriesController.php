@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class VendorCategoriesController
+ * Class CategoriesController
  *
  * Controller class
  *
@@ -9,7 +9,7 @@
  * @module  MyInventory
  */
 
-namespace AppBundle\Controller\Vendors;
+namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,7 +24,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 /**
  * @Security("is_granted(['ROLE_USER','ROLE_ADMIN'])")
  */
-class VendorCategoriesController extends FOSRestController
+class CategoriesController extends FOSRestController
 {
     /**
      * Get vendor category by ID
@@ -36,7 +36,7 @@ class VendorCategoriesController extends FOSRestController
      */
     public function getAction($id)
     {
-        $service = $this->get('Vendor_Categories');
+        $service = $this->get('Categories');
         $results = $service->find($id);
 
         if ($results === null) {
@@ -55,7 +55,7 @@ class VendorCategoriesController extends FOSRestController
      */
     public function getListAction()
     {
-        $service = $this->get('Vendor_Categories');
+        $service = $this->get('Categories');
         $results = $service->findAll();
 
         if ($results === null) {
@@ -79,7 +79,7 @@ class VendorCategoriesController extends FOSRestController
         $data = json_decode(stripslashes($request->get('data')), true);
 
         // Call service to save
-        $service = $this->get('Vendor_Categories');
+        $service = $this->get('Categories');
         $results = $service->save($data);
 
         return new View($results, Response::HTTP_OK);
@@ -95,7 +95,7 @@ class VendorCategoriesController extends FOSRestController
      */
     public function deleteVendorCategoryAction($id)
     {
-        $service = $this->get('Vendor_Categories');
+        $service = $this->get('Categories');
         $results = $service->delete($id);
 
         return new View($results, Response::HTTP_OK);

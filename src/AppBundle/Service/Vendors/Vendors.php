@@ -95,8 +95,7 @@ class Vendors
 
         try {
             $this->existingVendor = $this->find($data['id']);
-
-            $this->entity = $this->existingVendor ? $this->existingVendor : new VendorsEntity();
+            $this->entity         = $this->existingVendor ? $this->existingVendor : new VendorsEntity();
 
             $op = !$this->existingVendor ? 'added' : 'updated';
             $msg = "Vendor successfully {$op}.";

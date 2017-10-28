@@ -3,10 +3,10 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Entity\PaintsEntity;
+use AppBundle\Entity\CategoriesEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
-
 
 /**
  * @ORM\Entity
@@ -84,7 +84,7 @@ class VendorsEntity
     private $paints;
 
     /**
-     * @ORM\ManyToOne(targetEntity="VendorCategoriesEntity", inversedBy="vendors")
+     * @ORM\ManyToOne(targetEntity="CategoriesEntity", inversedBy="vendors")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $category;
@@ -380,6 +380,10 @@ class VendorsEntity
      */
     public function addPaint(PaintsEntity $paint)
     {
+        if (true === $this->paints->contains($paint)) {
+            return;
+        }
+
         $this->paints[] = $paint;
         $paint->setVendor($this);
 
@@ -409,10 +413,11 @@ class VendorsEntity
     /**
      * Set category
      *
-     * @param VendorCategoriesEntity $category
-     * @return $this
+     * @param CategoriesEntity $category
+     *
+     * @return VendorsEntity
      */
-    public function setCategory(VendorCategoriesEntity $category = null)
+    public function setCategory(CategoriesEntity $category = null)
     {
         $this->category = $category;
 
@@ -422,7 +427,7 @@ class VendorsEntity
     /**
      * Get category
      *
-     * @return VendorsEntity
+     * @return CategoriesEntity
      */
     public function getCategory()
     {

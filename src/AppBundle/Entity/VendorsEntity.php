@@ -2,8 +2,6 @@
 
 namespace AppBundle\Entity;
 
-use AppBundle\Entity\PaintsEntity;
-use AppBundle\Entity\CategoriesEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -22,11 +20,6 @@ class VendorsEntity
     private $id;
 
     /**
-     * @ORM\Column(type="integer", length=11)
-     */
-    private $categoryId;
-
-    /**
      * @ORM\Column(type="string", length=100)
      * @Assert\NotBlank()
      */
@@ -34,41 +27,49 @@ class VendorsEntity
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\Blank()
      */
     private $street;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\Blank()
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=2)
+     * @Assert\Blank()
      */
     private $state;
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Assert\Blank()
      */
     private $zip;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\Blank()
      */
     private $country;
 
     /**
      * @ORM\Column(type="string", length=15)
+     * @Assert\Blank()
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Blank()
      */
     private $url;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\Blank()
      */
     private $contact;
 
@@ -82,12 +83,6 @@ class VendorsEntity
      * @ORM\OneToMany(targetEntity="PaintsEntity", mappedBy="vendor", cascade={"persist", "remove"})
      */
     private $paints;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="CategoriesEntity", inversedBy="vendors")
-     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
-     */
-    private $category;
 
     /**
      * Constructor
@@ -105,30 +100,6 @@ class VendorsEntity
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set categoryId
-     *
-     * @param integer $categoryId
-     *
-     * @return VendorsEntity
-     */
-    public function setCategoryId($categoryId)
-    {
-        $this->categoryId = $categoryId;
-
-        return $this;
-    }
-
-    /**
-     * Get categoryId
-     *
-     * @return integer
-     */
-    public function getCategoryId()
-    {
-        return $this->categoryId;
     }
 
     /**
@@ -408,29 +379,5 @@ class VendorsEntity
     public function getPaints()
     {
         return $this->paints;
-    }
-
-    /**
-     * Set category
-     *
-     * @param CategoriesEntity $category
-     *
-     * @return VendorsEntity
-     */
-    public function setCategory(CategoriesEntity $category = null)
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
-    /**
-     * Get category
-     *
-     * @return CategoriesEntity
-     */
-    public function getCategory()
-    {
-        return $this->category;
     }
 }

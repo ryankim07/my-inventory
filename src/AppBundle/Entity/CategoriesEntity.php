@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity;
 
-use AppBundle\Entity\VendorsEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -25,19 +24,6 @@ class CategoriesEntity
      * @Assert\NotBlank()
      */
     private $name;
-
-    /**
-     * @ORM\OneToMany(targetEntity="VendorsEntity", mappedBy="category", cascade={"persist", "remove"})
-     */
-    private $vendors;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->vendors = new ArrayCollection();
-    }
 
     /**
      * Get id
@@ -71,44 +57,5 @@ class CategoriesEntity
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Add vendor
-     *
-     * @param VendorsEntity $vendor
-     *
-     * @return CategoriesEntity
-     */
-    public function addVendor(VendorsEntity $vendor)
-    {
-        if (true === $this->vendors->contains($vendor)) {
-            return;
-        }
-
-        $this->vendors[] = $vendor;
-        $vendor->setCategory($this);
-
-        return $this;
-    }
-
-    /**
-     * Remove vendor
-     *
-     * @param VendorsEntity $vendor
-     */
-    public function removeVendor(VendorsEntity $vendor)
-    {
-        $this->vendors->removeElement($vendor);
-    }
-
-    /**
-     * Get vendors
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getVendors()
-    {
-        return $this->vendors;
     }
 }

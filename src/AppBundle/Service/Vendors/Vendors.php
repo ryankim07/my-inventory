@@ -122,7 +122,6 @@ class Vendors
      */
     private function _save($data)
     {
-        $this->entity->setCategoryId($data['category_id']);
         $this->entity->setCompany($data['company']);
         $this->entity->setStreet($data['street']);
         $this->entity->setCity($data['city']);

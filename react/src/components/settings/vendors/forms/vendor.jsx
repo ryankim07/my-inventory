@@ -7,7 +7,12 @@ import InputUrl from '../../../helper/forms/input_url'
 import StatesDropdown from '../../../helper/forms/hybrid_field';
 import CountriesDropdown from '../../../helper/forms/hybrid_field';
 import { getStates, getCountries } from "../../../helper/lists/region";
-import { upperFirstLetter, phoneFormat, urlFormat, checkAddressInputFields, getSingleModifiedState, getNestedModifiedState } from '../../../helper/utils';
+import { upperFirstLetter,
+	     phoneFormat,
+	     urlFormat,
+		 checkAddressInputFields,
+		 getSingleModifiedState,
+		 getNestedModifiedState } from '../../../helper/utils';
 
 class SettingsVendor extends React.Component
 {
@@ -127,9 +132,9 @@ class SettingsVendor extends React.Component
 							inputProps={
 								{
 									auto: false,
-									name: "state",
-									className: "form-control input-sm",
-									list: this.props.vendors,
+									others: { name: "state", className: "form-control" },
+									parentClassName: "",
+									list: getStates(),
 									value: this.props.vendor.state,
 									onChange: this.onHandleFormChange,
 									onSelect: "",
@@ -164,9 +169,9 @@ class SettingsVendor extends React.Component
 							inputProps={
 								{
 									auto: false,
-									name: "country",
-									className: "form-control input-sm",
-									list: this.props.vendors,
+									others: { name: "country", className: "form-control" },
+									parentClassName: "",
+									list: getCountries(),
 									value: this.props.vendor.country,
 									onChange: this.onHandleFormChange,
 									onSelect: "",

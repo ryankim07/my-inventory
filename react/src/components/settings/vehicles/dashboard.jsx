@@ -182,9 +182,12 @@ class SettingsVehiclesDashboard extends React.Component
 					onCloseRightPanel={ this.onCloseRightPanel }/>
 			</DisplayPanel> : null;
 
+		let flashMessage = this.state.flashMessage ?
+			<FlashMessage message={ this.state.flashMessage } alertType="alert-success"/> : null;
+
 		return (
 			<div className="row">
-				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/> }
+				{ flashMessage }
 
 				<MainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }

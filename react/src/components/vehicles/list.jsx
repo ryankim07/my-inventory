@@ -65,7 +65,7 @@ class VehiclesList extends React.Component
 							addEditBtn={ true }
 							handleEditPanel={ this.props.onHandleRightPanel.bind(this, vehicle.id) }
 							addRemoveBtn={ true }
-							handleRemove={ this.props.onHandleRemove.bind(this, vehicle.id) }
+							onRemove={ this.props.onRemove.bind(this, vehicle.id) }
 						/>
 					);
 				});

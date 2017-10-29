@@ -1,6 +1,5 @@
 import React from 'react';
-import Previous from '../../helper/previous';
-import { upperFirstLetter } from "../../helper/utils";
+import { upperFirstLetter } from '../../helper/utils';
 
 class PropertyRoomsList extends React.Component
 {

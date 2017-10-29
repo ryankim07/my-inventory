@@ -2,7 +2,7 @@ import React from 'react';
 import SearchField from '../../../helper/search_field';
 import TogglingRows from '../../../helper/table/toggling_rows';
 import Loader from '../../../helper/loader';
-import Pagination from "../../../helper/pagination";
+import Pagination from '../../../helper/pagination';
 
 class SettingsManufacturersList extends React.Component
 {

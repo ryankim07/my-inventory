@@ -1,6 +1,6 @@
 import React from 'react';
 import PropertyAddressForm from './../../address/forms/address';
-import YearsDropdown from '../../../helper/forms/years_dropdown';
+import YearsField from '../../../helper/forms/list_options_field';
 import Uploader from '../../../helper/uploader';
 import { numberFormat } from '../../../helper/utils';
 
@@ -9,22 +9,10 @@ class PropertyForm extends React.Component
     constructor(props) {
         super(props);
 
-		this.state = {
-			property: this.props.property
-		}
-
 		this.setAssets = this.setAssets.bind(this);
     }
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.property !== this.state.property) {
-			this.setState({
-				property: nextProps.property
-			});
-		}
-	}
-
-	// Handle assets
+	c// Handle assets
 	setAssets(assets) {
 		let property = this.state.property;
 		property['assets'] = assets;
@@ -57,11 +45,21 @@ class PropertyForm extends React.Component
         this.setState({property: property});
     }
 
+	// Handle when dropdown field is selected
+	onHandleYear(value) {
+		let vehicle = this.state.vehicle;
+		vehicle['year'] = value;
+
+		this.setState({
+			vehicle: vehicle
+		});
+	}
+
 	// Submit
 	handleFormSubmit(event) {
 		event.preventDefault();
 
-		this.props.onHandleFormSubmit(this.state.property, 'property');
+		this.props.onHandleSubmit(this.state.property, 'property');
 	}
 
 	render() {
@@ -98,31 +96,30 @@ class PropertyForm extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Image</label>
-						<div className="input-group">
-							<Uploader
-								inputProps={
-									{
-										assets: property.assets,
-										isEditingMode: this.props.isEditingMode,
-										setAssets: this.setAssets
-									}
+						<Uploader
+							inputProps={
+								{
+									className: "input-group",
+									assets: this.state.property.assets,
+									isEditingMode: this.props.isEditingMode
 								}
-							/>
-						</div>
+							}
+						/>
 					</div>
 				</div>
 				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Built</label>
 						<div className="input-group">
-							<YearsDropdown
+							<YearsField
 								inputProps={
 									{
-										className: "form-control input-sm",
-										fromYear: 1970,
-										toYear: (new Date()).getFullYear(),
-										value: property.built,
-										onChange: this.onHandleFormChange.bind(this, 'built'),
+										auto: true,
+										name: "built",
+										list: sequencedObject(1920, (new Date()).getFullYear() + 1),
+										value: this.state.property.built,
+										onChange: this.onHandleFormChange,
+										onSelect: this.onHandleYear,
 										required: "required"
 									}
 								}

@@ -159,7 +159,7 @@ class PropertyRoomForm extends React.Component
 	handleFormSubmit(event) {
 		event.preventDefault();
 
-		this.props.onHandleFormSubmit(this.state.room, 'rooms');
+		this.props.onHandleSubmit(this.state.room, 'rooms');
 	}
 
 	// Disable add walls button if one of the wall dropdowns
@@ -243,17 +243,14 @@ class PropertyRoomForm extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Image</label>
-						<div className="input-group">
-							<Uploader
-								inputProps={
-									{
-										assets: room.assets,
-										isEditingMode: this.props.isEditingMode,
-										setAssets: this.setAssets
-									}
+						<Uploader
+							inputProps={
+								{   className: "input-group",
+									assets: this.state.room.assets,
+									isEditingMode: this.props.isEditingMode
 								}
-							/>
-						</div>
+							}
+						/>
 					</div>
 				</div>
 				<div className="form-group required">

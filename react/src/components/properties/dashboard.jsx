@@ -51,7 +51,7 @@ class PropertiesDashboard extends React.Component
 		};
 
 		this._onChange 		   	 	= this._onChange.bind(this);
-		this.onHandleFormSubmit 	= this.onHandleFormSubmit.bind(this);
+		this.onHandleSubmit 	= this.onHandleSubmit.bind(this);
 		this.onHandleRightPanel 	= this.onHandleRightPanel.bind(this);
 		this.onHandleRightRoomPanel = this.onHandleRightRoomPanel.bind(this);
 		this.onHandleMainPanel 		= this.onHandleMainPanel.bind(this);
@@ -290,7 +290,7 @@ class PropertiesDashboard extends React.Component
 	}
 
 	// Handle submit
-	onHandleFormSubmit(obj, type) {
+	onHandleSubmit(obj, type) {
 		obj.obj_type = type;
 
 		switch (type) {
@@ -344,7 +344,7 @@ class PropertiesDashboard extends React.Component
 						<PropertyRoomsList
 							property={ this.state.property }
 							onHandleRightRoomPanel={ this.onHandleRightRoomPanel }
-							onHandleFormSubmit={ this.onHandleFormSubmit }
+							onHandleSubmit={ this.onHandleSubmit }
 							onHandleRemoveRoom={ this.onHandleRemoveRoom }/>
 					</DisplayPanel>;
 			break;
@@ -383,7 +383,7 @@ class PropertiesDashboard extends React.Component
 						previousRoute="">
 						<PropertyFeaturesForm
 							property={ this.state.property }
-							onHandleFormSubmit={ this.onHandleFormSubmit }
+							onHandleSubmit={ this.onHandleSubmit }
 							onCloseRightPanel={ this.onCloseRightPanel }/>
 					</DisplayPanel>;
 				break;
@@ -399,7 +399,7 @@ class PropertiesDashboard extends React.Component
 						previousRoute="">
 						<PropertyExteriorFeaturesForm
 							property={ this.state.property }
-							onHandleFormSubmit={ this.onHandleFormSubmit }
+							onHandleSubmit={ this.onHandleSubmit }
 							onCloseRightPanel={ this.onCloseRightPanel }/>
 					</DisplayPanel>;
 			break;
@@ -415,7 +415,7 @@ class PropertiesDashboard extends React.Component
 						previousRoute="">
 						<PropertyInteriorFeaturesForm
 							property={ this.state.property }
-							onHandleFormSubmit={ this.onHandleFormSubmit }
+							onHandleSubmit={ this.onHandleSubmit }
 							onCloseRightPanel={ this.onCloseRightPanel }/>
 					</DisplayPanel>;
 			break;
@@ -434,7 +434,7 @@ class PropertiesDashboard extends React.Component
 							nonAddedRooms={ this.state.property.non_added_rooms }
 							paints={ this.state.paints }
 							isEditingMode={ this.state.isEditingMode }
-							onHandleFormSubmit={ this.onHandleFormSubmit }
+							onHandleSubmit={ this.onHandleSubmit }
 							onCloseRightPanel={ this.onCloseRightPanel }/>
 					</DisplayPanel>;
 			break;
@@ -452,7 +452,7 @@ class PropertiesDashboard extends React.Component
 						<PropertyForm
 							property={ this.state.property }
 							isEditingMode={ this.state.isEditingMode }
-							onHandleFormSubmit={ this.onHandleFormSubmit }
+							onHandleSubmit={ this.onHandleSubmit }
 							onCloseRightPanel={ this.onCloseRightPanel }/>
 					</DisplayPanel>;
 		}
@@ -461,7 +461,7 @@ class PropertiesDashboard extends React.Component
 
 		return (
 			<div className="row">
-				{ !this.state.flashMessage ? null : <FlashMessage message={this.state.flashMessage } alertType="alert-success"/> }
+
 
 				<MainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }

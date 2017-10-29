@@ -5,42 +5,16 @@ import Loader from '../../helper/loader';
 
 class SettingsPaintsList extends React.Component
 {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			paints: this.props.paints,
-			clonedPaints: JSON.parse(JSON.stringify(this.props.paints))
-		};
-	}
-
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.paints !== this.state.paints) {
-			this.setState({
-				manufacturers: nextProps.paints,
-				clonedPaints: JSON.parse(JSON.stringify(nextProps.paints))
-			});
-		}
-	}
-
-	// Handle search
-	onHandleSearch(results) {
-		this.setState({
-			paints: results
-		});
-	}
-
+	// Render
 	render() {
         let paintsHtml = null;
 
 		// If loading is complete
         if (!this.props.loader) {
-        	let paints = this.props.paints;
-
-        	if (!paints || paints.length === 0) {
+        	if (!this.props.paints || this.props.paints.length === 0) {
 				paintsHtml = <tr><td><span>Empty list.</span></td></tr>;
 			} else {
-				paintsHtml = paints.map((paint, paintIndex) => {
+				paintsHtml = this.props.paints.map((paint, paintIndex) => {
 					return (
 						<TogglingRows
 							key={ paintIndex }
@@ -51,13 +25,12 @@ class SettingsPaintsList extends React.Component
 								paint.number,
 								paint.color,
 								paint.hex,
-								paint.rgb,
-								paint.notes
+								paint.rgb
 							] }
 							addEditBtn={ true }
 							handleEditPanel={ this.props.onHandleRightPanel.bind(this, paint.id) }
 							addRemoveBtn={ true }
-							handleRemove={ this.props.onHandleRemove.bind(this, paint.id) }
+							onRemove={ this.props.onRemove.bind(this, paint.id) }
 						/>
 					);
 				});
@@ -73,9 +46,10 @@ class SettingsPaintsList extends React.Component
 						<SearchField
 							inputProps={
 								{
-									objs: this.state.paints,
+									objs: this.props.paints,
 									searchType: "name",
-									onChange: this.onHandleSearch.bind(this)
+									onChange: this.props.onChange,
+									onSearch: this.props.onSearch
 								}
 							}
 						/>
@@ -91,7 +65,6 @@ class SettingsPaintsList extends React.Component
 						<th>HEX</th>
 						<th>RGB</th>
 						<th>Actions</th>
-						<th>Notes</th>
 						<th/>
 					</tr>
 					</thead>

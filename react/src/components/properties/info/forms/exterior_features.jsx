@@ -25,7 +25,7 @@ class PropertyExteriorFeaturesForm extends React.Component
     handleFormSubmit(event) {
 		event.preventDefault();
 
-		this.props.onHandleFormSubmit(this.state.exteriorFeatures, 'exterior_features');
+		this.props.onHandleSubmit(this.state.exteriorFeatures, 'exterior_features');
     }
 
     // Render

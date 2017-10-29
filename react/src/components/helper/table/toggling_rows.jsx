@@ -55,7 +55,7 @@ class TogglingRows extends React.Component
 				<button onClick={ this.props.handleEditPanel }><i className="fa fa-pencil" aria-hidden="true"/></button> : null;
 
 			removeBtn = this.props.addRemoveBtn ?
-				<button onClick={ this.props.handleRemove }><i className="fa fa-trash" aria-hidden="true"/></button> : null;
+				<button onClick={ this.props.onRemove }><i className="fa fa-trash" aria-hidden="true"/></button> : null;
 		}
 
 		let columns = this.props.columnValues.map((column, cellIndex) => {

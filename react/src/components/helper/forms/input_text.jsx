@@ -1,5 +1,5 @@
 import React from 'react';
-import InputError from "./input_error";
+import InputError from './input_error';
 
 class InputText extends React.Component
 {

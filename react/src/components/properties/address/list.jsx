@@ -35,7 +35,7 @@ class PropertiesAddressList extends React.Component
 							addEditBtn={true}
 							handleEditPanel={this.props.inputProps.onRightPanel.bind(this, property.address.property_id, 'property-form')}
 							addRemoveBtn={true}
-							handleRemove={this.props.inputProps.onRemove.bind(this, property.address.property_id)}
+							onRemove={this.props.inputProps.onRemove.bind(this, property.address.property_id)}
 						/>
 					);
 				});

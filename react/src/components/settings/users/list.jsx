@@ -58,7 +58,7 @@ class SettingsUsersList extends React.Component
 							addEditBtn={ true }
 							handleEditPanel={ this.props.onHandleRightPanel.bind(this, user.id) }
 							addRemoveBtn={ true }
-							handleRemove={ this.props.onHandleRemove.bind(this, user.id) }
+							onRemove={ this.props.onRemove.bind(this, user.id) }
 						/>
 					);
 				});

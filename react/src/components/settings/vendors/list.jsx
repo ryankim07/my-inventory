@@ -11,12 +11,10 @@ class SettingsVendorsList extends React.Component
 
 		// If loading is complete
         if (!this.props.loader) {
-        	let vendors = this.props.vendors;
-
-        	if (!vendors || vendors.length === 0) {
+        	if (!this.props.vendors || this.props.vendors.length === 0) {
 				vendorsHtml = <tr><td><span>Empty list.</span></td></tr>;
 			} else {
-				vendorsHtml = vendors.map((vendor, vendorIndex) => {
+				vendorsHtml = this.props.vendors.map((vendor, vendorIndex) => {
 					return (
 						<TogglingRows
 							key={ vendorIndex }
@@ -32,7 +30,7 @@ class SettingsVendorsList extends React.Component
 							addEditBtn={ true }
 							handleEditPanel={ this.props.onHandleRightPanel.bind(this, vendor.id) }
 							addRemoveBtn={ true }
-							handleRemove={ this.props.onHandleRemove.bind(this, vendor.id) }
+							handleRemove={ this.props.onRemove.bind(this, vendor.id) }
 						/>
 					);
 				});

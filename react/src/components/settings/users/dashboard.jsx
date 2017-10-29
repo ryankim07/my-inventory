@@ -40,7 +40,7 @@ class SettingsUsersDashboard extends React.Component
 		};
 
 		this._onChange 		  	= this._onChange.bind(this);
-		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
+		this.onHandleSubmit = this.onHandleSubmit.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.onHandleRemove 	= this.onHandleRemove.bind(this);
 		this.setFlashMessage  	= this.setFlashMessage.bind(this);
@@ -164,7 +164,7 @@ class SettingsUsersDashboard extends React.Component
 	}
 
 	// Handle submit
-	onHandleFormSubmit(user) {
+	onHandleSubmit(user) {
 		if (!this.state.isEditingMode) {
 			UsersAction.addUser(user);
 		} else {
@@ -204,12 +204,15 @@ class SettingsUsersDashboard extends React.Component
 				previousRoute="">
 				<SettingsUser
 					user={ this.state.user }
-					onHandleFormSubmit={ this.onHandleFormSubmit }/>
+					onHandleSubmit={ this.onHandleSubmit }/>
 			</DisplayPanel> : null;
+
+		let flashMessage = this.state.flashMessage ?
+			<FlashMessage message={ this.state.flashMessage } alertType="alert-success"/> : null;
 
 		return (
 			<div className="row">
-				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/> }
+				{ flashMessage }
 
 				<MainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }

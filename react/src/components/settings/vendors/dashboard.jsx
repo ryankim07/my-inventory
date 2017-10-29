@@ -58,10 +58,10 @@ class SettingsVendorsDashboard extends React.Component
 		this._onChange 		 	= this._onChange.bind(this);
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 		this.onHandleSearch     = this.onHandleSearch.bind(this);
-		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
+		this.onHandleSubmit = this.onHandleSubmit.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.onHandleRemove 	= this.onHandleRemove.bind(this);
-		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
+		this.onHandleSubmit = this.onHandleSubmit.bind(this);
 		this.setFlashMessage 	= this.setFlashMessage.bind(this);
 		this.onCloseRightPanel 	= this.onCloseRightPanel.bind(this);
 	}
@@ -127,12 +127,12 @@ class SettingsVendorsDashboard extends React.Component
 
 	// Handle form change
 	onHandleFormChange(vendor) {
-		this.setState({vendor: vendor});
+		this.setState({ vendor: vendor });
 	}
 
 	// Handle search
 	onHandleSearch(vendors) {
-		this.setState({vendors: vendors});
+		this.setState({ vendors: vendors });
 	}
 
 	// Handle delete
@@ -141,7 +141,7 @@ class SettingsVendorsDashboard extends React.Component
 	}
 
 	// Handle submit
-	onHandleFormSubmit(event) {
+	onHandleSubmit(event) {
 		event.preventDefault();
 
 		let vendor = this.state.vendor;
@@ -155,7 +155,7 @@ class SettingsVendorsDashboard extends React.Component
 
 	// Set flash message
 	setFlashMessage(msg) {
-		this.setState({flashMessage: msg});
+		this.setState({ flashMessage: msg });
 	}
 
 	// Close right panel
@@ -205,10 +205,10 @@ class SettingsVendorsDashboard extends React.Component
 				<SettingsVendor
 					vendor={ this.state.vendor }
 					categories={ this.state.categories }
-					onHandleFormSubmit={ this.onHandleFormSubmit }
+					onHandleSubmit={ this.onHandleSubmit }
 					onCloseRightPanel={ this.onCloseRightPanel }
 					onChange={ this.onHandleFormChange }
-					onSubmit={ this.onHandleFormSubmit}
+					onSubmit={ this.onHandleSubmit}
 				/>
 			</DisplayPanel> : null;
 

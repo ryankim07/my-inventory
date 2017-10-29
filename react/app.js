@@ -16,7 +16,7 @@ import PropertyInfoView from './src/components/properties/info/view';
 import PropertyFeaturesForm from './src/components/properties/info/forms/features';
 import PropertyExteriorFeaturesForm from './src/components/properties/info/forms/exterior_features';
 import PropertyInteriorFeaturesForm from './src/components/properties/info/forms/interior_features';
-import PropertyRoomForm from "./src/components/properties/rooms/forms/room";
+import PropertyRoomForm from './src/components/properties/rooms/forms/room';
 import PropertyRoomsList from './src/components/properties/rooms/list';
 import SettingsUsersDashboard from './src/components/settings/users/dashboard';
 import SettingsUsersList from './src/components/settings/users/list';

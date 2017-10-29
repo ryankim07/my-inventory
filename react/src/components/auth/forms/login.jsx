@@ -19,7 +19,7 @@ class AuthLogin extends React.Component
 
 		this._onChange 			= this._onChange.bind(this);
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
-		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
+		this.onHandleSubmit = this.onHandleSubmit.bind(this);
 	}
 
 	// Mounting event
@@ -58,7 +58,7 @@ class AuthLogin extends React.Component
 	}
 
 	// Submit
-	onHandleFormSubmit(event) {
+	onHandleSubmit(event) {
 		event.preventDefault();
 
 		AuthAction.login({
@@ -70,7 +70,7 @@ class AuthLogin extends React.Component
 	// Render
 	render() {
 		let loginForm =
-			<form onSubmit={ this.onHandleFormSubmit }>
+			<form onSubmit={ this.onHandleSubmit }>
 				<div className="col-xs-12 col-md-12" id="auth">
 					<div className="row">
 						<div className="form-group required">
@@ -110,9 +110,12 @@ class AuthLogin extends React.Component
 				</div>
 			</form>	;
 
+		let flashMessage = this.state.flashMessage ?
+			<FlashMessage message={ this.state.flashMessage } alertType="alert-alert"/> : null;
+
 		return (
 			<div className="row">
-				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-danger"/> }
+				{ flashMessage }
 
 				<DisplayPanel
 					id="login-form"

@@ -11,14 +11,14 @@
  */
 
 import React from 'react';
-import Previous from '../../helper/previous';
+import PreviousButton from '../../helper/previous_btn';
 
 class DisplayPanel extends React.Component
 {
 	// Render
 	render() {
 		let previousBtn = this.props.previousRoute !== "" ?
-			<Previous route={ this.props.previousRoute }/> : null;
+			<PreviousButton inputProps={ { route: this.props.previousRoute } }/> : null;
 		let clickBtn    = this.props.onClick !== "" ?
 			<button onClick={ this.props.onClick }><i className={ this.props.iconBtn } aria-hidden="true"/></button> : null;
 

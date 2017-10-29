@@ -1,11 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import AutoCompleteAddress from "../../../helper/forms/auto_complete_address";
+import AutoCompleteAddress from '../../../helper/forms/auto_complete_address';
 import InputZipCode from '../../../helper/forms/input_zip_code';
 import InputPhone from '../../../helper/forms/input_phone';
 import InputUrl from '../../../helper/forms/input_url'
-import StatesDropdown from '../../../helper/forms/states_dropdown';
-import CountriesDropdown from '../../../helper/forms/countries_dropdown';
+import StatesDropdown from '../../../helper/forms/list_options_field';
+import CountriesDropdown from '../../../helper/forms/list_options_field';
+import { getStates, getCountries } from "../../../helper/lists/region";
 import { upperFirstLetter, phoneFormat, urlFormat, checkAddressInputFields, getSingleModifiedState, getNestedModifiedState } from '../../../helper/utils';
 
 class SettingsVendor extends React.Component
@@ -69,7 +70,7 @@ class SettingsVendor extends React.Component
 	// Render
     render() {
 		let vendorForm =
-			<form onSubmit={ this.props.onSubmit.bind(this) }>
+			<form onSubmit={ this.props.onSubmit }>
 				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Company</label>
@@ -78,7 +79,7 @@ class SettingsVendor extends React.Component
 								name="company"
 								type="text"
 								className="form-control input-sm"
-								onChange={ this.onHandleFormChange.bind(this) }
+								onChange={ this.onHandleFormChange }
 								value={ this.props.vendor.company }
 								required="required"
 							/>
@@ -95,7 +96,7 @@ class SettingsVendor extends React.Component
 										name: "street",
 										value: this.props.vendor.street,
 										inputIds: ['street', 'city', 'state', 'zip', 'country'],
-										onChange: this.onHandleFormChange.bind(this),
+										onChange: this.onHandleFormChange,
 										onSelect: this.onHandleSelect,
 										required: classNames({'required': this.state.isRequiredField })
 									}
@@ -112,7 +113,7 @@ class SettingsVendor extends React.Component
 								name="city"
 								type="text"
 								className="form-control input-sm"
-								onChange={ this.onHandleFormChange.bind(this) }
+								onChange={ this.onHandleFormChange }
 								value={ this.props.vendor.city }
 								required={ classNames({'required': this.state.isRequiredField }) }
 							/>
@@ -122,19 +123,20 @@ class SettingsVendor extends React.Component
 				<div className={ classNames('form-group', {'required': this.state.isRequiredField }) }>
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">State</label>
-						<div className="input-group">
-							<StatesDropdown
-								inputProps={
-									{
-										name: "state",
-										className: "form-control input-sm",
-										value: this.props.vendor.state,
-										onChange: this.onHandleFormChange.bind(this),
-										required: classNames({'required': this.state.isRequiredField})
-									}
+						<StatesDropdown
+							inputProps={
+								{
+									auto: false,
+									name: "state",
+									className: "form-control input-sm",
+									list: this.props.vendors,
+									value: this.props.vendor.state,
+									onChange: this.onHandleFormChange,
+									onSelect: "",
+									required: classNames({'required': this.state.isRequiredField})
 								}
-							/>
-						</div>
+							}
+						/>
 					</div>
 				</div>
 				<div className={ classNames('form-group', {'required': this.state.isRequiredField }) }>
@@ -147,8 +149,8 @@ class SettingsVendor extends React.Component
 										name: "zip",
 										className: "form-control input-sm",
 										value: this.props.vendor.zip,
-										onChange: this.onHandleFormChange.bind(this),
-										required: classNames({'required': this.state.isRequiredField})
+										onChange: this.onHandleFormChange,
+										required: classNames({ 'required': this.state.isRequiredField })
 									}
 								}
 							/>
@@ -158,19 +160,20 @@ class SettingsVendor extends React.Component
 				<div className={ classNames('form-group', {'required': this.state.isRequiredField }) }>
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Country</label>
-						<div className="input-group">
-							<CountriesDropdown
-								inputProps={
-									{
-										name: "country",
-										className: "form-control input-sm",
-										value: this.props.vendor.country,
-										onChange: this.onHandleFormChange.bind(this),
-										required: classNames({'required': this.state.isRequiredField})
-									}
+						<CountriesDropdown
+							inputProps={
+								{
+									auto: false,
+									name: "country",
+									className: "form-control input-sm",
+									list: this.props.vendors,
+									value: this.props.vendor.country,
+									onChange: this.onHandleFormChange,
+									onSelect: "",
+									required: classNames({'required': this.state.isRequiredField})
 								}
-							/>
-						</div>
+							}
+						/>
 					</div>
 				</div>
 				<div className="form-group">
@@ -183,7 +186,7 @@ class SettingsVendor extends React.Component
 										name: "phone",
 										className: "form-control input-sm",
 										value: this.props.vendor.phone,
-										onChange: this.onHandleFormChange.bind(this),
+										onChange: this.onHandleFormChange,
 										required: ""
 									}
 								}
@@ -199,7 +202,7 @@ class SettingsVendor extends React.Component
 								name="contact"
 								type="text"
 								className="form-control input-sm"
-								onChange={ this.onHandleFormChange.bind(this) }
+								onChange={ this.onHandleFormChange }
 								value={ this.props.vendor.contact }
 							/>
 						</div>
@@ -215,7 +218,7 @@ class SettingsVendor extends React.Component
 										name: "url",
 										className: "form-control input-sm",
 										value: this.props.vendor.url,
-										onChange: this.onHandleFormChange.bind(this),
+										onChange: this.onHandleFormChange,
 										required: ""
 									}
 								}
@@ -231,7 +234,7 @@ class SettingsVendor extends React.Component
 									name="notes"
 									rows="5"
 									className="form-control"
-									onChange={ this.onHandleFormChange.bind(this) }
+									onChange={ this.onHandleFormChange }
 									value={ this.props.vendor.notes }
 								/>
 						</div>

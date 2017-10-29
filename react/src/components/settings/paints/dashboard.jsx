@@ -16,6 +16,20 @@ const mainShrinkedDesktopColumnWidth = 'col-md-8';
 const rightPanelMobileColumnWidth = 'col-xs-4';
 const rightPanelDesktopColumnWidth = 'col-md-4';
 
+// Get paint initial state
+const initialPaintObj = {
+	id: '',
+	brand: '',
+	name: '',
+	number: '',
+	color: '',
+	hex: '',
+	rgb: '',
+	notes: '',
+	vendor: '',
+	assets: []
+};
+
 class SettingsPaintsDashboard extends React.Component
 {
 	// Constructor
@@ -24,7 +38,7 @@ class SettingsPaintsDashboard extends React.Component
 
 		this.state = {
 			paints: [],
-			paint: this.getPaintState(),
+			paint: initialPaintObj,
 			vendors: [],
 			isEditingMode: false,
 			loader: true,
@@ -42,26 +56,11 @@ class SettingsPaintsDashboard extends React.Component
 		};
 
 		this._onChange 		 	= this._onChange.bind(this);
-		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
+		this.onHandleFormChange = this.onHandleFormChange.bind(this);
+		this.onHandleSubmit     = this.onHandleSubmit.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.setFlashMessage 	= this.setFlashMessage.bind(this);
 		this.onCloseRightPanel 	= this.onCloseRightPanel.bind(this);
-	}
-
-	// Get paint initial state
-	getPaintState() {
-		return {
-			id: '',
-			vendor_id: '',
-			brand: '',
-			name: '',
-			number: '',
-			color: '',
-			hex: '',
-			rgb: '',
-			notes: '',
-			assets: []
-		}
 	}
 
 	// Mounting component
@@ -75,7 +74,7 @@ class SettingsPaintsDashboard extends React.Component
 		PaintsAction.getPaintsAndVendors();
 	}
 
-	// Unmount component
+	// Un-mounting component
 	componentWillUnmount() {
 		PaintsStore.removeChangeListener(this._onChange);
 	}
@@ -110,7 +109,7 @@ class SettingsPaintsDashboard extends React.Component
 	onHandleRightPanel(id) {
 		let isEditingMode = !!id;
 		let paint = isEditingMode ?
-			this.state.paints.find(obj => obj.id === id) : this.getPaintState();
+			this.state.paints.find(obj => obj.id === id) : initialPaintObj;
 
 
 		this.setState({
@@ -122,6 +121,33 @@ class SettingsPaintsDashboard extends React.Component
 				'desktopWidth': mainShrinkedDesktopColumnWidth
 			}
 		});
+	}
+	// Handle form change
+	onHandleFormChange(paint) {
+		this.setState({ paint: paint });
+	}
+
+	// Handle search
+	onHandleSearch(vendors) {
+		this.setState({ paints: paints });
+	}
+
+	// Handle delete
+	onHandleRemove(id) {
+		PaintsAction.removePaint(id);
+	}
+
+	// Handle submit
+	onHandleSubmit(event) {
+		event.preventDefault();
+
+		let paint = this.state.paint;
+
+		if (!this.state.isEditingMode) {
+			PaintsAction.addPaint(paint);
+		} else {
+			PaintsAction.updatePaint(paint);
+		}
 	}
 
 	// Set flash message
@@ -140,20 +166,6 @@ class SettingsPaintsDashboard extends React.Component
 		});
 	}
 
-	// Handle delete
-	onHandleRemove(id) {
-		PaintsAction.removePaint(id);
-	}
-
-	// Handle submit
-	onHandleFormSubmit(paint) {
-		if (!this.state.isEditingMode) {
-			PaintsAction.addPaint(paint);
-		} else {
-			PaintsAction.updatePaint(paint);
-		}
-	}
-
 	// Render
 	render() {
 		// Main panel
@@ -170,8 +182,9 @@ class SettingsPaintsDashboard extends React.Component
 					loader={ this.state.loader }
 					paint={ this.state.paint }
 					paints={ this.state.paints }
+					onRemove={ this.onHandleRemove }
+					onSearch={ this.onHandleSearch }
 					onHandleRightPanel={ this.onHandleRightPanel }
-					onHandleRemove={ this.onHandleRemove }
 				/>
 			</DisplayPanel>;
 
@@ -189,14 +202,19 @@ class SettingsPaintsDashboard extends React.Component
 					paint={ this.state.paint }
 					vendors={ this.state.vendors }
 					isEditingMode={ this.state.isEditingMode }
-					onHandleFormSubmit={ this.onHandleFormSubmit }
+					onHandleSubmit={ this.onHandleSubmit }
 					onCloseRightPanel={ this.onCloseRightPanel }
+					onChange={ this.onHandleFormChange }
+					onSubmit={ this.onHandleSubmit}
 				/>
 			</DisplayPanel> : null;
 
+		let flashMessage = this.state.flashMessage ?
+			<FlashMessage message={ this.state.flashMessage } alertType="alert-success"/> : null;
+
 		return (
 			<div className="row">
-				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/> }
+				{ flashMessage }
 
 				<MainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }

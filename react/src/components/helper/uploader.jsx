@@ -3,52 +3,66 @@
  *
  * Required props
  *
+ * className: class name of parent container
  * assets: assets object
  * isEditingMode: determine if new or update
- * setAssets: set assets to parent object
+ * onChange: set assets to parent object
  */
 
 import React from 'react';
+import _ from 'lodash';
 import Dropzone from 'react-dropzone';
 
 class Uploader extends React.Component
 {
-	// Dragging and dropping.  Need to pass array to create reject object in backend
-	onHandleDrop(propertyName, chosenAssets) {
-		let assets = this.props.inputProps.assets;
+	// Constructor
+	constructor(props) {
+		super(props);
 
-		chosenAssets.map(chosenAsset => {
-			let chosenAssetName = chosenAsset.name;
-			let foundAssetIndex = assets.indexOf(assets.find(obj => obj.name === chosenAssetName));
+		this.state = {
+			assets: [],
+		};
+
+		this.onHandleDrop = this.onHandleDrop.bind(this);
+	}
+
+	componentWillMount() {
+		this.setState({ assets: this.props.inputProps.assets});
+	}
+
+	// Dragging and dropping.  Need to pass array to create reject object in backend
+	onHandleDrop(asset) {
+		let assets = this.state.assets;
+
+		asset.map(asset => {
+			let name = asset.name;
+			let index = assets.indexOf(assets.find(obj => obj.name === name));
 
 			// Remove
-			if (foundAssetIndex >= 0) {
-				assets.splice(foundAssetIndex, 1);
+			if (index >= 0) {
+				assets.splice(index, 1);
 			}
 
 			// Add back new value
-			assets.push(chosenAsset);
+			assets.push(asset);
 		});
 
-		this.props.inputProps.setAssets(assets);
+		this.setState({ assets: assets });
 	}
 
 	// Remove asset
 	onHandleRemove(index, event) {
-		event.preventDefault();
-
-		let assets = this.props.inputProps.assets;
+		let assets = this.state.assets;
 		assets.splice(index, 1);
 
-		this.props.inputProps.setAssets(assets);
+		this.setState({ assets: assets });
 	}
 
 	// Render
 	render() {
 		// Set preview
-		let assets	   = this.props.inputProps.assets;
 		let assetField =
-			assets.map((asset, assetIndex) => {
+			this.props.inputProps.assets.map((asset, assetIndex) => {
 				let path = asset.path ? asset.path : asset.preview;
 
 				return (
@@ -60,10 +74,10 @@ class Uploader extends React.Component
 			})
 
 		return (
-			<div>
+			<div className={ this.props.inputProps.className }>
 				<Dropzone
 					name="file"
-					onDrop={ this.onHandleDrop.bind(this, 'assets') }
+					onDrop={ this.onHandleDrop.bind(this) }
 					multiple={ true }>
 					<div>Try dropping some files here, or click to select files to upload.</div>
 				</Dropzone>

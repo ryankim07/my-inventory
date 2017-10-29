@@ -44,7 +44,7 @@ class VehiclesDashboard extends React.Component
 		};
 
 		this._onChange 		  	= this._onChange.bind(this);
-		this.onHandleFormSubmit = this.onHandleFormSubmit.bind(this);
+		this.onHandleSubmit = this.onHandleSubmit.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.onHandleModal 		= this.onHandleModal.bind(this);
 		this.closeModal         = this.closeModal.bind(this);
@@ -206,7 +206,7 @@ class VehiclesDashboard extends React.Component
 	}
 
 	// Handle submit
-	onHandleFormSubmit(vehicle) {
+	onHandleSubmit(vehicle) {
 		if (!this.state.isEditingMode) {
 			VehiclesAction.addVehicle(vehicle);
 		} else {
@@ -234,7 +234,7 @@ class VehiclesDashboard extends React.Component
 							vehicle={ this.state.vehicle }
 							manufacturers={ this.state.manufacturers }
 							isEditingMode={ false }
-							onHandleFormSubmit={ this.onHandleFormSubmit }
+							onHandleSubmit={ this.onHandleSubmit }
 							onCloseRightPanel=""
 						/>
 					</DisplayPanel>;
@@ -275,7 +275,7 @@ class VehiclesDashboard extends React.Component
 					vehicle={ this.state.vehicle }
 					manufacturers={ this.state.manufacturers }
 					isEditingMode={ this.state.isEditingMode }
-					onHandleFormSubmit={ this.onHandleFormSubmit }
+					onHandleSubmit={ this.onHandleSubmit }
 					onCloseRightPanel={ this.onCloseRightPanel }
 				/>
 			</DisplayPanel> : null;
@@ -289,9 +289,12 @@ class VehiclesDashboard extends React.Component
 				<h1>{ this.state.vehicle.mfg }</h1>
 			</Modal> : null;
 
+		let flashMessage = this.state.flashMessage ?
+			<FlashMessage message={ this.state.flashMessage } alertType="alert-success"/> : null;
+
 		return (
 			<div className="row">
-				{ !this.state.flashMessage ? null : <FlashMessage message={ this.state.flashMessage } alertType="alert-success"/> }
+				{ flashMessage }
 
 				<MainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }

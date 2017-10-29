@@ -107,7 +107,7 @@ class SettingsUser extends React.Component
 	handleFormSubmit(event) {
 		event.preventDefault();
 
-		this.props.onHandleFormSubmit(this.state.user);
+		this.props.onHandleSubmit(this.state.user);
 	}
 
 	// Render

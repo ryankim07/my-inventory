@@ -13,7 +13,7 @@ import DisplayPanel from '../helper/panels/display';
 
 class Modal extends React.Component
 {
-    // Render
+	// Render
     render() {
 		// The gray background
 		const backdropStyle = {
@@ -27,17 +27,27 @@ class Modal extends React.Component
 			zIndex: 1000
 		};
 
+		let continueBtn = this.props.onContinue !== undefined ?
+			<button type="button" onClick={ this.props.onContinue }>
+				<i className="fa fa-floppy-o"/> Continue
+			</button> : null;
+
 		return (
 			<div className="" style={ backdropStyle }>
 				<DisplayPanel
 					id={ this.props.id }
+					displayType={ this.props.displayType }
 					header={ this.props.header }
 					additionalHeader=""
 					iconBtn="fa fa-window-close"
-					onClick={ this.props.closeModal.bind(this) }
+					onClick={ this.props.onClose }
 					previousRoute="">
 					{ this.props.children }
 				</DisplayPanel>
+				<div>
+					{ continueBtn }
+					<button type="button" onClick={ this.props.onClose }><i className="fa fa-floppy-o"/> Cancel</button>
+				</div>
 			</div>
 		);
     }

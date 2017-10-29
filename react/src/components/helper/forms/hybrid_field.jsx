@@ -4,12 +4,15 @@
  * Required props:
  *
  * auto: whether is auto complete or drop down
- * className: the class of the parent container
+ * parentClassName: the class of the parent container
  * list: the parent object
  * others: extra attributes
+ * label: the key for the label
+ * identifier: the key for the ID
  * value: current or selected value
  * onChange: handler for form changes
  * onSelect: handler for select event
+ * onGetItemValue: customize how values are suppose to be returned when the select event fires
  */
 
 import React from 'react';
@@ -31,7 +34,7 @@ const menuStyle = {
 	zIndex: 2000
 };
 
-class ListOptionsField extends React.Component
+class HybridField extends React.Component
 {
 	// Constructor
 	constructor(props) {
@@ -47,14 +50,14 @@ class ListOptionsField extends React.Component
 		const isAuto 	 = this.props.inputProps.auto;
 		const list 	     = this.props.inputProps.list;
 		const label 	 = this.props.inputProps.label ? this.props.inputProps.label : 'label';
-		const identifier = this.props.inputProps.identifier ? this.props.inputProps.identifier : 'id';
-		let results    	= [];
+		const identifier = this.props.inputProps.identifier ? this.props.inputProps.identifier : 'value';
+		let results    	 = [];
 
-		_.forEach(list, function(obj) {
+		_.forEach(list, function(obj, objIndex) {
 			if (isAuto) {
 				results.push({ id: obj[identifier].toString(), label: obj[label].toString(),  value: obj[identifier].toString()});
 			} else {
-				results.push(<option key={ obj[identifier] } value={ obj[identifier] }>{ obj[label] }</option>);
+				results.push(<option key={ objIndex } value={ obj[identifier] }>{ obj[label] }</option>);
 			}
 		});
 
@@ -64,8 +67,22 @@ class ListOptionsField extends React.Component
 		});
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		return true;
+	}
+
+	// Default functionality to handle
+	// how results should be returned when
+	// an option is selected
+	getItemValue(item) {
+		return item.value;
+	}
+
 	// Render
     render() {
+		let itemValue = this.props.inputProps.onSelectReturn ?
+			this.props.inputProps.onSelectReturn : this.getItemValue;
+
 		let html = this.state.isAuto ?
 			<AutoComplete
 				inputProps={ this.props.inputProps.others }
@@ -80,9 +97,7 @@ class ListOptionsField extends React.Component
 				shouldItemRender={ (item, value) =>
 					item.label.toString().toLowerCase().indexOf(value.toString().toLowerCase()) > -1
 				}
-				getItemValue={ (item) =>
-					item.value
-				}
+				getItemValue={ itemValue }
 				renderItem={ (item, isHighlighted) =>
 					<div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
 						{ item.label }
@@ -91,16 +106,18 @@ class ListOptionsField extends React.Component
 			/> :
 			<select
 				name={ this.props.inputProps.others.name }
+				className={ this.props.inputProps.others.className }
 				value={ this.props.inputProps.value }
 				onChange={ this.props.inputProps.onChange }
 				required={ this.props.inputProps.others.required }>
+				<option value="">Select One</option>
 				{ this.state.list }
 			</select>;
 
 		return (
-			<div className={ this.props.inputProps.className }>{ html }</div>
+			<div className={ this.props.inputProps.parentClassName }>{ html }</div>
 		);
     }
 }
 
-export default ListOptionsField;
+export default HybridField;

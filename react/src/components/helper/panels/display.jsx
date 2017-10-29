@@ -22,9 +22,11 @@ class DisplayPanel extends React.Component
 		let clickBtn    = this.props.onClick !== "" ?
 			<button onClick={ this.props.onClick }><i className={ this.props.iconBtn } aria-hidden="true"/></button> : null;
 
+		let panelType = this.props.displayType !== undefined ? this.props.displayType : 'info';
+
 		return (
 			<div className="row" id={ this.props.id }>
-				<div className="panel panel-info">
+				<div className={"panel panel-" + panelType }>
 					<div className="panel-heading">
 						<div className="row">
 							<div className="col-xs-10 col-md-10">

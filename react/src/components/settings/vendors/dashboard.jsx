@@ -39,7 +39,6 @@ class SettingsVendorsDashboard extends React.Component
 		this.state = {
 			vendors: [],
 			vendor: intialVendorObj,
-			categories: [],
 			loader: true,
 			isEditingMode: false,
 			mainPanel: this.props.params.section,
@@ -74,7 +73,7 @@ class SettingsVendorsDashboard extends React.Component
 
 	// Mounted component
 	componentDidMount() {
-		VendorsAction.getVendorsAndCategories();
+		VendorsAction.getVendors();
 	}
 
 	// Un-mounting component
@@ -85,7 +84,6 @@ class SettingsVendorsDashboard extends React.Component
 	// Store change
 	_onChange() {
 		let vendors 		= VendorsStore.getVendors();
-		let categories		= VendorsStore.getCategories();
 		let flashMessage 	= VendorsStore.getStoreFlashMessage();
 		let isAuthenticated = VendorsStore.isAuthenticated();
 		let openRightPanel  = VendorsStore.showRightPanel();
@@ -97,7 +95,6 @@ class SettingsVendorsDashboard extends React.Component
 
 		this.setState({
 			vendors: vendors,
-			categories: categories,
 			showRightPanel: !!openRightPanel,
 			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,
@@ -187,8 +184,8 @@ class SettingsVendorsDashboard extends React.Component
 					vendors={ this.state.vendors }
 					onChange={ this.onHandleFormChange }
 					onSearch={ this.onHandleSearch }
+					onRemove={ this.onHandleRemove }
 					onHandleRightPanel={ this.onHandleRightPanel }
-					onHandleRemove={ this.onHandleRemove }
 				/>
 			</DisplayPanel>;
 
@@ -204,7 +201,6 @@ class SettingsVendorsDashboard extends React.Component
 				previousRoute="">
 				<SettingsVendor
 					vendor={ this.state.vendor }
-					categories={ this.state.categories }
 					onHandleSubmit={ this.onHandleSubmit }
 					onCloseRightPanel={ this.onCloseRightPanel }
 					onChange={ this.onHandleFormChange }

@@ -4,8 +4,8 @@ import AutoCompleteAddress from '../../../helper/forms/auto_complete_address';
 import InputZipCode from '../../../helper/forms/input_zip_code';
 import InputPhone from '../../../helper/forms/input_phone';
 import InputUrl from '../../../helper/forms/input_url'
-import StatesDropdown from '../../../helper/forms/list_options_field';
-import CountriesDropdown from '../../../helper/forms/list_options_field';
+import StatesDropdown from '../../../helper/forms/hybrid_field';
+import CountriesDropdown from '../../../helper/forms/hybrid_field';
 import { getStates, getCountries } from "../../../helper/lists/region";
 import { upperFirstLetter, phoneFormat, urlFormat, checkAddressInputFields, getSingleModifiedState, getNestedModifiedState } from '../../../helper/utils';
 

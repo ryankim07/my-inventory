@@ -30,7 +30,7 @@ class SettingsVendorsList extends React.Component
 							addEditBtn={ true }
 							handleEditPanel={ this.props.onHandleRightPanel.bind(this, vendor.id) }
 							addRemoveBtn={ true }
-							handleRemove={ this.props.onRemove.bind(this, vendor.id) }
+							onRemove={ this.props.onRemove.bind(this, vendor.id) }
 						/>
 					);
 				});

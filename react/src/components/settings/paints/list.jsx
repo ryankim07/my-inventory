@@ -48,7 +48,6 @@ class SettingsPaintsList extends React.Component
 								{
 									objs: this.props.paints,
 									searchType: "name",
-									onChange: this.props.onChange,
 									onSearch: this.props.onSearch
 								}
 							}

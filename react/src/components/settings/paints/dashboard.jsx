@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import _ from 'lodash';
 import PaintsAction from '../../../actions/paints-action';
 import PaintsStore from '../../../stores/paints/store';
 import MainPanel from '../../helper/panels/main';
@@ -7,6 +8,7 @@ import DisplayPanel from '../../helper/panels/display';
 import RightPanel from '../../helper/panels/right';
 import SettingsPaintsList from './../paints/list';
 import SettingsPaint from './../paints/forms/paint';
+import Modal from '../../helper/modal';
 import FlashMessage from '../../helper/flash_message';
 
 const mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -26,7 +28,7 @@ const initialPaintObj = {
 	hex: '',
 	rgb: '',
 	notes: '',
-	vendor: '',
+	vendors: [],
 	assets: []
 };
 
@@ -45,6 +47,7 @@ class SettingsPaintsDashboard extends React.Component
 			mainPanel: this.props.params.section,
 			showRightPanel: false,
 			flashMessage: null,
+			showModal: false,
 			mainPanelColumnCss: {
 				'mobileWidth': mainDefaultMobileColumnWidth,
 				'desktopWidth': mainDefaultDesktopColumnWidth
@@ -57,10 +60,13 @@ class SettingsPaintsDashboard extends React.Component
 
 		this._onChange 		 	= this._onChange.bind(this);
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
+		this.onHandleSearch     = this.onHandleSearch.bind(this);
 		this.onHandleSubmit     = this.onHandleSubmit.bind(this);
+		this.onHandleContinue   = this.onHandleContinue.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.setFlashMessage 	= this.setFlashMessage.bind(this);
 		this.onCloseRightPanel 	= this.onCloseRightPanel.bind(this);
+		this.onCloseModal 		= this.onCloseModal.bind(this);
 	}
 
 	// Mounting component
@@ -98,6 +104,7 @@ class SettingsPaintsDashboard extends React.Component
 			showRightPanel: !!openRightPanel,
 			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,
+			showModal: false,
 			mainPanelColumnCss: {
 				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
 				'desktopWidth': openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
@@ -128,7 +135,7 @@ class SettingsPaintsDashboard extends React.Component
 	}
 
 	// Handle search
-	onHandleSearch(vendors) {
+	onHandleSearch(paints) {
 		this.setState({ paints: paints });
 	}
 
@@ -143,11 +150,28 @@ class SettingsPaintsDashboard extends React.Component
 
 		let paint = this.state.paint;
 
-		if (!this.state.isEditingMode) {
-			PaintsAction.addPaint(paint);
+		if (!_.isEmpty(paint.vendor) && _.isEmpty(paint.vendor_id.toString())) {
+			this.setState({ showModal: !this.state.showModal });
 		} else {
-			PaintsAction.updatePaint(paint);
+			this.onHandleContinue(paint);
 		}
+	}
+
+	onHandleContinue(paint) {
+		let obj = paint.id ? paint : this.state.paint;
+
+		if (!this.state.isEditingMode) {
+			PaintsAction.addPaint(obj);
+		} else {
+			PaintsAction.updatePaint(obj);
+		}
+	}
+
+	// Close modal
+	onCloseModal() {
+		this.setState({
+			showModal: false
+		});
 	}
 
 	// Set flash message
@@ -205,10 +229,24 @@ class SettingsPaintsDashboard extends React.Component
 					onHandleSubmit={ this.onHandleSubmit }
 					onCloseRightPanel={ this.onCloseRightPanel }
 					onChange={ this.onHandleFormChange }
-					onSubmit={ this.onHandleSubmit}
+					onSubmit={ this.onHandleSubmit }
 				/>
 			</DisplayPanel> : null;
 
+		// Modal window
+		let modalWindowHtml = this.state.showModal ?
+			<Modal
+				id="new-vendor"
+				displayType="warning"
+				header="Warning"
+				onContinue={ this.onHandleContinue }
+				onClose={ this.onCloseModal }>
+				<div>
+					<h2>You are about to add an unknown vendor that is not on the list.</h2>
+				</div>
+			</Modal> : null;
+
+		// Flash message
 		let flashMessage = this.state.flashMessage ?
 			<FlashMessage message={ this.state.flashMessage } alertType="alert-success"/> : null;
 
@@ -218,6 +256,7 @@ class SettingsPaintsDashboard extends React.Component
 
 				<MainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }
+					{ modalWindowHtml }
 				</MainPanel>
 				<RightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
 					{ rightPanelHtml }

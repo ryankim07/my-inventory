@@ -1,7 +1,8 @@
 import React from 'react';
+import _ from 'lodash';
 import Uploader from '../../../helper/uploader';
-import VendorsAutoComplete from '../../../helper/forms/list_options_field';
-import { upperFirstLetter, getSingleModifiedState } from '../../../helper/utils';
+import VendorsAutoComplete from '../../../helper/forms/hybrid_field';
+import { upperFirstLetter, getSingleModifiedState, getNestedModifiedState } from '../../../helper/utils';
 
 class SettingsPaint extends React.Component
 {
@@ -9,31 +10,43 @@ class SettingsPaint extends React.Component
 	constructor(props) {
 		super(props);
 
-		this.onHandleFormChange = this.onHandleFormChange.bind(this);
-		this.onHandleVendor 	= this.onHandleVendor.bind(this);
+		this.handleFormChange = this.handleFormChange.bind(this);
+		this.handleVendor 	  = this.handleVendor.bind(this);
 	}
 
 	// Handle input changes
-    onHandleFormChange(event) {
+    handleFormChange(event) {
     	let fieldName 	= event.target.name;
         let chosenValue = event.target.value;
+        let modified 	= {};
 
-       	if (fieldName === 'name' ||
-			fieldName === 'brand' ||
-			fieldName === 'vendor') {
-       		chosenValue = upperFirstLetter(chosenValue);
+        switch (fieldName) {
+			case 'name':
+			case 'brand':
+				modified[fieldName] = upperFirstLetter(chosenValue);
+			break;
+
+			case 'vendor':
+				modified[fieldName]   = upperFirstLetter(chosenValue);
+				modified['vendor_id'] = "";
+			break;
+
+			default:
+				modified[fieldName] = chosenValue;
 		}
 
-		const newObj = getSingleModifiedState(this.props.paint, fieldName, chosenValue);
-
-		this.props.onChange(newObj);
+		this.props.onChange(getNestedModifiedState(this.props.paint, modified));
     }
 
 	// Handle when dropdown field is selected
-	onHandleVendor(id) {
-		const newObj = getSingleModifiedState(this.props.paint, 'vendor_id', id);
+	handleVendor(vendorId) {
+		let obj = _.find(this.props.vendors, {'id': parseInt(vendorId)});
+		let modified = {
+			vendor_id: obj.id,
+			vendor: obj.company
+		};
 
-		this.props.onChange(newObj);
+		this.props.onChange(getNestedModifiedState(this.props.paint, modified));
 	}
 
 	// Render
@@ -54,7 +67,7 @@ class SettingsPaint extends React.Component
 						/>
 					</div>
 				</div>
-				<div className="form-group required">
+				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Vendors</label>
 						<VendorsAutoComplete
@@ -62,13 +75,13 @@ class SettingsPaint extends React.Component
 								{
 									auto: true,
 									className: "",
-									others: { name: "vendor", required: "required" },
+									others: { name: "vendor" },
 									list: this.props.vendors,
 									label: "company",
 									identifier: "id",
 									value: this.props.paint.vendor,
-									onChange: this.onHandleFormChange,
-									onSelect: this.onHandleVendor
+									onChange: this.handleFormChange,
+									onSelect: this.handleVendor
 								}
 							}
 						/>
@@ -81,7 +94,7 @@ class SettingsPaint extends React.Component
 							<input
 								name="brand"
 								type="text"
-								onChange={ this.onHandleFormChange }
+								onChange={ this.handleFormChange }
 								value={ this.props.paint.brand }
 								className="form-control input-sm"
 								required="required"
@@ -96,7 +109,7 @@ class SettingsPaint extends React.Component
 							<input
 								name="name"
 								type="text"
-								onChange={ this.onHandleFormChange }
+								onChange={ this.handleFormChange }
 								value={ this.props.paint.name }
 								className="form-control input-sm"
 								required="required"
@@ -112,7 +125,7 @@ class SettingsPaint extends React.Component
 								<input
 									name="number"
 									type="text"
-									onChange={ this.onHandleFormChange }
+									onChange={ this.handleFormChange }
 									value={ this.props.paint.number }
 									className="form-control input-sm"
 									required="required"
@@ -129,7 +142,7 @@ class SettingsPaint extends React.Component
 								<input
 									name="color"
 									type="text"
-									onChange={ this.onHandleFormChange }
+									onChange={ this.handleFormChange }
 									value={ this.props.paint.color }
 									className="form-control input-sm"
 								/>
@@ -145,7 +158,7 @@ class SettingsPaint extends React.Component
 								<input
 									name="hex"
 									type="text"
-									onChange={ this.onHandleFormChange }
+									onChange={ this.handleFormChange }
 									value={ this.props.paint.hex }
 									className="form-control input-sm"
 								/>
@@ -161,7 +174,7 @@ class SettingsPaint extends React.Component
 								<input
 									name="rgb"
 									type="text"
-									onChange={ this.onHandleFormChange }
+									onChange={ this.handleFormChange }
 									value={ this.props.paint.rgb }
 									className="form-control input-sm"
 								/>
@@ -177,7 +190,7 @@ class SettingsPaint extends React.Component
 									name="notes"
 									rows="5"
 									className="form-control"
-									onChange={ this.onHandleFormChange }
+									onChange={ this.handleFormChange }
 									value={ this.props.paint.notes }
 								/>
 						</div>

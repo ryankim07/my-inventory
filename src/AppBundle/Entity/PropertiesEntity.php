@@ -416,7 +416,7 @@ class PropertiesEntity extends AbstractAssetsEntity
      */
     public function removeRoom(RoomsEntity $room)
     {
-        if (false === $this->rooms->contains($room)) {
+        if (!$this->rooms->contains($room)) {
             return;
         }
 
@@ -465,7 +465,7 @@ class PropertiesEntity extends AbstractAssetsEntity
      */
     public function removeFeatures(FeaturesEntity $features)
     {
-        if (false === $this->features->contains($features)) {
+        if (!$this->features->contains($features)) {
             return;
         }
 
@@ -505,7 +505,7 @@ class PropertiesEntity extends AbstractAssetsEntity
      */
     public function removeExteriorFeatures(ExteriorFeaturesEntity $exteriorFeatures)
     {
-        if (false === $this->exteriorFeatures->contains($exteriorFeatures)) {
+        if (!$this->exteriorFeatures->contains($exteriorFeatures)) {
             return;
         }
 
@@ -544,7 +544,7 @@ class PropertiesEntity extends AbstractAssetsEntity
      */
     public function removeInteriorFeatures(InteriorFeaturesEntity $interiorFeatures)
     {
-        if (false === $this->interiorFeatures->contains($interiorFeatures)) {
+        if (!$this->interiorFeatures->contains($interiorFeatures)) {
             return;
         }
 
@@ -585,7 +585,7 @@ class PropertiesEntity extends AbstractAssetsEntity
      */
     public function removeAsset(PropertyAssetsEntity $asset)
     {
-        if (false === $this->assets->contains($asset)) {
+        if (!$this->assets->contains($asset)) {
             return;
         }
 

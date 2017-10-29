@@ -123,6 +123,10 @@ class ManufacturersEntity
      */
     public function removeModel(ManufacturerModelsEntity $model)
     {
+        if (!$this->models->contains($model)) {
+            return;
+        }
+
         $this->models->removeElement($model);
     }
 

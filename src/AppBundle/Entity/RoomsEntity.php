@@ -254,6 +254,10 @@ class RoomsEntity extends AbstractAssetsEntity
      */
     public function removeWall(RoomsWallsEntity $wall)
     {
+        if (!$this->walls->contains($wall)) {
+            return;
+        }
+
         $this->walls->removeElement($wall);
     }
 
@@ -291,7 +295,7 @@ class RoomsEntity extends AbstractAssetsEntity
      */
     public function removeAsset(PropertyAssetsEntity $asset)
     {
-        if (false === $this->assets->contains($asset)) {
+        if (!$this->assets->contains($asset)) {
             return;
         }
 

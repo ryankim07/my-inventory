@@ -98,9 +98,11 @@ class Paints
 
                 $dependencies[] = $paint;
             }
-        }
 
-        return $dependencies;
+            return $dependencies;
+        } else {
+            return $results;
+        }
     }
 
     /**
@@ -156,8 +158,13 @@ class Paints
 
         // Vendor entity
         if (!is_null($data['vendor'])) {
-            $vendorEntity = !empty($data['vendor_id']) ? $this->em->getRepository(VendorsEntity::class)->find($data['vendor_id']) : new VendorsEntity();
-            $vendorEntity->setCompany($data['vendor']);
+            if (!empty($data['vendor_id'])) {
+                $vendorEntity = $this->em->getRepository(VendorsEntity::class)->find($data['vendor_id']);
+            } else {
+                $vendorEntity = new VendorsEntity();
+                $vendorEntity->setCompany($data['vendor']);
+            }
+
             $this->entity->addVendor($vendorEntity);
         }
 

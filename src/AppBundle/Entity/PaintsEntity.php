@@ -44,24 +44,24 @@ class PaintsEntity extends AbstractAssetsEntity
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, unique=true)
      * @Assert\NotBlank()
      */
     private $number;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, unique=true)
      * @Assert\NotBlank()
      */
     private $color;
 
     /**
-     * @ORM\Column(type="string", length=7)
+     * @ORM\Column(type="string", length=7, unique=true)
      */
     private $hex;
 
     /**
-     * @ORM\Column(type="string", length=11)
+     * @ORM\Column(type="string", length=11, unique=true)
      */
     private $rgb;
 
@@ -325,7 +325,7 @@ class PaintsEntity extends AbstractAssetsEntity
      */
     public function removeAsset(PropertyAssetsEntity $asset)
     {
-        if (false === $this->assets->contains($asset)) {
+        if (!$this->assets->contains($asset)) {
             return;
         }
 
@@ -351,6 +351,10 @@ class PaintsEntity extends AbstractAssetsEntity
      */
     public function addVendor(VendorsEntity $vendor)
     {
+        if (true === $this->vendors->contains($vendor)) {
+            return;
+        }
+
         $this->vendors[] = $vendor;
 
         return $this;
@@ -363,6 +367,10 @@ class PaintsEntity extends AbstractAssetsEntity
      */
     public function removeVendor(VendorsEntity $vendor)
     {
+        if (!$this->vendors->contains($vendor)) {
+            return;
+        }
+
         $this->vendors->removeElement($vendor);
     }
 

@@ -103,19 +103,27 @@ class Properties
 
         if (is_array($results)) {
             foreach ($results as $property) {
-                $rooms = $property->getRooms();
-                $diff = $this->configuredRoomsService->getRoomsDiff($rooms);
-                $property->addNonAddedRooms($diff);
-                $dependencies[] = $property;
+                $dependencies[] = $this->_addNonAddedRooms($property);
             }
         } else {
-            $rooms = $results->getRooms();
-            $diff = $this->configuredRoomsService->getRoomsDiff($rooms);
-            $results->addNonAddedRooms($diff);
-            $dependencies = $results;
+            $dependencies = $this->_addNonAddedRooms($results);
         }
 
         return $dependencies;
+    }
+
+    /**
+     * Add all non added rooms dependency
+     *
+     * @param $property
+     * @return mixed
+     */
+    private function _addNonAddedRooms($property)
+    {
+        $rooms = $property->getRooms();
+        $diff = $this->configuredRoomsService->getRoomsDiff($rooms);
+
+        return $property->addNonAddedRooms($diff);
     }
 
     /**

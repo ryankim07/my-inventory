@@ -312,9 +312,10 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
      */
     public function removeGroup(GroupsEntity $group)
     {
-        if (false === $this->groups->contains($group)) {
+        if (!$this->groups->contains($group)) {
             return;
         }
+
         $this->groups->removeElement($group);
         $group->removeUser($this);
     }

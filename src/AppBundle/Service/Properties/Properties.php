@@ -50,7 +50,7 @@ class Properties
         $this->em                     = $entityManager;
         $this->repo                   = $this->em->getRepository(PropertiesEntity::class);
         $this->configuredRoomsService = $configuredRoomsService;
-        $this->assetsService           = $assetsService;
+        $this->assetsService          = $assetsService;
     }
 
     /**

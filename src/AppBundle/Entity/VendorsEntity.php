@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -27,70 +26,48 @@ class VendorsEntity
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\Blank()
      */
     private $street;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Assert\Blank()
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=2)
-     * @Assert\Blank()
      */
     private $state;
 
     /**
      * @ORM\Column(type="string", length=10)
-     * @Assert\Blank()
      */
     private $zip;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\Blank()
      */
     private $country;
 
     /**
      * @ORM\Column(type="string", length=15)
-     * @Assert\Blank()
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Blank()
      */
     private $url;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\Blank()
      */
     private $contact;
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\Blank()
      */
     private $notes;
-
-    /**
-     * @ORM\OneToMany(targetEntity="PaintsEntity", mappedBy="vendor", cascade={"persist", "remove"})
-     */
-    private $paints;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->paints = new ArrayCollection();
-    }
 
     /**
      * Get id
@@ -340,44 +317,5 @@ class VendorsEntity
     public function getNotes()
     {
         return $this->notes;
-    }
-
-    /**
-     * Add paint
-     *
-     * @param PaintsEntity $paint
-     *
-     * @return VendorsEntity
-     */
-    public function addPaint(PaintsEntity $paint)
-    {
-        if (true === $this->paints->contains($paint)) {
-            return;
-        }
-
-        $this->paints[] = $paint;
-        $paint->setVendor($this);
-
-        return $this;
-    }
-
-    /**
-     * Remove paint
-     *
-     * @param PaintsEntity $paint
-     */
-    public function removePaint(PaintsEntity $paint)
-    {
-        $this->paints->removeElement($paint);
-    }
-
-    /**
-     * Get paints
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPaints()
-    {
-        return $this->paints;
     }
 }

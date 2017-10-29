@@ -32,11 +32,6 @@ class PaintsEntity extends AbstractAssetsEntity
     private $id;
 
     /**
-     * @ORM\Column(type="integer", length=11)
-     */
-    private $vendorId;
-
-    /**
      * @ORM\Column(type="string", length=100)
      * @Assert\NotBlank()
      */
@@ -49,13 +44,13 @@ class PaintsEntity extends AbstractAssetsEntity
     private $name;
 
     /**
-     * @ORM\Column(type="integer", length=10)
+     * @ORM\Column(type="string", length=50)
      * @Assert\NotBlank()
      */
     private $number;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=50)
      * @Assert\NotBlank()
      */
     private $color;
@@ -76,10 +71,18 @@ class PaintsEntity extends AbstractAssetsEntity
     private $notes;
 
     /**
-     * @ORM\ManyToOne(targetEntity="VendorsEntity", inversedBy="paints")
-     * @ORM\JoinColumn(name="vendor_id", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="VendorsEntity", cascade={"persist"})
+     * @ORM\JoinTable(
+     *  name="houses.paints_vendors",
+     *  joinColumns={
+     *      @ORM\JoinColumn(name="paint_id", referencedColumnName="id")
+     *  },
+     *  inverseJoinColumns={
+     *      @ORM\JoinColumn(name="vendor_id", referencedColumnName="id")
+     *  }
+     * )
      */
-    private $vendor;
+    private $vendors;
 
     /**
      * @ORM\ManyToMany(targetEntity="PropertyAssetsEntity", orphanRemoval=true, cascade={"persist", "remove"})
@@ -98,11 +101,26 @@ class PaintsEntity extends AbstractAssetsEntity
     protected $assets;
 
     /**
+     * Non mapped properties
+     *
+     * @var $vendor
+     */
+    private $vendor;
+
+    /**
+     * Non mapped properties
+     *
+     * @var $vendorId
+     */
+    private $vendorId;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->assets = new ArrayCollection();
+        $this->vendors = new ArrayCollection();
+        $this->assets  = new ArrayCollection();
     }
 
     /**
@@ -113,30 +131,6 @@ class PaintsEntity extends AbstractAssetsEntity
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set vendorId
-     *
-     * @param integer $vendorId
-     *
-     * @return PaintsEntity
-     */
-    public function setVendorId($vendorId)
-    {
-        $this->vendorId = $vendorId;
-
-        return $this;
-    }
-
-    /**
-     * Get vendorId
-     *
-     * @return integer
-     */
-    public function getVendorId()
-    {
-        return $this->vendorId;
     }
 
     /**
@@ -308,30 +302,6 @@ class PaintsEntity extends AbstractAssetsEntity
     }
 
     /**
-     * Set vendor
-     *
-     * @param VendorsEntity $vendor
-     *
-     * @return PaintsEntity
-     */
-    public function setVendor(VendorsEntity $vendor = null)
-    {
-        $this->vendor = $vendor;
-
-        return $this;
-    }
-
-    /**
-     * Get vendor
-     *
-     * @return VendorsEntity
-     */
-    public function getVendor()
-    {
-        return $this->vendor;
-    }
-
-    /**
      * Add asset
      *
      * @param PropertyAssetsEntity $asset
@@ -360,5 +330,95 @@ class PaintsEntity extends AbstractAssetsEntity
         }
 
         $this->assets->removeElement($asset);
+    }
+
+    /**
+     * Get all assets
+     * 
+     * @return ArrayCollection
+     */
+    public function getAssets()
+    {
+        return $this->assets;
+    }
+
+    /**
+     * Add vendor
+     *
+     * @param VendorsEntity $vendor
+     *
+     * @return PaintsEntity
+     */
+    public function addVendor(VendorsEntity $vendor)
+    {
+        $this->vendors[] = $vendor;
+
+        return $this;
+    }
+
+    /**
+     * Remove vendor
+     *
+     * @param VendorsEntity $vendor
+     */
+    public function removeVendor(VendorsEntity $vendor)
+    {
+        $this->vendors->removeElement($vendor);
+    }
+
+    /**
+     * Get vendors
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVendors()
+    {
+        return $this->vendors;
+    }
+
+    /**
+     * Set vendor
+     *
+     * @param $vendor
+     * @return $this
+     */
+    public function setVendor($vendor)
+    {
+        $this->vendor = $vendor;
+
+        return $this;
+    }
+
+    /**
+     * Get vendor
+     *
+     * @return mixed
+     */
+    public function getVendor()
+    {
+        return $this->vendor;
+    }
+
+    /**
+     * Set vendor
+     *
+     * @param $vendorId
+     * @return $this
+     */
+    public function setVendorId($vendorId)
+    {
+        $this->vendorId = $vendorId;
+
+        return $this;
+    }
+
+    /**
+     * Get vendor ID
+     *
+     * @return mixed
+     */
+    public function getVendorId()
+    {
+        return $this->vendorId;
     }
 }

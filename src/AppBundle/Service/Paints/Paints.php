@@ -11,6 +11,7 @@
 
 namespace AppBundle\Service\Paints;
 
+use AppBundle\Entity\VendorsEntity;
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\PaintsEntity;
 use AppBundle\Entity\PropertyAssetsEntity;
@@ -69,7 +70,7 @@ class Paints
     {
         $results = !is_null($id) ? $this->repo->find($id) : $this->repo->findBy([], ['name' => 'DESC']);
 
-        if (!is_null($id)) {
+        if ($results) {
             $results = $this->addDependencies($results);
         }
 
@@ -84,7 +85,22 @@ class Paints
      */
     private function addDependencies($results)
     {
-        return $results;
+        $dependencies = [];
+
+        if (is_array($results)) {
+            foreach ($results as $paint) {
+                $vendors = $paint->getVendors();
+
+                foreach($vendors as $vendor) {
+                    $paint->setVendor($vendor->getCompany());
+                    $paint->setVendorId($vendor->getId());
+                }
+
+                $dependencies[] = $paint;
+            }
+        }
+
+        return $dependencies;
     }
 
     /**
@@ -96,7 +112,7 @@ class Paints
     public function save($data)
     {
         if (count($data) == 0) {
-            return ['msg' => 'Paint information empty.'];
+            return ['msg' => 'Empty Paint color information.'];
         }
 
         try {
@@ -105,11 +121,11 @@ class Paints
             $this->entity = $this->existingPaint ? $this->existingPaint : new PaintsEntity();
 
             $op = !$this->existingPaint ? 'added' : 'updated';
-            $msg = "Paint successfully {$op}.";
+            $msg = "Paint color successfully {$op}.";
 
             // Save or update paint
             if (!$this->_save($data)) {
-                $msg = "Paint could not be {$op}.";
+                $msg = "Paint color could not be {$op}.";
             };
 
             return [
@@ -130,7 +146,6 @@ class Paints
     private function _save($data)
     {
         // Paint entity
-        $this->entity->setVendorId($data['vendor_id']);
         $this->entity->setBrand($data['brand']);
         $this->entity->setName($data['name']);
         $this->entity->setNumber($data['number']);
@@ -138,6 +153,13 @@ class Paints
         $this->entity->setHex($data['hex']);
         $this->entity->setRgb($data['rgb']);
         $this->entity->setNotes($data['notes']);
+
+        // Vendor entity
+        if (!is_null($data['vendor'])) {
+            $vendorEntity = !empty($data['vendor_id']) ? $this->em->getRepository(VendorsEntity::class)->find($data['vendor_id']) : new VendorsEntity();
+            $vendorEntity->setCompany($data['vendor']);
+            $this->entity->addVendor($vendorEntity);
+        }
 
         // Assets entity
         $this->entity = $this->assetsService->save(PropertyAssetsEntity::class, $this->entity, $data);

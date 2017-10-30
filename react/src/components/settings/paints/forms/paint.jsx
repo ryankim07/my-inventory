@@ -10,12 +10,12 @@ class SettingsPaint extends React.Component
 	constructor(props) {
 		super(props);
 
-		this.handleFormChange = this.handleFormChange.bind(this);
-		this.handleVendor 	  = this.handleVendor.bind(this);
+		this.onHandleFormChange = this.onHandleFormChange.bind(this);
+		this.handleVendor 	    = this.handleVendor.bind(this);
 	}
 
 	// Handle input changes
-    handleFormChange(event) {
+    onHandleFormChange(event) {
     	let fieldName 	= event.target.name;
         let chosenValue = event.target.value;
         let modified 	= {};
@@ -80,7 +80,7 @@ class SettingsPaint extends React.Component
 									label: "company",
 									identifier: "id",
 									value: this.props.paint.vendor,
-									onChange: this.handleFormChange,
+									onChange: this.onHandleFormChange,
 									onSelect: this.handleVendor
 								}
 							}
@@ -94,7 +94,7 @@ class SettingsPaint extends React.Component
 							<input
 								name="brand"
 								type="text"
-								onChange={ this.handleFormChange }
+								onChange={ this.onHandleFormChange }
 								value={ this.props.paint.brand }
 								className="form-control input-sm"
 								required="required"
@@ -109,7 +109,7 @@ class SettingsPaint extends React.Component
 							<input
 								name="name"
 								type="text"
-								onChange={ this.handleFormChange }
+								onChange={ this.onHandleFormChange }
 								value={ this.props.paint.name }
 								className="form-control input-sm"
 								required="required"
@@ -125,7 +125,7 @@ class SettingsPaint extends React.Component
 								<input
 									name="number"
 									type="text"
-									onChange={ this.handleFormChange }
+									onChange={ this.onHandleFormChange }
 									value={ this.props.paint.number }
 									className="form-control input-sm"
 									required="required"
@@ -142,7 +142,7 @@ class SettingsPaint extends React.Component
 								<input
 									name="color"
 									type="text"
-									onChange={ this.handleFormChange }
+									onChange={ this.onHandleFormChange }
 									value={ this.props.paint.color }
 									className="form-control input-sm"
 								/>
@@ -158,7 +158,7 @@ class SettingsPaint extends React.Component
 								<input
 									name="hex"
 									type="text"
-									onChange={ this.handleFormChange }
+									onChange={ this.onHandleFormChange }
 									value={ this.props.paint.hex }
 									className="form-control input-sm"
 								/>
@@ -174,7 +174,7 @@ class SettingsPaint extends React.Component
 								<input
 									name="rgb"
 									type="text"
-									onChange={ this.handleFormChange }
+									onChange={ this.onHandleFormChange }
 									value={ this.props.paint.rgb }
 									className="form-control input-sm"
 								/>
@@ -190,7 +190,7 @@ class SettingsPaint extends React.Component
 									name="notes"
 									rows="5"
 									className="form-control"
-									onChange={ this.handleFormChange }
+									onChange={ this.onHandleFormChange }
 									value={ this.props.paint.notes }
 								/>
 						</div>

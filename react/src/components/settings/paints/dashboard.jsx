@@ -115,6 +115,8 @@ class SettingsPaintsDashboard extends React.Component
 	// Handle right panel
 	onHandleRightPanel(id) {
 		let isEditingMode = !!id;
+
+		// Instantiate new object or load existing object if found
 		let paint = isEditingMode ?
 			this.state.paints.find(obj => obj.id === id) : initialPaintObj;
 
@@ -129,6 +131,7 @@ class SettingsPaintsDashboard extends React.Component
 			}
 		});
 	}
+
 	// Handle form change
 	onHandleFormChange(paint) {
 		this.setState({ paint: paint });
@@ -225,10 +228,9 @@ class SettingsPaintsDashboard extends React.Component
 					paint={ this.state.paint }
 					vendors={ this.state.vendors }
 					isEditingMode={ this.state.isEditingMode }
-					onHandleSubmit={ this.onHandleSubmit }
-					onCloseRightPanel={ this.onCloseRightPanel }
 					onChange={ this.onHandleFormChange }
 					onSubmit={ this.onHandleSubmit }
+					onCloseRightPanel={ this.onCloseRightPanel }
 				/>
 			</DisplayPanel> : null;
 

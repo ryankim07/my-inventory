@@ -92,10 +92,10 @@ class PropertyInfoView extends React.Component
 	// Render
 	render() {
 		let property 		 = this.props.property;
-		let address  		 = property.address === undefined || Object.keys(property.address).length === 0 ? null : property.address;
-		let features		 = property.features === undefined || property.features.id === "" ? null : property.features;
-		let exteriorFeatures = property.exterior_features === undefined || property.exterior_features.id === "" ? null : property.exterior_features;
-		let interiorFeatures = property.interior_features === undefined || property.interior_features.id === "" ? null : property.interior_features;
+		let address  		 = !property.address || Object.keys(property.address).length === 0 ? null : property.address;
+		let features		 = !property.features || property.features.id === "" ? null : property.features;
+		let exteriorFeatures = !property.exterior_features || property.exterior_features.id === "" ? null : property.exterior_features;
+		let interiorFeatures = !property.interior_features || property.interior_features.id === "" ? null : property.interior_features;
 
 		let propertyFeaturesBtn = features === null ?
 			<button onClick={ this.handleRightPanel.bind(this, false, featuresRightPanel) }><i className="fa fa-plus" aria-hidden="true"/> Add Property Features</button> : null;

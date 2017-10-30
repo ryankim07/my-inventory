@@ -10,6 +10,7 @@ let _manufacturers = [];
 let _loadList = false;
 let _rightPanel = false;
 let _storeMsg;
+let _alertType = 'success';
 
 function setStoreFlashMessage(msg) {
 	_storeMsg = msg;
@@ -54,18 +55,21 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
 	addVehicle: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		}
 
 		_vehicles.push(results.vehicle);
 		_loadList = true;
 		_storeMsg = results.msg;
+		_alertType = 'success';
 		_rightPanel = false;
 	},
 
 	updateVehicle: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		}
 
@@ -78,12 +82,14 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
 		_vehicles.push(results.vehicle);
 		_vehicle = results.vehicle;
 		_storeMsg = results.msg;
+		_alertType = 'success';
 		_rightPanel = false;
 	},
 
 	removeVehicle: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		}
 
@@ -92,6 +98,7 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
 		});
 
 		_storeMsg = results.msg;
+		_alertType = 'success';
 		_rightPanel = false;
 	},
 
@@ -111,11 +118,14 @@ let VehiclesStore = assign({}, EventEmitter.prototype, {
 		_loadList = true;
 	},
 
-	getStoreFlashMessage: function() {
-		return _storeMsg;
+	getStoreStatus: function() {
+		return {
+			msg: _storeMsg,
+			type: _alertType
+		};
 	},
 
-	unsetStoreFlashMessage: function() {
+	removeStoreStatus: function() {
 		_storeMsg = '';
 	},
 

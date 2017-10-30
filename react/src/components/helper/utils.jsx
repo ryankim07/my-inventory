@@ -79,7 +79,7 @@ export function upperFirstLetter(str)
 			.toLowerCase()
 			.split(' ')
 			.map(function (word) {
-				if (word[0] === undefined) {
+				if (!word[0]) {
 					return word;
 				} else {
 					return word[0].toUpperCase() + word.substr(1);

@@ -27,7 +27,7 @@ class Modal extends React.Component
 			zIndex: 1000
 		};
 
-		let continueBtn = this.props.onContinue !== undefined ?
+		let continueBtn = this.props.onContinue ?
 			<button type="button" onClick={ this.props.onContinue }>
 				<i className="fa fa-floppy-o"/> Continue
 			</button> : null;

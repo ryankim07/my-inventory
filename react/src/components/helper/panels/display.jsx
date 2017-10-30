@@ -22,7 +22,7 @@ class DisplayPanel extends React.Component
 		let clickBtn    = this.props.onClick !== "" ?
 			<button onClick={ this.props.onClick }><i className={ this.props.iconBtn } aria-hidden="true"/></button> : null;
 
-		let panelType = this.props.displayType !== undefined ? this.props.displayType : 'info';
+		let panelType = this.props.displayType ? this.props.displayType : 'info';
 
 		return (
 			<div className="row" id={ this.props.id }>

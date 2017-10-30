@@ -33,6 +33,7 @@ class VehiclesDashboard extends React.Component
 			showRightPanel: false,
 			flashMessage: null,
 			showModal: false,
+			alertType: 'success',
 			mainPanelColumnCss: {
 				mobileWidth: mainDefaultMobileColumnWidth,
 				desktopWidth: mainDefaultDesktopColumnWidth
@@ -72,7 +73,7 @@ class VehiclesDashboard extends React.Component
 	// Mounting component
 	componentWillMount() {
 		VehiclesStore.addChangeListener(this._onChange);
-		VehiclesStore.unsetStoreFlashMessage();
+		VehiclesStore.removeStoreStatus();
 
 		if (this.props.params.section === "add") {
 			this.setState({
@@ -127,7 +128,7 @@ class VehiclesDashboard extends React.Component
 	_onChange() {
 		let vehicles 		= VehiclesStore.getVehicles();
 		let manufacturers	= VehiclesStore.getManufacturers();
-		let flashMessage 	= VehiclesStore.getStoreFlashMessage();
+		let storeStatus 	= VehiclesStore.getStoreStatus();
 		let isAuthenticated = VehiclesStore.isAuthenticated();
 		let openRightPanel  = VehiclesStore.showRightPanel();
 		let loadList        = VehiclesStore.loadList();
@@ -142,7 +143,8 @@ class VehiclesDashboard extends React.Component
 			manufacturers: manufacturers,
 			mainPanel: loadList ? 'list' : this.state.mainPanel, // Need to set main panel if add new vehicle component is accessed from header
 			showRightPanel: !!openRightPanel,
-			flashMessage: flashMessage !== undefined ? flashMessage : null,
+			flashMessage: storeStatus.msg ? storeStatus.msg : null,
+			alertType: storeStatus.type,
 			loader: false,
 			mainPanelColumnCss: {
 				mobileWidth: openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
@@ -294,7 +296,7 @@ class VehiclesDashboard extends React.Component
 			</Modal> : null;
 
 		let flashMessage = this.state.flashMessage ?
-			<FlashMessage message={ this.state.flashMessage } alertType="alert-success"/> : null;
+			<FlashMessage message={ this.state.flashMessage } alertType={ this.state.alertType }/> : null;
 
 		return (
 			<div className="row">

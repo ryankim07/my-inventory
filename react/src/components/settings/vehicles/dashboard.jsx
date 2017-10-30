@@ -55,7 +55,7 @@ class SettingsVehiclesDashboard extends React.Component
 
 	componentWillMount() {
 		ManufacturersStore.addChangeListener(this._onChange);
-		ManufacturersStore.unsetStoreFlashMessage();
+		ManufacturersStore.removeStoreStatus();
 	}
 
 	componentDidMount() {
@@ -183,7 +183,7 @@ class SettingsVehiclesDashboard extends React.Component
 			</DisplayPanel> : null;
 
 		let flashMessage = this.state.flashMessage ?
-			<FlashMessage message={ this.state.flashMessage } alertType="alert-success"/> : null;
+			<FlashMessage message={ this.state.flashMessage } alertType={ this.state.alertType }/> : null;
 
 		return (
 			<div className="row">

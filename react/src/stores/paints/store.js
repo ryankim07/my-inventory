@@ -9,6 +9,7 @@ let _paint = {};
 let _vendors = [];
 let _rightPanel = false;
 let _storeMsg;
+let _alertType = 'success';
 
 function setStoreFlashMessage(msg) {
 	_storeMsg = msg;
@@ -53,6 +54,7 @@ let PaintsStore = assign({}, EventEmitter.prototype, {
 	setPaints: function (results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		} else {
 			if (results.length !== 0) {
@@ -64,18 +66,21 @@ let PaintsStore = assign({}, EventEmitter.prototype, {
 	addPaint: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		}
 
 		// Add new paint
 		_paints.push(results.paint);
 		_storeMsg = results.msg;
+		_alertType = 'success';
 		_rightPanel = false;
 	},
 
 	updatePaint: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		}
 
@@ -88,12 +93,14 @@ let PaintsStore = assign({}, EventEmitter.prototype, {
 		_paints.push(results.paint);
 		_paint = results.paint;
 		_storeMsg = results.msg;
+		_alertType = 'success';
 		_rightPanel = false;
 	},
 
 	removePaint: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		}
 
@@ -102,6 +109,7 @@ let PaintsStore = assign({}, EventEmitter.prototype, {
 		});
 
 		_storeMsg = results.msg;
+		_alertType = 'success';
 		_rightPanel = false;
 	},
 
@@ -113,11 +121,14 @@ let PaintsStore = assign({}, EventEmitter.prototype, {
 		return true;
 	},
 
-	getStoreFlashMessage: function() {
-		return _storeMsg;
+	getStoreStatus: function() {
+		return {
+			msg: _storeMsg,
+			type: _alertType
+		};
 	},
 
-	unsetStoreFlashMessage: function() {
+	removeStoreStatus: function() {
 		_storeMsg = '';
 	},
 

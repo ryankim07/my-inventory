@@ -9,6 +9,7 @@ let _property = {};
 let _paints = [];
 let _rightPanel = false;
 let _storeMsg;
+let _alertType = 'success';
 
 function setStoreFlashMessage(msg) {
 	_storeMsg = msg;
@@ -61,6 +62,7 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 	addProperty: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		}
 
@@ -72,6 +74,7 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 	updateProperty: function(results) {
     	if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		}
 
@@ -84,12 +87,14 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		_properties.push(results.property);
 		_property = results.property;
 		_storeMsg = results.msg;
+		_alertType = 'success';
 		_rightPanel = false;
 	},
 
 	removeProperty: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		}
 
@@ -98,17 +103,20 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		});
 
 		_storeMsg = results.msg;
+		_alertType = 'success';
 		_rightPanel = false;
 	},
 
 	modifyRoom: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		}
 
 		_property = results.property;
 		_storeMsg = results.msg;
+		_alertType = 'success';
 		_rightPanel = false;
 	},
 
@@ -120,11 +128,14 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
 		return true;
 	},
 
-	getStoreFlashMessage: function() {
-		return _storeMsg;
+	getStoreStatus: function() {
+		return {
+			msg: _storeMsg,
+			type: _alertType
+		};
 	},
 
-	unsetStoreFlashMessage: function() {
+	removeStoreStatus: function() {
 		_storeMsg = '';
 	},
 

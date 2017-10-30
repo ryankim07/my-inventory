@@ -87,7 +87,7 @@ class HybridField extends React.Component
 			<AutoComplete
 				inputProps={ this.props.inputProps.others }
 				items={ this.state.list }
-				value={ this.props.inputProps.value !== undefined ? this.props.inputProps.value.toString() : '' }
+				value={ this.props.inputProps.value ? this.props.inputProps.value.toString() : '' }
 				onChange={ this.props.inputProps.onChange }
 				onSelect={ this.props.inputProps.onSelect }
 				wrapperStyle={ wrapperStyle }

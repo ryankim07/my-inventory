@@ -35,7 +35,7 @@ class AuthLogin extends React.Component
 	// Form changes
 	_onChange() {
 		let isAuthenticated = AuthStore.isAuthenticated();
-		let flashMsg 		= AuthStore.getStoreFlashMessage();
+		let flashMsg 		= AuthStore.getStoreStatus();
 
 		if (isAuthenticated){
 			this.context.router.push("/");
@@ -44,7 +44,7 @@ class AuthLogin extends React.Component
 
 		this.setState({
 			authenticated: isAuthenticated,
-			flashMessage: flashMsg !== undefined ? flashMsg : null
+			flashMessage: flashMsg ? flashMsg : null
 		});
 	}
 
@@ -111,7 +111,7 @@ class AuthLogin extends React.Component
 			</form>	;
 
 		let flashMessage = this.state.flashMessage ?
-			<FlashMessage message={ this.state.flashMessage } alertType="alert-alert"/> : null;
+			<FlashMessage message={ this.state.flashMessage } alertType="danger"/> : null;
 
 		return (
 			<div className="row">

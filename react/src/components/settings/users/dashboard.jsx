@@ -49,7 +49,7 @@ class SettingsUsersDashboard extends React.Component
 
 	componentWillMount() {
 		UsersStore.addChangeListener(this._onChange);
-		UsersStore.unsetStoreFlashMessage();
+		UsersStore.removeStoreStatus();
 	}
 
 	componentDidMount() {
@@ -76,7 +76,7 @@ class SettingsUsersDashboard extends React.Component
 
 	_onChange() {
 		let users 			= UsersStore.getUsers();
-		let flashMessage 	= UsersStore.getStoreFlashMessage();
+		let storeStatus 	=UsersStore.getStoreStatus();
 		let isAuthenticated = UsersStore.isAuthenticated();
 		let openRightPanel  = UsersStore.showRightPanel();
 
@@ -88,7 +88,8 @@ class SettingsUsersDashboard extends React.Component
 		this.setState({
 			users: users,
 			showRightPanel: !!openRightPanel,
-			flashMessage: flashMessage !== undefined ? flashMessage : null,
+			flashMessage: storeStatus.msg ? storeStatus.msg : null,
+			alertType: storeStatus.type,
 			loader: false,
 			mainPanelColumnCss: {
 				mobileWidth: openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
@@ -208,7 +209,7 @@ class SettingsUsersDashboard extends React.Component
 			</DisplayPanel> : null;
 
 		let flashMessage = this.state.flashMessage ?
-			<FlashMessage message={ this.state.flashMessage } alertType="alert-success"/> : null;
+			<FlashMessage message={ this.state.flashMessage } alertType={ this.state.alertType }/> : null;
 
 		return (
 			<div className="row">

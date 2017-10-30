@@ -133,7 +133,7 @@ class PropertiesDashboard extends React.Component
 	// Mounting component
 	componentWillMount() {
 		PropertiesStore.addChangeListener(this._onChange);
-		PropertiesStore.unsetStoreFlashMessage();
+		PropertiesStore.removeStoreStatus();
 	}
 
 	// Mounted component
@@ -174,7 +174,7 @@ class PropertiesDashboard extends React.Component
 		let property		= PropertiesStore.getProperty();
 		let properties		= PropertiesStore.getProperties();
 		let paints          = PropertiesStore.getPaints();
-		let flashMessage 	= PropertiesStore.getStoreFlashMessage();
+		let storeStatus 	=PropertiesStore.getStoreStatus();
 		let isAuthenticated = PropertiesStore.isAuthenticated();
 		let openRightPanel 	= PropertiesStore.showRightPanel();
 
@@ -188,7 +188,8 @@ class PropertiesDashboard extends React.Component
 			properties: properties,
 			paints: paints,
 			showRightPanel: !!openRightPanel,
-			flashMessage: flashMessage !== undefined ? flashMessage : null,
+			flashMessage: storeStatus.msg ? storeStatus.msg : null,
+			alertType: storeStatus.type,
 			loader: false,
 			mainPanelColumnCss: {
 				mobileWidth: openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,

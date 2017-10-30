@@ -8,6 +8,7 @@ let _users = [];
 let _user = {};
 let _rightPanel = false;
 let _storeMsg;
+let _alertType = 'success';
 
 function setStoreFlashMessage(msg) {
 	_storeMsg = msg;
@@ -38,6 +39,7 @@ let UsersStore = assign({}, EventEmitter.prototype, {
 	setUsers: function (results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		} else {
 			if (results.length !== 0) {
@@ -49,17 +51,20 @@ let UsersStore = assign({}, EventEmitter.prototype, {
 	addUser: function (results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		}
 
 		_users.push(results.user);
 		_storeMsg = results.msg;
+		_alertType = 'success';
 		_rightPanel = false;
 	},
 
 	updateUser: function (results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		}
 
@@ -72,12 +77,14 @@ let UsersStore = assign({}, EventEmitter.prototype, {
 		_users.push(results.user);
 		_user = results.user;
 		_storeMsg = results.msg;
+		_alertType = 'success';
 		_rightPanel = false;
 	},
 
 	removeUser: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		}
 
@@ -86,6 +93,7 @@ let UsersStore = assign({}, EventEmitter.prototype, {
 		});
 
 		_storeMsg = results.msg;
+		_alertType = 'success';
 		_rightPanel = false;
 	},
 
@@ -97,11 +105,14 @@ let UsersStore = assign({}, EventEmitter.prototype, {
 		return true;
 	},
 
-	getStoreFlashMessage: function() {
-		return _storeMsg;
+	getStoreStatus: function() {
+		return {
+			msg: _storeMsg,
+			type: _alertType
+		};
 	},
 
-	unsetStoreFlashMessage: function() {
+	removeStoreStatus: function() {
 		_storeMsg = '';
 	},
 

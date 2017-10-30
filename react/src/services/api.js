@@ -31,7 +31,7 @@ let Api = {
 	},
 
     post: function (url, data) {
-    	const assets = data.assets !== undefined ? data.assets : false;
+    	const assets = data.assets ? data.assets : false;
 
         return new Promise(function (resolve, reject) {
 			const req = request

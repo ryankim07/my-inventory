@@ -57,11 +57,11 @@ let AuthStore = assign({}, EventEmitter.prototype, {
 		return localStorage.getItem('token');
 	},
 
-	getStoreFlashMessage: function() {
+	getStoreStatus: function() {
 		return _storeMsg;
 	},
 
-	unsetStoreFlashMessage: function() {
+	removeStoreStatus: function() {
 		_storeMsg = '';
 	}
 });

@@ -8,6 +8,7 @@ let _vendors = [];
 let _vendor = {};
 let _rightPanel = false;
 let _storeMsg;
+let _alertType = 'success';
 
 function setStoreFlashMessage(msg) {
 	_storeMsg = msg;
@@ -38,6 +39,7 @@ let VendorsStore = assign({}, EventEmitter.prototype, {
 	setVendors: function (results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		} else {
 			if (results.length !== 0) {
@@ -49,17 +51,20 @@ let VendorsStore = assign({}, EventEmitter.prototype, {
 	addVendor: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		}
 
 		_vendors.push(results.vendor);
 		_storeMsg = results.msg;
+		_alertType = 'success';
 		_rightPanel = false;
 	},
 
 	updateVendor: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		}
 
@@ -72,12 +77,14 @@ let VendorsStore = assign({}, EventEmitter.prototype, {
 		_vendors.push(results.vendor);
 		_vendor = results.vendor;
 		_storeMsg = results.msg;
+		_alertType = 'success';
 		_rightPanel = false;
 	},
 
 	removeVendor: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		}
 
@@ -86,6 +93,7 @@ let VendorsStore = assign({}, EventEmitter.prototype, {
 		});
 
 		_storeMsg = results.msg;
+		_alertType = 'success';
 		_rightPanel = false;
 	},
 
@@ -97,11 +105,14 @@ let VendorsStore = assign({}, EventEmitter.prototype, {
 		return true;
 	},
 
-	getStoreFlashMessage: function() {
-		return _storeMsg;
+	getStoreStatus: function() {
+		return {
+			msg: _storeMsg,
+			type: _alertType
+		};
 	},
 
-	unsetStoreFlashMessage: function() {
+	removeStoreStatus: function() {
 		_storeMsg = '';
 	},
 

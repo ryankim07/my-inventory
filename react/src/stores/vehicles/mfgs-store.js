@@ -10,6 +10,7 @@ let _totalPages = 0;
 let _limit = 0;
 let _rightPanel = false;
 let _storeMsg;
+let _alertType = 'success';
 
 function setStoreFlashMessage(msg) {
 	_storeMsg = msg;
@@ -44,6 +45,7 @@ let ManufacturersStore = assign({}, EventEmitter.prototype, {
 	setManufacturers: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		} else {
 			if (results.length !== 0) {
@@ -84,11 +86,14 @@ let ManufacturersStore = assign({}, EventEmitter.prototype, {
 		return true;
 	},
 
-	getStoreFlashMessage: function() {
-		return _storeMsg;
+	getStoreStatus: function() {
+		return {
+			msg: _storeMsg,
+			type: _alertType
+		};
 	},
 
-	unsetStoreFlashMessage: function() {
+	removeStoreStatus: function() {
 		_storeMsg = '';
 	},
 

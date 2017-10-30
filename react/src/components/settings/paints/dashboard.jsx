@@ -71,7 +71,7 @@ class SettingsPaintsDashboard extends React.Component
 	// Mounting component
 	componentWillMount() {
 		PaintsStore.addChangeListener(this._onChange);
-		PaintsStore.unsetStoreFlashMessage();
+		PaintsStore.removeStoreStatus();
 	}
 
 	// Mounted component
@@ -88,7 +88,7 @@ class SettingsPaintsDashboard extends React.Component
 	_onChange() {
 		let paints		    = PaintsStore.getPaints();
 		let vendors			= PaintsStore.getVendors();
-		let flashMessage 	= PaintsStore.getStoreFlashMessage();
+		let storeStatus 	=PaintsStore.getStoreStatus();
 		let isAuthenticated = PaintsStore.isAuthenticated();
 		let openRightPanel  = PaintsStore.showRightPanel();
 
@@ -101,7 +101,8 @@ class SettingsPaintsDashboard extends React.Component
 			paints: paints,
 			vendors: vendors,
 			showRightPanel: !!openRightPanel,
-			flashMessage: flashMessage !== undefined ? flashMessage : null,
+			flashMessage: storeStatus.msg ? storeStatus.msg : null,
+			alertType: storeStatus.type,
 			loader: false,
 			showModal: false,
 			mainPanelColumnCss: {

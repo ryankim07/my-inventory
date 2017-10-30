@@ -24,8 +24,8 @@ class TogglingRows extends React.Component
 		super(props);
 
 		this.state = {
-			defaultBackground: this.props.defaultBackground !== undefined ? this.props.defaultBackground : '#ffffff',
-			togglingBackground: this.props.togglingBackground !== undefined ? this.props.togglingBackground : '#ececec',
+			defaultBackground: this.props.defaultBackground ? this.props.defaultBackground : '#ffffff',
+			togglingBackground: this.props.togglingBackground ? this.props.togglingBackground : '#ececec',
 			hoverFlag: false
 		}
 	}

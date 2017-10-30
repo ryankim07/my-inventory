@@ -68,7 +68,7 @@ class SettingsVendorsDashboard extends React.Component
 	// Mounting component
 	componentWillMount() {
 		VendorsStore.addChangeListener(this._onChange);
-		VendorsStore.unsetStoreFlashMessage();
+		VendorsStore.removeStoreStatus();
 	}
 
 	// Mounted component
@@ -84,7 +84,7 @@ class SettingsVendorsDashboard extends React.Component
 	// Store change
 	_onChange() {
 		let vendors 		= VendorsStore.getVendors();
-		let flashMessage 	= VendorsStore.getStoreFlashMessage();
+		let storeStatus 	=VendorsStore.getStoreStatus();
 		let isAuthenticated = VendorsStore.isAuthenticated();
 		let openRightPanel  = VendorsStore.showRightPanel();
 
@@ -96,7 +96,8 @@ class SettingsVendorsDashboard extends React.Component
 		this.setState({
 			vendors: vendors,
 			showRightPanel: !!openRightPanel,
-			flashMessage: flashMessage !== undefined ? flashMessage : null,
+			flashMessage: storeStatus.msg ? storeStatus.msg : null,
+			alertType: storeStatus.type,
 			loader: false,
 			mainPanelColumnCss: {
 				mobileWidth: openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
@@ -209,7 +210,7 @@ class SettingsVendorsDashboard extends React.Component
 			</DisplayPanel> : null;
 
 		let flashMessage = this.state.flashMessage ?
-			<FlashMessage message={ this.state.flashMessage } alertType="alert-success"/> : null;
+			<FlashMessage message={ this.state.flashMessage } alertType={ this.state.alertType }/> : null;
 
 		return (
 			<div className="row">

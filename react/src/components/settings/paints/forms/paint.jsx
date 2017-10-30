@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import Uploader from '../../../helper/uploader';
 import VendorsAutoComplete from '../../../helper/forms/hybrid_field';
-import { upperFirstLetter, getSingleModifiedState, getNestedModifiedState } from '../../../helper/utils';
+import { upperFirstLetter, getNestedModifiedState } from '../../../helper/utils';
 
 class SettingsPaint extends React.Component
 {

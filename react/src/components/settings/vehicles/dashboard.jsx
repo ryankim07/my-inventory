@@ -35,12 +35,12 @@ class SettingsVehiclesDashboard extends React.Component
 			showRightPanel: false,
 			flashMessage: null,
 			mainPanelColumnCss: {
-				'mobileWidth': mainDefaultMobileColumnWidth,
-				'desktopWidth': mainDefaultDesktopColumnWidth
+				mobileWidth: mainDefaultMobileColumnWidth,
+				desktopWidth: mainDefaultDesktopColumnWidth
 			},
 			rightPanelColumnCss: {
-				'mobileWidth': rightPanelMobileColumnWidth,
-				'desktopWidth': rightPanelDesktopColumnWidth
+				mobileWidth: rightPanelMobileColumnWidth,
+				desktopWidth: rightPanelDesktopColumnWidth
 			}
 		};
 
@@ -99,8 +99,8 @@ class SettingsVehiclesDashboard extends React.Component
 			mfg: this.state.manufacturers.find(obj => obj.id === id),
 			showRightPanel: true,
 			mainPanelColumnCss: {
-				'mobileWidth': mainShrinkedMobileColumnWidth,
-				'desktopWidth': mainShrinkedDesktopColumnWidth
+				mobileWidth: mainShrinkedMobileColumnWidth,
+				desktopWidth: mainShrinkedDesktopColumnWidth
 			}
 		});
 	}
@@ -114,8 +114,8 @@ class SettingsVehiclesDashboard extends React.Component
 			model: model,
 			showRightPanel: true,
 			mainPanelColumnCss: {
-				'mobileWidth': mainShrinkedMobileColumnWidth,
-				'desktopWidth': mainShrinkedDesktopColumnWidth
+				mobileWidth: mainShrinkedMobileColumnWidth,
+				desktopWidth: mainShrinkedDesktopColumnWidth
 			}
 		});
 	}
@@ -125,8 +125,8 @@ class SettingsVehiclesDashboard extends React.Component
 		this.setState({
 			showRightPanel: false,
 			mainPanelColumnCss: {
-				'mobileWidth': mainDefaultMobileColumnWidth,
-				'desktopWidth': mainDefaultDesktopColumnWidth
+				mobileWidth: mainDefaultMobileColumnWidth,
+				desktopWidth: mainDefaultDesktopColumnWidth
 			}
 		});
 	}

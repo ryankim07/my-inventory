@@ -34,12 +34,12 @@ class VehiclesDashboard extends React.Component
 			flashMessage: null,
 			showModal: false,
 			mainPanelColumnCss: {
-				'mobileWidth': mainDefaultMobileColumnWidth,
-				'desktopWidth': mainDefaultDesktopColumnWidth
+				mobileWidth: mainDefaultMobileColumnWidth,
+				desktopWidth: mainDefaultDesktopColumnWidth
 			},
 			rightPanelColumnCss: {
-				'mobileWidth': rightPanelMobileColumnWidth,
-				'desktopWidth': rightPanelDesktopColumnWidth
+				mobileWidth: rightPanelMobileColumnWidth,
+				desktopWidth: rightPanelDesktopColumnWidth
 			}
 		};
 
@@ -78,8 +78,8 @@ class VehiclesDashboard extends React.Component
 			this.setState({
 				mainPanel: this.props.params.section,
 				mainPanelColumnCss: {
-					'mobileWidth': rightPanelMobileColumnWidth,
-					'desktopWidth': rightPanelDesktopColumnWidth
+					mobileWidth: rightPanelMobileColumnWidth,
+					desktopWidth: rightPanelDesktopColumnWidth
 				}
 			});
 		}
@@ -116,8 +116,8 @@ class VehiclesDashboard extends React.Component
 				showRightPanel: false,
 				flashMessage: null,
 				mainPanelColumnCss: {
-					'mobileWidth': mainDefaultMobileColumnWidth,
-					'desktopWidth': mainDefaultDesktopColumnWidth
+					mobileWidth: mainDefaultMobileColumnWidth,
+					desktopWidth: mainDefaultDesktopColumnWidth
 				}
 			});
 		}
@@ -145,8 +145,8 @@ class VehiclesDashboard extends React.Component
 			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,
 			mainPanelColumnCss: {
-				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
-				'desktopWidth': openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
+				mobileWidth: openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
+				desktopWidth: openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
 			}
 		});
 	}
@@ -161,41 +161,8 @@ class VehiclesDashboard extends React.Component
 			isEditingMode: isEditingMode,
 			showRightPanel: true,
 			mainPanelColumnCss: {
-				'mobileWidth': mainShrinkedMobileColumnWidth,
-				'desktopWidth': mainShrinkedDesktopColumnWidth
-			}
-		});
-	}
-
-	// Handle view
-	onHandleModal(id) {
-		let vehicle= this.state.vehicles.find(obj => obj.id === id);
-
-		this.setState({
-			vehicle: vehicle,
-			showModal: !this.state.showModal
-		});
-	}
-
-	// Close modal
-	closeModal() {
-		this.setState({
-			showModal: !this.state.showModal
-		});
-	}
-
-	// Set flash message
-	setFlashMessage(msg) {
-		this.setState({flashMessage: msg});
-	}
-
-	// Close right panel
-	onCloseRightPanel() {
-		this.setState({
-			showRightPanel: false,
-			mainPanelColumnCss: {
-				'mobileWidth': mainDefaultMobileColumnWidth,
-				'desktopWidth': mainDefaultDesktopColumnWidth
+				mobileWidth: mainShrinkedMobileColumnWidth,
+				desktopWidth: mainShrinkedDesktopColumnWidth
 			}
 		});
 	}
@@ -212,6 +179,42 @@ class VehiclesDashboard extends React.Component
 		} else {
 			VehiclesAction.updateVehicle(vehicle);
 		}
+	}
+
+	// Handle search
+	onHandleSearch(vehicles) {
+		this.setState({ vehicles: vehicles });
+	}
+
+	// Handle view
+	onHandleModal(id) {
+		let vehicle= this.state.vehicles.find(obj => obj.id === id);
+
+		this.setState({
+			vehicle: vehicle,
+			showModal: !this.state.showModal
+		});
+	}
+
+	// Close modal
+	closeModal() {
+		this.setState({ showModal: !this.state.showModal });
+	}
+
+	// Set flash message
+	setFlashMessage(msg) {
+		this.setState({flashMessage: msg});
+	}
+
+	// Close right panel
+	onCloseRightPanel() {
+		this.setState({
+			showRightPanel: false,
+			mainPanelColumnCss: {
+				mobileWidth: mainDefaultMobileColumnWidth,
+				desktopWidth: mainDefaultDesktopColumnWidth
+			}
+		});
 	}
 
 	// Render
@@ -254,9 +257,10 @@ class VehiclesDashboard extends React.Component
 							loader={ this.state.loader }
 							vehicle={ this.state.vehicle }
 							vehicles={ this.state.vehicles }
-							onHandleRightPanel={ this.onHandleRightPanel }
-							onHandleRemove={ this.onHandleRemove }
+							onRemove={ this.onHandleRemove }
+							onSearch={ this.onHandleSearch }
 							onHandleModal={ this.onHandleModal }
+							onHandleRightPanel={ this.onHandleRightPanel }
 						/>
 					</DisplayPanel>;
 		}

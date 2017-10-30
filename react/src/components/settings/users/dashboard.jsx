@@ -30,12 +30,12 @@ class SettingsUsersDashboard extends React.Component
 			showRightPanel: false,
 			flashMessage: null,
 			mainPanelColumnCss: {
-				'mobileWidth': mainDefaultMobileColumnWidth,
-				'desktopWidth': mainDefaultDesktopColumnWidth
+				mobileWidth: mainDefaultMobileColumnWidth,
+				desktopWidth: mainDefaultDesktopColumnWidth
 			},
 			rightPanelColumnCss: {
-				'mobileWidth': rightPanelMobileColumnWidth,
-				'desktopWidth': rightPanelDesktopColumnWidth
+				mobileWidth: rightPanelMobileColumnWidth,
+				desktopWidth: rightPanelDesktopColumnWidth
 			}
 		};
 
@@ -65,8 +65,8 @@ class SettingsUsersDashboard extends React.Component
 		if (nextProps.location.action !== 'POP') {
 			this.setState({
 				mainPanelColumnCss: {
-					'mobileWidth': mainDefaultMobileColumnWidth,
-					'desktopWidth': mainDefaultDesktopColumnWidth
+					mobileWidth: mainDefaultMobileColumnWidth,
+					desktopWidth: mainDefaultDesktopColumnWidth
 				},
 				showRightPanel: false,
 				flashMessage: null
@@ -91,8 +91,8 @@ class SettingsUsersDashboard extends React.Component
 			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,
 			mainPanelColumnCss: {
-				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
-				'desktopWidth': openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
+				mobileWidth: openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
+				desktopWidth: openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
 			}
 		});
 	}
@@ -136,8 +136,8 @@ class SettingsUsersDashboard extends React.Component
 			isEditingMode: isEditingMode,
 			showRightPanel: true,
 			mainPanelColumnCss: {
-				'mobileWidth': mainShrinkedMobileColumnWidth,
-				'desktopWidth': mainShrinkedDesktopColumnWidth
+				mobileWidth: mainShrinkedMobileColumnWidth,
+				desktopWidth: mainShrinkedDesktopColumnWidth
 			}
 		});
 	}
@@ -152,8 +152,8 @@ class SettingsUsersDashboard extends React.Component
 		this.setState({
 			showRightPanel: false,
 			mainPanelColumnCss: {
-				'mobileWidth': mainDefaultMobileColumnWidth,
-				'desktopWidth': mainDefaultDesktopColumnWidth
+				mobileWidth: mainDefaultMobileColumnWidth,
+				desktopWidth: mainDefaultDesktopColumnWidth
 			}
 		});
 	}

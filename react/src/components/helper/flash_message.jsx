@@ -8,7 +8,7 @@ import React from 'react';
 class FlashMessage extends React.Component
 {
     render() {
-        let alertType = 'alert ' + this.props.alertType + ' alert-dismissible';
+        let alertType = 'alert ' + ' alert-' + this.props.alertType + ' alert-dismissible';
 
         return (
             <div className={alertType} role="alert">

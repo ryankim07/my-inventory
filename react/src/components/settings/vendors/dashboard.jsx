@@ -45,12 +45,12 @@ class SettingsVendorsDashboard extends React.Component
 			showRightPanel: false,
 			flashMessage: null,
 			mainPanelColumnCss: {
-				'mobileWidth': mainDefaultMobileColumnWidth,
-				'desktopWidth': mainDefaultDesktopColumnWidth
+				mobileWidth: mainDefaultMobileColumnWidth,
+				desktopWidth: mainDefaultDesktopColumnWidth
 			},
 			rightPanelColumnCss: {
-				'mobileWidth': rightPanelMobileColumnWidth,
-				'desktopWidth': rightPanelDesktopColumnWidth
+				mobileWidth: rightPanelMobileColumnWidth,
+				desktopWidth: rightPanelDesktopColumnWidth
 			}
 		};
 
@@ -99,8 +99,8 @@ class SettingsVendorsDashboard extends React.Component
 			flashMessage: flashMessage !== undefined ? flashMessage : null,
 			loader: false,
 			mainPanelColumnCss: {
-				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
-				'desktopWidth': openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
+				mobileWidth: openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
+				desktopWidth: openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
 			}
 		});
 	}
@@ -116,8 +116,8 @@ class SettingsVendorsDashboard extends React.Component
 			isEditingMode: isEditingMode,
 			showRightPanel: true,
 			mainPanelColumnCss: {
-				'mobileWidth': mainShrinkedMobileColumnWidth,
-				'desktopWidth': mainShrinkedDesktopColumnWidth
+				mobileWidth: mainShrinkedMobileColumnWidth,
+				desktopWidth: mainShrinkedDesktopColumnWidth
 			}
 		});
 	}
@@ -160,8 +160,8 @@ class SettingsVendorsDashboard extends React.Component
 		this.setState({
 			showRightPanel: false,
 			mainPanelColumnCss: {
-				'mobileWidth': mainDefaultMobileColumnWidth,
-				'desktopWidth': mainDefaultDesktopColumnWidth
+				mobileWidth: mainDefaultMobileColumnWidth,
+				desktopWidth: mainDefaultDesktopColumnWidth
 			}
 		});
 	}

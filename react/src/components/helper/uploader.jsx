@@ -34,9 +34,9 @@ class Uploader extends React.Component
 	onHandleDrop(asset) {
 		let assets = this.state.assets;
 
+
 		asset.map(asset => {
-			let name = asset.name;
-			let index = assets.indexOf(assets.find(obj => obj.name === name));
+			let index = assets.indexOf(assets.find(obj => obj.name === asset.name));
 
 			// Remove
 			if (index >= 0) {

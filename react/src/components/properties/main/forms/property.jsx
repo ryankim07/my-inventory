@@ -1,6 +1,6 @@
 import React from 'react';
 import PropertyAddressForm from './../../address/forms/address';
-import YearsField from '../../../helper/forms/list_options_field';
+import YearsField from '../../../helper/forms/hybrid_field';
 import Uploader from '../../../helper/uploader';
 import { numberFormat } from '../../../helper/utils';
 

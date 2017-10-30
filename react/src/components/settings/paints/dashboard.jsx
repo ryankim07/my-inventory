@@ -1,6 +1,6 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import _ from 'lodash';
+import { PropTypes } from 'prop-types';
 import PaintsAction from '../../../actions/paints-action';
 import PaintsStore from '../../../stores/paints/store';
 import MainPanel from '../../helper/panels/main';
@@ -8,7 +8,6 @@ import DisplayPanel from '../../helper/panels/display';
 import RightPanel from '../../helper/panels/right';
 import SettingsPaintsList from './../paints/list';
 import SettingsPaint from './../paints/forms/paint';
-import Modal from '../../helper/modal';
 import FlashMessage from '../../helper/flash_message';
 
 const mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -48,13 +47,14 @@ class SettingsPaintsDashboard extends React.Component
 			showRightPanel: false,
 			flashMessage: null,
 			showModal: false,
+			alertType: 'success',
 			mainPanelColumnCss: {
-				'mobileWidth': mainDefaultMobileColumnWidth,
-				'desktopWidth': mainDefaultDesktopColumnWidth
+				mobileWidth: mainDefaultMobileColumnWidth,
+				desktopWidth: mainDefaultDesktopColumnWidth
 			},
 			rightPanelColumnCss: {
-				'mobileWidth': rightPanelMobileColumnWidth,
-				'desktopWidth': rightPanelDesktopColumnWidth
+				mobileWidth: rightPanelMobileColumnWidth,
+				desktopWidth: rightPanelDesktopColumnWidth
 			}
 		};
 
@@ -62,7 +62,6 @@ class SettingsPaintsDashboard extends React.Component
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 		this.onHandleSearch     = this.onHandleSearch.bind(this);
 		this.onHandleSubmit     = this.onHandleSubmit.bind(this);
-		this.onHandleContinue   = this.onHandleContinue.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.setFlashMessage 	= this.setFlashMessage.bind(this);
 		this.onCloseRightPanel 	= this.onCloseRightPanel.bind(this);
@@ -106,8 +105,8 @@ class SettingsPaintsDashboard extends React.Component
 			loader: false,
 			showModal: false,
 			mainPanelColumnCss: {
-				'mobileWidth': openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
-				'desktopWidth': openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
+				mobileWidth: openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
+				desktopWidth: openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
 			}
 		});
 	}
@@ -124,8 +123,8 @@ class SettingsPaintsDashboard extends React.Component
 			isEditingMode: isEditingMode,
 			showRightPanel: true,
 			mainPanelColumnCss: {
-				'mobileWidth': mainShrinkedMobileColumnWidth,
-				'desktopWidth': mainShrinkedDesktopColumnWidth
+				mobileWidth: mainShrinkedMobileColumnWidth,
+				desktopWidth: mainShrinkedDesktopColumnWidth
 			}
 		});
 	}
@@ -150,20 +149,19 @@ class SettingsPaintsDashboard extends React.Component
 
 		let paint = this.state.paint;
 
-		if (!_.isEmpty(paint.vendor) && _.isEmpty(paint.vendor_id.toString())) {
-			this.setState({ showModal: !this.state.showModal });
-		} else {
-			this.onHandleContinue(paint);
-		}
-	}
+		if (!_.find(this.state.vendors, { "company": paint.vendor })) {
+			this.setState({
+				flashMessage: 'The vendor you entered is invalid.  Please choose an existing vendor or configure a new one.',
+				alertType: 'danger'
+			});
 
-	onHandleContinue(paint) {
-		let obj = paint.id ? paint : this.state.paint;
+			return;
+		}
 
 		if (!this.state.isEditingMode) {
-			PaintsAction.addPaint(obj);
+			PaintsAction.addPaint(paint);
 		} else {
-			PaintsAction.updatePaint(obj);
+			PaintsAction.updatePaint(paint);
 		}
 	}
 
@@ -184,8 +182,8 @@ class SettingsPaintsDashboard extends React.Component
 		this.setState({
 			showRightPanel: false,
 			mainPanelColumnCss: {
-				'mobileWidth': mainDefaultMobileColumnWidth,
-				'desktopWidth': mainDefaultDesktopColumnWidth
+				mobileWidth: mainDefaultMobileColumnWidth,
+				desktopWidth: mainDefaultDesktopColumnWidth
 			}
 		});
 	}
@@ -233,22 +231,9 @@ class SettingsPaintsDashboard extends React.Component
 				/>
 			</DisplayPanel> : null;
 
-		// Modal window
-		let modalWindowHtml = this.state.showModal ?
-			<Modal
-				id="new-vendor"
-				displayType="warning"
-				header="Warning"
-				onContinue={ this.onHandleContinue }
-				onClose={ this.onCloseModal }>
-				<div>
-					<h2>You are about to add an unknown vendor that is not on the list.</h2>
-				</div>
-			</Modal> : null;
-
 		// Flash message
 		let flashMessage = this.state.flashMessage ?
-			<FlashMessage message={ this.state.flashMessage } alertType="alert-success"/> : null;
+			<FlashMessage message={ this.state.flashMessage } alertType={ this.state.alertType }/> : null;
 
 		return (
 			<div className="row">
@@ -256,7 +241,6 @@ class SettingsPaintsDashboard extends React.Component
 
 				<MainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }
-					{ modalWindowHtml }
 				</MainPanel>
 				<RightPanel rightPanelColumnCss={ this.state.rightPanelColumnCss }>
 					{ rightPanelHtml }

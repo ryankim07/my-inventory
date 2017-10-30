@@ -3,9 +3,9 @@ import _ from 'lodash';
 import classNames from 'classnames';
 import AutoCompleteAddress from '../../../helper/forms/auto_complete_address';
 import InputZipCode from '../../../helper/forms/input_zip_code';
-import StatesDropdown from '../../../helper/forms/list_options_field';
-import CountiesDropdown from '../../../helper/forms/list_options_field';
-import CountriesDropdown from '../../../helper/forms/list_options_field';
+import StatesDropdown from '../../../helper/forms/hybrid_field';
+import CountiesDropdown from '../../../helper/forms/hybrid_field';
+import CountriesDropdown from '../../../helper/forms/hybrid_field';
 import { getStates, getCounties, getCountries } from '../../../helper/lists/region';
 import { upperFirstLetter, checkAddressInputFields } from '../../../helper/utils';
 
@@ -105,21 +105,19 @@ class PropertyAddressForm extends React.Component
 				<div className={ classNames('form-group', { 'required': this.state.isRequiredField }) }>
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">State</label>
-						<div className="input-group">
-							<StatesDropdown
-								inputProps={
-									{
-										auto: true,
-										name: "state",
-										list: sequencedObject(2010, (new Date()).getFullYear() + 1),
-										value: this.state.address.state,
-										onChange: this.onHandleFormChange,
-										onSelect: "",
-										required: classNames({ 'required': this.state.isRequiredField })
-									}
+						<StatesDropdown
+							inputProps={
+								{
+									auto: true,
+									name: "state",
+									list: sequencedObject(2010, (new Date()).getFullYear() + 1),
+									value: this.state.address.state,
+									onChange: this.onHandleFormChange,
+									onSelect: "",
+									required: classNames({ 'required': this.state.isRequiredField })
 								}
-							/>
-						</div>
+							}
+						/>
 					</div>
 				</div>
 				<div className={ classNames('form-group', {'required': this.state.isRequiredField }) }>
@@ -142,21 +140,19 @@ class PropertyAddressForm extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">County</label>
-						<div className="input-group">
-							<CountiesDropdown
-								inputProps={
-									{
-										auto: true,
-										name: "county",
-										list: sequencedObject(2010, (new Date()).getFullYear() + 1),
-										value: this.state.address.county,
-										onChange: this.onHandleFormChange,
-										onSelect: "",
-										required: ""
-									}
+						<CountiesDropdown
+							inputProps={
+								{
+									auto: true,
+									name: "county",
+									list: sequencedObject(2010, (new Date()).getFullYear() + 1),
+									value: this.state.address.county,
+									onChange: this.onHandleFormChange,
+									onSelect: "",
+									required: ""
 								}
-							/>
-						</div>
+							}
+						/>
 					</div>
 				</div>
 				<div className={ classNames('form-group', {'required': this.state.isRequiredField }) }>

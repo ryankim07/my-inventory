@@ -1,6 +1,6 @@
 import React from 'react';
-import YearsField from '../../helper/forms/list_options_field';
-import VehicleColorsDropdown  from '../../helper/forms/list_options_field';
+import YearsField from '../../helper/forms/hybrid_field';
+import VehicleColorsDropdown  from '../../helper/forms/hybrid_field';
 import Uploader from '../../helper/uploader';
 import Loader from '../../helper/loader';
 import { getVehicleColors } from "../../helper/lists/colors";

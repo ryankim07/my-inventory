@@ -5,37 +5,7 @@ import Loader from '../helper/loader';
 
 class VehiclesList extends React.Component
 {
-	// Constructor
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			vehicles: this.props.vehicles,
-			clonedVehicles: JSON.parse(JSON.stringify(this.props.vehicles))
-		};
-
-		this.onHandleSearch = this.onHandleSearch.bind(this);
-	}
-
-	// Next state change
-	componentWillReceiveProps(nextProps) {
-		console.log('List next props' + nextProps.vehicles);
-		console.log('List current state' + this.state.vehicles);
-		if (nextProps.vehicles !== this.state.vehicles) {
-			this.setState({
-				vehicles: nextProps.vehicles,
-				clonedVehicles: JSON.parse(JSON.stringify(nextProps.vehicles))
-			});
-		}
-	}
-
-	// Handle search
-	onHandleSearch(results) {
-		this.setState({
-			vehicles: results
-		});
-	}
-
+	// Render
 	render() {
         let vehiclesHtml = null;
 
@@ -81,9 +51,9 @@ class VehiclesList extends React.Component
 						<SearchField
 							inputProps={
 								{
-									objs: this.state.vehicles,
+									objs: this.props.vehicles,
 									searchType: "mfg",
-									onChange: this.onHandleSearch.bind(this)
+									onSearch: this.props.onSearch
 								}
 							}
 						/>

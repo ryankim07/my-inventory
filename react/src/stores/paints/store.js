@@ -67,6 +67,7 @@ let PaintsStore = assign({}, EventEmitter.prototype, {
 			return false;
 		}
 
+		// Add new paint
 		_paints.push(results.paint);
 		_storeMsg = results.msg;
 		_rightPanel = false;

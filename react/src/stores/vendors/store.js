@@ -6,7 +6,6 @@ import _ from 'lodash';
 
 let _vendors = [];
 let _vendor = {};
-let _categories = [];
 let _rightPanel = false;
 let _storeMsg;
 
@@ -30,20 +29,6 @@ let VendorsStore = assign({}, EventEmitter.prototype, {
 
     removeChangeListener: function(callback){
         this.removeListener('change', callback);
-	},
-
-	setVendorsAndCategories: function(vendors, categories) {
-		if (vendors.length !== 0) {
-			_vendors = vendors;
-		}
-
-		if (categories.length !== 0) {
-			_categories = categories;
-		}
-	},
-
-	getCategories: function() {
-    	return _categories;
 	},
 
 	getVendors: function () {
@@ -146,10 +131,6 @@ VendorsStore.dispatchToken = Dispatcher.register(function(payload) {
         case ActionConstants.RECEIVE_VENDORS:
 			VendorsStore.setVendors(results);
         break;
-
-		case ActionConstants.RECEIVE_VENDORS_AND_CATEGORIES:
-			VendorsStore.setVendorsAndCategories(action.vendors, action.categories);
-		break;
 
 		case ActionConstants.VENDORS_ERROR:
 			setStoreFlashMessage(results);

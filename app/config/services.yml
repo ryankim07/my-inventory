@@ -76,8 +76,8 @@ services:
         class: AppBundle\Service\Vendors\Vendors
         arguments: ["@doctrine.orm.houses_entity_manager"]
 
-    Vendor_Categories:
-        class: AppBundle\Service\Vendors\VendorCategories
+    Categories:
+        class: AppBundle\Service\Categories
         arguments: ["@doctrine.orm.houses_entity_manager"]
 
     File_Uploader:

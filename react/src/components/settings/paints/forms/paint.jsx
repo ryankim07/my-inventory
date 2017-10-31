@@ -18,35 +18,35 @@ class SettingsPaint extends React.Component
     onHandleFormChange(event) {
     	let fieldName 	= event.target.name;
         let chosenValue = event.target.value;
-        let modified 	= {};
+        let modifiedObj = {};
 
         switch (fieldName) {
 			case 'name':
 			case 'brand':
-				modified[fieldName] = upperFirstLetter(chosenValue);
+				modifiedObj[fieldName] = upperFirstLetter(chosenValue);
 			break;
 
 			case 'vendor':
-				modified[fieldName] = upperFirstLetter(chosenValue);
-				modified['vendor_id'] = "";
+				modifiedObj[fieldName] = upperFirstLetter(chosenValue);
+				modifiedObj['vendor_id'] = "";
 			break;
 
 			default:
-				modified[fieldName] = chosenValue;
+				modifiedObj[fieldName] = chosenValue;
 		}
 
-		this.props.onChange(getNestedModifiedState(this.props.paint, modified));
+		this.props.onChange(getNestedModifiedState(this.props.paint, modifiedObj));
     }
 
 	// Handle when dropdown field is selected
 	handleVendor(vendorId) {
-		let obj = _.find(this.props.vendors, {'id': parseInt(vendorId)});
-		let modified = {
+		let obj         = _.find(this.props.vendors, {'id': parseInt(vendorId)});
+		let modifiedObj = {
 			vendor_id: obj.id,
 			vendor: obj.company
 		};
 
-		this.props.onChange(getNestedModifiedState(this.props.paint, modified));
+		this.props.onChange(getNestedModifiedState(this.props.paint, modifiedObj));
 	}
 
 	// Render

@@ -141,7 +141,6 @@ class SettingsVendorsDashboard extends React.Component
 	// Handle submit
 	onHandleSubmit(event) {
 		event.preventDefault();
-
 		let vendor = this.state.vendor;
 
 		if (!this.state.isEditingMode) {

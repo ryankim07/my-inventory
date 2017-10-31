@@ -1,5 +1,5 @@
 import React from 'react';
-import { upperFirstLetter, arrayDiff } from '../../../helper/utils';
+import { upperFirstLetter, getNestedModifiedState } from '../../../helper/utils';
 
 class SettingsUser extends React.Component
 {
@@ -8,47 +8,40 @@ class SettingsUser extends React.Component
 		super(props);
 
 		this.state = {
-			user: this.props.user,
-			clonedGroup: JSON.parse(JSON.stringify(this.props.user.groups)),
 			isChecked: false
-
 		};
 
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
-		this.onHandleCheckBox   = this.onHandleCheckBox.bind(this);
-		this.handleFormSubmit   = this.handleFormSubmit.bind(this);
-	}
-
-    // Next state change
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.user !== this.state.user) {
-			this.setState({
-				user: nextProps.user,
-				clonedGroup: JSON.parse(JSON.stringify(nextProps.user.groups))
-			});
-		}
+		this.onHandleCheckbox   = this.onHandleCheckbox.bind(this);
 	}
 
 	// Handle input changes
-	onHandleFormChange(propertyName, event) {
-		let user 		= this.state.user;
+	onHandleFormChange(event) {
+		let fieldName 	= event.target.name;
 		let chosenValue = event.target.value;
+		let user        = this.props.user;
+		let modifiedObj = {}
 
-		switch (propertyName) {
+		switch (fieldName) {
 			case 'first_name':
 			case 'last_name':
-				user[propertyName] = upperFirstLetter(chosenValue);
+				modifiedObj[fieldName] = upperFirstLetter(chosenValue);
 			break;
 
 			case 'username':
 				let username = chosenValue.toLowerCase();
+				let temp   = [];
 
 				// Add username to all groups
 				user.groups.map(group => {
-					group['username'] = username;
+					group.username = username;
+					temp.push(group);
 				});
 
-				user[propertyName] = username;
+				modifiedObj = {
+					username: username,
+					groups: temp
+				}
 			break;
 
 			case 'groups':
@@ -66,35 +59,43 @@ class SettingsUser extends React.Component
 					if (!foundGroup) {
 						foundGroup = {
 							id: '',
-							username: this.state.user.username,
+							username: user.username,
 							role: selectedRole,
 							users: []
 						};
 
-						let group = this.state.clonedGroup.find(clonedRole => clonedRole.role === foundGroup.role);
+						let group = user.groups.find(clonedRole => clonedRole.role === foundGroup.role);
 
 						return newGroup.push(!group ? foundGroup : group);
 					} else {
 						// Make sure if an existing object with all the properties already exists
-						let group = this.state.clonedGroup.find(clonedRole => clonedRole.role === foundGroup.role);
+						let group = user.groups.find(clonedRole => clonedRole.role === foundGroup.role);
 
 						newGroup.push(!group ? foundGroup : group);
 					}
 				});
 
-				user[propertyName] = newGroup;
+				modifiedObj[fieldName] = newGroup;
+			break;
+
+			case 'confirm_password':
+				// Make sure confirmation password matches
+				if (this.props.user.password !== chosenValue) {
+					event.target.setCustomValidity("Confirmation password needs to match.");
+				} else {
+					event.target.setCustomValidity("");
+				}
 			break;
 
 			default:
-				user[propertyName] = chosenValue;
+				modifiedObj[fieldName] = chosenValue;
 		}
 
-		this.setState({
-			user: user
-		});
+		this.props.onChange(getNestedModifiedState(user, modifiedObj));
 	}
 
-	onHandleCheckBox(event) {
+	// Handle multi-select
+	onHandleCheckbox(event) {
 		const target = event.target;
 		const value  = target.type === 'checkbox' ? target.checked : target.value;
 
@@ -103,31 +104,56 @@ class SettingsUser extends React.Component
 		});
 	}
 
-	// Submit
-	handleFormSubmit(event) {
-		event.preventDefault();
-
-		this.props.onHandleSubmit(this.state.user);
-	}
-
 	// Render
 	render() {
-		let user = this.state.user;
-		let rolesOptions = user.groups.map((obj) => {
+		let rolesOptions = this.props.user.groups.map((obj) => {
 			return (obj.role);
 		});
 
+		let credentialFields = !this.props.isEditingMode ?
+			<div>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Password</label>
+						<div className="input-group">
+							<input
+								name="password"
+								type={ this.state.isChecked ? 'text' : 'password' }
+								className="form-control input-sm"
+								onChange={ this.onHandleFormChange }
+								required="required"
+							/>
+						</div>
+					</div>
+				</div>
+				<div className="form-group required">
+					<div className="col-xs-12 col-md-8">
+						<label className="control-label">Confirm Password</label>
+						<div className="input-group">
+							<input
+								name="confirm_password"
+								type={ this.state.isChecked ? 'text' : 'password' }
+								className="form-control input-sm"
+								onChange={ this.onHandleFormChange }
+								required="required"
+							/>
+						</div>
+					</div>
+				</div>
+			</div> : null;
+
 		let userForm =
-			<form onSubmit={ this.handleFormSubmit }>
+			<form onSubmit={ this.props.onSubmit }>
 				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Groups</label>
 						<div className="input-group">
 							<select
+								name="groups"
 								multiple={ true }
-								onChange={ this.onHandleFormChange.bind(this, 'groups') }
+								onChange={ this.onHandleFormChange }
 								value={ rolesOptions }
-								className="form-control input-sm"
+								className="form-control"
 								required="required">
 								<option value="ROLE_USER">User</option>
 								<option value="ROLE_ADMIN">Admin</option>
@@ -141,10 +167,11 @@ class SettingsUser extends React.Component
 						<label className="control-label">First Name</label>
 						<div className="input-group">
 							<input
+								name="first_name"
 								type="text"
 								className="form-control input-sm"
-								value={ user.first_name }
-								onChange={ this.onHandleFormChange.bind(this, 'first_name') }
+								value={ this.props.user.first_name }
+								onChange={ this.onHandleFormChange }
 								required="required"
 							/>
 						</div>
@@ -155,10 +182,11 @@ class SettingsUser extends React.Component
 						<label className="control-label">Last name</label>
 						<div className="input-group">
 							<input
+								name="last_name"
 								type="text"
 								className="form-control input-sm"
-								value={ user.last_name }
-								onChange={ this.onHandleFormChange.bind(this, 'last_name') }
+								value={ this.props.user.last_name }
+								onChange={ this.onHandleFormChange }
 								required="required"
 							/>
 						</div>
@@ -169,10 +197,11 @@ class SettingsUser extends React.Component
 						<label className="control-label">Email</label>
 						<div className="input-group">
 							<input
+								name="email"
 								type="email"
 								className="form-control input-sm"
-								value={ user.email }
-								onChange={ this.onHandleFormChange.bind(this, 'email') }
+								value={ this.props.user.email }
+								onChange={ this.onHandleFormChange }
 								required="required"
 							/>
 						</div>
@@ -183,41 +212,17 @@ class SettingsUser extends React.Component
 						<label className="control-label">Username</label>
 						<div className="input-group">
 							<input
+								name="username"
 								type="text"
 								className="form-control input-sm"
-								value={ user.username }
-								onChange={ this.onHandleFormChange.bind(this, 'username') }
+								value={ this.props.user.username }
+								onChange={ this.onHandleFormChange }
 								required="required"
 							/>
 						</div>
 					</div>
 				</div>
-				<div className="form-group required">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Password</label>
-						<div className="input-group">
-							<input
-								type={ this.state.isChecked ? 'text' : 'password' }
-								className="form-control input-sm"
-								onChange={ this.onHandleFormChange.bind(this, 'password') }
-								required="required"
-							/>
-						</div>
-					</div>
-				</div>
-				<div className="form-group required">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Confirm Password</label>
-						<div className="input-group">
-							<input
-								type={ this.state.isChecked ? 'text' : 'password' }
-								className="form-control input-sm"
-								onChange={ this.onHandleFormChange.bind(this, 'confirm_password') }
-								required="required"
-							/>
-						</div>
-					</div>
-				</div>
+				{ credentialFields }
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="checkbox">
@@ -225,7 +230,7 @@ class SettingsUser extends React.Component
 								<input
 									type="checkbox"
 									checked={ this.state.isChecked }
-									onChange={ this.onHandleCheckBox }
+									onChange={ this.onHandleCheckbox }
 								/>
 							Show password</label>
 						</div>
@@ -234,7 +239,7 @@ class SettingsUser extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input type="hidden" value={ user.id }/>
+							<input type="hidden" value={ this.props.user.id }/>
 						</div>
 					</div>
 				</div>

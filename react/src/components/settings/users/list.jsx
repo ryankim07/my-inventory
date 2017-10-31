@@ -5,45 +5,16 @@ import Loader from '../../helper/loader';
 
 class SettingsUsersList extends React.Component
 {
-	// Constructor
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			users: this.props.users,
-			clonedUsers: JSON.parse(JSON.stringify(this.props.users))
-		};
-	}
-
-	// Next state change
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.users !== this.state.users) {
-			this.setState({
-				users: nextProps.users,
-				clonedUsers: JSON.parse(JSON.stringify(nextProps.users))
-			});
-		}
-	}
-
-	// Handle search
-	onHandleSearch(results) {
-		this.setState({
-			users: results
-		});
-	}
-
 	// Render
 	render() {
         let usersHtml = null;
 
 		// If loading is complete
         if (!this.props.loader) {
-        	let users = this.state.users;
-
-        	if (!users || users.length === 0) {
+        	if (!this.props.users || this.props.users.length === 0) {
 				usersHtml = <tr><td><span>Empty list.</span></td></tr>;
 			} else {
-				usersHtml = users.map((user, userIndex) => {
+				usersHtml = this.props.users.map((user, userIndex) => {
 					return (
 						<TogglingRows
 							key={ userIndex }
@@ -74,9 +45,9 @@ class SettingsUsersList extends React.Component
 						<SearchField
 							inputProps={
 								{
-									objs: this.state.users,
+									objs: this.props.users,
 									searchType: "first_name",
-									onChange: this.onHandleSearch.bind(this)
+									onSearch: this.props.onSearch
 								}
 							}
 						/>

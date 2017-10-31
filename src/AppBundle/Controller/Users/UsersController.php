@@ -65,15 +65,17 @@ class UsersController extends FOSRestController
         $results     = $userService->save($data);
         $user        = $results['user'];
 
-        // Send email
-        $emailService = $this->get('Email');
-        $emailService->send(
-            'Welcome to My Inventory',
-            'admin@my-inventory.com',
-            'ryankim07@gmail.com',//$user->getEmail(),
-            $user->getFirstName(),
-            $user->getRegistration()->getCode()
-        );
+        // Send email only to new registration
+        if (!$user->getIsActive) {
+            $emailService = $this->get('Email');
+            $emailService->send(
+                'Welcome to My Inventory',
+                'admin@my-inventory.com',
+                'ryankim07@gmail.com',//$user->getEmail(),
+                $user->getFirstName(),
+                $user->getRegistration()->getCode()
+            );
+        }
 
         return new View($results, Response::HTTP_OK);
     }

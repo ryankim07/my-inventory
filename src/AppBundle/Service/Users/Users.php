@@ -131,7 +131,7 @@ class Users
         $this->entity->setUsername($data['username']);
         $this->entity->setPassword($data['password']);
         $this->entity->setEmail($data['email']);
-        $this->entity->setIsActive(0);
+        $this->entity->setIsActive($data['is_active']);
 
         // Add groups
         $groupsEntity = $this->existingUser ?
@@ -145,15 +145,16 @@ class Users
             }
         }
 
-        // Add registration
-        $registrationEntity = new UsersRegistrationEntity();
-        $registrationEntity->setUserId($this->entity->getId());
-        $registrationEntity->setEmail($this->entity->getEmail());
-        $registrationEntity->setCode(substr(bin2hex(random_bytes(16)), -30));
-        $this->entity->addRegistration($registrationEntity);
-
         if (!$this->existingUser) {
+            // Add registration
+            $registrationEntity = new UsersRegistrationEntity();
+            $registrationEntity->setEmail($this->entity->getEmail());
+            $registrationEntity->setCode(substr(bin2hex(random_bytes(16)), -30));
+            $registrationEntity->setUser($this->entity);
+            $registrationEntity->setCreatedOn(date('Y-m-d H:i:s'));
+
             $this->em->persist($this->entity);
+            $this->em->persist($registrationEntity);
         }
 
         $this->em->flush();

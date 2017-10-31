@@ -9,12 +9,30 @@ import SettingsUser from './../users/forms/user';
 import SettingsUsersList from './../users/list';
 import FlashMessage from '../../helper/flash_message';
 
-let mainDefaultMobileColumnWidth = 'col-xs-12';
-let mainDefaultDesktopColumnWidth = 'col-md-12';
-let mainShrinkedMobileColumnWidth = 'col-xs-8';
-let mainShrinkedDesktopColumnWidth = 'col-md-8';
-let rightPanelMobileColumnWidth = 'col-xs-4';
-let rightPanelDesktopColumnWidth = 'col-md-4';
+const mainDefaultMobileColumnWidth = 'col-xs-12';
+const mainDefaultDesktopColumnWidth = 'col-md-12';
+const mainShrinkedMobileColumnWidth = 'col-xs-8';
+const mainShrinkedDesktopColumnWidth = 'col-md-8';
+const rightPanelMobileColumnWidth = 'col-xs-4';
+const rightPanelDesktopColumnWidth = 'col-md-4';
+
+const groupsObj = {
+	id: '',
+	username: '',
+	role: '',
+	users: []
+};
+
+const initialUserObj = {
+	id: '',
+	first_name: '',
+	last_name: '',
+	username: '',
+	password: '',
+	email: '',
+	is_enabled: '',
+	groups: [groupsObj]
+} ;
 
 class SettingsUsersDashboard extends React.Component
 {
@@ -29,6 +47,7 @@ class SettingsUsersDashboard extends React.Component
 			isEditingMode: false,
 			showRightPanel: false,
 			flashMessage: null,
+			alertType: 'success',
 			mainPanelColumnCss: {
 				mobileWidth: mainDefaultMobileColumnWidth,
 				desktopWidth: mainDefaultDesktopColumnWidth
@@ -40,11 +59,13 @@ class SettingsUsersDashboard extends React.Component
 		};
 
 		this._onChange 		  	= this._onChange.bind(this);
-		this.onHandleSubmit = this.onHandleSubmit.bind(this);
-		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
+		this.onHandleFormChange = this.onHandleFormChange.bind(this);
+		this.onHandleSubmit 	= this.onHandleSubmit.bind(this);
+		this.onHandleSearch     = this.onHandleSearch.bind(this);
 		this.onHandleRemove 	= this.onHandleRemove.bind(this);
+		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.setFlashMessage  	= this.setFlashMessage.bind(this);
-		this.onCloseRightPanel  	= this.onCloseRightPanel.bind(this);
+		this.onCloseRightPanel  = this.onCloseRightPanel.bind(this);
 	}
 
 	componentWillMount() {
@@ -60,23 +81,10 @@ class SettingsUsersDashboard extends React.Component
 		UsersStore.removeChangeListener(this._onChange);
 	}
 
-	// Next state change
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.location.action !== 'POP') {
-			this.setState({
-				mainPanelColumnCss: {
-					mobileWidth: mainDefaultMobileColumnWidth,
-					desktopWidth: mainDefaultDesktopColumnWidth
-				},
-				showRightPanel: false,
-				flashMessage: null
-			});
-		}
-	}
-
+	// Store change
 	_onChange() {
 		let users 			= UsersStore.getUsers();
-		let storeStatus 	=UsersStore.getStoreStatus();
+		let storeStatus 	= UsersStore.getStoreStatus();
 		let isAuthenticated = UsersStore.isAuthenticated();
 		let openRightPanel  = UsersStore.showRightPanel();
 
@@ -102,31 +110,9 @@ class SettingsUsersDashboard extends React.Component
 	onHandleRightPanel(id) {
 		let isEditingMode = !!id;
 
-		// If a particular user is edited without submit and user selects
-		// a new user to edit, we need to restore old user values.  Therefore,
-		// we need to clone object to stop js original object reference
-		let users = JSON.parse(JSON.stringify(this.state.users));
-
-		let groupsObj = {
-			id: '',
-			username: '',
-			role: '',
-			users: []
-		};
-
 		// Instantiate new object or load existing object if found
 		let user = isEditingMode ?
-			users.find(obj => obj.id === id) :
-			{
-				id: '',
-				first_name: '',
-				last_name: '',
-				username: '',
-				password: '',
-				email: '',
-				is_enabled: '',
-				groups: [groupsObj]
-			};
+			this.state.users.find(obj => obj.id === id) : initialUserObj;
 
 		if (isEditingMode && user.groups.length === 0) {
 			user.groups.push(groupsObj);
@@ -141,6 +127,33 @@ class SettingsUsersDashboard extends React.Component
 				desktopWidth: mainShrinkedDesktopColumnWidth
 			}
 		});
+	}
+
+	// Handle form change
+	onHandleFormChange(user) {
+		this.setState({ user: user });
+	}
+
+	// Handle search
+	onHandleSearch(users) {
+		this.setState({ users: users });
+	}
+
+	// Handle delete
+	onHandleRemove(id) {
+		UsersAction.removeUser(id);
+	}
+
+	// Handle submit
+	onHandleSubmit(event) {
+		event.preventDefault();
+		const user = this.state.user;
+
+		if (!this.state.isEditingMode) {
+			UsersAction.addUser(user);
+		} else {
+			UsersAction.updateUser(user);
+		}
 	}
 
 	// Set flash message
@@ -159,20 +172,6 @@ class SettingsUsersDashboard extends React.Component
 		});
 	}
 
-	// Handle delete
-	onHandleRemove(id) {
-		UsersAction.removeUser(id);
-	}
-
-	// Handle submit
-	onHandleSubmit(user) {
-		if (!this.state.isEditingMode) {
-			UsersAction.addUser(user);
-		} else {
-			UsersAction.updateUser(user);
-		}
-	}
-
 	// Render
 	render() {
 		// Main panel
@@ -189,8 +188,9 @@ class SettingsUsersDashboard extends React.Component
 					loader={ this.state.loader }
 					user={ this.state.user }
 					users={ this.state.users }
-					onHandleRightPanel={ this.onHandleRightPanel }
-					onHandleRemove={ this.onHandleRemove }/>
+					onSearch={ this.onHandleSearch }
+					onRemove={ this.onHandleRemove }
+					onHandleRightPanel={ this.onHandleRightPanel }/>
 			</DisplayPanel>;
 
 		// Right panel
@@ -205,7 +205,9 @@ class SettingsUsersDashboard extends React.Component
 				previousRoute="">
 				<SettingsUser
 					user={ this.state.user }
-					onHandleSubmit={ this.onHandleSubmit }/>
+					isEditingMode={ this.state.isEditingMode }
+					onChange={ this.onHandleFormChange }
+					onSubmit={ this.onHandleSubmit }/>
 			</DisplayPanel> : null;
 
 		let flashMessage = this.state.flashMessage ?

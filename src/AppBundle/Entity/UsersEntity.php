@@ -74,16 +74,17 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
     /**
      * @ORM\ManyToMany(targetEntity="GroupsEntity", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\JoinTable(
-     *  name="users.users_groups",
-     *  joinColumns={
-     *      @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     *  },
-     *  inverseJoinColumns={
-     *      @ORM\JoinColumn(name="group_id", referencedColumnName="id")
-     *  }
+     *    name="users.users_groups",
+     *    joinColumns={
+     *        @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *    },
+     *    inverseJoinColumns={
+     *        @ORM\JoinColumn(name="group_id", referencedColumnName="id")
+     *    }
      * )
      *
-     *  orphanRemoval - this is necessary to remove rows from the 2nd table besides the 3rd table
+     * orphanRemoval - this is necessary to remove rows from Groups table. Without this option, only
+     * Users Groups rows are removed
      */
     private $groups;
 
@@ -302,7 +303,8 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
         }
 
         $this->groups->add($group);
-        $group->addUser($this);
+
+        return $this;
     }
 
     /**
@@ -317,7 +319,6 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
         }
 
         $this->groups->removeElement($group);
-        $group->removeUser($this);
     }
 
     /**
@@ -328,7 +329,8 @@ class UsersEntity implements AdvancedUserInterface, \Serializable
     public function addRegistration(UsersRegistrationEntity $registration)
     {
         $this->registration = $registration;
-        $registration->setUser($this);
+
+        return $this;
     }
 
     /**

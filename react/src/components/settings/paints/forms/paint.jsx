@@ -27,7 +27,7 @@ class SettingsPaint extends React.Component
 			break;
 
 			case 'vendor':
-				modified[fieldName]   = upperFirstLetter(chosenValue);
+				modified[fieldName] = upperFirstLetter(chosenValue);
 				modified['vendor_id'] = "";
 			break;
 

@@ -6,33 +6,17 @@ import _ from 'lodash';
 
 let _properties = [];
 let _property = {};
-let _nonAddedRooms = [];
-let _showPanel = false;
-let _errStatus;
+let _paints = [];
+let _rightPanel = false;
 let _storeMsg;
-
-function setProperty(property) {
-	_property = property ;
-}
-
-function setRoom(room) {
-	_property.rooms = room;
-}
-
-function setRightPanel(show) {
-	_showPanel = show;
-}
+let _alertType = 'success';
 
 function setStoreFlashMessage(msg) {
 	_storeMsg = msg;
 }
 
-function setErrorStatus(status) {
-	_errStatus = status;
-}
-
 function removeToken() {
-	localStorage.removeItem('id_token');
+	localStorage.removeItem('token');
 }
 
 let PropertiesStore = assign({}, EventEmitter.prototype, {
@@ -49,161 +33,114 @@ let PropertiesStore = assign({}, EventEmitter.prototype, {
         this.removeListener('change', callback);
 	},
 
-	getProperties: function () {
-		return _properties;
+	setPropertiesAndPaints: function(properties, paints) {
+		if (properties.length !== 0) {
+			_properties = properties;
+		}
+
+		if (paints.length !== 0) {
+			_paints = paints;
+		}
 	},
 
-	setProperties: function(results) {
-		if (results.err_msg) {
-			_storeMsg = results.err_msg;
-			return false;
-		} else {
-			if (results.length !== 0) {
-				_properties = results
-			}
-		}
+	getPaints: function() {
+		return _paints;
+	},
+
+	getProperties: function () {
+		return _properties;
 	},
 
 	getProperty: function() {
     	return _property;
 	},
 
-	addProperty: function (results) {
+	getPropertyById: function (id) {
+		return _properties.find(obj => obj.id === id);
+	},
+
+	addProperty: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		}
 
 		_properties.push(results.property);
 		_storeMsg = results.msg;
-		_showPanel = false;
+		_rightPanel = false;
 	},
 
 	updateProperty: function(results) {
     	if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		}
 
-		let property = results.property;
-		let index = _.indexOf(_properties, _.find(_properties, (record) => {
-				return record.id === property.id;
-			})
-		);
-
-		_properties.splice(index, 1, {
-			id: property.id,
-			built: property.built,
-			style: property.style,
-			floors: property.floors,
-			beds: property.beds,
-			baths: property.baths,
-			finished_area: property.finished_area,
-			unfinished_area: property.unfinished_area,
-			total_area: property.total_area,
-			parcel_number: property.parcel_number,
-			assets: property.assets,
-			address: property.address,
-			features: property.features,
-			exterior_features: property.exterior_features,
-			interior_features: property.interior_features
+		// Remove existing entry
+		_.remove(_properties, (storeProperty) => {
+			return parseInt(results.property.id) === storeProperty.id;
 		});
 
-		_property = property;
+    	// Add new entry
+		_properties.push(results.property);
+		_property = results.property;
 		_storeMsg = results.msg;
-		_showPanel = false;
+		_alertType = 'success';
+		_rightPanel = false;
 	},
 
 	removeProperty: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		}
 
-		_.remove(_properties, (myProperty) => {
-			return parseInt(results.id) == myProperty.id;
+		_.remove(_properties, (storeProperty) => {
+			return parseInt(results.id) === storeProperty.id;
 		});
 
 		_storeMsg = results.msg;
-		_showPanel = false;
+		_alertType = 'success';
+		_rightPanel = false;
 	},
 
-	getNonAddedRooms: function() {
-    	return _nonAddedRooms;
-	},
-
-	setNonAddedRooms: function(results) {
-		_nonAddedRooms = results;
-	},
-
-	addRoom: function (results) {
-    	if (results.err_msg) {
-			_storeMsg = results.err_msg;
-			return false;
-		}
-
-		_property.rooms.push(results.rooms);
-		_storeMsg = results.msg;
-		_showPanel = false;
-	},
-
-	updateRoom: function(results) {
+	modifyRoom: function(results) {
 		if (results.err_msg) {
 			_storeMsg = results.err_msg;
+			_alertType = 'danger';
 			return false;
 		}
 
-		let rooms = _property.rooms;
-		let room  = results.room;
-		let index = _.indexOf(rooms, _.find(rooms, (record) => {
-				return record.id == parseInt(room.id);
-			})
-		);
-
-		rooms.splice(index, 1, {
-			id: room.id,
-			property_id: room.property_id,
-			name: room.name,
-			total_area: room.total_area,
-			description: room.description
-		});
-
+		_property = results.property;
 		_storeMsg = results.msg;
-		_showPanel = false;
-	},
-
-	removeRoom: function(results) {
-		if (results.err_msg) {
-			_storeMsg = results.err_msg;
-			return false;
-		}
-
-		_.remove(_property.rooms, (myRoom) => {
-			return parseInt(results.id) == myRoom.id;
-		});
-
-		_storeMsg = results.msg;
-		_showPanel = false;
+		_alertType = 'success';
+		_rightPanel = false;
 	},
 
 	isAuthenticated: function() {
-		if (localStorage.getItem('id_token') === null) {
+		if (localStorage.getItem('token') === null) {
 			return false;
 		}
 
 		return true;
 	},
 
-	getStoreFlashMessage: function() {
-		return _storeMsg;
+	getStoreStatus: function() {
+		return {
+			msg: _storeMsg,
+			type: _alertType
+		};
 	},
 
-	unsetStoreFlashMessage: function() {
+	removeStoreStatus: function() {
 		_storeMsg = '';
 	},
 
 	showRightPanel: function() {
-		return _showPanel;
+		return _rightPanel;
 	}
 });
 
@@ -214,17 +151,11 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
 	let results = action.results;
 
     switch(action.actionType) {
-        case ActionConstants.ADD_PROPERTY:
-            PropertiesStore.addProperty(results);
-        break;
+		case ActionConstants.ADD_PROPERTY:
+			PropertiesStore.addProperty(results);
+		break;
 
-        case ActionConstants.EDIT_PROPERTY:
-			setProperty(results);
-			setStoreFlashMessage('');
-			setRightPanel(true);
-        break;
-
-        case ActionConstants.UPDATE_PROPERTY:
+		case ActionConstants.UPDATE_PROPERTY:
             PropertiesStore.updateProperty(results);
         break;
 
@@ -232,35 +163,18 @@ PropertiesStore.dispatchToken = Dispatcher.register(function(payload) {
             PropertiesStore.removeProperty(results);
         break;
 
-		case ActionConstants.RECEIVE_PROPERTIES:
-			PropertiesStore.setProperties(results);
-		break;
-
 		case ActionConstants.ADD_PROPERTY_ROOM:
-			PropertiesStore.addRoom(results);
-		break;
-
-		case ActionConstants.EDIT_PROPERTY_ROOM:
-			setRoom(results);
-			setStoreFlashMessage('');
-			setRightPanel(true);
-		break;
-
 		case ActionConstants.UPDATE_PROPERTY_ROOM:
-			PropertiesStore.updateRoom(results);
-		break;
-
 		case ActionConstants.REMOVE_PROPERTY_ROOM:
-			PropertiesStore.removeRoom(results);
+			PropertiesStore.modifyRoom(results);
 		break;
 
-		case ActionConstants.RECEIVE_NON_ADDED_ROOMS:
-			PropertiesStore.setNonAddedRooms(results);
+		case ActionConstants.RECEIVE_PROPERTIES_AND_PAINTS:
+			PropertiesStore.setPropertiesAndPaints(action.properties, action.paints);
 		break;
 
-		case ActionConstants.RECEIVE_ERROR:
-			setStoreFlashMessage(action.msg);
-			setErrorStatus(action.status);
+		case ActionConstants.PROPERTIES_ERROR:
+			setStoreFlashMessage(results);
 			removeToken();
 		break;
 

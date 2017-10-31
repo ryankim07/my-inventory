@@ -1,15 +1,14 @@
 # To get started with security, check out the documentation:
 # http://symfony.com/doc/current/security.html
 security:
-
     encoders:
-        AppBundle\Entity\Auth\UserEntity:
+        AppBundle\Entity\UsersEntity:
             algorithm: bcrypt
 
     providers:
         database_users:
             entity:
-                class: 'AppBundle\Entity\Auth\UserEntity'
+                class: 'AppBundle\Entity\UsersEntity'
                 property: username
 
     firewalls:
@@ -18,7 +17,7 @@ security:
             security: false
 
         login:
-            pattern:  ^/login$
+            pattern: ^/auth
             anonymous: true
             stateless: true
             guard:
@@ -31,7 +30,12 @@ security:
             stateless: true
             guard:
                 authenticators:
-                    - 'jwt_token_authenticator'
+                    - 'Jwt_Token_Authenticator'
+
+        registration:
+            pattern: ^/registration
+            anonymous: true
+            stateless: true
 
         main:
             pattern: ^/
@@ -39,5 +43,6 @@ security:
             provider: database_users
 
     access_control:
-        - { path: ^/api, roles: [ROLE_ADMIN] }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api, roles: [ROLE_ADMIN, ROLE_USER] }
+        - { path:  ^/registration, roles: IS_AUTHENTICATED_ANONYMOUSLY }

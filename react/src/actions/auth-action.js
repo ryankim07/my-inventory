@@ -5,20 +5,18 @@ import Auth from '../services/Auth';
 let AuthAction = {
 	login: function(data)  {
 		Auth
-			.post('http://mcs.dev/login', data)
-			.then(function (results) {
-				let token = results.token;
-
+			.post('http://mcs.dev/auth/login', data)
+			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.LOGIN_USER,
-					token: token
+					token: resp.token
 				});
 			})
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.LOGIN_USER_ERROR,
 					status: resp.status,
-					msg: resp.msg
+					results: resp.msg
 				});
 			});
 	}

@@ -1,79 +1,75 @@
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import ActionConstants from '../constants/action-constants';
-import User from '../services/User';
+import Users from '../services/Users';
 
 let UsersAction = {
 	getUsers: function() {
-		User
+		Users
 			.get('http://mcs.dev/api/users')
-			.then(function (results) {
+			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.RECEIVE_USERS,
-					results: results
+					results: resp
 				});
 			})
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.RECEIVE_ERROR,
-					status: resp.status,
-					msg: resp.msg
+					actionType: ActionConstants.USERS_ERROR,
+					results: resp.status + ' : ' + resp.msg
 				});
 			});
 	},
 
 	addUser: function(data) {
-		User
+		Users
 			.post('http://mcs.dev/api/user', data)
-			.then(function (results) {
+			.then(function (resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.ADD_NEW_USER,
-					results: results
+					actionType: ActionConstants.ADD_USER,
+					results: resp
 				});
 			})
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.RECEIVE_ERROR,
-					status: resp.status,
-					msg: resp.msg
+					actionType: ActionConstants.USERS_ERROR,
+					results: resp.status + ' : ' + resp.msg
 				});
 			});
 	},
 
 	updateUser: function(data) {
-		User
-			.post('http://mcs.dev/api/user', data, data.assets)
-			.then(function (results) {
+		Users
+			.post('http://mcs.dev/api/user', data)
+			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.UPDATE_USER,
-					results: results
+					results: resp
 				});
 			})
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.RECEIVE_ERROR,
-					status: resp.status,
-					msg: resp.msg
+					actionType: ActionConstants.USERS_ERROR,
+					results: resp.status + ' : ' + resp.msg
 				});
 			});
 	},
 
 	removeUser: function(id) {
-		User
+		Users
 			.delete('http://mcs.dev/api/users/' + id)
-			.then(function (results) {
+			.then(function (resp) {
 				AppDispatcher.handleViewAction({
 					actionType: ActionConstants.REMOVE_USER,
-					results: results
+					results: resp
 				});
 			})
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.RECEIVE_ERROR,
-					status: resp.status,
-					msg: resp.msg
+					actionType: ActionConstants.USERS_ERROR,
+					results: resp.status + ' : ' + resp.msg
 				});
 			});
-	},
+	}
 };
 
 export default UsersAction;

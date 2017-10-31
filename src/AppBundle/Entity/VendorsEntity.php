@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="vendors")
+ * @ORM\Table(name="houses.vendors")
  */
 class VendorsEntity
 {
@@ -19,12 +19,6 @@ class VendorsEntity
     private $id;
 
     /**
-     * @ORM\Column(type="integer", length=11)
-     * @Assert\NotBlank()
-     */
-    private $categoryId;
-
-    /**
      * @ORM\Column(type="string", length=100)
      * @Assert\NotBlank()
      */
@@ -32,55 +26,46 @@ class VendorsEntity
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\Blank()
      */
     private $street;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Assert\Blank()
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=2)
-     * @Assert\Blank()
      */
     private $state;
 
     /**
-     * @ORM\Column(type="integer", length=10)
-     * @Assert\Blank()
+     * @ORM\Column(type="string", length=10)
      */
     private $zip;
 
     /**
-     * @ORM\Column(type="string", length=3)
-     * @Assert\Blank()
+     * @ORM\Column(type="string", length=100)
      */
     private $country;
 
     /**
      * @ORM\Column(type="string", length=15)
-     * @Assert\Blank()
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Blank()
      */
     private $url;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\Blank()
      */
     private $contact;
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\Blank()
      */
     private $notes;
 
@@ -92,30 +77,6 @@ class VendorsEntity
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set categoryId
-     *
-     * @param integer $categoryId
-     *
-     * @return VendorsEntity
-     */
-    public function setCategoryId($categoryId)
-    {
-        $this->categoryId = $categoryId;
-
-        return $this;
-    }
-
-    /**
-     * Get categoryId
-     *
-     * @return integer
-     */
-    public function getCategoryId()
-    {
-        return $this->categoryId;
     }
 
     /**

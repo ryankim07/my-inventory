@@ -1,27 +1,29 @@
 <?php
 
+/**
+ * Class Vehicles
+ *
+ * Service class
+ *
+ * @author  Ryan Kim
+ * @module  MyInventory
+ */
+
 namespace AppBundle\Service\Vehicles;
 
 use Doctrine\ORM\EntityManager;
-use AppBundle\Entity\Vehicles\VehicleEntity;
-use AppBundle\Entity\Vehicles\AssetsEntity;
-use AppBundle\Service\Vehicles\Api\SyncDb;
-use AppBundle\Service\FileUploader;
+use AppBundle\Entity\VehiclesEntity;
+use AppBundle\Entity\VehicleAssetsEntity;
+use AppBundle\Service\Vehicles\Api\Manufacturers;
+use AppBundle\Service\Helper\Assets;
 
 class Vehicles
 {
     private $em;
     private $repo;
-    private $syncDb;
+    private $assetsService;
+    private $mfgsService;
     private $fileUploader;
-    private $modelInfo = [];
-    private $mfgId ;
-    private $modelId;
-    private $year;
-    private $color;
-    private $vin;
-    private $plate;
-    private $assets;
     private $mfg;
     private $entity;
     private $existingVehicle;
@@ -30,15 +32,17 @@ class Vehicles
      * Constructor
      *
      * @param EntityManager $entityManager
-     * @param SyncDb $syncDb
-     * @param FileUploader $fileUploader
+     * @param Manufacturers $mfgsService
+     * @param Assets $assetsService
      */
-    public function __construct(EntityManager $entityManager, SyncDb $syncDb, FileUploader $fileUploader)
+    public function __construct(EntityManager $entityManager,
+                                Manufacturers $mfgsService,
+                                Assets $assetsService)
     {
-        $this->em           = $entityManager;
-        $this->repo         = $this->em->getRepository('AppBundle\Entity\Vehicles\VehicleEntity');
-        $this->syncDb       = $syncDb;
-        $this->fileUploader = $fileUploader;
+        $this->em            = $entityManager;
+        $this->repo          = $this->em->getRepository(VehiclesEntity::class);
+        $this->mfgsService   = $mfgsService;
+        $this->assetsService = $assetsService;
     }
 
     /**
@@ -103,26 +107,18 @@ class Vehicles
         }
 
         try {
-            $id            = (int)$data['id'];
-            $this->mfgId   = (int)$data['mfg_id'];
-            $this->modelId = (int)$data['model_id'];
-            $this->year    = $data['year'];
-            $this->color   = $data['color'];
-            $this->vin     = $data['vin'];
-            $this->plate   = $data['plate'];
-            $this->assets  = $data['assets'];
+            $this->existingVehicle = $this->findByIdOrVin($data['id'], $data['vin']);
+            $this->entity          = $this->existingVehicle ? $this->existingVehicle : new VehiclesEntity();
 
-            $this->existingVehicle = $this->findByIdOrVin($id, $this->vin);
-
-            $this->mfg = $this->syncDb->find($this->mfgId);
+            $this->mfg = $this->mfgsService->find($data['mfg_id']);
             $models    = $this->mfg->getModels();
 
             foreach($models as $model) {
                 $modelId   = $model->getModelId();
                 $modelName = $model->getModel();
 
-                if ($modelId == $this->modelId) {
-                    $this->modelInfo = [
+                if ($modelId == $data['model_id']) {
+                    $data['model_info'] = [
                         'model_id' => $modelId,
                         'model'    => $modelName
                     ];
@@ -133,15 +129,14 @@ class Vehicles
             }
 
             if ($this->existingVehicle) {
-                $this->mfgId  = $this->mfg->getId();
-                $this->entity = $this->existingVehicle;
+                $data['mfg_id'] = $this->mfg->getId();
             }
 
             $op = !$this->existingVehicle ? 'added' : 'updated';
             $msg = "Vehicle successfully {$op}.";
 
             // Save or update vehicle
-            if (!$this->_saveVehicle()) {
+            if (!$this->_save($data)) {
                 $msg = "Vehicle could not be {$op}.";
             };
 
@@ -152,6 +147,36 @@ class Vehicles
         } catch(\Exception $e) {
             return ['err_msg' => $e->getMessage()];
         }
+    }
+
+    /**
+     * Save or update vehicle
+     *
+     * @param $data
+     * @return bool
+     */
+    private function _save($data)
+    {
+        // Vehicle entity
+        $this->entity->setMfgId($data['mfg_id']);
+        $this->entity->setMfg($this->mfg->getMfg());
+        $this->entity->setModelId($data['model_info']['model_id']);
+        $this->entity->setModel($data['model_info']['model']);
+        $this->entity->setYear($data['year']);
+        $this->entity->setColor($data['color']);
+        $this->entity->setVin($data['vin']);
+        $this->entity->setPlate($data['plate']);
+
+        // Assets entity
+        $this->entity = $this->assetsService->save(VehicleAssetsEntity::class, $this->entity, $data);
+
+        if (!$this->existingVehicle) {
+            $this->em->persist($this->entity);
+        }
+
+        $this->em->flush();
+
+        return true;
     }
 
     /**
@@ -170,16 +195,15 @@ class Vehicles
             $vehicle = $this->repo->find($id);
             $assets  = $vehicle->getAssets();
 
-            foreach($assets as $asset) {
-                if ($asset->getVehicleId() == $id) {
-                    $this->fileUploader->removeUpload($asset->getPath());
-                    $this->em->remove($asset);
-                    break;
-                } else {
-                    continue;
+            // Delete assets
+            if ($assets->count() > 0) {
+                foreach ($assets as $asset) {
+                    $this->assetsService->remove($asset->getPath());
+                    $vehicle->removeAsset($asset);
                 }
             }
 
+            // Delete vehicle
             $this->em->remove($vehicle);
             $this->em->flush();
 
@@ -193,61 +217,11 @@ class Vehicles
     }
 
     /**
-     * Save or update vehicle
-     *
-     * @return bool
-     */
-    private function _saveVehicle()
-    {
-        // Upload asset
-        $assetFullPath = !is_null($this->assets) ? $this->fileUploader->upload($this->assets) : null;
-
-        if (!$this->existingVehicle) {
-            $this->entity = new VehicleEntity();
-            $assetEntity  = new AssetsEntity();
-        } else {
-            $assetEntity = $this->em->getRepository('AppBundle\Entity\Vehicles\AssetsEntity')->findOneByVehicleId($this->existingVehicle->getId());
-        }
-
-        // Vehicle entity
-        $this->entity->setMfgId($this->mfgId);
-        $this->entity->setMfg($this->mfg->getMfg());
-        $this->entity->setModelId($this->modelInfo['model_id']);
-        $this->entity->setModel($this->modelInfo['model']);
-        $this->entity->setYear($this->year);
-        $this->entity->setColor($this->color);
-        $this->entity->setVin($this->vin);
-        $this->entity->setPlate($this->plate);
-
-        if (!is_null($this->assets)) {
-            if (!$this->existingVehicle) {
-                $assetEntity->setName($this->assets->getClientOriginalName());
-                $assetEntity->setPath($assetFullPath);
-                $this->entity->addAsset($assetEntity);
-            } else {
-                foreach($assetEntity as $asset) {
-                    $asset->setName($this->assets->getClientOriginalName());
-                    $asset->setPath($assetFullPath);
-                    $this->entity->addAsset($asset);
-                }
-            }
-        }
-
-        if (!$this->existingVehicle) {
-            $this->em->persist($this->entity);
-        }
-
-        $this->em->flush();
-
-        return true;
-    }
-
-    /**
-     * Find either by ID or VIN
+     * Find vehicle either by ID or VIN
      *
      * @param $id
      * @param $vin
-     * @return VehicleEntity|null|object
+     * @return VehiclesEntity|null|object
      */
     private function findByIdOrVin($id, $vin)
     {

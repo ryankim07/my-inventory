@@ -3,25 +3,20 @@ import assign from 'object-assign';
 import Dispatcher from '../../dispatcher/app-dispatcher';
 import ActionConstants from '../../constants/action-constants';
 
-let _errStatus;
 let _storeMsg;
 
 function setToken(token) {
-	if (!localStorage.getItem('id_token')) {
-		localStorage.setItem('id_token', token);
+	if (!localStorage.getItem('token')) {
+		localStorage.setItem('token', token);
 	}
 }
 
 function removeToken() {
-	localStorage.removeItem('id_token');
+	localStorage.removeItem('token');
 }
 
 function setStoreFlashMessage(msg) {
 	_storeMsg = msg;
-}
-
-function setErrorStatus(status) {
-	_errStatus = status;
 }
 
 let AuthStore = assign({}, EventEmitter.prototype, {
@@ -47,22 +42,26 @@ let AuthStore = assign({}, EventEmitter.prototype, {
 	},
 
 	getJwt: function() {
-		return localStorage.getItem('id_token');
+		return localStorage.getItem('token');
 	},
 
 	isAuthenticated: function() {
-		if (localStorage.getItem('id_token') === null) {
+		if (localStorage.getItem('token') === null) {
 			return false;
 		}
 
 		return true;
 	},
 
-	getStoreFlashMessage: function() {
+	getToken: function() {
+		return localStorage.getItem('token');
+	},
+
+	getStoreStatus: function() {
 		return _storeMsg;
 	},
 
-	unsetStoreFlashMessage: function() {
+	removeStoreStatus: function() {
 		_storeMsg = '';
 	}
 });
@@ -70,7 +69,8 @@ let AuthStore = assign({}, EventEmitter.prototype, {
 // Register callback with AppDispatcher
 AuthStore.dispatchToken = Dispatcher.register(function(payload)
 {
-	let action = payload.action;
+	let action  = payload.action;
+	let results = action.results;
 
 	switch(action.actionType) {
 		case ActionConstants.LOGIN_USER:
@@ -82,7 +82,7 @@ AuthStore.dispatchToken = Dispatcher.register(function(payload)
 		break;
 
 		case ActionConstants.LOGIN_USER_ERROR:
-			setStoreFlashMessage(msg);
+			setStoreFlashMessage(results);
 			removeToken();
 		break;
 	}

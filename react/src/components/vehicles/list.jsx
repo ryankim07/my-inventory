@@ -1,95 +1,81 @@
 import React from 'react';
+import SearchField from '../helper/search_field';
+import TogglingRows from '../helper/table/toggling_rows';
 import Loader from '../helper/loader';
 
 class VehiclesList extends React.Component
 {
-	// Toggle panel for add or edit
-	handleRightPanel(editingVehicle) {
-		let isEditingMode = !!editingVehicle;
-		let vehicle = editingVehicle === null ?
-			{
-				id: '',
-				mfg_id: '',
-				mfg: '',
-				model_id: '',
-				model: '',
-				year: '',
-				color: '',
-				vin: '',
-				plate: '',
-				assets: []
-			} : editingVehicle;
-
-		this.props.onHandleRightPanel(vehicle, isEditingMode);
-	}
-
-	// Remove vehicle
-	handleRemove(id) {
-		this.props.onHandleRemove(id);
-	}
-
-    render() {
-		let columnCss = this.props.state.columnCss;
-        let vehiclesHtml = '';
+	// Render
+	render() {
+        let vehiclesHtml = null;
 
 		// If loading is complete
-        if (!this.props.state.loader) {
-        	let vehicles  = this.props.state.vehicles;
+        if (!this.props.loader) {
+        	let vehicles = this.state.vehicles;
 
-			vehiclesHtml = !vehicles || vehicles.length === 0 ?
-				<tr><td><span>There are no saved vehicles.</span></td></tr> :
-				<tr key={ vehicle.id }>
-					<td>{ vehicle.mfg }</td>
-					<td>{ vehicle.model }</td>
-					<td>{ vehicle.year }</td>
-					<td>{ vehicle.color }</td>
-					<td>{ vehicle.vin }</td>
-					<td>{ vehicle.plate }</td>
-					<td>
-						<button onClick={ this.handleRightPanel.bind(this, vehicle) }><i className="fa fa-pencil" aria-hidden="true" /></button>
-						<button onClick={ this.handleRemove.bind(this,  vehicle.id) }><i className="fa fa-trash" aria-hidden="true" /></button>
-					</td>
-				</tr>
-
+        	if (!vehicles || vehicles.length === 0) {
+				vehiclesHtml = <tr><td><span>Empty list.</span></td></tr>;
+			} else {
+        		// Show all vehicles
+				vehiclesHtml = vehicles.map((vehicle, vehicleIndex) => {
+					return (
+						<TogglingRows
+							key={ vehicleIndex }
+							selectedItem={ this.props.vehicle.id === vehicle.id }
+							columnValues={ [
+								vehicle.mfg,
+								vehicle.model,
+								vehicle.year,
+								vehicle.color,
+								vehicle.vin,
+								vehicle.plate
+							] }
+							addViewBtn={ true }
+							handleViewPanel={ this.props.onHandleModal.bind(this, vehicle.id) }
+							addEditBtn={ true }
+							handleEditPanel={ this.props.onHandleRightPanel.bind(this, vehicle.id) }
+							addRemoveBtn={ true }
+							onRemove={ this.props.onRemove.bind(this, vehicle.id) }
+						/>
+					);
+				});
+			}
         } else {
-            vehiclesHtml = <tr><td><Loader /></td></tr>;
+            vehiclesHtml = <tr><td><Loader/></td></tr>;
         }
 
         return (
-            <div className={ [columnCss.mobileWidth, columnCss.desktopWidth, this.props.className].join(' ') } id="vehicles-main">
-                <div className="row">
-                    <div className="panel panel-info">
-                        <div className="panel-heading">
-                            <div className="row">
-                                <div className="col-xs-10 col-md-10">
-                                    <span>Vehicle List</span>
-                                </div>
-                                <div className="col-xs-2 col-md-2">
-									<button onClick={ this.handleRightPanel.bind(this, null) }><i className="fa fa-plus" aria-hidden="true" /></button>
-								</div>
-                            </div>
-                        </div>
-                        <div className="panel-body">
-                            <table className="table">
-                                <thead>
-                                <tr>
-                                    <th>Manufacturer</th>
-                                    <th>Model</th>
-                                    <th>Year</th>
-                                    <th>Color</th>
-                                    <th>Vin</th>
-                                    <th>Plate</th>
-                                    <th>Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                	{ vehiclesHtml }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+			<div>
+				<div className="form-group">
+					<div className="col-xs-12 col-lg-12">
+						<SearchField
+							inputProps={
+								{
+									objs: this.props.vehicles,
+									searchType: "mfg",
+									onSearch: this.props.onSearch
+								}
+							}
+						/>
+					</div>
+				</div>
+				<table className="table">
+				<thead>
+				<tr>
+					<th>Manufacturer</th>
+					<th>Model</th>
+					<th>Year</th>
+					<th>Color</th>
+					<th>Vin</th>
+					<th>Plate</th>
+					<th>Actions</th>
+				</tr>
+				</thead>
+				<tbody>
+					{ vehiclesHtml }
+				</tbody>
+				</table>
+			</div>
         )
     }
 }

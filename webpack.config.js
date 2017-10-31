@@ -19,13 +19,22 @@ var config = {
                 loader: 'babel-loader',
                 exclude: /node_modules/,
                 query: {
-                    presets: ['es2015', 'react']
+                    presets: ['env', 'react']
                 }
-            }]
+            },
+			{
+				test: /\.css$/,
+				include: /node_modules/,
+				loaders: ['style-loader', 'css-loader']
+			},
+			{   test: /.(png|jpg)$/,
+                loader: 'url-loader?limit=8192'
+			},
+		]
     },
     // Recognize extensions when importing separate components
     resolve: {
-        extensions: ['.js', '.jsx']
+        extensions: ['.js', '.jsx', '.css']
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin()

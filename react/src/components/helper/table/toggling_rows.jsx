@@ -24,10 +24,25 @@ class TogglingRows extends React.Component
 		super(props);
 
 		this.state = {
-			defaultBackground: this.props.defaultBackground ? this.props.defaultBackground : '#ffffff',
-			togglingBackground: this.props.togglingBackground ? this.props.togglingBackground : '#ececec',
+			actions: [],
 			hoverFlag: false
 		}
+	}
+
+	// Mounting component
+	componentWillMount() {
+		let viewAction = this.props.addViewBtn !== null ?
+			<button key="a" onClick={ this.props.handleViewPanel }><i className="fa fa-search" aria-hidden="true"/></button> : null;
+
+		let editAction = this.props.addEditBtn !== null ?
+			<button key="b" onClick={ this.props.handleEditPanel }><i className="fa fa-pencil" aria-hidden="true"/></button> : null;
+
+		let removeAction = this.props.addRemoveBtn !== null ?
+			<button key="c" onClick={ this.props.onRemove }><i className="fa fa-trash" aria-hidden="true"/></button> : null;
+
+		this.setState({
+			actions: [viewAction, editAction, removeAction]
+		});
 	}
 
 	// Handle mouse enter, mouse leave hover
@@ -39,37 +54,26 @@ class TogglingRows extends React.Component
 
 	// Render
     render() {
-		let rowCss = {
-			background: this.state.defaultBackground
-		};
-
-		let viewBtn, editBtn, removeBtn = null;
-
-		if (this.props.selectedItem || this.state.hoverFlag) {
-			rowCss['background'] = this.state.togglingBackground;
-
-			viewBtn = this.props.addViewBtn ?
-				<button onClick={ this.props.handleViewPanel }><i className="fa fa-search" aria-hidden="true"/></button> : null;
-
-			editBtn = this.props.addEditBtn ?
-				<button onClick={ this.props.handleEditPanel }><i className="fa fa-pencil" aria-hidden="true"/></button> : null;
-
-			removeBtn = this.props.addRemoveBtn ?
-				<button onClick={ this.props.onRemove }><i className="fa fa-trash" aria-hidden="true"/></button> : null;
-		}
-
 		let columns = this.props.columnValues.map((column, cellIndex) => {
 			return (<td key={ cellIndex }>{ column }</td>);
 		});
 
+		let rowCss = {};
+		let buttonCss = {};
+
+		if (this.props.selectedItem || this.state.hoverFlag) {
+			rowCss['background'] = '#ececec';
+			buttonCss['display'] = 'block';
+		} else {
+			rowCss['background'] = '#ffffff';
+			buttonCss['display'] = 'none';
+		}
+
+		let actions = <td key={ columns.length + 1 }><div style={ buttonCss }>{ this.state.actions }</div></td>;
+
 		return (
 			<tr onMouseEnter={ this.onHandleHover.bind(this) } onMouseLeave={ this.onHandleHover.bind(this) } style={ rowCss }>
-				{ columns }
-				<td>
-					{ viewBtn }
-					{ editBtn }
-					{ removeBtn }
-				</td>
+				{ [columns, actions] }
 			</tr>
 		);
     }

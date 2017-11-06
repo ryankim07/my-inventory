@@ -73,7 +73,7 @@ class SearchField extends React.Component
 					name="search"
                     type="text"
 					className="form-control"
-                    value={ this.state.searchText }
+                    value={ this.state.keyWords }
                     onChange={ this.onHandleSearch }
                 />
             </div>

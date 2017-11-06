@@ -5,35 +5,18 @@
  *
  * className: class name of parent container
  * assets: assets object
- * isEditingMode: determine if new or update
- * onChange: set assets to parent object
+ * onChange: handle assets to parent object
  */
 
 import React from 'react';
-import _ from 'lodash';
 import Dropzone from 'react-dropzone';
+import { getNestedModifiedState } from '../helper/utils';
 
 class Uploader extends React.Component
 {
-	// Constructor
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			assets: [],
-		};
-
-		this.onHandleDrop = this.onHandleDrop.bind(this);
-	}
-
-	componentWillMount() {
-		this.setState({ assets: this.props.inputProps.assets});
-	}
-
 	// Dragging and dropping.  Need to pass array to create reject object in backend
 	onHandleDrop(asset) {
-		let assets = this.state.assets;
-
+		const assets = getNestedModifiedState(this.props.inputProps.assets, this.props.inputProps.assets);
 
 		asset.map(asset => {
 			let index = assets.indexOf(assets.find(obj => obj.name === asset.name));
@@ -47,15 +30,17 @@ class Uploader extends React.Component
 			assets.push(asset);
 		});
 
-		this.setState({ assets: assets });
+		this.props.inputProps.onChange(assets);
 	}
 
 	// Remove asset
 	onHandleRemove(index, event) {
-		let assets = this.state.assets;
+		event.preventDefault();
+
+		const assets = getNestedModifiedState(this.props.inputProps.assets, this.props.inputProps.assets);
 		assets.splice(index, 1);
 
-		this.setState({ assets: assets });
+		this.props.inputProps.onChange(assets);
 	}
 
 	// Render

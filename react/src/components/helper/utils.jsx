@@ -26,14 +26,14 @@ export function getSingleModifiedState(originalState, name, value) {
  */
 export function getNestedModifiedState(originalState, modifiedState) {
 	return update(originalState, {
-			$apply:
-				function(x) {
-					_.forEach(modifiedState, function (value, key) {
-						x[key] = value;
-					});
+		$apply:
+			function(x) {
+				_.forEach(modifiedState, function (value, key) {
+					x[key] = value;
+				});
 
-					return x;
-				}
+				return x;
+			}
 		}
 	);
 }

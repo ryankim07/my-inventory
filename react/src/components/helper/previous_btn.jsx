@@ -9,7 +9,7 @@ class PreviousButton extends React.Component
 {
 	// Previous route
 	goBack(route) {
-		this.context.router.push(route);
+		this.context.router.history.push(route);
 	}
 
 	// Render

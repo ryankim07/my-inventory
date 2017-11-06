@@ -89,20 +89,31 @@ class Paints
 
         if (is_array($results)) {
             foreach ($results as $paint) {
-                $vendors = $paint->getVendors();
-
-                foreach($vendors as $vendor) {
-                    $paint->setVendor($vendor->getCompany());
-                    $paint->setVendorId($vendor->getId());
-                }
-
-                $dependencies[] = $paint;
+                $dependencies[] = $this->setVendorToPaint($paint);
             }
 
             return $dependencies;
         } else {
-            return $results;
+            return $this->setVendorToPaint($results);
         }
+    }
+
+    /**
+     * Set vendor's ID and company to paint object
+     *
+     * @param $paint
+     * @return mixed
+     */
+    private function setVendorToPaint($paint)
+    {
+        $vendors = $paint->getVendors();
+
+        foreach($vendors as $vendor) {
+            $paint->setVendor($vendor->getCompany());
+            $paint->setVendorId($vendor->getId());
+        }
+
+        return $paint;
     }
 
     /**
@@ -172,6 +183,8 @@ class Paints
         }
 
         $this->em->flush();
+
+        $this->entity = $this->addDependencies($this->entity);
 
         return true;
     }

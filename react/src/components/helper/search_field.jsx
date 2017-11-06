@@ -21,8 +21,8 @@
  */
 
 import React from 'react';
+import update from 'react-addons-update';
 import _ from 'lodash';
-import { getNestedModifiedState } from '../helper/utils';
 
 class SearchField extends React.Component
 {
@@ -31,29 +31,21 @@ class SearchField extends React.Component
 		super(props);
 
 		this.state = {
-			keyWords: '',
-			originalList: []
+			keyWords: ''
 		};
 
 		this.onHandleSearch = this.onHandleSearch.bind(this);
 	}
 
-	// Next state change
-	componentWillReceiveProps(nextProps) {
-		if (_.isEmpty(this.state.originalList) && nextProps.inputProps.objs !== this.state.originalList) {
-			this.setState({
-				originalList: getNestedModifiedState(this.state.originalList, nextProps.inputProps.objs)
-			});
-		}
-	}
-
 	// Handle search
 	onHandleSearch(event) {
 		const searchType = this.props.inputProps.searchType;
+		let paints       = this.props.inputProps.objs;
 		let searchText   = event.target.value;
 
-		let results = this.state.originalList.filter(function (list) {
-			return list[searchType].match(new RegExp(searchText, 'gi'));
+		const newObj = update(paints, {
+			$set:
+				_.filter(paints, obj => obj[searchType].match(new RegExp(searchText, 'gi')))
 		});
 
 		// Set text
@@ -61,7 +53,7 @@ class SearchField extends React.Component
 
 		// Return new set of list to parent component
 		// or empty array if not found
-		this.props.inputProps.onSearch(results);
+		this.props.inputProps.onSearch(newObj);
 	}
 
 	// Render

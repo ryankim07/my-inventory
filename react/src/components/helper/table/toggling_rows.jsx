@@ -24,25 +24,8 @@ class TogglingRows extends React.Component
 		super(props);
 
 		this.state = {
-			actions: [],
 			hoverFlag: false
 		}
-	}
-
-	// Mounting component
-	componentWillMount() {
-		let viewAction = this.props.addViewBtn !== null ?
-			<button key="a" onClick={ this.props.handleViewPanel }><i className="fa fa-search" aria-hidden="true"/></button> : null;
-
-		let editAction = this.props.addEditBtn !== null ?
-			<button key="b" onClick={ this.props.handleEditPanel }><i className="fa fa-pencil" aria-hidden="true"/></button> : null;
-
-		let removeAction = this.props.addRemoveBtn !== null ?
-			<button key="c" onClick={ this.props.onRemove }><i className="fa fa-trash" aria-hidden="true"/></button> : null;
-
-		this.setState({
-			actions: [viewAction, editAction, removeAction]
-		});
 	}
 
 	// Handle mouse enter, mouse leave hover
@@ -69,7 +52,16 @@ class TogglingRows extends React.Component
 			buttonCss['display'] = 'none';
 		}
 
-		let actions = <td key={ columns.length + 1 }><div style={ buttonCss }>{ this.state.actions }</div></td>;
+		let viewAction = this.props.addViewBtn ?
+			<button key="a" onClick={ this.props.onView }><i className="fa fa-search" aria-hidden="true"/></button> : null;
+
+		let editAction = this.props.addEditBtn ?
+			<button key="b" onClick={ this.props.onEdit }><i className="fa fa-pencil" aria-hidden="true"/></button> : null;
+
+		let removeAction = this.props.addRemoveBtn ?
+			<button key="c" onClick={ this.props.onRemove }><i className="fa fa-trash" aria-hidden="true"/></button> : null;
+
+		let actions = <td key={ columns.length + 1 }><div style={ buttonCss }>{ [viewAction, editAction, removeAction] }</div></td>;
 
 		return (
 			<tr onMouseEnter={ this.onHandleHover.bind(this) } onMouseLeave={ this.onHandleHover.bind(this) } style={ rowCss }>

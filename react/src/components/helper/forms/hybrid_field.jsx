@@ -110,7 +110,7 @@ class HybridField extends React.Component
 				value={ this.props.inputProps.value }
 				onChange={ this.props.inputProps.onChange }
 				required={ this.props.inputProps.others.required }>
-				<option value="">Select One</option>
+				<option key="0" value="">Select One</option>
 				{ this.state.list }
 			</select>;
 

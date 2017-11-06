@@ -8,7 +8,6 @@ import SettingsPaintsDashboard from './settings/paints/dashboard';
 import SettingsVendorsDashboard from './settings/vendors/dashboard';
 import TestComponent from './test/component';
 
-console.log('Loading main component');
 const Main = () => (
 	<Switch>
 		<Route exact path='/' render={() => (

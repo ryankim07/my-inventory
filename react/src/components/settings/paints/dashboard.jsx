@@ -62,6 +62,7 @@ class SettingsPaintsDashboard extends React.Component
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 		this.onHandleSubmit     = this.onHandleSubmit.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
+		this.onHandleRemove 	= this.onHandleRemove.bind(this);
 		this.setFlashMessage 	= this.setFlashMessage.bind(this);
 		this.onCloseRightPanel 	= this.onCloseRightPanel.bind(this);
 		this.onCloseModal 		= this.onCloseModal.bind(this);
@@ -141,7 +142,9 @@ class SettingsPaintsDashboard extends React.Component
 	}
 
 	// Handle submit
-	onHandleSubmit(paint) {
+	onHandleSubmit(event) {
+		event.preventDefault();
+
 		// Need to make sure that entered company exists in the list
 		if (paint.vendor !== '') {
 			if (!_.find(this.state.vendors, {"company": paint.vendor})) {
@@ -218,7 +221,6 @@ class SettingsPaintsDashboard extends React.Component
 				<SettingsPaint
 					paint={ this.state.paint }
 					vendors={ this.state.vendors }
-					isEditingMode={ this.state.isEditingMode }
 					onChange={ this.onHandleFormChange }
 					onSubmit={ this.onHandleSubmit }
 					onCloseRightPanel={ this.onCloseRightPanel }

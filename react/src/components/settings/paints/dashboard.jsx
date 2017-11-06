@@ -43,7 +43,7 @@ class SettingsPaintsDashboard extends React.Component
 			vendors: [],
 			isEditingMode: false,
 			loader: true,
-			mainPanel: this.props.params.section,
+			mainPanel: props.match.params.section,
 			showRightPanel: false,
 			flashMessage: null,
 			showModal: false,
@@ -60,7 +60,6 @@ class SettingsPaintsDashboard extends React.Component
 
 		this._onChange 		 	= this._onChange.bind(this);
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
-		this.onHandleSearch     = this.onHandleSearch.bind(this);
 		this.onHandleSubmit     = this.onHandleSubmit.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.setFlashMessage 	= this.setFlashMessage.bind(this);
@@ -88,12 +87,12 @@ class SettingsPaintsDashboard extends React.Component
 	_onChange() {
 		let paints		    = PaintsStore.getPaints();
 		let vendors			= PaintsStore.getVendors();
-		let storeStatus 	=PaintsStore.getStoreStatus();
+		let storeStatus 	= PaintsStore.getStoreStatus();
 		let isAuthenticated = PaintsStore.isAuthenticated();
 		let openRightPanel  = PaintsStore.showRightPanel();
 
 		if (!isAuthenticated){
-			this.context.router.push("/auth/forms/login");
+			this.context.router.history.push("/auth/forms/login");
 			return false;
 		}
 
@@ -101,7 +100,7 @@ class SettingsPaintsDashboard extends React.Component
 			paints: paints,
 			vendors: vendors,
 			showRightPanel: !!openRightPanel,
-			flashMessage: storeStatus.msg ? storeStatus.msg : null,
+			flashMessage: storeStatus.msg !== null ? storeStatus.msg : null,
 			alertType: storeStatus.type,
 			loader: false,
 			showModal: false,
@@ -117,9 +116,8 @@ class SettingsPaintsDashboard extends React.Component
 		let isEditingMode = !!id;
 
 		// Instantiate new object or load existing object if found
-		let paint = isEditingMode ?
-			this.state.paints.find(obj => obj.id === id) : initialPaintObj;
-
+		const paint = isEditingMode ?
+			_.find(this.state.paints, ['id', id]) : initialPaintObj;
 
 		this.setState({
 			paint: paint,
@@ -137,29 +135,23 @@ class SettingsPaintsDashboard extends React.Component
 		this.setState({ paint: paint });
 	}
 
-	// Handle search
-	onHandleSearch(paints) {
-		this.setState({ paints: paints });
-	}
-
 	// Handle delete
 	onHandleRemove(id) {
 		PaintsAction.removePaint(id);
 	}
 
 	// Handle submit
-	onHandleSubmit(event) {
-		event.preventDefault();
-		let paint = this.state.paint;
-
+	onHandleSubmit(paint) {
 		// Need to make sure that entered company exists in the list
-		if (!_.find(this.state.vendors, { "company": paint.vendor })) {
-			this.setState({
-				flashMessage: 'The vendor you entered is invalid.  Please choose an existing vendor or configure a new one.',
-				alertType: 'danger'
-			});
+		if (paint.vendor !== '') {
+			if (!_.find(this.state.vendors, {"company": paint.vendor})) {
+				this.setState({
+					flashMessage: 'The vendor you entered is invalid.  Please choose an existing vendor or configure a new one.',
+					alertType: 'danger'
+				});
 
-			return;
+				return;
+			}
 		}
 
 		if (!this.state.isEditingMode) {
@@ -206,10 +198,9 @@ class SettingsPaintsDashboard extends React.Component
 				previousRoute="">
 				<SettingsPaintsList
 					loader={ this.state.loader }
-					paint={ this.state.paint }
+					selectedItem={ this.state.paint.id }
 					paints={ this.state.paints }
 					onRemove={ this.onHandleRemove }
-					onSearch={ this.onHandleSearch }
 					onHandleRightPanel={ this.onHandleRightPanel }
 				/>
 			</DisplayPanel>;
@@ -241,7 +232,6 @@ class SettingsPaintsDashboard extends React.Component
 		return (
 			<div className="row">
 				{ flashMessage }
-
 				<MainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }
 				</MainPanel>

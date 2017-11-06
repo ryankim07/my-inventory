@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import Uploader from '../../../helper/uploader';
 import VendorsAutoComplete from '../../../helper/forms/hybrid_field';
-import { upperFirstLetter, getNestedModifiedState } from '../../../helper/utils';
+import { upperFirstLetter, getSingleModifiedState, getNestedModifiedState } from '../../../helper/utils';
 
 class SettingsPaint extends React.Component
 {
@@ -10,8 +10,33 @@ class SettingsPaint extends React.Component
 	constructor(props) {
 		super(props);
 
+		this.state = {
+			selectedItem: '',
+			assets: []
+		};
+
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
-		this.handleVendor 	    = this.handleVendor.bind(this);
+		this.onHandleVendor     = this.onHandleVendor.bind(this);
+		this.onHandleAssets     = this.onHandleAssets.bind(this);
+		this.onHandleSubmit 	= this.onHandleSubmit.bind(this);
+	}
+
+	// Mounting component
+	componentWillMount() {
+		this.setState({
+			selectedItem: this.props.paint.id,
+			assets: this.props.paint.assets
+		});
+	}
+
+	// Next state change
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.paint.id !== this.state.selectedItem) {
+			this.setState({
+				selectedItem: nextProps.paint.id,
+				assets: nextProps.paint.assets
+			});
+		}
 	}
 
 	// Handle input changes
@@ -39,8 +64,8 @@ class SettingsPaint extends React.Component
     }
 
 	// Handle when dropdown field is selected
-	handleVendor(vendorId) {
-		let obj         = _.find(this.props.vendors, {'id': parseInt(vendorId)});
+	onHandleVendor(vendorId) {
+		let obj = _.find(this.props.vendors, {'id': parseInt(vendorId)});
 		let modifiedObj = {
 			vendor_id: obj.id,
 			vendor: obj.company
@@ -49,10 +74,24 @@ class SettingsPaint extends React.Component
 		this.props.onChange(getNestedModifiedState(this.props.paint, modifiedObj));
 	}
 
+	// Handle assets
+	onHandleAssets(assets) {
+		this.setState({ assets: assets });
+	}
+
+	onHandleSubmit(event) {
+		event.preventDefault();
+
+		let paint 	    = this.props.paint;
+		paint['assets'] = this.state.assets;
+
+		this.props.onSubmit(paint);
+	}
+
 	// Render
     render() {
 		let paintForm =
-			<form onSubmit={ this.props.onSubmit }>
+			<form onSubmit={ this.onHandleSubmit }>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Image</label>
@@ -60,8 +99,8 @@ class SettingsPaint extends React.Component
 							inputProps={
 								{
 									className: "input-group",
-									assets: this.props.paint.assets,
-									isEditingMode: this.props.isEditingMode
+									assets: this.state.assets,
+									onChange: this.onHandleAssets
 								}
 							}
 						/>
@@ -81,7 +120,7 @@ class SettingsPaint extends React.Component
 									identifier: "id",
 									value: this.props.paint.vendor,
 									onChange: this.onHandleFormChange,
-									onSelect: this.handleVendor
+									onSelect: this.onHandleVendor
 								}
 							}
 						/>

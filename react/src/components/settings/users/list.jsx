@@ -6,6 +6,22 @@ import Loader from '../../helper/loader';
 
 class SettingsUsersList extends React.Component
 {
+	// Constructor
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			searchResults: []
+		};
+
+		this.onHandleSearch = this.onHandleSearch.bind(this);
+	}
+
+	// Handle search
+	onHandleSearch(results) {
+		this.setState({ searchResults: results });
+	}
+
 	// Render
 	render() {
         let usersHtml = null;
@@ -15,11 +31,13 @@ class SettingsUsersList extends React.Component
         	if (!this.props.users || this.props.users.length === 0) {
 				usersHtml = <tr><td><span>Empty list.</span></td></tr>;
 			} else {
-				usersHtml = this.props.users.map((user, userIndex) => {
+				let list = !_.isEmpty(this.state.searchResults) ? this.state.searchResults : this.props.users;
+
+				usersHtml = list.map((user, userIndex) => {
 					return (
 						<TogglingRows
 							key={ userIndex }
-							selectedItem={ this.props.user.id === user.id }
+							selectedItem={ this.props.selectedItem === user.id }
 							columnValues={ [
 								user.first_name,
 								user.last_name,
@@ -65,10 +83,11 @@ class SettingsUsersList extends React.Component
 						<th>Username</th>
 						<th>Email</th>
 						<th>Active</th>
+						<th>Actions</th>
 					</tr>
 					</thead>
 					<tbody>
-					{ usersHtml }
+						{ usersHtml }
 					</tbody>
 				</table>
 			</div>

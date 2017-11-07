@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import { upperFirstLetter, getNestedModifiedState } from '../../../helper/utils';
 
 class SettingsUser extends React.Component
@@ -8,11 +9,21 @@ class SettingsUser extends React.Component
 		super(props);
 
 		this.state = {
+			selectedItem: '',
 			isChecked: false
 		};
 
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 		this.onHandleCheckbox   = this.onHandleCheckbox.bind(this);
+	}
+
+	// Next state change
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.user.id !== this.state.selectedItem) {
+			this.setState({
+				selectedItem: nextProps.user.id
+			});
+		}
 	}
 
 	// Handle input changes

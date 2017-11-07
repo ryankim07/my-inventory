@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import { PropTypes } from 'prop-types';
 import UsersAction from '../../../actions/users-action';
 import UsersStore from '../../../stores/users/store';
@@ -61,7 +62,6 @@ class SettingsUsersDashboard extends React.Component
 		this._onChange 		  	= this._onChange.bind(this);
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 		this.onHandleSubmit 	= this.onHandleSubmit.bind(this);
-		this.onHandleSearch     = this.onHandleSearch.bind(this);
 		this.onHandleRemove 	= this.onHandleRemove.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.setFlashMessage  	= this.setFlashMessage.bind(this);
@@ -112,7 +112,7 @@ class SettingsUsersDashboard extends React.Component
 
 		// Instantiate new object or load existing object if found
 		let user = isEditingMode ?
-			this.state.users.find(obj => obj.id === id) : initialUserObj;
+			_.find(this.state.users, ['id', id]) : initialUserObj;
 
 		if (isEditingMode && user.groups.length === 0) {
 			user.groups.push(groupsObj);
@@ -134,11 +134,6 @@ class SettingsUsersDashboard extends React.Component
 		this.setState({ user: user });
 	}
 
-	// Handle search
-	onHandleSearch(users) {
-		this.setState({ users: users });
-	}
-
 	// Handle delete
 	onHandleRemove(id) {
 		UsersAction.removeUser(id);
@@ -147,7 +142,7 @@ class SettingsUsersDashboard extends React.Component
 	// Handle submit
 	onHandleSubmit(event) {
 		event.preventDefault();
-		const user = this.state.user;
+		let user = this.state.user;
 
 		if (!this.state.isEditingMode) {
 			UsersAction.addUser(user);
@@ -186,9 +181,8 @@ class SettingsUsersDashboard extends React.Component
 				previousRoute="">
 				<SettingsUsersList
 					loader={ this.state.loader }
-					user={ this.state.user }
+					selectedItem={ this.state.user.id }
 					users={ this.state.users }
-					onSearch={ this.onHandleSearch }
 					onRemove={ this.onHandleRemove }
 					onHandleRightPanel={ this.onHandleRightPanel }/>
 			</DisplayPanel>;
@@ -207,7 +201,9 @@ class SettingsUsersDashboard extends React.Component
 					user={ this.state.user }
 					isEditingMode={ this.state.isEditingMode }
 					onChange={ this.onHandleFormChange }
-					onSubmit={ this.onHandleSubmit }/>
+					onSubmit={ this.onHandleSubmit }
+					onCloseRightPanel={ this.onCloseRightPanel }
+				/>
 			</DisplayPanel> : null;
 
 		let flashMessage = this.state.flashMessage ?

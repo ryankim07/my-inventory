@@ -7,7 +7,7 @@ class AuthLogout extends React.Component
 {
 	componentWillMount() {
 		AppDispatcher.handleViewAction({actionType: ActionConstants.LOGOUT_USER});
-		this.context.router.push("/auth/forms/login");
+		this.context.router.history.push("/");
 	}
 
 	render() {

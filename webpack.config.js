@@ -5,7 +5,7 @@ var APP_DIR = path.resolve(__dirname, 'react');
 
 var config = {
     entry: [
-        APP_DIR + '/app.js',
+        APP_DIR + '/index.js',
     ],
     output: {
         path: BUILD_DIR,

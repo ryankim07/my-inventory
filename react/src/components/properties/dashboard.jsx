@@ -174,12 +174,12 @@ class PropertiesDashboard extends React.Component
 		let property		= PropertiesStore.getProperty();
 		let properties		= PropertiesStore.getProperties();
 		let paints          = PropertiesStore.getPaints();
-		let storeStatus 	=PropertiesStore.getStoreStatus();
+		let storeStatus 	= PropertiesStore.getStoreStatus();
 		let isAuthenticated = PropertiesStore.isAuthenticated();
 		let openRightPanel 	= PropertiesStore.showRightPanel();
 
 		if (!isAuthenticated){
-			this.context.router.push("/auth/forms/login");
+			this.context.router.history.push("/auth/forms/login");
 			return false;
 		}
 
@@ -188,7 +188,7 @@ class PropertiesDashboard extends React.Component
 			properties: properties,
 			paints: paints,
 			showRightPanel: !!openRightPanel,
-			flashMessage: storeStatus.msg ? storeStatus.msg : null,
+			flashMessage: storeStatus.msg !== '' ? storeStatus.msg : null,
 			alertType: storeStatus.type,
 			loader: false,
 			mainPanelColumnCss: {
@@ -458,7 +458,7 @@ class PropertiesDashboard extends React.Component
 					</DisplayPanel>;
 		}
 
-		rightPanelHtml = this.state.showRightPanel ? rightPanelHtml : null;
+		rightPanelHtml = this.state.showRightPanel !== null ? rightPanelHtml : null;
 
 		return (
 			<div className="row">

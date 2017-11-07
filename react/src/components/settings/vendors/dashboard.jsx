@@ -41,7 +41,7 @@ class SettingsVendorsDashboard extends React.Component
 			vendor: intialVendorObj,
 			loader: true,
 			isEditingMode: false,
-			mainPanel: this.props.params.section,
+			mainPanel: props.match.params.section,
 			showRightPanel: false,
 			flashMessage: null,
 			mainPanelColumnCss: {
@@ -56,7 +56,6 @@ class SettingsVendorsDashboard extends React.Component
 
 		this._onChange 		 	= this._onChange.bind(this);
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
-		this.onHandleSearch     = this.onHandleSearch.bind(this);
 		this.onHandleSubmit = this.onHandleSubmit.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.onHandleRemove 	= this.onHandleRemove.bind(this);
@@ -89,14 +88,14 @@ class SettingsVendorsDashboard extends React.Component
 		let openRightPanel  = VendorsStore.showRightPanel();
 
 		if (!isAuthenticated){
-			this.context.router.push("/auth/forms/login");
+			this.context.router.history.push("/auth/forms/login");
 			return false;
 		}
 
 		this.setState({
 			vendors: vendors,
 			showRightPanel: !!openRightPanel,
-			flashMessage: storeStatus.msg ? storeStatus.msg : null,
+			flashMessage: storeStatus.msg !== null ? storeStatus.msg : null,
 			alertType: storeStatus.type,
 			loader: false,
 			mainPanelColumnCss: {
@@ -109,7 +108,7 @@ class SettingsVendorsDashboard extends React.Component
 	// Handle right panel
 	onHandleRightPanel(id) {
 		let isEditingMode = !!id;
-		let vendor = isEditingMode ?
+		const vendor = isEditingMode ?
 			this.state.vendors.find(obj => obj.id === id) : intialVendorObj;
 
 		this.setState({
@@ -126,11 +125,6 @@ class SettingsVendorsDashboard extends React.Component
 	// Handle form change
 	onHandleFormChange(vendor) {
 		this.setState({ vendor: vendor });
-	}
-
-	// Handle search
-	onHandleSearch(vendors) {
-		this.setState({ vendors: vendors });
 	}
 
 	// Handle delete
@@ -180,10 +174,8 @@ class SettingsVendorsDashboard extends React.Component
 				previousRoute="">
 				<SettingsVendorsList
 					loader={ this.state.loader }
-					vendor={ this.state.vendor }
+					selectedItem={ this.state.vendor.id }
 					vendors={ this.state.vendors }
-					onChange={ this.onHandleFormChange }
-					onSearch={ this.onHandleSearch }
 					onRemove={ this.onHandleRemove }
 					onHandleRightPanel={ this.onHandleRightPanel }
 				/>
@@ -201,13 +193,13 @@ class SettingsVendorsDashboard extends React.Component
 				previousRoute="">
 				<SettingsVendor
 					vendor={ this.state.vendor }
-					onHandleSubmit={ this.onHandleSubmit }
-					onCloseRightPanel={ this.onCloseRightPanel }
 					onChange={ this.onHandleFormChange }
 					onSubmit={ this.onHandleSubmit}
+					onCloseRightPanel={ this.onCloseRightPanel }
 				/>
 			</DisplayPanel> : null;
 
+		// Flash message
 		let flashMessage = this.state.flashMessage ?
 			<FlashMessage message={ this.state.flashMessage } alertType={ this.state.alertType }/> : null;
 

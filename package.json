@@ -30,6 +30,7 @@
     "react-hot-loader": "^3.1.1",
     "react-image-gallery": "^0.8.3",
     "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
     "react-update-if-changed": "^0.1.2",
     "rest": "^2.0.0",
     "superagent": "^3.8.0",

@@ -53,11 +53,11 @@ class HybridField extends React.Component
 		const identifier = this.props.inputProps.identifier ? this.props.inputProps.identifier : 'value';
 		let results    	 = [];
 
-		_.forEach(list, function(obj, objIndex) {
+		_.forEach(list, function(obj) {
 			if (isAuto) {
 				results.push({ id: obj[identifier].toString(), label: obj[label].toString(),  value: obj[identifier].toString()});
 			} else {
-				results.push(<option key={ objIndex } value={ obj[identifier] }>{ obj[label] }</option>);
+				results.push(<option key={ obj[identifier] } value={ obj[identifier] }>{ obj[label] }</option>);
 			}
 		});
 
@@ -65,10 +65,6 @@ class HybridField extends React.Component
 			list: results,
 			isAuto: isAuto
 		});
-	}
-
-	shouldComponentUpdate(nextProps, nextState) {
-		return true;
 	}
 
 	// Default functionality to handle
@@ -80,9 +76,6 @@ class HybridField extends React.Component
 
 	// Render
     render() {
-		let itemValue = this.props.inputProps.onSelectReturn ?
-			this.props.inputProps.onSelectReturn : this.getItemValue;
-
 		let html = this.state.isAuto ?
 			<AutoComplete
 				inputProps={ this.props.inputProps.others }
@@ -92,14 +85,14 @@ class HybridField extends React.Component
 				onSelect={ this.props.inputProps.onSelect }
 				wrapperStyle={ wrapperStyle }
 				renderMenu={ (items, value) =>
-					<div style={ { menuStyle } } children={ items }/>
+					<div key="-1" style={ { menuStyle } } children={ items }/>
 				}
 				shouldItemRender={ (item, value) =>
 					item.label.toString().toLowerCase().indexOf(value.toString().toLowerCase()) > -1
 				}
-				getItemValue={ itemValue }
+				getItemValue={ this.getItemValue }
 				renderItem={ (item, isHighlighted) =>
-					<div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+					<div key={ item.id } style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
 						{ item.label }
 					</div>
 				}

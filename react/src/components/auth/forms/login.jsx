@@ -38,13 +38,13 @@ class AuthLogin extends React.Component
 		let flashMsg 		= AuthStore.getStoreStatus();
 
 		if (isAuthenticated){
-			this.context.router.push("/");
+			this.context.router.history.push("/");
 			return false;
 		}
 
 		this.setState({
 			authenticated: isAuthenticated,
-			flashMessage: flashMsg ? flashMsg : null
+			flashMessage: flashMsg !== null ? flashMsg : null
 		});
 	}
 

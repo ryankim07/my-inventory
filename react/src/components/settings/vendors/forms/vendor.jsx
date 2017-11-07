@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import AutoCompleteAddress from '../../../helper/forms/auto_complete_address';
 import InputZipCode from '../../../helper/forms/input_zip_code';
 import InputPhone from '../../../helper/forms/input_phone';
-import InputUrl from '../../../helper/forms/input_url'
 import StatesDropdown from '../../../helper/forms/hybrid_field';
 import CountriesDropdown from '../../../helper/forms/hybrid_field';
 import { getStates, getCountries } from "../../../helper/lists/region";
@@ -11,7 +10,6 @@ import { upperFirstLetter,
 	     phoneFormat,
 	     urlFormat,
 		 checkAddressInputFields,
-		 getSingleModifiedState,
 		 getNestedModifiedState } from '../../../helper/utils';
 
 class SettingsVendor extends React.Component
@@ -21,6 +19,7 @@ class SettingsVendor extends React.Component
         super(props);
 
         this.state = {
+			selectedItem: '',
 			isRequiredField: false
 		};
 
@@ -28,16 +27,33 @@ class SettingsVendor extends React.Component
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
     }
 
+	// Mounting component
+	componentWillMount() {
+		this.setState({
+			selectedItem: this.props.vendor.id
+		});
+	}
+
+	// Next state change
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.vendor.id !== this.state.selectedItem) {
+			this.setState({
+				selectedItem: nextProps.vendor.id
+			});
+		}
+	}
+
     // Handle input changes
     onHandleFormChange(event) {
 		let fieldName 		= event.target.name;
         let chosenValue 	= event.target.value;
+		let modifiedObj     = {};
 		let addressFieldsOn = false;
 
 		switch (fieldName) {
 			case 'company':
 			case 'contact':
-				chosenValue = upperFirstLetter(chosenValue);
+				modifiedObj[fieldName] = upperFirstLetter(chosenValue);
 			break;
 
 			case 'street':
@@ -45,20 +61,23 @@ class SettingsVendor extends React.Component
 			case 'state':
 			case 'zip':
 			case 'country':
-				addressFieldsOn = true;
-				chosenValue     = fieldName === 'city' ? upperFirstLetter(chosenValue) : chosenValue;
+				addressFieldsOn 	   = true;
+				modifiedObj[fieldName] = fieldName === 'city' ? upperFirstLetter(chosenValue) : chosenValue;
 			break;
 
 			case 'phone':
-				chosenValue = phoneFormat(chosenValue);
+				modifiedObj[fieldName] = phoneFormat(chosenValue);
 			break;
 
 			case 'url':
-				chosenValue = urlFormat(chosenValue);
+				modifiedObj[fieldName] = urlFormat(chosenValue);
 			break;
+
+			default:
+				modifiedObj[fieldName] = chosenValue;
         }
 
-        const newObj = getSingleModifiedState(this.props.vendor, fieldName, chosenValue);
+        const newObj = getNestedModifiedState(this.props.vendor, modifiedObj);
 
         this.setState({
 			isRequiredField: addressFieldsOn ? checkAddressInputFields(newObj) : false
@@ -217,16 +236,14 @@ class SettingsVendor extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Url</label>
 						<div className="input-group">
-							<InputUrl
-								inputProps={
-									{
-										name: "url",
-										className: "form-control input-sm",
-										value: this.props.vendor.url,
-										onChange: this.onHandleFormChange,
-										required: ""
-									}
-								}
+							<input
+								name="url"
+								type="url"
+								pattern="https?://.+"
+								className="form-control input-sm"
+								value={ this.props.vendor.url }
+								onChange={ this.onHandleFormChange }
+								required=""
 							/>
 						</div>
 					</div>

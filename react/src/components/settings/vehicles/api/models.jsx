@@ -53,9 +53,9 @@ class SettingsManufacturerModelsList extends React.Component
 						selectedItem={ this.props.model.id === model.id }
 						columnValues={ [model.model] }
 						addViewBtn={ true }
+						onView={ this.props.onHandleRightPanel.bind(this, model.id) }
 						addEditBtn={ false }
 						addRemoveBtn={ false }
-						handleViewPanel={ this.props.onHandleRightPanel.bind(this, model.id) }
 					/>
 				);
 			});

@@ -27,7 +27,7 @@ class SettingsUsersList extends React.Component
 								user.is_enabled
 							] }
 							addEditBtn={ true }
-							handleEditPanel={ this.props.onHandleRightPanel.bind(this, user.id) }
+							onEdit={ this.props.onHandleRightPanel.bind(this, user.id) }
 							addRemoveBtn={ true }
 							onRemove={ this.props.onRemove.bind(this, user.id) }
 						/>

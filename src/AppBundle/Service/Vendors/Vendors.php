@@ -63,7 +63,7 @@ class Vendors
     {
         $results = !is_null($id) ? $this->repo->find($id) : $this->repo->findBy([], ['company' => 'DESC']);
 
-        if (!is_null($id)) {
+        if ($results) {
             $results = $this->addDependencies($results);
         }
 

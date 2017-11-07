@@ -45,13 +45,13 @@ class VehiclesDashboard extends React.Component
 		};
 
 		this._onChange 		  	= this._onChange.bind(this);
-		this.onHandleSubmit = this.onHandleSubmit.bind(this);
+		this.onHandleSubmit 	= this.onHandleSubmit.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.onHandleModal 		= this.onHandleModal.bind(this);
 		this.closeModal         = this.closeModal.bind(this);
 		this.onHandleRemove 	= this.onHandleRemove.bind(this);
 		this.setFlashMessage  	= this.setFlashMessage.bind(this);
-		this.onCloseRightPanel  	= this.onCloseRightPanel.bind(this);
+		this.onCloseRightPanel  = this.onCloseRightPanel.bind(this);
 	}
 
 	// Get vehicle initial state
@@ -75,9 +75,9 @@ class VehiclesDashboard extends React.Component
 		VehiclesStore.addChangeListener(this._onChange);
 		VehiclesStore.removeStoreStatus();
 
-		if (this.props.params.section === "add") {
+		if (props.match.params.section === "add") {
 			this.setState({
-				mainPanel: this.props.params.section,
+				mainPanel: props.match.params.section,
 				mainPanelColumnCss: {
 					mobileWidth: rightPanelMobileColumnWidth,
 					desktopWidth: rightPanelDesktopColumnWidth
@@ -134,7 +134,7 @@ class VehiclesDashboard extends React.Component
 		let loadList        = VehiclesStore.loadList();
 
 		if (!isAuthenticated){
-			this.context.router.push("/auth/forms/login");
+			this.context.router.history.push("/auth/forms/login");
 			return false;
 		}
 
@@ -143,7 +143,7 @@ class VehiclesDashboard extends React.Component
 			manufacturers: manufacturers,
 			mainPanel: loadList ? 'list' : this.state.mainPanel, // Need to set main panel if add new vehicle component is accessed from header
 			showRightPanel: !!openRightPanel,
-			flashMessage: storeStatus.msg ? storeStatus.msg : null,
+			flashMessage: storeStatus.msg !==  null ? storeStatus.msg : null,
 			alertType: storeStatus.type,
 			loader: false,
 			mainPanelColumnCss: {

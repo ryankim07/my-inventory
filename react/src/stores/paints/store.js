@@ -5,7 +5,6 @@ import ActionConstants from '../../constants/action-constants';
 import _ from 'lodash';
 
 let _paints = [];
-let _paint = {};
 let _vendors = [];
 let _rightPanel = false;
 let _storeMsg;
@@ -91,7 +90,6 @@ let PaintsStore = assign({}, EventEmitter.prototype, {
 
 		// Add new entry
 		_paints.push(results.paint);
-		_paint = results.paint;
 		_storeMsg = results.msg;
 		_alertType = 'success';
 		_rightPanel = false;

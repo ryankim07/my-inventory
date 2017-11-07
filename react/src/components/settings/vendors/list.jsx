@@ -5,6 +5,23 @@ import Loader from '../../helper/loader';
 
 class SettingsVendorsList extends React.Component
 {
+	// Constructor
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			keyWords: '',
+			searchResults: []
+		};
+
+		this.onHandleSearch = this.onHandleSearch.bind(this);
+	}
+
+	// Handle search
+	onHandleSearch(results) {
+		this.setState({ searchResults: results });
+	}
+
 	// Render
 	render() {
         let vendorsHtml = null;
@@ -14,11 +31,13 @@ class SettingsVendorsList extends React.Component
         	if (!this.props.vendors || this.props.vendors.length === 0) {
 				vendorsHtml = <tr><td><span>Empty list.</span></td></tr>;
 			} else {
-				vendorsHtml = this.props.vendors.map((vendor, vendorIndex) => {
+				let list = !_.isEmpty(this.state.searchResults) ? this.state.searchResults : this.props.vendors;
+
+				vendorsHtml = list.map((vendor, vendorIndex) => {
 					return (
 						<TogglingRows
 							key={ vendorIndex }
-							selectedItem={ this.props.vendor.id === vendor.id }
+							selectedItem={ this.props.selectedItem === vendor.id }
 							columnValues={ [
 								vendor.company,
 								vendor.street,
@@ -28,7 +47,7 @@ class SettingsVendorsList extends React.Component
 								vendor.phone
 							] }
 							addEditBtn={ true }
-							handleEditPanel={ this.props.onHandleRightPanel.bind(this, vendor.id) }
+							onEdit={ this.props.onHandleRightPanel.bind(this, vendor.id) }
 							addRemoveBtn={ true }
 							onRemove={ this.props.onRemove.bind(this, vendor.id) }
 						/>
@@ -48,8 +67,7 @@ class SettingsVendorsList extends React.Component
 								{
 									objs: this.props.vendors,
 									searchType: "company",
-									onChange: this.props.onChange,
-									onSearch: this.props.onSearch
+									onSearch: this.onHandleSearch
 								}
 							}
 						/>
@@ -64,11 +82,11 @@ class SettingsVendorsList extends React.Component
 						<th>State</th>
 						<th>Zip</th>
 						<th>Phone</th>
-						<th/>
+						<th>Actions</th>
 					</tr>
 					</thead>
 					<tbody>
-					{ vendorsHtml }
+						{ vendorsHtml }
 					</tbody>
 				</table>
 			</div>

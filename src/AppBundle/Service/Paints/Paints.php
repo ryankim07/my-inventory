@@ -130,8 +130,7 @@ class Paints
 
         try {
             $this->existingPaint = $this->find($data['id']);
-
-            $this->entity = $this->existingPaint ? $this->existingPaint : new PaintsEntity();
+            $this->entity        = $this->existingPaint ? $this->existingPaint : new PaintsEntity();
 
             $op = !$this->existingPaint ? 'added' : 'updated';
             $msg = "Paint color successfully {$op}.";

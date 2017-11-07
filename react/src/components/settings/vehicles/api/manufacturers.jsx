@@ -65,9 +65,9 @@ class SettingsManufacturersList extends React.Component
 							selectedItem={ this.props.mfg.id === vehicle.id }
 							columnValues={ [vehicle.mfg] }
 							addViewBtn={ true }
+							onView={ this.props.onHandleMainPanel.bind(this, vehicle.id) }
 							addEditBtn={ false }
 							addRemoveBtn={ false }
-							handleViewPanel={ this.props.onHandleMainPanel.bind(this, vehicle.id) }
 						/>
 					);
 				});

@@ -142,9 +142,7 @@ class SettingsPaintsDashboard extends React.Component
 	}
 
 	// Handle submit
-	onHandleSubmit(event) {
-		event.preventDefault();
-
+	onHandleSubmit(paint) {
 		// Need to make sure that entered company exists in the list
 		if (paint.vendor !== '') {
 			if (!_.find(this.state.vendors, {"company": paint.vendor})) {

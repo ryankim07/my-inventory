@@ -46,11 +46,7 @@ let AuthStore = assign({}, EventEmitter.prototype, {
 	},
 
 	isAuthenticated: function() {
-		if (localStorage.getItem('token') === null) {
-			return false;
-		}
-
-		return true;
+		return localStorage.getItem('token') !== null;
 	},
 
 	getToken: function() {

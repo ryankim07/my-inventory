@@ -89,14 +89,14 @@ class SettingsUsersDashboard extends React.Component
 		let openRightPanel  = UsersStore.showRightPanel();
 
 		if (!isAuthenticated){
-			this.context.router.push("/auth/forms/login");
+			this.context.router.history.push("/auth/forms/login");
 			return false;
 		}
 
 		this.setState({
 			users: users,
 			showRightPanel: !!openRightPanel,
-			flashMessage: storeStatus.msg ? storeStatus.msg : null,
+			flashMessage: storeStatus.msg !== '' ? storeStatus.msg : null,
 			alertType: storeStatus.type,
 			loader: false,
 			mainPanelColumnCss: {

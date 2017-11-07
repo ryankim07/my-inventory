@@ -5,7 +5,10 @@ import ColorsField  from '../../helper/forms/hybrid_field';
 import Uploader from '../../helper/uploader';
 import Loader from '../../helper/loader';
 import { getVehicleColors } from "../../helper/lists/colors";
-import { upperFirstLetter, sequencedObject, getSingleModifiedState, getNestedModifiedState } from '../../helper/utils';
+import { upperFirstLetter,
+		 sequencedObject,
+		 getSingleModifiedState,
+		 getNestedModifiedState } from '../../helper/utils';
 
 class VehicleForm extends React.Component
 {

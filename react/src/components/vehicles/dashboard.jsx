@@ -155,23 +155,6 @@ class VehiclesDashboard extends React.Component
 		});
 	}
 
-	// Handle right panel
-	onHandleRightPanel(id) {
-		let isEditingMode = !!id;
-		const vehicle = isEditingMode ?
-			_.find(this.state.vehicles, ['id', id]) : initialVehicleObj;
-
-		this.setState({
-			vehicle: vehicle,
-			isEditingMode: isEditingMode,
-			showRightPanel: true,
-			mainPanelColumnCss: {
-				mobileWidth: mainShrinkedMobileColumnWidth,
-				desktopWidth: mainShrinkedDesktopColumnWidth
-			}
-		});
-	}
-
 	// Handle form change
 	onHandleFormChange(vehicle) {
 		this.setState({ vehicle: vehicle });
@@ -204,6 +187,23 @@ class VehiclesDashboard extends React.Component
 	// Close modal
 	closeModal() {
 		this.setState({ showModal: !this.state.showModal });
+	}
+
+	// Handle right panel
+	onHandleRightPanel(id) {
+		let isEditingMode = !!id;
+		const vehicle = isEditingMode ?
+			_.find(this.state.vehicles, ['id', id]) : initialVehicleObj;
+
+		this.setState({
+			vehicle: vehicle,
+			isEditingMode: isEditingMode,
+			showRightPanel: true,
+			mainPanelColumnCss: {
+				mobileWidth: mainShrinkedMobileColumnWidth,
+				desktopWidth: mainShrinkedDesktopColumnWidth
+			}
+		});
 	}
 
 	// Set flash message

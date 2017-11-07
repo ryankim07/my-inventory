@@ -107,8 +107,12 @@ class HybridField extends React.Component
 				{ this.state.list }
 			</select>;
 
+		let parentClassName = this.props.inputProps.parentClassName ? this.props.inputProps.parentClassName : '';
+
 		return (
-			<div className={ this.props.inputProps.parentClassName }>{ html }</div>
+			<div className={ parentClassName }>
+				{ html }
+			</div>
 		);
     }
 }

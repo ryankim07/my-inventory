@@ -44,7 +44,7 @@ class VehiclesDashboard extends React.Component
 			manufacturers: [],
 			loader: true,
 			isEditingMode: false,
-			mainPanel: 'list',
+			mainPanel: this.props.match.params.section,
 			showRightPanel: false,
 			flashMessage: null,
 			showModal: false,

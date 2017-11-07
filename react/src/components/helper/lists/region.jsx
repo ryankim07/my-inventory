@@ -2,9 +2,6 @@
  * Utility Methods
  */
 
-import update from 'react-addons-update';
-import _ from 'lodash';
-
 /**
  * Get states
  *

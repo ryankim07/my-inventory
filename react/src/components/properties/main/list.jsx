@@ -7,25 +7,15 @@ class PropertiesList extends React.Component
 		super(props);
 
 		this.state = {
-			properties: this.props.properties,
-			clonedProperties: JSON.parse(JSON.stringify(this.props.properties))
+			searchResults: []
 		};
-	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.properties !== this.state.properties) {
-			this.setState({
-				properties: nextProps.properties,
-				clonedProperties: JSON.parse(JSON.stringify(nextProps.properties))
-			});
-		}
+		this.onHandleSearch = this.onHandleSearch.bind(this);
 	}
 
 	// Handle search
 	onHandleSearch(results) {
-		this.setState({
-			properties: results
-		});
+		this.setState({ searchResults: results });
 	}
 
 	render() {
@@ -34,12 +24,12 @@ class PropertiesList extends React.Component
 				inputProps ={
 					{
 						loader: this.props.loader,
-						properties: this.state.properties,
+						properties: this.props.properties,
 						property: this.props.property,
 						onMainPanel: this.props.onHandleMainPanel,
 						onRightPanel: this.props.onHandleRightPanel,
-						onRemove: this.props.onHandleRemove,
-						onChange: this.onHandleSearch.bind(this)
+						onRemove: this.props.onRemove,
+						onChange: this.onHandleSearch
 					}
 				}
 			/>

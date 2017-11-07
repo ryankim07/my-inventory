@@ -167,14 +167,15 @@ export function checkAddressInputFields(obj) {
 }
 
 /**
- * Take a starting and ending values and return
- * as object
+ * Take a starting and ending values
+ * and return as object
  *
  * @param from
  * @param to
+ * @param step
  */
-export function sequencedObject(from, to) {
-	let range = _.range(from, to);
+export function sequencedObject(from, to, step) {
+	let range = _.range(from, to, step);
 
 	return _.map(range, function (value) {
 		return { id: value, label: value, value: value }

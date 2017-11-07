@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import { PropTypes } from 'prop-types'
 import PropertiesAction from '../../actions/properties-action';
 import PropertiesStore from '../../stores/properties/store';
@@ -14,6 +15,7 @@ import PropertyInteriorFeaturesForm from './info/forms/interior_features';
 import PropertyRoomsList from './rooms/list';
 import PropertyRoomForm from './rooms/forms/room';
 import FlashMessage from '../helper/flash_message';
+import {getNestedModifiedState} from "../helper/utils";
 
 // Global properties
 const mainDefaultMobileColumnWidth = 'col-xs-12';
@@ -23,6 +25,44 @@ const mainShrinkedDesktopColumnWidth = 'col-md-8';
 const rightPanelMobileColumnWidth = 'col-xs-4';
 const rightPanelDesktopColumnWidth = 'col-md-4';
 
+// Get room walls initial state
+const initialWallObj = {
+	id: '',
+	room_id: '',
+	paint_id: '',
+	name: ''
+};
+
+// Get property initial state
+const initialPropertyObj = {
+	id: '',
+	style: '',
+	beds: '',
+	baths: '',
+	finished_area: '',
+	unfinished_area: '',
+	total_area: '',
+	floors: '',
+	built: '',
+	parcel_number: '',
+	address: {
+		id: '',
+		property_id: '',
+		street: '',
+		city: '',
+		state: '',
+		zip: '',
+		county: '',
+		country: '',
+		subdivision: ''
+	},
+	features: {},
+	exteriorFeatures: {},
+	interiorFeatures: {},
+	rooms: [],
+	assets: []
+};
+
 class PropertiesDashboard extends React.Component
 {
 	// Constructor
@@ -31,15 +71,16 @@ class PropertiesDashboard extends React.Component
 
 		this.state = {
 			properties: [],
-			property: {},
+			property: initialPropertyObj,
 			room: {},
 			paints: [],
 			isEditingMode: false,
 			loader: true,
-			mainPanel: null,
-			rightPanel: null,
+			mainPanel: this.props.match.params.section,
+			rightPanel: false,
 			showRightPanel: false,
 			flashMessage: null,
+			alertType: 'success',
 			mainPanelColumnCss: {
 				mobileWidth: mainDefaultMobileColumnWidth,
 				desktopWidth: mainDefaultDesktopColumnWidth
@@ -51,22 +92,13 @@ class PropertiesDashboard extends React.Component
 		};
 
 		this._onChange 		   	 	= this._onChange.bind(this);
-		this.onHandleSubmit 	= this.onHandleSubmit.bind(this);
+		this.onHandleFormChange 	= this.onHandleFormChange.bind(this);
+		this.onHandleSubmit 		= this.onHandleSubmit.bind(this);
 		this.onHandleRightPanel 	= this.onHandleRightPanel.bind(this);
 		this.onHandleRightRoomPanel = this.onHandleRightRoomPanel.bind(this);
 		this.onHandleMainPanel 		= this.onHandleMainPanel.bind(this);
 		this.setFlashMessage    	= this.setFlashMessage.bind(this);
 		this.onCloseRightPanel    	= this.onCloseRightPanel.bind(this);
-	}
-
-	// Get room walls initial state
-	getWallState() {
-		return {
-			id: '',
-			room_id: '',
-			paint_id: '',
-			name: ''
-		}
 	}
 
 	// Get room initial state
@@ -77,55 +109,7 @@ class PropertiesDashboard extends React.Component
 			name: '',
 			total_area: '',
 			description: '',
-			walls: [this.getWallState()],
-			assets: []
-		}
-	}
-
-	// Get vehicle initial state
-	getVehicleState() {
-		return {
-			id: '',
-			mfg_id: '',
-			mfg: '',
-			model_id: '',
-			model: '',
-			year: '',
-			color: '',
-			vin: '',
-			plate: '',
-			assets: []
-		}
-	}
-
-	// Get property initial state
-	getPropertyState() {
-		return {
-			id: '',
-			style: '',
-			beds: '',
-			baths: '',
-			finished_area: '',
-			unfinished_area: '',
-			total_area: '',
-			floors: '',
-			built: '',
-			parcel_number: '',
-			address: {
-				id: '',
-				property_id: '',
-				street: '',
-				city: '',
-				state: '',
-				zip: '',
-				county: '',
-				country: '',
-				subdivision: ''
-			},
-			features: {},
-			exteriorFeatures: {},
-			interiorFeatures: {},
-			rooms: [],
+			walls: [initialWallObj],
 			assets: []
 		}
 	}
@@ -184,7 +168,7 @@ class PropertiesDashboard extends React.Component
 		}
 
 		this.setState({
-			property: Object.keys(property).length === 0 ? {address: {}} : property,
+			property: Object.keys(property).length === 0 ? { address: {} } : property,
 			properties: properties,
 			paints: paints,
 			showRightPanel: !!openRightPanel,
@@ -198,86 +182,9 @@ class PropertiesDashboard extends React.Component
 		});
 	}
 
-	// Handle main panel
-	// ID will determine the state in which next panel should display
-	onHandleMainPanel(id, panel) {
-		let property = id === this.state.property.id ?
-			this.state.property : this.state.properties.find(obj => obj.id === id);
-
-		this.setState({
-			property: property,
-			mainPanel: panel,
-			showRightPanel: false,
-			mainPanelColumnCss: {
-				mobileWidth: mainDefaultMobileColumnWidth,
-				desktopWidth: mainDefaultDesktopColumnWidth
-			}
-		});
-	}
-
-	// Handle default right panel
-	onHandleRightPanel(id, rightPanel) {
-		let isEditingMode = !!id;
-		let property = isEditingMode ?
-			this.state.properties.find(obj => obj.id === id) : this.getPropertyState();
-
-		this.setState({
-			property: property,
-			rightPanel: rightPanel,
-			isEditingMode: isEditingMode,
-			showRightPanel: true,
-			mainPanelColumnCss: {
-				mobileWidth: mainShrinkedMobileColumnWidth,
-				desktopWidth: mainShrinkedDesktopColumnWidth
-			}
-		});
-	}
-
-	// Handle room right panel
-	onHandleRightRoomPanel(id) {
-		let isEditingMode = !!id;
-
-		// If a particular room is edited without submit and user selects
-		// a new room to edit, we need to restore old room values.  Therefore,
-		// we need to clone object to stop js original object reference
-		let rooms = JSON.parse(JSON.stringify(this.state.property.rooms));
-
-		// Instantiate new object or load existing object if found
-		let room = isEditingMode ?
-			rooms.find(obj => obj.id === id) : this.getRoomState(this.state.property.id);
-
-		if (isEditingMode && room.walls.length === 0) {
-			room.walls.push(this.getWallState());
-		}
-
-		this.setState({
-			room: room,
-			rightPanel: 'room',
-			isEditingMode: isEditingMode,
-			showRightPanel: true,
-			flashMessage: null,
-			mainPanelColumnCss: {
-				mobileWidth: mainShrinkedMobileColumnWidth,
-				desktopWidth: mainShrinkedDesktopColumnWidth
-			}
-		});
-	}
-
-	// Close right panel
-	onCloseRightPanel() {
-		this.setState({
-			mainPanel: this.state.mainPanel,
-			showRightPanel: false,
-			mainPanelColumnCss: {
-				mobileWidth: mainDefaultMobileColumnWidth,
-				desktopWidth: mainDefaultDesktopColumnWidth
-			}
-		});
-	}
-
-	// Set flash message
-	setFlashMessage($msg) {
-		this.setState({flashMessage: $msg})
+	// Handle form change
+	onHandleFormChange(property) {
+		this.setState({ property: property });
 	}
 
 	// Handle delete
@@ -308,6 +215,88 @@ class PropertiesDashboard extends React.Component
 					PropertiesAction.updateProperty(obj);
 				}
 		}
+	}
+
+	// Handle main panel
+	// ID will determine the state in which next panel should display
+	onHandleMainPanel(id, panel) {
+		let property = id === this.state.property.id ?
+			this.state.property : _.find(this.state.properties, ['id', id]);
+
+		this.setState({
+			property: property,
+			mainPanel: panel,
+			showRightPanel: false,
+			mainPanelColumnCss: {
+				mobileWidth: mainDefaultMobileColumnWidth,
+				desktopWidth: mainDefaultDesktopColumnWidth
+			}
+		});
+	}
+
+	// Handle default right panel
+	onHandleRightPanel(id, rightPanel) {
+		let isEditingMode = !!id;
+		let property = isEditingMode ?
+			_.find(this.state.properties, ['id', id]) : initialPropertyObj;
+
+		this.setState({
+			property: property,
+			rightPanel: rightPanel,
+			isEditingMode: isEditingMode,
+			showRightPanel: true,
+			mainPanelColumnCss: {
+				mobileWidth: mainShrinkedMobileColumnWidth,
+				desktopWidth: mainShrinkedDesktopColumnWidth
+			}
+		});
+	}
+
+	// Handle room right panel
+	onHandleRightRoomPanel(id) {
+		let isEditingMode = !!id;
+
+		// If a particular room is edited without submit and user selects
+		// a new room to edit, we need to restore old room values.  Therefore,
+		// we need to clone object to stop js original object reference
+		let rooms = getNestedModifiedState(this.state.property.rooms, this.state.property.rooms);
+
+		// Instantiate new object or load existing object if found
+		let room = isEditingMode ?
+			_.find(rooms, ['id', id]) : this.getRoomState(this.state.property.id);
+
+		if (isEditingMode && room.walls.length === 0) {
+			room.walls.push(initialWallObj);
+		}
+
+		this.setState({
+			room: room,
+			rightPanel: 'room',
+			isEditingMode: isEditingMode,
+			showRightPanel: true,
+			flashMessage: null,
+			mainPanelColumnCss: {
+				mobileWidth: mainShrinkedMobileColumnWidth,
+				desktopWidth: mainShrinkedDesktopColumnWidth
+			}
+		});
+	}
+
+	// Set flash message
+	setFlashMessage($msg) {
+		this.setState({flashMessage: $msg})
+	}
+
+	// Close right panel
+	onCloseRightPanel() {
+		this.setState({
+			mainPanel: this.state.mainPanel,
+			showRightPanel: false,
+			mainPanelColumnCss: {
+				mobileWidth: mainDefaultMobileColumnWidth,
+				desktopWidth: mainDefaultDesktopColumnWidth
+			}
+		});
 	}
 
 	// Render
@@ -343,10 +332,10 @@ class PropertiesDashboard extends React.Component
 						onClick={ this.onHandleRightRoomPanel.bind(this, false) }
 						previousRoute="/properties/info/view">
 						<PropertyRoomsList
-							property={ this.state.property }
+							selectedItem={ this.state.property.room.id }
 							onHandleRightRoomPanel={ this.onHandleRightRoomPanel }
-							onHandleSubmit={ this.onHandleSubmit }
-							onHandleRemoveRoom={ this.onHandleRemoveRoom }/>
+							onSubmit={ this.onHandleSubmit }
+							onHRemoveRoom={ this.onHandleRemoveRoom }/>
 					</DisplayPanel>;
 			break;
 
@@ -361,11 +350,11 @@ class PropertiesDashboard extends React.Component
 						previousRoute="">
 						<PropertiesList
 							loader={ this.state.loader }
-							property={ this.state.property }
+							selectedItem={ this.state.property.id }
 							properties={ this.state.properties }
 							onHandleMainPanel={ this.onHandleMainPanel }
 							onHandleRightPanel={ this.onHandleRightPanel }
-							onHandleRemove={ this.onHandleRemove }/>
+							onHRemove={ this.onHandleRemove }/>
 					</DisplayPanel>;
 		}
 
@@ -384,7 +373,7 @@ class PropertiesDashboard extends React.Component
 						previousRoute="">
 						<PropertyFeaturesForm
 							property={ this.state.property }
-							onHandleSubmit={ this.onHandleSubmit }
+							onSubmit={ this.onHandleSubmit }
 							onCloseRightPanel={ this.onCloseRightPanel }/>
 					</DisplayPanel>;
 				break;
@@ -400,7 +389,7 @@ class PropertiesDashboard extends React.Component
 						previousRoute="">
 						<PropertyExteriorFeaturesForm
 							property={ this.state.property }
-							onHandleSubmit={ this.onHandleSubmit }
+							onSubmit={ this.onHandleSubmit }
 							onCloseRightPanel={ this.onCloseRightPanel }/>
 					</DisplayPanel>;
 			break;
@@ -416,7 +405,7 @@ class PropertiesDashboard extends React.Component
 						previousRoute="">
 						<PropertyInteriorFeaturesForm
 							property={ this.state.property }
-							onHandleSubmit={ this.onHandleSubmit }
+							onSubmit={ this.onHandleSubmit }
 							onCloseRightPanel={ this.onCloseRightPanel }/>
 					</DisplayPanel>;
 			break;
@@ -435,7 +424,7 @@ class PropertiesDashboard extends React.Component
 							nonAddedRooms={ this.state.property.non_added_rooms }
 							paints={ this.state.paints }
 							isEditingMode={ this.state.isEditingMode }
-							onHandleSubmit={ this.onHandleSubmit }
+							onSubmit={ this.onHandleSubmit }
 							onCloseRightPanel={ this.onCloseRightPanel }/>
 					</DisplayPanel>;
 			break;
@@ -451,18 +440,22 @@ class PropertiesDashboard extends React.Component
 						onClick={ this.onCloseRightPanel }
 						previousRoute="">
 						<PropertyForm
+							loader={ false }
 							property={ this.state.property }
-							isEditingMode={ this.state.isEditingMode }
-							onHandleSubmit={ this.onHandleSubmit }
+							onChange={ this.onHandleFormChange }
+							onSubmit={ this.onHandleSubmit }
 							onCloseRightPanel={ this.onCloseRightPanel }/>
 					</DisplayPanel>;
 		}
 
-		rightPanelHtml = this.state.showRightPanel !== null ? rightPanelHtml : null;
+		rightPanelHtml = this.state.showRightPanel ? rightPanelHtml : null;
+
+		let flashMessage = this.state.flashMessage ?
+			<FlashMessage message={ this.state.flashMessage } alertType={ this.state.alertType }/> : null;
 
 		return (
 			<div className="row">
-
+				{ flashMessage }
 
 				<MainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }

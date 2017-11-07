@@ -23,8 +23,8 @@ class SettingsVendor extends React.Component
 			isRequiredField: false
 		};
 
-        this.onHandleSelect     = this.onHandleSelect.bind(this);
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
+        this.onHandleSelect     = this.onHandleSelect.bind(this);
     }
 
 	// Mounting component
@@ -78,11 +78,7 @@ class SettingsVendor extends React.Component
         }
 
         const newObj = getNestedModifiedState(this.props.vendor, modifiedObj);
-
-        this.setState({
-			isRequiredField: addressFieldsOn ? checkAddressInputFields(newObj) : false
-        });
-
+        this.setState({isRequiredField: addressFieldsOn ? checkAddressInputFields(newObj) : false});
 		this.props.onChange(newObj);
     }
 
@@ -152,11 +148,9 @@ class SettingsVendor extends React.Component
 								{
 									auto: false,
 									others: { name: "state", className: "form-control" },
-									parentClassName: "",
 									list: getStates(),
 									value: this.props.vendor.state,
 									onChange: this.onHandleFormChange,
-									onSelect: "",
 									required: classNames({'required': this.state.isRequiredField})
 								}
 							}
@@ -189,11 +183,9 @@ class SettingsVendor extends React.Component
 								{
 									auto: false,
 									others: { name: "country", className: "form-control" },
-									parentClassName: "",
 									list: getCountries(),
 									value: this.props.vendor.country,
 									onChange: this.onHandleFormChange,
-									onSelect: "",
 									required: classNames({'required': this.state.isRequiredField})
 								}
 							}

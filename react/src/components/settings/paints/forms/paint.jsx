@@ -114,8 +114,8 @@ class SettingsPaint extends React.Component
 							inputProps={
 								{
 									auto: true,
-									className: "",
-									others: { name: "vendor" },
+									others: { name: "vendor", className: "form-control" },
+									parentClassName: "",
 									list: this.props.vendors,
 									label: "company",
 									identifier: "id",

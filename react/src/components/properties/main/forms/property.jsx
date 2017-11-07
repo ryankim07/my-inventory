@@ -1,25 +1,48 @@
 import React from 'react';
 import PropertyAddressForm from './../../address/forms/address';
-import YearsField from '../../../helper/forms/hybrid_field';
+import YearsDropdown from '../../../helper/forms/hybrid_field';
+import FloorsDropdown from '../../../helper/forms/hybrid_field';
+import BedsDropdown from '../../../helper/forms/hybrid_field';
+import BathsDropdown from '../../../helper/forms/hybrid_field';
 import Uploader from '../../../helper/uploader';
-import { numberFormat, getNestedModifiedState } from '../../../helper/utils';
+import { numberFormat,
+		 sequencedObject,
+		 getSingleModifiedState,
+		 getNestedModifiedState } from '../../../helper/utils';
 
 class PropertyForm extends React.Component
 {
     constructor(props) {
         super(props);
 
-		this.setAssets = this.setAssets.bind(this);
+		this.state = {
+			selectedItem: '',
+			assets: []
+		};
+
+		this.onHandleFormChange = this.onHandleFormChange.bind(this);
+		this.onHandleAssets     = this.onHandleAssets.bind(this);
+		this.onHandleAddress    = this.onHandleAddress.bind(this);
+		this.onHandleSelect     = this.onHandleSelect.bind(this);
+		this.onHandleSubmit 	= this.onHandleSubmit.bind(this);
     }
 
-	c// Handle assets
-	setAssets(assets) {
-		let property = this.state.property;
-		property['assets'] = assets;
-
+	// Mounting component
+	componentWillMount() {
 		this.setState({
-			property: property
+			selectedItem: this.props.property.id,
+			assets: this.props.property.assets
 		});
+	}
+
+	// Next state change
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.property.id !== this.state.selectedItem) {
+			this.setState({
+				selectedItem: nextProps.property.id,
+				assets: nextProps.property.assets
+			});
+		}
 	}
 
     // Handle input changes
@@ -46,49 +69,32 @@ class PropertyForm extends React.Component
 		this.props.onChange(getNestedModifiedState(this.props.property, modifiedObj));
     }
 
-	// Handle when dropdown field is selected
-	onHandleYear(value) {
-		let vehicle = this.state.vehicle;
-		vehicle['year'] = value;
-
-		this.setState({
-			vehicle: vehicle
-		});
+	// Handle when years dropdown field is selected
+	onHandleSelect(property, value) {
+		this.props.onChange(getSingleModifiedState(this.props.property, property, value));
 	}
 
-	// Submit
-	handleFormSubmit(event) {
+	onHandleAddress(address) {
+		this.props.onChange(getSingleModifiedState(this.props.property, 'address', address));
+	}
+
+	// Handle assets
+	onHandleAssets(assets) {
+		this.setState({ assets: assets });
+	}
+
+	onHandleSubmit(event) {
 		event.preventDefault();
 
-		this.props.onHandleSubmit(this.state.property, 'property');
+		let property       = this.props.property;
+		property['assets'] = this.state.assets;
+
+		this.props.onSubmit(property);
 	}
 
 	render() {
-		let property  	  = this.state.property;
-		let bedsOptions   = [];
-		let bathsOptions  = [];
-		let floorsOptions = [];
-
-		// Bed options
-		for (let j = 0; j <= 15; j++) {
-			bedsOptions.push(<option key={ 'be-' + j } value={ j }>{ j }</option>)
-		}
-
-		// Bath options
-		let half = 0;
-		for (let k = 1; k <= 10; k++) {
-			half = k + 0.5;
-			bathsOptions.push(<option key={ 'ba-' + k } value={ k }>{ k }</option>)
-			bathsOptions.push(<option key={ 'ba-' + half } value={ half }>{ half }</option>)
-		}
-
-		// Floor options
-		for (let x = 0; x <= 10; x++) {
-			floorsOptions.push(<option key={ 'f-' + x } value={ x }>{ x }</option>)
-		}
-
 		let propertyForm =
-			<form onSubmit={ this.handleFormSubmit.bind(this) }>
+			<form onSubmit={ this.handleFormSubmit }>
 				<div>
 					<hr/>
 					<p>General Information</p>
@@ -101,8 +107,8 @@ class PropertyForm extends React.Component
 							inputProps={
 								{
 									className: "input-group",
-									assets: this.state.property.assets,
-									isEditingMode: this.props.isEditingMode
+									assets: this.state.assets,
+									onChange: this.onHandleAssets
 								}
 							}
 						/>
@@ -111,21 +117,19 @@ class PropertyForm extends React.Component
 				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Built</label>
-						<div className="input-group">
-							<YearsField
-								inputProps={
-									{
-										auto: true,
-										name: "built",
-										list: sequencedObject(1920, (new Date()).getFullYear() + 1),
-										value: this.state.property.built,
-										onChange: this.onHandleFormChange,
-										onSelect: this.onHandleYear,
-										required: "required"
-									}
+						<YearsDropdown
+							inputProps={
+								{
+									auto: true,
+									others: { name: "built", className: "form-control" },
+									list: sequencedObject(1980, (new Date()).getFullYear() + 1),
+									value: this.props.property.built,
+									onChange: this.onHandleFormChange,
+									onSelect: this.onHandleSelect.bind(this, 'year'),
+									required: "required"
 								}
-							/>
-						</div>
+							}
+						/>
 					</div>
 				</div>
 				<div className="form-group required">
@@ -133,8 +137,9 @@ class PropertyForm extends React.Component
 						<label className="control-label">Style</label>
 						<div className="input-group">
 							<select
-								onChange={ this.onHandleFormChange.bind(this, 'style') }
-								value={ property.style }
+								name="style"
+								onChange={ this.onHandleFormChange }
+								value={ this.props.property.style }
 								className="form-control input-sm"
 								required="required">
 								<option value="">Select One</option>
@@ -150,46 +155,52 @@ class PropertyForm extends React.Component
 				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Floors</label>
-						<div className="input-group">
-							<select
-								onChange={ this.onHandleFormChange.bind(this, 'floors') }
-								value={ property.floors }
-								className="form-control input-sm"
-								required="required">
-								<option value="">Select One</option>
-								{ floorsOptions }
-							</select>
-						</div>
+						<FloorsDropdown
+							inputProps={
+								{
+									auto: false,
+									others: { name: "floors", className: "form-control" },
+									list: sequencedObject(1, 10),
+									value: this.props.property.floors,
+									onChange: this.onHandleFormChange,
+									required: "required"
+								}
+							}
+						/>
 					</div>
 				</div>
 				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Beds</label>
-						<div className="input-group">
-							<select
-								onChange={ this.onHandleFormChange.bind(this, 'beds') }
-								value={ property.beds }
-								className="form-control input-sm"
-								required="required">
-								<option value="">Select One</option>
-								{ bedsOptions }
-							</select>
-						</div>
+						<BedsDropdown
+							inputProps={
+								{
+									auto: false,
+									others: { name: "beds", className: "form-control" },
+									list: sequencedObject(0, 15),
+									value: this.props.property.beds,
+									onChange: this.onHandleFormChange,
+									required: "required"
+								}
+							}
+						/>
 					</div>
 				</div>
 				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Baths</label>
-						<div className="input-group">
-							<select
-								onChange={ this.onHandleFormChange.bind(this, 'baths') }
-								value={ property.baths }
-								className="form-control input-sm"
-								required="required">
-								<option value="">Select One</option>
-								{ bathsOptions }
-							</select>
-						</div>
+						<BathsDropdown
+							inputProps={
+								{
+									auto: false,
+									others: { name: "baths", className: "form-control" },
+									list: sequencedObject(1, 10, 0.5),
+									value: this.props.property.baths,
+									onChange: this.onHandleFormChange,
+									required: "required"
+								}
+							}
+						/>
 					</div>
 				</div>
 				<div className="form-group">
@@ -197,9 +208,10 @@ class PropertyForm extends React.Component
 						<label className="control-label">Finished Area</label>
 						<div className="input-group">
 							<input
+								name="finished_area"
 								type="text"
-								onChange={ this.onHandleFormChange.bind(this, 'finished_area') }
-								value={ property.finished_area }
+								onChange={ this.onHandleFormChange }
+								value={ this.props.property.finished_area }
 								className="form-control input-sm"/>
 						</div>
 					</div>
@@ -209,9 +221,10 @@ class PropertyForm extends React.Component
 						<label className="control-label">Unfinished Area</label>
 						<div className="input-group">
 							<input
+								name="unfinished_area"
 								type="text"
-								onChange={ this.onHandleFormChange.bind(this, 'unfinished_area') }
-								value={ property.unfinished_area }
+								onChange={ this.onHandleFormChange }
+								value={ this.props.property.unfinished_area }
 								className="form-control input-sm"/>
 						</div>
 					</div>
@@ -221,9 +234,10 @@ class PropertyForm extends React.Component
 						<label className="control-label">Total Area</label>
 						<div className="input-group">
 							<input
+								name="total_area"
 								type="text"
-								onChange={ this.onHandleFormChange.bind(this, 'total_area') }
-								value={ property.total_area }
+								onChange={ this.onHandleFormChange }
+								value={ this.props.property.total_area }
 								className="form-control input-sm"
 								required="required"/>
 						</div>
@@ -234,16 +248,22 @@ class PropertyForm extends React.Component
 						<label className="control-label">Parcel Number</label>
 						<div className="input-group">
 							<input
+								name="parcel_number"
 								type="text"
-								onChange={ this.onHandleFormChange.bind(this, 'parcel_number') }
-								value={ property.parcel_number }
+								onChange={ this.onHandleFormChange }
+								value={ this.props.property.parcel_number }
 								className="form-control input-sm"/>
 						</div>
 					</div>
 				</div>
 
 				<PropertyAddressForm
-					inputProps = { { address: property.address } }
+					inputProps = {
+						{
+							address: this.props.property.address,
+							onChange: this.onHandleAddress
+						}
+					}
 				/>
 
 				<div className="form-group">
@@ -251,17 +271,14 @@ class PropertyForm extends React.Component
 						<div className="input-group">
 							<input
 								type="hidden"
-								value={ property.id }/>
+								value={ this.props.property.id }/>
 						</div>
 					</div>
 				</div>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-12">
 						<div className="clearfix">
-							<input
-								type="submit"
-								value="Submit"
-								className="btn"/>
+							<input type="submit" value="Submit" className="btn"/>
 						</div>
 					</div>
 				</div>

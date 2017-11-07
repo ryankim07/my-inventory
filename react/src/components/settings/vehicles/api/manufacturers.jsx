@@ -63,7 +63,7 @@ class SettingsManufacturersList extends React.Component
 						totalCount={ this.props.totalCount }
 						totalPages={ this.props.totalPages }
 						limit={ this.props.limit }
-						onChangePage={ this.props.onChangePage }
+						onChange={ this.props.onChange }
 					/> : null;
 			}
         } else {

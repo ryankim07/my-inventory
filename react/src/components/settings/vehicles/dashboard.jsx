@@ -86,6 +86,7 @@ class SettingsVehiclesDashboard extends React.Component
 
 	onChangePage(page) {
 		ManufacturersAction.getManufacturers(page);
+		this.onCloseRightPanel();
 	}
 
 
@@ -159,7 +160,7 @@ class SettingsVehiclesDashboard extends React.Component
 							limit={ this.state.limit }
 							selectedItem={ this.state.manufacturers.id }
 							manufacturers={ this.state.manufacturers }
-							onChangePage={ this.onChangePage }
+							onChange={ this.onChangePage }
 							onSync={ this.onHandleSync }
 							onHandleMainPanel={ this.onHandleMainPanel }/>
 					</DisplayPanel>;

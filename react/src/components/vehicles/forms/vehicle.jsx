@@ -172,8 +172,7 @@ class VehicleForm extends React.Component
 							inputProps={
 								{
 									auto: true,
-									className: "",
-									others: { name: "year" },
+									others: { name: "year", className: "form-control" },
 									list: sequencedObject(2010, (new Date()).getFullYear() + 1),
 									value: this.props.vehicle.year,
 									onChange: this.onHandleFormChange,
@@ -189,22 +188,19 @@ class VehicleForm extends React.Component
 				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Color</label>
-						<div className="input-group">
-							<ColorsField
-								inputProps={
-									{
-										auto: true,
-										className: "",
-										others: { name: "color" },
-										list: getVehicleColors(),
-										value: this.props.vehicle.color,
-										onChange: this.onHandleFormChange,
-										onSelect: this.onHandleSelect.bind(this, 'color'),
-										required: "required"
-									}
+						<ColorsField
+							inputProps={
+								{
+									auto: true,
+									others: { name: "color", className: "form-control" },
+									list: getVehicleColors(),
+									value: this.props.vehicle.color,
+									onChange: this.onHandleFormChange,
+									onSelect: this.onHandleSelect.bind(this, 'color'),
+									required: "required"
 								}
-							/>
-						</div>
+							}
+						/>
 					</div>
 				</div>
 				<div className="form-group required">

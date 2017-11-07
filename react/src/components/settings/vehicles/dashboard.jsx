@@ -35,6 +35,7 @@ class SettingsVehiclesDashboard extends React.Component
 			mainPanel: this.props.match.params.section,
 			showRightPanel: false,
 			flashMessage: null,
+			alertType: 'success',
 			mainPanelColumnCss: {
 				mobileWidth: mainDefaultMobileColumnWidth,
 				desktopWidth: mainDefaultDesktopColumnWidth

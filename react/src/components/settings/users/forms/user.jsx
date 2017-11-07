@@ -1,5 +1,6 @@
 import React from 'react';
-import { upperFirstLetter, getNestedModifiedState } from '../../../helper/utils';
+import { upperFirstLetter,
+		 getNestedModifiedState } from '../../../helper/utils';
 
 class SettingsUser extends React.Component
 {

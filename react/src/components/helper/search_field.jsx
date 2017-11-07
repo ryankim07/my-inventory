@@ -31,7 +31,7 @@ class SearchField extends React.Component
 		super(props);
 
 		this.state = {
-			keyWords: ''
+			keywords: ''
 		};
 
 		this.onHandleSearch = this.onHandleSearch.bind(this);
@@ -41,19 +41,21 @@ class SearchField extends React.Component
 	onHandleSearch(event) {
 		const searchType = this.props.inputProps.searchType;
 		let paints       = this.props.inputProps.objs;
-		let searchText   = event.target.value;
+		let keywords     = event.target.value;
 
 		const newObj = update(paints, {
 			$set:
-				_.filter(paints, obj => obj[searchType].match(new RegExp(searchText, 'gi')))
+				_.filter(paints, obj => obj[searchType].match(new RegExp(keywords, 'gi')))
 		});
 
 		// Set text
-		this.setState({keyWords: searchText});
+		this.setState({keywords: keywords});
 
-		// Return new set of list to parent component
+		// onSearch - Return indicator if search is on or off
+		// newObj - Return new set of list to parent component
 		// or empty array if not found
-		this.props.inputProps.onSearch(newObj);
+		let onSearch = _.isEmpty(keywords);
+		this.props.inputProps.onSearch(newObj, !onSearch);
 	}
 
 	// Render
@@ -65,7 +67,7 @@ class SearchField extends React.Component
 					name="search"
                     type="text"
 					className="form-control"
-                    value={ this.state.keyWords }
+                    value={ this.state.keywords }
                     onChange={ this.onHandleSearch }
                 />
             </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import SearchField from '../../helper/search_field';
 import TogglingRows from '../../helper/table/toggling_rows';
 import Loader from '../../helper/loader';

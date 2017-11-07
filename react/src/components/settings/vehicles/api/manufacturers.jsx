@@ -12,16 +12,33 @@ class SettingsManufacturersList extends React.Component
 		super(props);
 
 		this.state = {
-			keyWords: '',
-			searchResults: []
+			searchResults: [],
+			onSearch: false
 		};
 
 		this.onHandleSearch = this.onHandleSearch.bind(this);
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		if (this.props.manufacturers === nextProps.manufacturers) {
+			if (nextState.onSearch && nextState.searchResults.length > 0) {
+				return true;
+			} else if (! nextState.onSearch && this.props.manufacturers.length === nextState.searchResults.length) {
+				return true;
+			}
+
+			return false;
+		}
+
+		return true;
+	}
+
 	// Handle search
-	onHandleSearch(results) {
-		this.setState({ searchResults: results });
+	onHandleSearch(results, onSearch) {
+		this.setState({
+			searchResults: results,
+			onSearch: onSearch
+		});
 	}
 
 	// Render
@@ -35,11 +52,11 @@ class SettingsManufacturersList extends React.Component
 				mfgsHtml.push(<tr><td><span>Empty list.</span></td></tr>);
 
 			} else {
-				if (this.state.searchResults && this.state.keyWords !== '') {
-					mfgsHtml.push(<tr key="z"><td><span>Found { this.state.manufacturers.length } matches</span></td></tr>);
+				if (this.state.searchResults.length > 0) {
+					mfgsHtml.push(<tr key="z"><td><span><b>Found { this.state.searchResults.length } matches</b></span></td></tr>);
 				}
 
-				let list = !_.isEmpty(this.state.searchResults) ? this.state.searchResults : this.props.manufacturers;
+				let list = this.state.onSearch ? this.state.searchResults : this.props.manufacturers;
 				let allMfgs = list.map((vehicle, vehicleIndex) => {
 					return (
 						<TogglingRows
@@ -56,8 +73,8 @@ class SettingsManufacturersList extends React.Component
 
 				mfgsHtml.push(allMfgs);
 
-				// Pagination
-				paginationHtml = this.props.manufacturers || this.props.manufacturers.length > 0 ?
+				// Only show pagination if there manufactures and not doing any searches at the same time
+				paginationHtml = this.props.manufacturers.length > 0 && !this.state.onSearch ?
 					<Pagination
 						page={ this.props.page }
 						totalCount={ this.props.totalCount }

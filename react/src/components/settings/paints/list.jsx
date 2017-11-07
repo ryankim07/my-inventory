@@ -11,7 +11,6 @@ class SettingsPaintsList extends React.Component
 		super(props);
 
 		this.state = {
-			keyWords: '',
 			searchResults: []
 		};
 

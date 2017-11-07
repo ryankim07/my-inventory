@@ -9,7 +9,6 @@ class SettingsManufacturerModelsList extends React.Component
 		super(props);
 
 		this.state = {
-			keyWords: '',
 			searchResults: []
 		};
 
@@ -27,8 +26,8 @@ class SettingsManufacturerModelsList extends React.Component
 		if (!this.props.models || this.props.models.length === 0) {
 			mfgsHtml.push(<tr><td><span>Empty list.</span></td></tr>);
 		} else {
-			if (this.state.key && this.state.keyWords !== '') {
-				modelsHtml.push(<tr key="b"><td><span>Found { this.state.models.length } matches</span></td></tr>);
+			if (this.state.searchResults.length > 0) {
+				modelsHtml.push(<tr key="b"><td><span><b>Found { this.state.searchResults.length } matches</b></span></td></tr>);
 			}
 
 			let list = !_.isEmpty(this.state.searchResults) ? this.state.searchResults : this.props.models;

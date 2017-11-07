@@ -35,7 +35,7 @@ class Pagination extends React.Component
 	// Handle click
 	onHandleClick(page) {
 		this.setPager(page);
-		this.props.onChangePage(page);
+		this.props.onChange(page);
 	}
 
 	// Set page
@@ -94,29 +94,30 @@ class Pagination extends React.Component
 	}
 
     render() {
-		let pager = this.state.pager;
+		let currentPage = parseInt(this.state.pager.currentPage);
+		let totalPages  = parseInt(this.state.pager.totalPages);
 
-        return (
+		return (
             <div>
                 <ul className="pagination">
-                    <li className={ pager.currentPage === 1 ? 'disabled' : '' }>
+                    <li className={ currentPage === 1 ? 'disabled' : '' }>
                         <a onClick={ this.onHandleClick.bind(this, 1) }>First</a>
                     </li>
-                    <li className={ pager.currentPage === 1 ? 'disabled' : '' }>
-                        <a onClick={ this.onHandleClick.bind(this, pager.currentPage - 1) }>Previous</a>
+                    <li className={ currentPage === 1 ? 'disabled' : '' }>
+                        <a onClick={ this.onHandleClick.bind(this, currentPage - 1) }>Previous</a>
                     </li>
 					{
-						pager.pages.map((page, index) =>
-							<li key={ index } className={ pager.currentPage === page ? 'active' : '' }>
+						this.state.pager.pages.map((page, index) =>
+							<li key={ index } className={ currentPage === page ? 'active' : '' }>
 								<a onClick={ this.onHandleClick.bind(this, page) }>{ page }</a>
 							</li>
 						)
 					}
-                    <li className={ pager.currentPage === pager.totalPages ? 'disabled' : '' }>
-                        <a onClick={ this.onHandleClick.bind(this, pager.currentPage + 1) }>Next</a>
+                    <li className={ currentPage === totalPages ? 'disabled' : '' }>
+                        <a onClick={ this.onHandleClick.bind(this, currentPage + 1) }>Next</a>
                     </li>
-                    <li className={ pager.currentPage === pager.totalPages ? 'disabled' : '' }>
-                        <a onClick={ this.onHandleClick.bind(this, pager.totalPages) }>Last</a>
+                    <li className={ currentPage === totalPages ? 'disabled' : '' }>
+                        <a onClick={ this.onHandleClick.bind(this, totalPages) }>Last</a>
                     </li>
                 </ul>
             </div>

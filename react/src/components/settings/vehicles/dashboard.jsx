@@ -32,7 +32,7 @@ class SettingsVehiclesDashboard extends React.Component
 			model: {},
 			loader: true,
 			isEditingMode: false,
-			mainPanel: props.match.params.section,
+			mainPanel: this.props.match.params.section,
 			showRightPanel: false,
 			flashMessage: null,
 			mainPanelColumnCss: {

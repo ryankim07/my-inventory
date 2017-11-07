@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 import { upperFirstLetter, getNestedModifiedState } from '../../../helper/utils';
 
 class SettingsUser extends React.Component

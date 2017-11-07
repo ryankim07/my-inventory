@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import { PropTypes } from 'prop-types';
 import VehiclesAction from '../../actions/vehicles-action';
 import VehiclesStore from '../../stores/vehicles/store';
@@ -10,12 +11,26 @@ import VehiclesList from './list';
 import Modal from '../helper/modal';
 import FlashMessage from '../helper/flash_message';
 
-let mainDefaultMobileColumnWidth = 'col-xs-12';
-let mainDefaultDesktopColumnWidth = 'col-md-12';
-let mainShrinkedMobileColumnWidth = 'col-xs-8';
-let mainShrinkedDesktopColumnWidth = 'col-md-8';
-let rightPanelMobileColumnWidth = 'col-xs-4';
-let rightPanelDesktopColumnWidth = 'col-md-4';
+const mainDefaultMobileColumnWidth = 'col-xs-12';
+const mainDefaultDesktopColumnWidth = 'col-md-12';
+const mainShrinkedMobileColumnWidth = 'col-xs-8';
+const mainShrinkedDesktopColumnWidth = 'col-md-8';
+const rightPanelMobileColumnWidth = 'col-xs-4';
+const rightPanelDesktopColumnWidth = 'col-md-4';
+
+// Get vehicle initial state
+const initialVehicleObj = {
+	id: '',
+	mfg_id: '',
+	mfg: '',
+	model_id: '',
+	model: '',
+	year: '',
+	color: '',
+	vin: '',
+	plate: '',
+	assets: []
+};
 
 class VehiclesDashboard extends React.Component
 {
@@ -25,7 +40,7 @@ class VehiclesDashboard extends React.Component
 
 		this.state = {
 			vehicles: [],
-			vehicle: this.getVehicleState(),
+			vehicle: initialVehicleObj,
 			manufacturers: [],
 			loader: true,
 			isEditingMode: false,
@@ -45,6 +60,7 @@ class VehiclesDashboard extends React.Component
 		};
 
 		this._onChange 		  	= this._onChange.bind(this);
+		this.onHandleFormChange = this.onHandleFormChange.bind(this);
 		this.onHandleSubmit 	= this.onHandleSubmit.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.onHandleModal 		= this.onHandleModal.bind(this);
@@ -54,30 +70,16 @@ class VehiclesDashboard extends React.Component
 		this.onCloseRightPanel  = this.onCloseRightPanel.bind(this);
 	}
 
-	// Get vehicle initial state
-	getVehicleState() {
-		return {
-			id: '',
-			mfg_id: '',
-			mfg: '',
-			model_id: '',
-			model: '',
-			year: '',
-			color: '',
-			vin: '',
-			plate: '',
-			assets: []
-		}
-	}
+
 
 	// Mounting component
 	componentWillMount() {
 		VehiclesStore.addChangeListener(this._onChange);
 		VehiclesStore.removeStoreStatus();
 
-		if (props.match.params.section === "add") {
+		if (this.props.match.params.section === "add") {
 			this.setState({
-				mainPanel: props.match.params.section,
+				mainPanel: this.props.match.params.section,
 				mainPanelColumnCss: {
 					mobileWidth: rightPanelMobileColumnWidth,
 					desktopWidth: rightPanelDesktopColumnWidth
@@ -112,7 +114,7 @@ class VehiclesDashboard extends React.Component
 			}
 
 			this.setState({
-				vehicle: this.getVehicleState(),
+				vehicle: initialVehicleObj,
 				mainPanel: mainPanel,
 				showRightPanel: false,
 				flashMessage: null,
@@ -156,7 +158,8 @@ class VehiclesDashboard extends React.Component
 	// Handle right panel
 	onHandleRightPanel(id) {
 		let isEditingMode = !!id;
-		let vehicle = isEditingMode ? this.state.vehicles.find(obj => obj.id === id) : this.getVehicleState();
+		const vehicle = isEditingMode ?
+			_.find(this.state.vehicles, ['id', id]) : initialVehicleObj;
 
 		this.setState({
 			vehicle: vehicle,
@@ -167,6 +170,11 @@ class VehiclesDashboard extends React.Component
 				desktopWidth: mainShrinkedDesktopColumnWidth
 			}
 		});
+	}
+
+	// Handle form change
+	onHandleFormChange(vehicle) {
+		this.setState({ vehicle: vehicle });
 	}
 
 	// Handle delete
@@ -181,11 +189,6 @@ class VehiclesDashboard extends React.Component
 		} else {
 			VehiclesAction.updateVehicle(vehicle);
 		}
-	}
-
-	// Handle search
-	onHandleSearch(vehicles) {
-		this.setState({ vehicles: vehicles });
 	}
 
 	// Handle view
@@ -238,8 +241,8 @@ class VehiclesDashboard extends React.Component
 							loader={ this.state.loader }
 							vehicle={ this.state.vehicle }
 							manufacturers={ this.state.manufacturers }
-							isEditingMode={ false }
-							onHandleSubmit={ this.onHandleSubmit }
+							onChange={ this.onHandleFormChange }
+							onSubmit={ this.onHandleSubmit }
 							onCloseRightPanel=""
 						/>
 					</DisplayPanel>;
@@ -257,11 +260,11 @@ class VehiclesDashboard extends React.Component
 						previousRoute="">
 						<VehiclesList
 							loader={ this.state.loader }
-							vehicle={ this.state.vehicle }
+							selectedItem={ this.state.vehicle.id }
 							vehicles={ this.state.vehicles }
 							onRemove={ this.onHandleRemove }
 							onSearch={ this.onHandleSearch }
-							onHandleModal={ this.onHandleModal }
+							onModal={ this.onHandleModal }
 							onHandleRightPanel={ this.onHandleRightPanel }
 						/>
 					</DisplayPanel>;
@@ -280,8 +283,8 @@ class VehiclesDashboard extends React.Component
 					loader={ false }
 					vehicle={ this.state.vehicle }
 					manufacturers={ this.state.manufacturers }
-					isEditingMode={ this.state.isEditingMode }
-					onHandleSubmit={ this.onHandleSubmit }
+					onChange={ this.onHandleFormChange }
+					onSubmit={ this.onHandleSubmit }
 					onCloseRightPanel={ this.onCloseRightPanel }
 				/>
 			</DisplayPanel> : null;

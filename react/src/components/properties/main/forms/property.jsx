@@ -2,7 +2,7 @@ import React from 'react';
 import PropertyAddressForm from './../../address/forms/address';
 import YearsField from '../../../helper/forms/hybrid_field';
 import Uploader from '../../../helper/uploader';
-import { numberFormat } from '../../../helper/utils';
+import { numberFormat, getNestedModifiedState } from '../../../helper/utils';
 
 class PropertyForm extends React.Component
 {
@@ -23,26 +23,27 @@ class PropertyForm extends React.Component
 	}
 
     // Handle input changes
-	onHandleFormChange(propertyName, event) {
-        let property    = this.state.property;
-        let chosenValue = event.target.value;
+	onHandleFormChange(event) {
+		let fieldName 	= event.target.name;
+		let chosenValue = event.target.value;
+		let modifiedObj = {};
 
-        switch (propertyName) {
+        switch (fieldName) {
             case 'finished_area':
             case 'unfinished_area':
             case 'total_area':
                 if (chosenValue === 0) {
                     alert('Please enter correct area.');
                 } else {
-					property[propertyName] = numberFormat(chosenValue);
+					modifiedObj[fieldName] = numberFormat(chosenValue);
                 }
             break;
 
             default:
-                property[propertyName] = chosenValue;
+				modifiedObj[fieldName] = chosenValue;
         }
 
-        this.setState({property: property});
+		this.props.onChange(getNestedModifiedState(this.props.property, modifiedObj));
     }
 
 	// Handle when dropdown field is selected

@@ -12,7 +12,7 @@
  * value: current or selected value
  * onChange: handler for form changes
  * onSelect: handler for select event
- * onGetItemValue: customize how values are suppose to be returned when the select event fires
+ * onItemValue: customize how values are suppose to be returned when the select event fires
  */
 
 import React from 'react';
@@ -49,8 +49,8 @@ class HybridField extends React.Component
 	componentWillMount() {
 		const isAuto 	 = this.props.inputProps.auto;
 		const list 	     = this.props.inputProps.list;
-		const label 	 = this.props.inputProps.label ? this.props.inputProps.label : 'label';
-		const identifier = this.props.inputProps.identifier ? this.props.inputProps.identifier : 'value';
+		const label 	 = this.props.inputProps.label !== undefined ? this.props.inputProps.label : 'label';
+		const identifier = this.props.inputProps.identifier !== undefined ? this.props.inputProps.identifier : 'value';
 		let results    	 = [];
 
 		_.forEach(list, function(obj) {
@@ -80,9 +80,9 @@ class HybridField extends React.Component
 			<AutoComplete
 				inputProps={ this.props.inputProps.others }
 				items={ this.state.list }
-				value={ this.props.inputProps.value ? this.props.inputProps.value.toString() : '' }
-				onChange={ this.props.inputProps.onChange }
-				onSelect={ this.props.inputProps.onSelect }
+				value={ this.props.inputProps.value !== undefined ? this.props.inputProps.value.toString() : '' }
+				onChange={ this.props.inputProps.onChange !== undefined ? this.props.inputProps.onChange : null }
+				onSelect={ this.props.inputProps.onSelect !== undefined ? this.props.inputProps.onSelect : null }
 				wrapperStyle={ wrapperStyle }
 				renderMenu={ (items, value) =>
 					<div key="-1" style={ { menuStyle } } children={ items }/>
@@ -90,7 +90,7 @@ class HybridField extends React.Component
 				shouldItemRender={ (item, value) =>
 					item.label.toString().toLowerCase().indexOf(value.toString().toLowerCase()) > -1
 				}
-				getItemValue={ this.getItemValue }
+				getItemValue={ this.props.inputProps.onItemValue !== undefined ? this.props.inputProps.onItemValue : this.getItemValue }
 				renderItem={ (item, isHighlighted) =>
 					<div key={ item.id } style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
 						{ item.label }

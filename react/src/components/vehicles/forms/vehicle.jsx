@@ -1,10 +1,11 @@
 import React from 'react';
+import _ from 'lodash';
 import YearsField from '../../helper/forms/hybrid_field';
-import VehicleColorsDropdown  from '../../helper/forms/hybrid_field';
+import ColorsField  from '../../helper/forms/hybrid_field';
 import Uploader from '../../helper/uploader';
 import Loader from '../../helper/loader';
 import { getVehicleColors } from "../../helper/lists/colors";
-import { upperFirstLetter, sequencedObject } from '../../helper/utils';
+import { upperFirstLetter, sequencedObject, getSingleModifiedState, getNestedModifiedState } from '../../helper/utils';
 
 class VehicleForm extends React.Component
 {
@@ -12,18 +13,41 @@ class VehicleForm extends React.Component
     constructor(props) {
         super(props);
 
+		this.state = {
+			selectedItem: '',
+			assets: []
+		};
+
         this.onHandleFormChange = this.onHandleFormChange.bind(this);
-        this.onHandleYear     = this.onHandleYear.bind(this);
-		this.setAssets     	  = this.setAssets.bind(this);
-		this.handleFormSubmit = this.handleFormSubmit.bind(this);
+		this.onHandleAssets     = this.onHandleAssets.bind(this);
+		this.onHandleSubmit 	= this.onHandleSubmit.bind(this);
+	}
+
+	// Mounting component
+	componentWillMount() {
+		this.setState({
+			selectedItem: this.props.vehicle.id,
+			assets: this.props.vehicle.assets
+		});
+	}
+
+	// Next state change
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.vehicle.id !== this.state.selectedItem) {
+			this.setState({
+				selectedItem: nextProps.vehicle.id,
+				assets: nextProps.vehicle.assets
+			});
+		}
     }
 
     // Handle input changes
-    onHandleFormChange(propertyName, event) {
-    	let vehicle 	= this.state.vehicle;
+    onHandleFormChange(event) {
+    	let fieldName 	= event.target.name;
         let chosenValue = event.target.value;
+		let modifiedObj = {};
 
-        switch (propertyName) {
+        switch (fieldName) {
             case 'mfg_id':
             case 'model_id':
             case 'year':
@@ -31,57 +55,46 @@ class VehicleForm extends React.Component
                 if (chosenValue === 0) {
                     alert('Please select correct manufacturer.');
                 } else {
-                    vehicle[propertyName] = chosenValue;
-                    vehicle['vin'] = '';
+					modifiedObj[fieldName] = chosenValue;
+					modifiedObj['vin'] = '';
                 }
             break;
 
 			case 'vin':
 			case 'plate':
-				vehicle[propertyName] = chosenValue.toUpperCase();
+				modifiedObj[fieldName] = chosenValue.toUpperCase();
 			break;
 
             default:
-                vehicle[propertyName] = upperFirstLetter(chosenValue);
+				modifiedObj[fieldName] = upperFirstLetter(chosenValue);
         }
 
-        this.setState({
-			vehicle: vehicle
-        });
+        this.props.onChange(getNestedModifiedState(this.props.vehicle, modifiedObj));
     }
 
-    // Handle when dropdown field is selected
-    onHandleYear(value) {
-		let vehicle = this.state.vehicle;
-		vehicle['year'] = value;
-
-		this.setState({
-			vehicle: vehicle
-		});
+	// Handle when years and color dropdown field is selected
+	onHandleSelect(property, value) {
+    	this.props.onChange(getSingleModifiedState(this.props.vehicle, property, value));
 	}
 
 	// Handle assets
-	setAssets(assets) {
-		let vehicle = this.state.vehicle;
-		vehicle['assets'] = assets
-
-		this.setState({
-			vehicle: vehicle
-		});
+	onHandleAssets(assets) {
+		this.setState({ assets: assets });
 	}
 
-    // Submit
-    handleFormSubmit(event) {
+	onHandleSubmit(event) {
 		event.preventDefault();
 
-		this.props.onHandleSubmit(this.state.vehicle);
+		let vehicle 	  = this.props.vehicle;
+		vehicle['assets'] = this.state.assets;
+
+		this.props.onSubmit(vehicle);
 	}
 
 	// Render
     render() {
 		let manufacturers = this.props.manufacturers;
-		let vehicle       = this.state.vehicle;
-		let defaultMfgId  = vehicle.mfg_id !== "" ? parseInt(vehicle.mfg_id) : false;
+		let defaultMfgId  = this.props.vehicle.mfg_id !== "" ? parseInt(this.props.vehicle.mfg_id) : false;
 
 		// Generate json list of manufacturers
 		let mfgOptions = manufacturers.map((mfgs, mfgIndex) => {
@@ -90,9 +103,7 @@ class VehicleForm extends React.Component
 
 		// Get selected choice from api vehicles dropdown
 		let selectedMfg = manufacturers.length > 0 && defaultMfgId ?
-			manufacturers.filter(manufacturer => {
-				return manufacturer.id === defaultMfgId
-			}) : false;
+			_.filter(manufacturers, ['id', defaultMfgId]) : false;
 
 		// Generate json list of models
 		let modelsOptions = selectedMfg ? selectedMfg[0].models.map((manufacturer, modelIndex) => {
@@ -109,8 +120,8 @@ class VehicleForm extends React.Component
 							<select
 								name="mfg_id"
 								className="form-control input-sm"
-								value={ vehicle.mfg_id }
-								onChange={ this.onHandleFormChange.bind(this) }
+								value={ this.props.vehicle.mfg_id }
+								onChange={ this.onHandleFormChange }
 								required="required">
 								<option value="">Select One</option>
 								{ mfgOptions }
@@ -125,8 +136,8 @@ class VehicleForm extends React.Component
 							<select
 								name="model_id"
 								className="form-control input-sm"
-								value={ vehicle.model_id }
-								onChange={ this.onHandleFormChange.bind(this) }
+								value={ this.props.vehicle.model_id }
+								onChange={ this.onHandleFormChange }
 								required="required">
 								<option value="">Select One</option>
 								{ modelsOptions }
@@ -137,15 +148,15 @@ class VehicleForm extends React.Component
 			</div> : <div><Loader/></div>;
 
 		let vehicleForm =
-			<form onSubmit={ this.handleFormSubmit }>
+			<form onSubmit={ this.onHandleSubmit }>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Image</label>
 						<Uploader
 							inputProps={
 								{   className: "input-group",
-									assets: this.state.vehicle.assets,
-									isEditingMode: this.props.isEditingMode
+									assets: this.state.assets,
+									onChange: this.onHandleAssets
 								}
 							}
 						/>
@@ -158,12 +169,12 @@ class VehicleForm extends React.Component
 							inputProps={
 								{
 									auto: true,
-									name: "year",
+									className: "",
+									others: { name: "year" },
 									list: sequencedObject(2010, (new Date()).getFullYear() + 1),
-									value: this.state.vehicle.year,
+									value: this.props.vehicle.year,
 									onChange: this.onHandleFormChange,
-									onSelect: this.onHandleYear,
-									required: "required"
+									onSelect: this.onHandleSelect.bind(this, 'year'),
 								}
 							}
 						/>
@@ -176,15 +187,16 @@ class VehicleForm extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Color</label>
 						<div className="input-group">
-							<VehicleColorsDropdown
+							<ColorsField
 								inputProps={
 									{
 										auto: true,
-										name: "color",
+										className: "",
+										others: { name: "color" },
 										list: getVehicleColors(),
-										value: this.state.vehicle.color,
+										value: this.props.vehicle.color,
 										onChange: this.onHandleFormChange,
-										onSelect: "",
+										onSelect: this.onHandleSelect.bind(this, 'color'),
 										required: "required"
 									}
 								}
@@ -196,9 +208,11 @@ class VehicleForm extends React.Component
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">VIN</label>
 						<div className="input-group">
-							<input type="text"
-								onChange={ this.onHandleFormChange.bind(this, 'vin') }
-								value={ vehicle.vin }
+							<input
+								name="vin"
+								type="text"
+								onChange={ this.onHandleFormChange }
+								value={ this.props.vehicle.vin }
 								className="form-control input-sm"
 								required="required"/>
 						</div>
@@ -209,9 +223,10 @@ class VehicleForm extends React.Component
 						<label className="control-label">Plate</label>
 						<div className="input-group">
 							<input
+								name="plate"
 								type="text"
-								onChange={ this.onHandleFormChange.bind(this, 'plate') }
-								value={ vehicle.plate }
+								onChange={ this.onHandleFormChange }
+								value={ this.props.vehicle.plate }
 								className="form-control input-sm"
 								required="required"/>
 						</div>
@@ -220,9 +235,9 @@ class VehicleForm extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input type="hidden" value={ vehicle.id }/>
-							<input type="hidden" value={ vehicle.mfg }/>
-							<input type="hidden" value={ vehicle.model }/>
+							<input type="hidden" value={ this.props.vehicle.id }/>
+							<input type="hidden" value={ this.props.vehicle.mfg }/>
+							<input type="hidden" value={ this.props.vehicle.model }/>
 						</div>
 					</div>
 				</div>

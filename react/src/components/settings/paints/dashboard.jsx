@@ -43,7 +43,7 @@ class SettingsPaintsDashboard extends React.Component
 			vendors: [],
 			isEditingMode: false,
 			loader: true,
-			mainPanel: props.match.params.section,
+			mainPanel: this.props.match.params.section,
 			showRightPanel: false,
 			flashMessage: null,
 			showModal: false,

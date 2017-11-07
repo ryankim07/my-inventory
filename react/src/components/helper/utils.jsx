@@ -176,7 +176,7 @@ export function checkAddressInputFields(obj) {
 export function sequencedObject(from, to) {
 	let range = _.range(from, to);
 
-	return _.map(range, function (key, value) {
-		return { id: key, label: value, value: value }
+	return _.map(range, function (value) {
+		return { id: value, label: value, value: value }
 	})
 }

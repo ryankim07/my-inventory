@@ -1,27 +1,43 @@
 import React from 'react';
+import _ from 'lodash';
 import SearchField from '../helper/search_field';
 import TogglingRows from '../helper/table/toggling_rows';
 import Loader from '../helper/loader';
 
 class VehiclesList extends React.Component
 {
+	// Constructor
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			searchResults: []
+		};
+
+		this.onHandleSearch = this.onHandleSearch.bind(this);
+	}
+
+	// Handle search
+	onHandleSearch(results) {
+		this.setState({ searchResults: results });
+	}
+
 	// Render
 	render() {
         let vehiclesHtml = null;
 
 		// If loading is complete
         if (!this.props.loader) {
-        	let vehicles = this.state.vehicles;
-
-        	if (!vehicles || vehicles.length === 0) {
+        	if (!this.props.vehicles || this.props.vehicles.length === 0) {
 				vehiclesHtml = <tr><td><span>Empty list.</span></td></tr>;
 			} else {
-        		// Show all vehicles
-				vehiclesHtml = vehicles.map((vehicle, vehicleIndex) => {
+				let list = !_.isEmpty(this.state.searchResults) ? this.state.searchResults : this.props.vehicles;
+
+				vehiclesHtml = list.map((vehicle, vehicleIndex) => {
 					return (
 						<TogglingRows
 							key={ vehicleIndex }
-							selectedItem={ this.props.vehicle.id === vehicle.id }
+							selectedItem={ this.props.selectedItem === vehicle.id }
 							columnValues={ [
 								vehicle.mfg,
 								vehicle.model,
@@ -31,7 +47,7 @@ class VehiclesList extends React.Component
 								vehicle.plate
 							] }
 							addViewBtn={ true }
-							onView={ this.props.onHandleModal.bind(this, vehicle.id) }
+							onView={ this.props.onModal.bind(this, vehicle.id) }
 							addEditBtn={ true }
 							onEdit={ this.props.onHandleRightPanel.bind(this, vehicle.id) }
 							addRemoveBtn={ true }
@@ -44,19 +60,22 @@ class VehiclesList extends React.Component
             vehiclesHtml = <tr><td><Loader/></td></tr>;
         }
 
+		let searchField =
+			<SearchField
+				inputProps={
+					{
+						objs: this.props.vehicles,
+						searchType: "mfg",
+						onSearch: this.onHandleSearch
+					}
+				}
+			/>;
+
         return (
 			<div>
 				<div className="form-group">
 					<div className="col-xs-12 col-lg-12">
-						<SearchField
-							inputProps={
-								{
-									objs: this.props.vehicles,
-									searchType: "mfg",
-									onSearch: this.props.onSearch
-								}
-							}
-						/>
+						{ searchField }
 					</div>
 				</div>
 				<table className="table">

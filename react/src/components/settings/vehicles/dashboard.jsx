@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import { PropTypes } from 'prop-types';
 import ManufacturersAction from '../../../actions/manufacturers-action';
 import ManufacturersStore from '../../../stores/vehicles/mfgs-store';
@@ -9,12 +10,12 @@ import SettingsManufacturersList from './../vehicles/api/manufacturers';
 import SettingsManufacturerModelsList from './../vehicles/api/models';
 import FlashMessage from '../../helper/flash_message';
 
-let mainDefaultMobileColumnWidth = 'col-xs-12';
-let mainDefaultDesktopColumnWidth = 'col-md-12';
-let mainShrinkedMobileColumnWidth = 'col-xs-8';
-let mainShrinkedDesktopColumnWidth = 'col-md-8';
-let rightPanelMobileColumnWidth = 'col-xs-4';
-let rightPanelDesktopColumnWidth = 'col-md-4';
+const mainDefaultMobileColumnWidth = 'col-xs-12';
+const mainDefaultDesktopColumnWidth = 'col-md-12';
+const mainShrinkedMobileColumnWidth = 'col-xs-8';
+const mainShrinkedDesktopColumnWidth = 'col-md-8';
+const rightPanelMobileColumnWidth = 'col-xs-4';
+const rightPanelDesktopColumnWidth = 'col-md-4';
 
 class SettingsVehiclesDashboard extends React.Component
 {
@@ -96,7 +97,7 @@ class SettingsVehiclesDashboard extends React.Component
 	// Handle main panel
 	onHandleMainPanel(id) {
 		this.setState({
-			mfg: this.state.manufacturers.find(obj => obj.id === id),
+			mfg: _.find(this.state.manufacturers, ['id', id]),
 			showRightPanel: true,
 			mainPanelColumnCss: {
 				mobileWidth: mainShrinkedMobileColumnWidth,
@@ -107,8 +108,7 @@ class SettingsVehiclesDashboard extends React.Component
 
 	// Handle right panel
 	onHandleRightPanel(id) {
-		let mfg   = this.state.mfg;
-		let model = mfg.models.find(obj => obj.id === id);
+		let model = _.find(this.state.mfg.models, ['id', id]);
 
 		this.setState({
 			model: model,
@@ -133,7 +133,7 @@ class SettingsVehiclesDashboard extends React.Component
 
 	// Set flash message
 	setFlashMessage(msg) {
-		this.setState({flashMessage: msg});
+		this.setState({ flashMessage: msg });
 	}
 
 	render() {
@@ -157,10 +157,10 @@ class SettingsVehiclesDashboard extends React.Component
 							totalCount={ this.state.totalCount }
 							totalPages={ this.state.totalPages }
 							limit={ this.state.limit }
+							selectedItem={ this.state.manufacturers.id }
 							manufacturers={ this.state.manufacturers }
-							mfg={ this.state.mfg }
 							onChangePage={ this.onChangePage }
-							onHandleSync={ this.onHandleSync }
+							onSync={ this.onHandleSync }
 							onHandleMainPanel={ this.onHandleMainPanel }/>
 					</DisplayPanel>;
 			break;
@@ -176,19 +176,19 @@ class SettingsVehiclesDashboard extends React.Component
 				showPreviousBtn={ false }
 				previousRoute="">
 				<SettingsManufacturerModelsList
+					selectedItem={ this.state.model.id }
 					models={ this.state.mfg.models }
-					model={ this.state.model }
 					onHandleRightPanel={ this.onHandleRightPanel }
 					onCloseRightPanel={ this.onCloseRightPanel }/>
 			</DisplayPanel> : null;
 
+		// Flash message
 		let flashMessage = this.state.flashMessage ?
 			<FlashMessage message={ this.state.flashMessage } alertType={ this.state.alertType }/> : null;
 
 		return (
 			<div className="row">
 				{ flashMessage }
-
 				<MainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }
 				</MainPanel>

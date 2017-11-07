@@ -59,19 +59,22 @@ class SettingsPaintsList extends React.Component
 			paintsHtml = <tr><td><Loader/></td></tr>;
         }
 
+		let searchField =
+			<SearchField
+				inputProps={
+					{
+						objs: this.props.paints,
+						searchType: "name",
+						onSearch: this.onHandleSearch
+					}
+				}
+			/>;
+
         return (
 			<div>
 				<div className="form-group">
 					<div className="col-xs-12 col-lg-12">
-						<SearchField
-							inputProps={
-								{
-									objs: this.props.paints,
-									searchType: "name",
-									onSearch: this.onHandleSearch
-								}
-							}
-						 />
+						{ searchField }
 					</div>
 				</div>
 				<table className="table">

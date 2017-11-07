@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import SearchField from '../../../helper/search_field';
 import TogglingRows from '../../../helper/table/toggling_rows';
 
@@ -8,49 +9,35 @@ class SettingsManufacturerModelsList extends React.Component
 		super(props);
 
 		this.state = {
-			models: this.props.models,
-			clonedModels: JSON.parse(JSON.stringify(this.props.models))
+			keyWords: '',
+			searchResults: []
 		};
-	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.models !== this.state.models) {
-			this.setState({
-				models: nextProps.models,
-				clonedModels: JSON.parse(JSON.stringify(nextProps.models))
-			});
-		}
+		this.onHandleSearch = this.onHandleSearch.bind(this);
 	}
 
 	// Handle search
 	onHandleSearch(results) {
-		this.setState({
-			models: results
-		});
+		this.setState({ searchResults: results });
 	}
 
 	render() {
 		let modelsHtml = [];
-		let models     = this.state.models;
 
-		if (!models || models.length === 0) {
-			let msg = !this.state.isSearch ? 'Empty list.' : 'Found no matches.';
-
-			modelsHtml.push(
-				<tr key="a">
-					<td><span>{ msg }</span></td>
-				</tr>
-			);
+		if (!this.props.models || this.props.models.length === 0) {
+			mfgsHtml.push(<tr><td><span>Empty list.</span></td></tr>);
 		} else {
-			if (this.state.isSearch && this.state.searchText !== '') {
+			if (this.state.key && this.state.keyWords !== '') {
 				modelsHtml.push(<tr key="b"><td><span>Found { this.state.models.length } matches</span></td></tr>);
 			}
 
-			let allModels = models.map((model, modelIndex) => {
+			let list = !_.isEmpty(this.state.searchResults) ? this.state.searchResults : this.props.models;
+
+			let allModels = list.map((model, modelIndex) => {
 				return (
 					<TogglingRows
 						key={ modelIndex }
-						selectedItem={ this.props.model.id === model.id }
+						selectedItem={ this.props.selectedItem === model.id }
 						columnValues={ [model.model] }
 						addViewBtn={ true }
 						onView={ this.props.onHandleRightPanel.bind(this, model.id) }
@@ -63,19 +50,22 @@ class SettingsManufacturerModelsList extends React.Component
 			modelsHtml.push(allModels);
 		}
 
+		let searchField =
+			<SearchField
+				inputProps={
+					{
+						objs: this.props.models,
+						searchType: "model",
+						onSearch: this.onHandleSearch
+					}
+				}
+			/>;
+
         return (
 			<div>
 				<div className="form-group">
 					<div className="col-xs-12 col-lg-12">
-						<SearchField
-							inputProps={
-								{
-									objs: this.state.models,
-									searchType: "model",
-									onChange: this.onHandleSearch.bind(this)
-								}
-							}
-						/>;
+						{ searchField }
 					</div>
 				</div>
 				<table className="table">

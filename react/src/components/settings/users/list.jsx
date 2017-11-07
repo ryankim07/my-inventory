@@ -38,19 +38,22 @@ class SettingsUsersList extends React.Component
             usersHtml = <tr><td><Loader/></td></tr>;
         }
 
+		let searchField =
+			<SearchField
+				inputProps={
+					{
+						objs: this.props.users,
+						searchType: "first_name",
+						onSearch: this.onHandleSearch
+					}
+				}
+			/>;
+
         return (
 			<div>
 				<div className="form-group">
 					<div className="col-xs-12 col-lg-12">
-						<SearchField
-							inputProps={
-								{
-									objs: this.props.users,
-									searchType: "first_name",
-									onSearch: this.props.onSearch
-								}
-							}
-						/>
+						{ searchField }
 					</div>
 				</div>
 				<table className="table">

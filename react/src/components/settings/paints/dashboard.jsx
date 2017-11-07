@@ -171,7 +171,7 @@ class SettingsPaintsDashboard extends React.Component
 
 	// Set flash message
 	setFlashMessage(msg) {
-		this.setState({flashMessage: msg});
+		this.setState({ flashMessage: msg });
 	}
 
 	// Close right panel

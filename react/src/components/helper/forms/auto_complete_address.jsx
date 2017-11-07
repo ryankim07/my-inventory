@@ -143,7 +143,7 @@ class AutoCompleteAddress extends React.Component
 				className="form-control"
 				value={ this.props.inputProps.value }
 				onChange={ this.props.inputProps.onChange }
-				required={ this.props.inputProps.required }
+				required={ this.props.inputProps.required ? 'required' : '' }
 			/>
 		);
 	}

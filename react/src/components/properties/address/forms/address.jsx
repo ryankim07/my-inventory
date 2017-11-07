@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import AutoCompleteAddress from '../../../helper/forms/auto_complete_address';
 import InputZipCode from '../../../helper/forms/input_zip_code';
 import StatesDropdown from '../../../helper/forms/hybrid_field';
@@ -7,18 +6,12 @@ import CountiesDropdown from '../../../helper/forms/hybrid_field';
 import CountriesDropdown from '../../../helper/forms/hybrid_field';
 import { getStates, getCounties, getCountries } from '../../../helper/lists/region';
 import { upperFirstLetter,
-		 checkAddressInputFields,
-		 getSingleModifiedState,
 		 getNestedModifiedState } from '../../../helper/utils';
 
 class PropertyAddressForm extends React.Component
 {
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			isRequiredField: false
-		};
 
 		this.handleFormChange = this.handleFormChange.bind(this);
 		this.onHandleSelect   = this.onHandleSelect.bind(this);
@@ -50,7 +43,6 @@ class PropertyAddressForm extends React.Component
 		}
 
 		const newObj = getNestedModifiedState(this.props.inputProps.address, modifiedObj);
-		this.setState({isRequiredField: addressFieldsOn ? checkAddressInputFields(newObj) : false});
 		this.props.inputProps.onChange(newObj);
 	}
 
@@ -66,7 +58,7 @@ class PropertyAddressForm extends React.Component
 				<p>Address Information</p>
 				<hr/>
 
-				<div className={ classNames('form-group', {'required': this.state.isRequiredField }) }>
+				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Street</label>
 						<div className="input-group">
@@ -78,14 +70,14 @@ class PropertyAddressForm extends React.Component
 										inputIds: ['street', 'city', 'state', 'zip', 'county', 'country'],
 										onChange: this.handleFormChange,
 										onSelect: this.onHandleSelect,
-										required: classNames({ 'required': this.state.isRequiredField })
+										required: true
 									}
 								}
 							/>
 						</div>
 					</div>
 				</div>
-				<div className={ classNames('form-group', { 'required': this.state.isRequiredField }) }>
+				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">City</label>
 						<div className="input-group">
@@ -95,12 +87,12 @@ class PropertyAddressForm extends React.Component
 								className="form-control input-sm"
 								onChange={ this.handleFormChange }
 								value={ this.props.inputProps.address.city }
-								required={ classNames({ 'required': this.state.isRequiredField }) }
+								required="required"
 							/>
 						</div>
 					</div>
 				</div>
-				<div className={ classNames('form-group', { 'required': this.state.isRequiredField }) }>
+				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">State</label>
 						<StatesDropdown
@@ -111,13 +103,13 @@ class PropertyAddressForm extends React.Component
 									list: getStates(),
 									value: this.props.inputProps.address.state,
 									onChange: this.onHandleFormChange,
-									required: classNames({ 'required': this.state.isRequiredField })
+									required: true
 								}
 							}
 						/>
 					</div>
 				</div>
-				<div className={ classNames('form-group', {'required': this.state.isRequiredField }) }>
+				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Zip</label>
 						<div className="input-group">
@@ -127,7 +119,7 @@ class PropertyAddressForm extends React.Component
 										className: "form-control input-sm",
 										value: this.props.inputProps.address.zip,
 										onChange: this.handleFormChange,
-										required: classNames({ 'required': this.state.isRequiredField })
+										required: true
 									}
 								}
 							/>

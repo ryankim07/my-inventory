@@ -94,7 +94,7 @@ class PropertyForm extends React.Component
 
 	render() {
 		let propertyForm =
-			<form onSubmit={ this.handleFormSubmit }>
+			<form onSubmit={ this.onHandleSubmit }>
 				<div>
 					<hr/>
 					<p>General Information</p>
@@ -125,8 +125,8 @@ class PropertyForm extends React.Component
 									list: sequencedObject(1980, (new Date()).getFullYear() + 1),
 									value: this.props.property.built,
 									onChange: this.onHandleFormChange,
-									onSelect: this.onHandleSelect.bind(this, 'year'),
-									required: "required"
+									onSelect: this.onHandleSelect.bind(this, 'built'),
+									required: true
 								}
 							}
 						/>
@@ -163,7 +163,7 @@ class PropertyForm extends React.Component
 									list: sequencedObject(1, 10),
 									value: this.props.property.floors,
 									onChange: this.onHandleFormChange,
-									required: "required"
+									required: true
 								}
 							}
 						/>
@@ -180,7 +180,7 @@ class PropertyForm extends React.Component
 									list: sequencedObject(0, 15),
 									value: this.props.property.beds,
 									onChange: this.onHandleFormChange,
-									required: "required"
+									required: true
 								}
 							}
 						/>
@@ -197,7 +197,7 @@ class PropertyForm extends React.Component
 									list: sequencedObject(1, 10, 0.5),
 									value: this.props.property.baths,
 									onChange: this.onHandleFormChange,
-									required: "required"
+									required: true
 								}
 							}
 						/>

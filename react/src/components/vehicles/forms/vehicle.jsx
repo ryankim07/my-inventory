@@ -177,6 +177,7 @@ class VehicleForm extends React.Component
 									value: this.props.vehicle.year,
 									onChange: this.onHandleFormChange,
 									onSelect: this.onHandleSelect.bind(this, 'year'),
+									required: true
 								}
 							}
 						/>
@@ -197,7 +198,7 @@ class VehicleForm extends React.Component
 									value: this.props.vehicle.color,
 									onChange: this.onHandleFormChange,
 									onSelect: this.onHandleSelect.bind(this, 'color'),
-									required: "required"
+									required: true
 								}
 							}
 						/>

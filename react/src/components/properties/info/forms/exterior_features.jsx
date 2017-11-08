@@ -1,4 +1,5 @@
 import React from 'react';
+import { getSingleModifiedState } from '../../../helper/utils';
 
 class PropertyExteriorFeaturesForm extends React.Component
 {
@@ -6,43 +7,35 @@ class PropertyExteriorFeaturesForm extends React.Component
     constructor(props) {
         super(props);
 
-        this.state = {
-			exteriorFeatures: this.props.property.exterior_features
-        };
-
-		this.handleFormChange = this.handleFormChange.bind(this);
+        this.handleFormChange = this.handleFormChange.bind(this);
+		this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
 
 	// Handle form change
-	handleFormChange(propertyName, event) {
-		let exteriorFeatures = this.state.exteriorFeatures;
-		exteriorFeatures[propertyName] = event.target.value;
-
-		this.setState({exteriorFeatures: exteriorFeatures});
+	handleFormChange(event) {
+		this.props.onChange(getSingleModifiedState(this.props.exteriorFeatures, 'exterior_features', event.target.value));
 	}
 
 	// Handle form submit
     handleFormSubmit(event) {
 		event.preventDefault();
-
-		this.props.onHandleSubmit(this.state.exteriorFeatures, 'exterior_features');
+		this.props.onSubmit(this.props.exteriorFeatures);
     }
 
     // Render
 	render() {
-		let exteriorFeatures = this.state.exteriorFeatures;
-
 		let exteriorFeaturesForm =
-			<form onSubmit={ this.handleFormSubmit.bind(this) }>
+			<form onSubmit={ this.handleFormSubmit }>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Exterior</label>
 						<div className="input-group">
 								<textarea
+									name="exterior"
 									rows="5"
 									className="form-control"
-									onChange={ this.handleFormChange.bind(this, 'exterior') }
-									value={ exteriorFeatures.exterior }/>
+									onChange={ this.handleFormChange }
+									value={ this.props.exteriorFeatures.exterior }/>
 						</div>
 					</div>
 				</div>
@@ -51,10 +44,11 @@ class PropertyExteriorFeaturesForm extends React.Component
 						<label className="control-label">Foundation</label>
 						<div className="input-group">
 								<textarea
+									name="foundation"
 									rows="5"
 									className="form-control"
-									onChange={ this.handleFormChange.bind(this, 'foundation') }
-									value={ exteriorFeatures.foundation }/>
+									onChange={ this.handleFormChange }
+									value={ this.props.exteriorFeatures.foundation }/>
 						</div>
 					</div>
 				</div>
@@ -63,18 +57,19 @@ class PropertyExteriorFeaturesForm extends React.Component
 						<label className="control-label">Others</label>
 						<div className="input-group">
 								<textarea
+									name="others"
 									rows="5"
 									className="form-control"
-									onChange={ this.handleFormChange.bind(this, 'others') }
-									value={ exteriorFeatures.others }/>
+									onChange={ this.handleFormChange }
+									value={ this.props.exteriorFeatures.others }/>
 						</div>
 					</div>
 				</div>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input type="hidden" value={ exteriorFeatures.id }/>
-							<input type="hidden" value={ exteriorFeatures.property_id }/>
+							<input type="hidden" value={ this.props.exteriorFeatures.id }/>
+							<input type="hidden" value={ this.props.exteriorFeatures.property_id }/>
 						</div>
 					</div>
 				</div>

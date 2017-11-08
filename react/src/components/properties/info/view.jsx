@@ -1,92 +1,61 @@
 import React from 'react';
 import Gallery from '../../helper/gallery';
+import { getSingleModifiedState } from '../../helper/utils';
 
-let featuresRightPanel 	 	   = 'features';
-let exteriorFeaturesRightPanel = 'exterior-features';
-let interiorFeaturesRightPanel = 'interior-features';
+const featuresRightPanel 	 	 = 'features';
+const exteriorFeaturesRightPanel = 'exterior_features';
+const interiorFeaturesRightPanel = 'interior_features';
 
 class PropertyInfoView extends React.Component
 {
-	// Constructor
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			property: this.props.property
-		};
-	}
-
-	// Next state change
-	// When component from same route are unmounting and need to remount
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.property !== this.state.property) {
-			this.setState({
-				property: nextProps.property
-			});
-		}
-	}
-
 	// Handle right panel
 	handleRightPanel(obj, rightPanel) {
-		let property 	  = this.state.property;
 		let isEditingMode = !!obj;
 		let features 	  = null;
 
 		switch (rightPanel) {
 			case featuresRightPanel:
-				features = isEditingMode ?
-					obj :
-					{
-						id: '',
-						property_id: this.state.property.id,
-						parking: '',
-						multi_unit: '',
-						hoa: '',
-						utilities: '',
-						lot: '',
-						common_walls: '',
-						facing_direction: '',
-						others: ''
-					};
-
-				property.features = features;
+				features = isEditingMode ? obj : {
+					id: '',
+					property_id: this.props.property.id,
+					parking: '',
+					multi_unit: '',
+					hoa: '',
+					utilities: '',
+					lot: '',
+					common_walls: '',
+					facing_direction: '',
+					others: ''
+				};
 			break;
 
 			case exteriorFeaturesRightPanel:
-				features = isEditingMode ?
-					obj :
-					{
-						id: '',
-						property_id: this.state.property.id,
-						exterior: '',
-						foundation: '',
-						others: ''
-					};
-
-				property.exterior_features = features;
+				features = isEditingMode ? obj : {
+					id: '',
+					property_id: this.props.property.id,
+					exterior: '',
+					foundation: '',
+					others: ''
+				};
 			break;
 
 			case interiorFeaturesRightPanel:
-				features = isEditingMode ?
-					obj :
-					{
-						id: '',
-						property_id: this.state.property.id,
-						laundry: '',
-						kitchen: '',
-						bathroom: '',
-						cooling: '',
-						heating: '',
-						fireplace: '',
-						flooring: '',
-						others: ''
-					};
-
-				property.interior_features = features;
+				features = isEditingMode ? obj : {
+					id: '',
+					property_id: this.props.property.id,
+					laundry: '',
+					kitchen: '',
+					bathroom: '',
+					cooling: '',
+					heating: '',
+					fireplace: '',
+					flooring: '',
+					others: ''
+				};
 			break;
 		}
 
-		this.props.onHandleRightPanel(property, true, rightPanel);
+		this.props.onHandleRightPanel(getSingleModifiedState(this.props.property, rightPanel, features), rightPanel);
 	}
 
 	// Render
@@ -309,8 +278,8 @@ class PropertyInfoView extends React.Component
 				{ interiorFeaturesHtml }
 
 			</div>
-        );
-    }
+		);
+	}
 }
 
 export default PropertyInfoView;

@@ -101,19 +101,6 @@ class PropertiesDashboard extends React.Component
 		this.onCloseRightPanel    	= this.onCloseRightPanel.bind(this);
 	}
 
-	// Get room initial state
-	getRoomState(propertyId) {
-		return {
-			id: '',
-			property_id: propertyId,
-			name: '',
-			total_area: '',
-			description: '',
-			walls: [initialWallObj],
-			assets: []
-		}
-	}
-
 	// Mounting component
 	componentWillMount() {
 		PropertiesStore.addChangeListener(this._onChange);
@@ -263,7 +250,15 @@ class PropertiesDashboard extends React.Component
 
 		// Instantiate new object or load existing object if found
 		let room = isEditingMode ?
-			_.find(rooms, ['id', id]) : this.getRoomState(this.state.property.id);
+			_.find(rooms, ['id', id]) : {
+				id: '',
+				property_id: this.state.property.id,
+				name: '',
+				total_area: '',
+				description: '',
+				walls: [initialWallObj],
+				assets: []
+			};
 
 		if (isEditingMode && room.walls.length === 0) {
 			room.walls.push(initialWallObj);
@@ -302,153 +297,150 @@ class PropertiesDashboard extends React.Component
 	// Render
 	render() {
 		// Main panel
-		let mainPanelHtml = '';
-		let additionalHeader = this.state.isEditingMode ? 'Add' : 'Edit';
+		let mainPanelObjs = {};
 
 		switch (this.state.mainPanel) {
 			case 'info':
-				mainPanelHtml =
-					<DisplayPanel
-						id="property-view"
-						header="Property Information"
-						additionalHeader=""
-						iconBtn="fa fa-window-close"
-						onClick=""
-						previousRoute="/properties">
+				mainPanelObjs = {
+					id: "property-view",
+					displayHeader: "Property Information",
+					iconBtn: "fa fa-window-close",
+					previousRoute: "/properties",
+					subForm:
 						<PropertyInfoView
 							property={ this.state.property }
 							onHandleRightPanel={ this.onHandleRightPanel }
-							onHandleMainPanel={ this.onHandleMainPanel }/>
-					</DisplayPanel>;
+							onHandleMainPanel={ this.onHandleMainPanel }
+						/>
+				};
 			break;
 
 			case 'rooms-list':
-				mainPanelHtml =
-					<DisplayPanel
-						id="rooms-main"
-						header="Properties Rooms List"
-						additionalHeader=""
-						iconBtn="fa fa-plus"
-						onClick={ this.onHandleRightRoomPanel.bind(this, false) }
-						previousRoute="/properties/info/view">
+				mainPanelObjs = {
+					id: "rooms-main",
+					displayHeader: "Properties Rooms List",
+					iconBtn: "fa fa-plus",
+					onClick: this.onHandleRightRoomPanel.bind(this, false),
+					previousRoute: "/properties/info/view",
+					subForm:
 						<PropertyRoomsList
 							selectedItem={ this.state.property.room.id }
 							onHandleRightRoomPanel={ this.onHandleRightRoomPanel }
 							onSubmit={ this.onHandleSubmit }
-							onHRemoveRoom={ this.onHandleRemoveRoom }/>
-					</DisplayPanel>;
+							onHRemoveRoom={ this.onHandleRemoveRoom }
+						/>
+				};
 			break;
 
 			default:
-				mainPanelHtml =
-					<DisplayPanel
-						id="properties-main"
-						header="Properties List"
-						additionalHeader=""
-						iconBtn="fa fa-plus"
-						onClick={ this.onHandleRightPanel.bind(this, false) }
-						previousRoute="">
+				mainPanelObjs = {
+					id: "properties-main",
+					displayHeader: "Properties List",
+					iconBtn: "fa fa-plus",
+					onClick: this.onHandleRightPanel.bind(this, false),
+					subForm:
 						<PropertiesList
 							loader={ this.state.loader }
 							selectedItem={ this.state.property.id }
 							properties={ this.state.properties }
 							onMainPanel={ this.onHandleMainPanel }
 							onRightPanel={ this.onHandleRightPanel }
-							onRemove={ this.onHandleRemove }/>
-					</DisplayPanel>;
+							onRemove={ this.onHandleRemove }
+						/>
+				};
 		}
 
+		let mainPanelHtml =
+			<DisplayPanel
+				id={ mainPanelObjs.id }
+				header={ mainPanelObjs.header }
+				additionalHeader={ mainPanelObjs.additionalHeader }
+				iconBtn={ mainPanelObjs.iconbtn }
+				onClick={ mainPanelObjs.onClick }
+				previousRoute={ mainPanelObjs.previousRoute }>
+				{ mainPanelObjs.subForm }
+			</DisplayPanel>;
+
 		// Right panel
-		let rightPanelHtml = '';
+		let rightPanelObjs = {};
 
 		switch (this.state.rightPanel) {
 			case 'features':
-				rightPanelHtml =
-					<DisplayPanel
-						id="features-form"
-						header="Features"
-						additionalHeader={ additionalHeader }
-						iconBtn="fa fa-window-close"
-						onClick={ this.onCloseRightPanel }
-						previousRoute="">
+				rightPanelObjs = {
+					id: "features-form",
+					header: "Features",
+					subForm:
 						<PropertyFeaturesForm
-							property={ this.state.property }
-							onSubmit={ this.onHandleSubmit }
-							onCloseRightPanel={ this.onCloseRightPanel }/>
-					</DisplayPanel>;
-				break;
+							property={this.state.property}
+							onSubmit={this.onHandleSubmit}
+						/>
+				};
+			break;
 
 			case 'exterior-features':
-				rightPanelHtml =
-					<DisplayPanel
-						id="exterior-features-form"
-						header="Exterior Features"
-						additionalHeader={ additionalHeader }
-						iconBtn="fa fa-window-close"
-						onClick={ this.onCloseRightPanel }
-						previousRoute="">
+				rightPanelObjs = {
+					id: "exterior-features-form",
+					header: "Exterior Features",
+					subForm:
 						<PropertyExteriorFeaturesForm
-							property={ this.state.property }
-							onSubmit={ this.onHandleSubmit }
-							onCloseRightPanel={ this.onCloseRightPanel }/>
-					</DisplayPanel>;
+							property={this.state.property}
+							onSubmit={this.onHandleSubmit}
+						/>
+				};
 			break;
 
 			case 'interior-features':
-				rightPanelHtml =
-					<DisplayPanel
-						id="interior-features-form"
-						header="Interior Features"
-						additionalHeader={ additionalHeader }
-						iconBtn="fa fa-window-close"
-						onClick={ this.onCloseRightPanel }
-						previousRoute="">
+				rightPanelObjs = {
+					id: "interior-features-form",
+					header: "Interior Features",
+					subForm:
 						<PropertyInteriorFeaturesForm
-							property={ this.state.property }
-							onSubmit={ this.onHandleSubmit }
-							onCloseRightPanel={ this.onCloseRightPanel }/>
-					</DisplayPanel>;
+							property={this.state.property}
+							onSubmit={this.onHandleSubmit}
+						/>
+				};
 			break;
 
 			case 'room':
-				rightPanelHtml =
-					<DisplayPanel
-						id="room-form"
-						header="Room"
-						additionalHeader={ additionalHeader }
-						iconBtn="fa fa-window-close"
-						onClick={ this.onCloseRightPanel }
-						previousRoute="">
+				rightPanelObjs = {
+					id: "room-form",
+					header: "Room",
+					subForm:
 						<PropertyRoomForm
-							room={ this.state.room }
-							nonAddedRooms={ this.state.property.non_added_rooms }
-							paints={ this.state.paints }
-							isEditingMode={ this.state.isEditingMode }
-							onSubmit={ this.onHandleSubmit }
-							onCloseRightPanel={ this.onCloseRightPanel }/>
-					</DisplayPanel>;
+							room={this.state.room}
+							nonAddedRooms={this.state.property.non_added_rooms}
+							paints={this.state.paints}
+							isEditingMode={this.state.isEditingMode}
+							onSubmit={this.onHandleSubmit}
+						/>
+				};
 			break;
 
 			// Add new property default right panel
 			default:
-				rightPanelHtml =
-					<DisplayPanel
-						id="property-form"
-						header="Property"
-						additionalHeader={ additionalHeader }
-						iconBtn="fa fa-window-close"
-						onClick={ this.onCloseRightPanel }
-						previousRoute="">
+				rightPanelObjs = {
+					id: "property-form",
+					header: "Property",
+					subForm:
 						<PropertyForm
-							loader={ false }
-							property={ this.state.property }
-							onChange={ this.onHandleFormChange }
-							onSubmit={ this.onHandleSubmit }
-							onCloseRightPanel={ this.onCloseRightPanel }/>
-					</DisplayPanel>;
+							loader={false}
+							property={this.state.property}
+							onChange={this.onHandleFormChange}
+							onSubmit={this.onHandleSubmit}
+						/>
+				};
 		}
 
-		rightPanelHtml = this.state.showRightPanel ? rightPanelHtml : null;
+		let rightPanelHtml = this.state.showRightPanel ?
+			<DisplayPanel
+				id={ rightPanelObjs.id }
+				header={ rightPanelObjs.header }
+				additionalHeader={ this.state.isEditingMode ? 'Add' : 'Edit' }
+				iconBtn="fa fa-window-close"
+				onClick={ this.onCloseRightPanel }
+				previousRoute="">
+				{ rightPanelObjs.subForm }
+			</DisplayPanel> : null;
 
 		let flashMessage = this.state.flashMessage ?
 			<FlashMessage message={ this.state.flashMessage } alertType={ this.state.alertType }/> : null;

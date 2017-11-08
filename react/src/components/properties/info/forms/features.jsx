@@ -6,43 +6,35 @@ class PropertyFeaturesForm extends React.Component
     constructor(props) {
         super(props);
 
-        this.state = {
-			features: this.props.property.features
-        };
-
-		this.handleFormChange = this.handleFormChange.bind(this);
+        this.handleFormChange = this.handleFormChange.bind(this);
+		this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
 
 	// Handle form change
-	handleFormChange(propertyName, event) {
-		let features = this.state.features;
-		features[propertyName] = event.target.value;
-
-		this.setState({features: features});
+	handleFormChange(event) {
+		this.props.onChange(getSingleModifiedState(this.props.features, 'features', event.target.value));
 	}
 
 	// Handle form submit
     handleFormSubmit(event) {
 		event.preventDefault();
-
-		this.props.onHandleSubmit(this.state.features, 'features');
+		this.props.onSubmit(this.props.features);
     }
 
     // Render
 	render() {
-		let features = this.state.features;
-
 		let featuresForm =
-			<form onSubmit={ this.handleFormSubmit.bind(this) }>
+			<form onSubmit={ this.handleFormSubmit }>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Parking</label>
 						<div className="input-group">
 								<textarea
+									name="parking"
 									rows="5"
 									className="form-control"
-									onChange={ this.handleFormChange.bind(this, 'parking') }
-									value={ features.parking }/>
+									onChange={ this.handleFormChange }
+									value={ this.props.features.parking }/>
 						</div>
 					</div>
 				</div>
@@ -51,10 +43,11 @@ class PropertyFeaturesForm extends React.Component
 						<label className="control-label">Multi Unit</label>
 						<div className="input-group">
 								<textarea
+									name="multi_unit"
 									rows="5"
 									className="form-control"
-									onChange={ this.handleFormChange.bind(this, 'multi_unit') }
-									value={ features.multi_unit }/>
+									onChange={ this.handleFormChange }
+									value={ this.props.features.multi_unit }/>
 						</div>
 					</div>
 				</div>
@@ -63,10 +56,11 @@ class PropertyFeaturesForm extends React.Component
 						<label className="control-label">Hoa</label>
 						<div className="input-group">
 								<textarea
+									name="hoa"
 									rows="5"
 									className="form-control"
-									onChange={ this.handleFormChange.bind(this, 'hoa') }
-									value={ features.hoa }/>
+									onChange={ this.handleFormChange }
+									value={ this.props.features.hoa }/>
 						</div>
 					</div>
 				</div>
@@ -75,10 +69,11 @@ class PropertyFeaturesForm extends React.Component
 						<label className="control-label">Utilities</label>
 						<div className="input-group">
 								<textarea
+									name="utilities"
 									rows="5"
 									className="form-control"
-									onChange={ this.handleFormChange.bind(this, 'utilities') }
-									value={ features.utilities }/>
+									onChange={ this.handleFormChange }
+									value={ this.props.features.utilities }/>
 						</div>
 					</div>
 				</div>
@@ -87,10 +82,11 @@ class PropertyFeaturesForm extends React.Component
 						<label className="control-label">Lot</label>
 						<div className="input-group">
 								<textarea
+									name="lot"
 									rows="5"
 									className="form-control"
-									onChange={ this.handleFormChange.bind(this, 'lot') }
-									value={ features.lot }/>
+									onChange={ this.handleFormChange }
+									value={ this.props.features.lot }/>
 						</div>
 					</div>
 				</div>
@@ -99,10 +95,11 @@ class PropertyFeaturesForm extends React.Component
 						<label className="control-label">Common Walls</label>
 						<div className="input-group">
 								<textarea
+									name="common_walls"
 									rows="5"
 									className="form-control"
-									onChange={ this.handleFormChange.bind(this, 'common_walls') }
-									value={ features.common_walls }/>
+									onChange={ this.handleFormChange }
+									value={ this.props.features.common_walls }/>
 						</div>
 					</div>
 				</div>
@@ -111,10 +108,11 @@ class PropertyFeaturesForm extends React.Component
 						<label className="control-label">Facing Direction</label>
 						<div className="input-group">
 								<textarea
+									name="facing_direction"
 									rows="5"
 									className="form-control"
-									onChange={ this.handleFormChange.bind(this, 'facing_direction') }
-									value={ features.facing_direction }/>
+									onChange={ this.handleFormChange }
+									value={ this.props.features.facing_direction }/>
 						</div>
 					</div>
 				</div>
@@ -123,32 +121,26 @@ class PropertyFeaturesForm extends React.Component
 						<label className="control-label">Others</label>
 						<div className="input-group">
 								<textarea
+									name="others"
 									rows="5"
 									className="form-control"
-									onChange={ this.handleFormChange.bind(this, 'others') }
-									value={ features.others }/>
+									onChange={ this.handleFormChange }
+									value={ this.props.features.others }/>
 						</div>
 					</div>
 				</div>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input
-								type="hidden"
-								value={ features.id }/>
-							<input
-								type="hidden"
-								value={ features.property_id }/>
+							<input type="hidden" value={ this.props.features.id }/>
+							<input type="hidden" value={ this.props.features.property_id }/>
 						</div>
 					</div>
 				</div>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-12">
 						<div className="clearfix">
-							<input
-								type="submit"
-								value="Submit"
-								className="btn"/>
+							<button type="submit" value="Save"><i className="fa fa-floppy-o"/> Save</button>
 						</div>
 					</div>
 				</div>

@@ -16,7 +16,8 @@ import { MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
 		 MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH,
 		 RIGHT_PANEL_MOBILE_COLUMN_WIDTH,
 		 RIGHT_PANEL_DESKTOP_COLUMN_WIDTH,
-		 LIST } from '../helper/constants';
+	     ADD_PANEL,
+		 LIST_PANEL } from '../helper/constants';
 
 // Get vehicle initial state
 const initialVehicleObj = {
@@ -105,11 +106,11 @@ class VehiclesDashboard extends React.Component
 
 			switch (nextProps.location.pathname) {
 				case '/vehicles/dashboard/add':
-					mainPanel = 'add';
+					mainPanel = ADD_PANEL;
 				break;
 
 				case '/vehicles/dashboard/list':
-					mainPanel = LIST;
+					mainPanel = LIST_PANEL;
 				break;
 			}
 
@@ -143,7 +144,7 @@ class VehiclesDashboard extends React.Component
 		this.setState({
 			vehicles: vehicles,
 			manufacturers: manufacturers,
-			mainPanel: loadList ? LIST : this.state.mainPanel, // Need to set main panel if add new vehicle component is accessed from header
+			mainPanel: loadList ? LIST_PANEL : this.state.mainPanel, // Need to set main panel if add new vehicle component is accessed from header
 			showRightPanel: !!openRightPanel,
 			flashMessage: storeStatus.msg !==  null ? storeStatus.msg : null,
 			alertType: storeStatus.type,
@@ -228,7 +229,7 @@ class VehiclesDashboard extends React.Component
 		let mainPanelHtml = '';
 
 		switch (this.state.mainPanel) {
-			case 'add':
+			case ADD_PANEL:
 				mainPanelHtml =
 					<DisplayPanel
 						id="vehicle-form"

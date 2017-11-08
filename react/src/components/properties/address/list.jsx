@@ -3,7 +3,7 @@ import _ from 'lodash';
 import SearchField from '../../helper/search_field';
 import TogglingRows from '../../helper/table/toggling_rows';
 import Loader from '../../helper/loader';
-import { INFO, PROPERTY_FORM } from '../../helper/constants';
+import { INFO_PANEL, PROPERTY_FORM } from '../../helper/constants';
 
 class PropertiesAddressList extends React.Component
 {
@@ -49,7 +49,7 @@ class PropertiesAddressList extends React.Component
 								property.address.subdivision
 							]}
 							addViewBtn={true}
-							onView={this.props.onMainPanel.bind(this, property.address.property_id, INFO)}
+							onView={this.props.onMainPanel.bind(this, property.address.property_id, INFO_PANEL)}
 							addEditBtn={true}
 							onEdit={this.props.onRightPanel.bind(this, property.address.property_id, PROPERTY_FORM)}
 							addRemoveBtn={true}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FEATURES_PANEL_NAME } from '../../../helper/constants';
+import { FEATURES_PANEL } from '../../../helper/constants';
 
 class PropertyFeaturesForm extends React.Component
 {
@@ -13,7 +13,7 @@ class PropertyFeaturesForm extends React.Component
 
 	// Handle form change
 	handleFormChange(event) {
-		this.props.onChange(getSingleModifiedState(this.props.features, FEATURES_PANEL_NAME, event.target.value));
+		this.props.onChange(getSingleModifiedState(this.props.features, FEATURES_PANEL, event.target.value));
 	}
 
 	// Handle form submit

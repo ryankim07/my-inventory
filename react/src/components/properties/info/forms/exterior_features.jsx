@@ -1,6 +1,6 @@
 import React from 'react';
 import { getSingleModifiedState } from '../../../helper/utils';
-import { INTERIOR_FEATURES_PANEL_NAME } from '../../../helper/constants';
+import { INTERIOR_FEATURES_PANEL } from '../../../helper/constants';
 
 class PropertyExteriorFeaturesForm extends React.Component
 {
@@ -14,7 +14,7 @@ class PropertyExteriorFeaturesForm extends React.Component
 
 	// Handle form change
 	handleFormChange(event) {
-		this.props.onChange(getSingleModifiedState(this.props.features, EXTERIOR_FEATURES_PANEL_NAME, event.target.value));
+		this.props.onChange(getSingleModifiedState(this.props.features, EXTERIOR_FEATURES_PANEL, event.target.value));
 	}
 
 	// Handle form submit

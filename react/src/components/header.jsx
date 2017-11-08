@@ -77,8 +77,7 @@ class Header extends React.Component
 				<div className="navbar navbar-inverse navbar-fixed-top">
 					<div className="container-fluid">
 						<div className="navbar-header">
-							<button type="button" className="navbar-toggle collapsed" data-toggle="collapse"
-									data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+							<button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
 								<span className="sr-only">Toggle navigation</span>
 								<span className="icon-bar"/>
 								<span className="icon-bar"/>
@@ -88,25 +87,19 @@ class Header extends React.Component
 						<div id="navbar" className="navbar-collapse collapse">
 							<ul className="nav navbar-nav navbar-left">
 								<li className="dropdown">
-									<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button"
-									   aria-expanded="false">Vehicles <span className="caret"/></a>
+									<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Vehicles <span className="caret"/></a>
 									<ul className="dropdown-menu" role="menu">
 										<li>
-											<Link to="/vehicles/dashboard/add" className="menu-link"><i
-												className="fa fa-car menu-link-icon" aria-hidden="true"/> Add</Link>
-											<Link to="/vehicles/dashboard/list" className="menu-link"><i
-												className="fa fa-car menu-link-icon" aria-hidden="true"/> All</Link>
+											<Link to="/vehicles/dashboard/add" className="menu-link"><i className="fa fa-car menu-link-icon" aria-hidden="true"/> Add</Link>
+											<Link to="/vehicles/dashboard/list" className="menu-link"><i className="fa fa-car menu-link-icon" aria-hidden="true"/> All</Link>
 										</li>
 									</ul>
 								</li>
 								<li className="dropdown">
-									<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button"
-									   aria-expanded="false">Properties <span className="caret"/></a>
+									<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Properties <span className="caret"/></a>
 									<ul className="dropdown-menu" role="menu">
 										<li>
-											<Link to="/properties/dashboard/list" className="menu-link"><i
-												className="fa fa-home menu-link-icon" aria-hidden="true"/>
-												All</Link>
+											<Link to="/properties/dashboard/list" className="menu-link"><i className="fa fa-home menu-link-icon" aria-hidden="true"/> All</Link>
 										</li>
 									</ul>
 								</li>
@@ -117,13 +110,10 @@ class Header extends React.Component
 							</ul>
 							<ul className="nav navbar-nav navbar-right">
 								<li className="dropdown">
-									<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button"
-									   aria-expanded="false">{ userName }<span className="caret"/></a>
+									<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{ userName }<span className="caret"/></a>
 									<ul className="dropdown-menu" role="menu">
 										<li>
-											<Link to="/auth/forms/logout" className="menu-link"><i
-												className="fa fa-sign-out menu-link-icon" aria-hidden="true"/>
-												Logout</Link>
+											<Link to="/auth/forms/logout" className="menu-link"><i className="fa fa-sign-out menu-link-icon" aria-hidden="true"/> Logout</Link>
 										</li>
 									</ul>
 								</li>

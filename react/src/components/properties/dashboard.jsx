@@ -22,10 +22,10 @@ import { MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
 		 MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH,
 		 RIGHT_PANEL_MOBILE_COLUMN_WIDTH,
 		 RIGHT_PANEL_DESKTOP_COLUMN_WIDTH,
-		 FEATURES_PANEL_NAME,
-		 EXTERIOR_FEATURES_PANEL_NAME,
-		 INTERIOR_FEATURES_PANEL_NAME,
-		 INFO,
+		 FEATURES_PANEL,
+		 EXTERIOR_FEATURES_PANEL,
+		 INTERIOR_FEATURES_PANEL,
+		 INFO_PANEL,
 		 ROOMS_LIST } from '../helper/constants';
 
 // Get room walls initial state
@@ -127,7 +127,7 @@ class PropertiesDashboard extends React.Component
 
 			switch (nextProps.location.pathname) {
 				case '/properties/info/view':
-					mainPanel = INFO;
+					mainPanel = INFO_PANEL;
 				break;
 			}
 
@@ -192,9 +192,9 @@ class PropertiesDashboard extends React.Component
 		obj.obj_type = type;
 
 		switch (type) {
-			case FEATURES_PANEL_NAME:
-			case EXTERIOR_FEATURES_PANEL_NAME:
-			case INTERIOR_FEATURES_PANEL_NAME:
+			case FEATURES_PANEL:
+			case EXTERIOR_FEATURES_PANEL:
+			case INTERIOR_FEATURES_PANEL:
 				PropertiesAction.updateProperty(obj);
 				break;
 
@@ -303,7 +303,7 @@ class PropertiesDashboard extends React.Component
 		let mainPanelObjs = {};
 
 		switch (this.state.mainPanel) {
-			case INFO:
+			case INFO_PANEL:
 				mainPanelObjs = {
 					id: "property-view",
 					displayHeader: "Property Information",
@@ -313,7 +313,7 @@ class PropertiesDashboard extends React.Component
 						<PropertyInfoView
 							property={ this.state.property }
 							onHandleRightPanel={ this.onHandleRightPanel }
-							onHandleMainPanel={ this.onHandleMainPanel }
+							onMainPanel={ this.onHandleMainPanel }
 						/>
 				};
 			break;
@@ -327,7 +327,7 @@ class PropertiesDashboard extends React.Component
 					previousRoute: "/properties/info/view",
 					subForm:
 						<PropertyRoomsList
-							selectedItem={ this.state.property.room.id }
+							selectedItem={ this.state.property.rooms.id }
 							onHandleRightRoomPanel={ this.onHandleRightRoomPanel }
 							onSubmit={ this.onHandleSubmit }
 							onHRemoveRoom={ this.onHandleRemoveRoom }
@@ -341,6 +341,7 @@ class PropertiesDashboard extends React.Component
 					displayHeader: "Properties List",
 					iconBtn: "fa fa-plus",
 					onClick: this.onHandleRightPanel.bind(this, false),
+					previousRoute: "",
 					subForm:
 						<PropertiesList
 							loader={ this.state.loader }
@@ -358,7 +359,7 @@ class PropertiesDashboard extends React.Component
 				id={ mainPanelObjs.id }
 				header={ mainPanelObjs.header }
 				additionalHeader={ mainPanelObjs.additionalHeader }
-				iconBtn={ mainPanelObjs.iconbtn }
+				iconBtn={ mainPanelObjs.iconBtn }
 				onClick={ mainPanelObjs.onClick }
 				previousRoute={ mainPanelObjs.previousRoute }>
 				{ mainPanelObjs.subForm }
@@ -368,7 +369,7 @@ class PropertiesDashboard extends React.Component
 		let rightPanelObjs = {};
 
 		switch (this.state.rightPanel) {
-			case FEATURES_PANEL_NAME:
+			case FEATURES_PANEL:
 				rightPanelObjs = {
 					id: "features-form",
 					header: "Features",
@@ -380,7 +381,7 @@ class PropertiesDashboard extends React.Component
 				};
 			break;
 
-			case EXTERIOR_FEATURES_PANEL_NAME:
+			case EXTERIOR_FEATURES_PANEL:
 				rightPanelObjs = {
 					id: "exterior-features-form",
 					header: "Exterior Features",
@@ -392,7 +393,7 @@ class PropertiesDashboard extends React.Component
 				};
 			break;
 
-			case INTERIOR_FEATURES_PANEL_NAME:
+			case INTERIOR_FEATURES_PANEL:
 				rightPanelObjs = {
 					id: "interior-features-form",
 					header: "Interior Features",
@@ -451,7 +452,6 @@ class PropertiesDashboard extends React.Component
 		return (
 			<div className="row">
 				{ flashMessage }
-
 				<MainPanel mainPanelColumnCss={ this.state.mainPanelColumnCss }>
 					{ mainPanelHtml }
 				</MainPanel>

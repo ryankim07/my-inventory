@@ -1,4 +1,5 @@
 import React from 'react';
+import { INTERIOR_FEATURES_PANEL_NAME } from '../../../helper/constants';
 
 class PropertyInteriorFeaturesForm extends React.Component
 {
@@ -12,13 +13,13 @@ class PropertyInteriorFeaturesForm extends React.Component
 
 	// Handle form change
 	handleFormChange(event) {
-		this.props.onChange(getSingleModifiedState(this.props.interiorFeatures, 'interior_features', event.target.value));
+		this.props.onChange(getSingleModifiedState(this.props.features, INTERIOR_FEATURES_PANEL_NAME, event.target.value));
 	}
 
 	// Handle form submit
     handleFormSubmit(event) {
 		event.preventDefault();
-		this.props.onSubmit(this.props.interiorFeatures);
+		this.props.onSubmit(this.props.features);
     }
 
 	// Render
@@ -34,7 +35,7 @@ class PropertyInteriorFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.interiorFeatures.kitchen }
+									value={ this.props.features.kitchen }
 								/>
 						</div>
 					</div>
@@ -48,7 +49,7 @@ class PropertyInteriorFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.interiorFeatures.bathroom }
+									value={ this.props.features.bathroom }
 								/>
 						</div>
 					</div>
@@ -62,7 +63,7 @@ class PropertyInteriorFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.interiorFeatures.laundry }
+									value={ this.props.features.laundry }
 								/>
 						</div>
 					</div>
@@ -76,7 +77,7 @@ class PropertyInteriorFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.interiorFeatures.cooling }
+									value={ this.props.features.cooling }
 								/>
 						</div>
 					</div>
@@ -90,7 +91,7 @@ class PropertyInteriorFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.interiorFeatures.heating }
+									value={ this.props.features.heating }
 								/>
 						</div>
 					</div>
@@ -104,7 +105,7 @@ class PropertyInteriorFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.interiorFeatures.fireplace }
+									value={ this.props.features.fireplace }
 								/>
 						</div>
 					</div>
@@ -118,7 +119,7 @@ class PropertyInteriorFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.interiorFeatures.flooring }
+									value={ this.props.features.flooring }
 								/>
 						</div>
 					</div>
@@ -132,7 +133,7 @@ class PropertyInteriorFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.interiorFeatures.others }
+									value={ this.props.features.others }
 								/>
 						</div>
 					</div>
@@ -140,8 +141,8 @@ class PropertyInteriorFeaturesForm extends React.Component
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input type="hidden" value={ this.props.interiorFeatures.id }/>
-							<input type="hidden" value={ this.props.interiorFeatures.property_id }/>
+							<input type="hidden" value={ this.props.features.id }/>
+							<input type="hidden" value={ this.props.features.property_id }/>
 						</div>
 					</div>
 				</div>

@@ -12,6 +12,7 @@
 
 import React from 'react';
 import PreviousButton from '../../helper/previous_btn';
+import { INFO } from '../../helper/constants';
 
 class DisplayPanel extends React.Component
 {
@@ -22,7 +23,7 @@ class DisplayPanel extends React.Component
 		let clickBtn    = this.props.onClick !== "" ?
 			<button onClick={ this.props.onClick }><i className={ this.props.iconBtn } aria-hidden="true"/></button> : null;
 
-		let panelType = this.props.displayType ? this.props.displayType : 'info';
+		let panelType = this.props.displayType ? this.props.displayType : INFO;
 
 		return (
 			<div className="row" id={ this.props.id }>

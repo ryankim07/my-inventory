@@ -15,15 +15,18 @@ import PropertyInteriorFeaturesForm from './info/forms/interior_features';
 import PropertyRoomsList from './rooms/list';
 import PropertyRoomForm from './rooms/forms/room';
 import FlashMessage from '../helper/flash_message';
-import {getNestedModifiedState} from "../helper/utils";
-
-// Global properties
-const mainDefaultMobileColumnWidth = 'col-xs-12';
-const mainDefaultDesktopColumnWidth = 'col-md-12';
-const mainShrinkedMobileColumnWidth = 'col-xs-8';
-const mainShrinkedDesktopColumnWidth = 'col-md-8';
-const rightPanelMobileColumnWidth = 'col-xs-4';
-const rightPanelDesktopColumnWidth = 'col-md-4';
+import { getNestedModifiedState } from "../helper/utils";
+import { MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
+		 MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH,
+		 MAIN_SHRINKED_MOBILE_COLUMN_WIDTH,
+		 MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH,
+		 RIGHT_PANEL_MOBILE_COLUMN_WIDTH,
+		 RIGHT_PANEL_DESKTOP_COLUMN_WIDTH,
+		 FEATURES_PANEL_NAME,
+		 EXTERIOR_FEATURES_PANEL_NAME,
+		 INTERIOR_FEATURES_PANEL_NAME,
+		 INFO,
+		 ROOMS_LIST } from '../helper/constants';
 
 // Get room walls initial state
 const initialWallObj = {
@@ -82,12 +85,12 @@ class PropertiesDashboard extends React.Component
 			flashMessage: null,
 			alertType: 'success',
 			mainPanelColumnCss: {
-				mobileWidth: mainDefaultMobileColumnWidth,
-				desktopWidth: mainDefaultDesktopColumnWidth
+				mobileWidth: MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
+				desktopWidth: MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH
 			},
 			rightPanelColumnCss: {
-				mobileWidth: rightPanelMobileColumnWidth,
-				desktopWidth: rightPanelDesktopColumnWidth
+				mobileWidth: RIGHT_PANEL_MOBILE_COLUMN_WIDTH,
+				desktopWidth: RIGHT_PANEL_DESKTOP_COLUMN_WIDTH
 			}
 		};
 
@@ -124,7 +127,7 @@ class PropertiesDashboard extends React.Component
 
 			switch (nextProps.location.pathname) {
 				case '/properties/info/view':
-					mainPanel = 'info';
+					mainPanel = INFO;
 				break;
 			}
 
@@ -133,8 +136,8 @@ class PropertiesDashboard extends React.Component
 				showRightPanel: false,
 				flashMessage: null,
 				mainPanelColumnCss: {
-					mobileWidth: mainDefaultMobileColumnWidth,
-					desktopWidth: mainDefaultDesktopColumnWidth
+					mobileWidth: MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
+					desktopWidth: MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH
 				}
 			});
 		}
@@ -163,8 +166,8 @@ class PropertiesDashboard extends React.Component
 			alertType: storeStatus.type,
 			loader: false,
 			mainPanelColumnCss: {
-				mobileWidth: openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
-				desktopWidth: openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
+				mobileWidth: openRightPanel ? MAIN_SHRINKED_MOBILE_COLUMN_WIDTH : MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
+				desktopWidth: openRightPanel ? MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH : MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH
 			},
 		});
 	}
@@ -189,9 +192,9 @@ class PropertiesDashboard extends React.Component
 		obj.obj_type = type;
 
 		switch (type) {
-			case 'features':
-			case 'exterior_features':
-			case 'interior_features':
+			case FEATURES_PANEL_NAME:
+			case EXTERIOR_FEATURES_PANEL_NAME:
+			case INTERIOR_FEATURES_PANEL_NAME:
 				PropertiesAction.updateProperty(obj);
 				break;
 
@@ -215,8 +218,8 @@ class PropertiesDashboard extends React.Component
 			mainPanel: panel,
 			showRightPanel: false,
 			mainPanelColumnCss: {
-				mobileWidth: mainDefaultMobileColumnWidth,
-				desktopWidth: mainDefaultDesktopColumnWidth
+				mobileWidth: MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
+				desktopWidth: MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH
 			}
 		});
 	}
@@ -233,8 +236,8 @@ class PropertiesDashboard extends React.Component
 			isEditingMode: isEditingMode,
 			showRightPanel: true,
 			mainPanelColumnCss: {
-				mobileWidth: mainShrinkedMobileColumnWidth,
-				desktopWidth: mainShrinkedDesktopColumnWidth
+				mobileWidth: MAIN_SHRINKED_MOBILE_COLUMN_WIDTH,
+				desktopWidth: MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH
 			}
 		});
 	}
@@ -271,8 +274,8 @@ class PropertiesDashboard extends React.Component
 			showRightPanel: true,
 			flashMessage: null,
 			mainPanelColumnCss: {
-				mobileWidth: mainShrinkedMobileColumnWidth,
-				desktopWidth: mainShrinkedDesktopColumnWidth
+				mobileWidth: MAIN_SHRINKED_MOBILE_COLUMN_WIDTH,
+				desktopWidth: MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH
 			}
 		});
 	}
@@ -288,8 +291,8 @@ class PropertiesDashboard extends React.Component
 			mainPanel: this.state.mainPanel,
 			showRightPanel: false,
 			mainPanelColumnCss: {
-				mobileWidth: mainDefaultMobileColumnWidth,
-				desktopWidth: mainDefaultDesktopColumnWidth
+				mobileWidth: MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
+				desktopWidth: MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH
 			}
 		});
 	}
@@ -300,7 +303,7 @@ class PropertiesDashboard extends React.Component
 		let mainPanelObjs = {};
 
 		switch (this.state.mainPanel) {
-			case 'info':
+			case INFO:
 				mainPanelObjs = {
 					id: "property-view",
 					displayHeader: "Property Information",
@@ -315,7 +318,7 @@ class PropertiesDashboard extends React.Component
 				};
 			break;
 
-			case 'rooms-list':
+			case ROOMS_LIST:
 				mainPanelObjs = {
 					id: "rooms-main",
 					displayHeader: "Properties Rooms List",
@@ -365,38 +368,38 @@ class PropertiesDashboard extends React.Component
 		let rightPanelObjs = {};
 
 		switch (this.state.rightPanel) {
-			case 'features':
+			case FEATURES_PANEL_NAME:
 				rightPanelObjs = {
 					id: "features-form",
 					header: "Features",
 					subForm:
 						<PropertyFeaturesForm
-							property={this.state.property}
-							onSubmit={this.onHandleSubmit}
+							features={ this.state.property.features }
+							onSubmit={ this.onHandleSubmit }
 						/>
 				};
 			break;
 
-			case 'exterior-features':
+			case EXTERIOR_FEATURES_PANEL_NAME:
 				rightPanelObjs = {
 					id: "exterior-features-form",
 					header: "Exterior Features",
 					subForm:
 						<PropertyExteriorFeaturesForm
-							property={this.state.property}
-							onSubmit={this.onHandleSubmit}
+							features={ this.state.property.exterior_features }
+							onSubmit={ this.onHandleSubmit }
 						/>
 				};
 			break;
 
-			case 'interior-features':
+			case INTERIOR_FEATURES_PANEL_NAME:
 				rightPanelObjs = {
 					id: "interior-features-form",
 					header: "Interior Features",
 					subForm:
 						<PropertyInteriorFeaturesForm
-							property={this.state.property}
-							onSubmit={this.onHandleSubmit}
+							features={ this.state.property.interior_features }
+							onSubmit={ this.onHandleSubmit }
 						/>
 				};
 			break;
@@ -407,11 +410,11 @@ class PropertiesDashboard extends React.Component
 					header: "Room",
 					subForm:
 						<PropertyRoomForm
-							room={this.state.room}
-							nonAddedRooms={this.state.property.non_added_rooms}
-							paints={this.state.paints}
-							isEditingMode={this.state.isEditingMode}
-							onSubmit={this.onHandleSubmit}
+							room={ this.state.room }
+							nonAddedRooms={ this.state.property.non_added_rooms }
+							paints={ this.state.paints }
+							isEditingMode={ this.state.isEditingMode }
+							onSubmit={ this.onHandleSubmit }
 						/>
 				};
 			break;
@@ -424,9 +427,9 @@ class PropertiesDashboard extends React.Component
 					subForm:
 						<PropertyForm
 							loader={false}
-							property={this.state.property}
-							onChange={this.onHandleFormChange}
-							onSubmit={this.onHandleSubmit}
+							property={ this.state.property }
+							onChange={ this.onHandleFormChange }
+							onSubmit={ this.onHandleSubmit }
 						/>
 				};
 		}

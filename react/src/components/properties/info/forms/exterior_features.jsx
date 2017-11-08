@@ -1,5 +1,6 @@
 import React from 'react';
 import { getSingleModifiedState } from '../../../helper/utils';
+import { INTERIOR_FEATURES_PANEL_NAME } from '../../../helper/constants';
 
 class PropertyExteriorFeaturesForm extends React.Component
 {
@@ -13,13 +14,13 @@ class PropertyExteriorFeaturesForm extends React.Component
 
 	// Handle form change
 	handleFormChange(event) {
-		this.props.onChange(getSingleModifiedState(this.props.exteriorFeatures, 'exterior_features', event.target.value));
+		this.props.onChange(getSingleModifiedState(this.props.features, EXTERIOR_FEATURES_PANEL_NAME, event.target.value));
 	}
 
 	// Handle form submit
     handleFormSubmit(event) {
 		event.preventDefault();
-		this.props.onSubmit(this.props.exteriorFeatures);
+		this.props.onSubmit(this.props.features);
     }
 
     // Render
@@ -35,7 +36,7 @@ class PropertyExteriorFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.exteriorFeatures.exterior }/>
+									value={ this.props.features.exterior }/>
 						</div>
 					</div>
 				</div>
@@ -48,7 +49,7 @@ class PropertyExteriorFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.exteriorFeatures.foundation }/>
+									value={ this.props.features.foundation }/>
 						</div>
 					</div>
 				</div>
@@ -61,15 +62,15 @@ class PropertyExteriorFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.exteriorFeatures.others }/>
+									value={ this.props.features.others }/>
 						</div>
 					</div>
 				</div>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input type="hidden" value={ this.props.exteriorFeatures.id }/>
-							<input type="hidden" value={ this.props.exteriorFeatures.property_id }/>
+							<input type="hidden" value={ this.props.features.id }/>
+							<input type="hidden" value={ this.props.features.property_id }/>
 						</div>
 					</div>
 				</div>

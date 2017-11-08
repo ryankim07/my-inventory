@@ -9,13 +9,12 @@ import RightPanel from '../../helper/panels/right';
 import SettingsPaintsList from './../paints/list';
 import SettingsPaint from './../paints/forms/paint';
 import FlashMessage from '../../helper/flash_message';
-
-const mainDefaultMobileColumnWidth = 'col-xs-12';
-const mainDefaultDesktopColumnWidth = 'col-md-12';
-const mainShrinkedMobileColumnWidth = 'col-xs-8';
-const mainShrinkedDesktopColumnWidth = 'col-md-8';
-const rightPanelMobileColumnWidth = 'col-xs-4';
-const rightPanelDesktopColumnWidth = 'col-md-4';
+import { MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
+		 MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH,
+		 MAIN_SHRINKED_MOBILE_COLUMN_WIDTH,
+		 MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH,
+		 RIGHT_PANEL_MOBILE_COLUMN_WIDTH,
+		 RIGHT_PANEL_DESKTOP_COLUMN_WIDTH } from '../../helper/constants';
 
 // Get paint initial state
 const initialPaintObj = {
@@ -49,12 +48,12 @@ class SettingsPaintsDashboard extends React.Component
 			showModal: false,
 			alertType: 'success',
 			mainPanelColumnCss: {
-				mobileWidth: mainDefaultMobileColumnWidth,
-				desktopWidth: mainDefaultDesktopColumnWidth
+				mobileWidth: MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
+				desktopWidth: MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH
 			},
 			rightPanelColumnCss: {
-				mobileWidth: rightPanelMobileColumnWidth,
-				desktopWidth: rightPanelDesktopColumnWidth
+				mobileWidth: RIGHT_PANEL_MOBILE_COLUMN_WIDTH,
+				desktopWidth: RIGHT_PANEL_DESKTOP_COLUMN_WIDTH
 			}
 		};
 
@@ -106,8 +105,8 @@ class SettingsPaintsDashboard extends React.Component
 			loader: false,
 			showModal: false,
 			mainPanelColumnCss: {
-				mobileWidth: openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
-				desktopWidth: openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
+				mobileWidth: openRightPanel ? MAIN_SHRINKED_MOBILE_COLUMN_WIDTH : MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
+				desktopWidth: openRightPanel ? MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH : MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH
 			}
 		});
 	}
@@ -125,8 +124,8 @@ class SettingsPaintsDashboard extends React.Component
 			isEditingMode: isEditingMode,
 			showRightPanel: true,
 			mainPanelColumnCss: {
-				mobileWidth: mainShrinkedMobileColumnWidth,
-				desktopWidth: mainShrinkedDesktopColumnWidth
+				mobileWidth: MAIN_SHRINKED_MOBILE_COLUMN_WIDTH,
+				desktopWidth: MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH
 			}
 		});
 	}
@@ -179,8 +178,8 @@ class SettingsPaintsDashboard extends React.Component
 		this.setState({
 			showRightPanel: false,
 			mainPanelColumnCss: {
-				mobileWidth: mainDefaultMobileColumnWidth,
-				desktopWidth: mainDefaultDesktopColumnWidth
+				mobileWidth: MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
+				desktopWidth: MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH
 			}
 		});
 	}

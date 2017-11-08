@@ -10,13 +10,13 @@ import VehicleForm from './forms/vehicle';
 import VehiclesList from './list';
 import Modal from '../helper/modal';
 import FlashMessage from '../helper/flash_message';
-
-const mainDefaultMobileColumnWidth = 'col-xs-12';
-const mainDefaultDesktopColumnWidth = 'col-md-12';
-const mainShrinkedMobileColumnWidth = 'col-xs-8';
-const mainShrinkedDesktopColumnWidth = 'col-md-8';
-const rightPanelMobileColumnWidth = 'col-xs-4';
-const rightPanelDesktopColumnWidth = 'col-md-4';
+import { MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
+		 MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH,
+		 MAIN_SHRINKED_MOBILE_COLUMN_WIDTH,
+		 MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH,
+		 RIGHT_PANEL_MOBILE_COLUMN_WIDTH,
+		 RIGHT_PANEL_DESKTOP_COLUMN_WIDTH,
+		 LIST } from '../helper/constants';
 
 // Get vehicle initial state
 const initialVehicleObj = {
@@ -50,12 +50,12 @@ class VehiclesDashboard extends React.Component
 			showModal: false,
 			alertType: 'success',
 			mainPanelColumnCss: {
-				mobileWidth: mainDefaultMobileColumnWidth,
-				desktopWidth: mainDefaultDesktopColumnWidth
+				mobileWidth: MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
+				desktopWidth: MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH
 			},
 			rightPanelColumnCss: {
-				mobileWidth: rightPanelMobileColumnWidth,
-				desktopWidth: rightPanelDesktopColumnWidth
+				mobileWidth: RIGHT_PANEL_MOBILE_COLUMN_WIDTH,
+				desktopWidth: RIGHT_PANEL_DESKTOP_COLUMN_WIDTH
 			}
 		};
 
@@ -81,8 +81,8 @@ class VehiclesDashboard extends React.Component
 			this.setState({
 				mainPanel: this.props.match.params.section,
 				mainPanelColumnCss: {
-					mobileWidth: rightPanelMobileColumnWidth,
-					desktopWidth: rightPanelDesktopColumnWidth
+					mobileWidth: RIGHT_PANEL_MOBILE_COLUMN_WIDTH,
+					desktopWidth: RIGHT_PANEL_DESKTOP_COLUMN_WIDTH
 				}
 			});
 		}
@@ -109,7 +109,7 @@ class VehiclesDashboard extends React.Component
 				break;
 
 				case '/vehicles/dashboard/list':
-					mainPanel = 'list';
+					mainPanel = LIST;
 				break;
 			}
 
@@ -119,8 +119,8 @@ class VehiclesDashboard extends React.Component
 				showRightPanel: false,
 				flashMessage: null,
 				mainPanelColumnCss: {
-					mobileWidth: mainDefaultMobileColumnWidth,
-					desktopWidth: mainDefaultDesktopColumnWidth
+					mobileWidth: MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
+					desktopWidth: MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH
 				}
 			});
 		}
@@ -143,14 +143,14 @@ class VehiclesDashboard extends React.Component
 		this.setState({
 			vehicles: vehicles,
 			manufacturers: manufacturers,
-			mainPanel: loadList ? 'list' : this.state.mainPanel, // Need to set main panel if add new vehicle component is accessed from header
+			mainPanel: loadList ? LIST : this.state.mainPanel, // Need to set main panel if add new vehicle component is accessed from header
 			showRightPanel: !!openRightPanel,
 			flashMessage: storeStatus.msg !==  null ? storeStatus.msg : null,
 			alertType: storeStatus.type,
 			loader: false,
 			mainPanelColumnCss: {
-				mobileWidth: openRightPanel ? mainShrinkedMobileColumnWidth : mainDefaultMobileColumnWidth,
-				desktopWidth: openRightPanel ? mainShrinkedDesktopColumnWidth : mainDefaultDesktopColumnWidth
+				mobileWidth: openRightPanel ? MAIN_SHRINKED_MOBILE_COLUMN_WIDTH : MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
+				desktopWidth: openRightPanel ? MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH : MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH
 			}
 		});
 	}
@@ -200,8 +200,8 @@ class VehiclesDashboard extends React.Component
 			isEditingMode: isEditingMode,
 			showRightPanel: true,
 			mainPanelColumnCss: {
-				mobileWidth: mainShrinkedMobileColumnWidth,
-				desktopWidth: mainShrinkedDesktopColumnWidth
+				mobileWidth: MAIN_SHRINKED_MOBILE_COLUMN_WIDTH,
+				desktopWidth: MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH
 			}
 		});
 	}
@@ -216,8 +216,8 @@ class VehiclesDashboard extends React.Component
 		this.setState({
 			showRightPanel: false,
 			mainPanelColumnCss: {
-				mobileWidth: mainDefaultMobileColumnWidth,
-				desktopWidth: mainDefaultDesktopColumnWidth
+				mobileWidth: MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
+				desktopWidth: MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH
 			}
 		});
 	}

@@ -441,6 +441,8 @@ class PropertiesEntity extends AbstractAssetsEntity
     public function addNonAddedRooms($rooms)
     {
         $this->nonAddedRooms = $rooms;
+
+        return $this;
     }
 
     /**

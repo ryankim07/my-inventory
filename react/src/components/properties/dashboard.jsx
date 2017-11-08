@@ -7,7 +7,7 @@ import MainPanel from '../helper/panels/main';
 import DisplayPanel from '../helper/panels/display';
 import RightPanel from '../helper/panels/right';
 import PropertyForm from './main/forms/property';
-import PropertiesList from './main/list';
+import PropertiesList from './address/list';
 import PropertyInfoView from './info/view';
 import PropertyFeaturesForm from './info/forms/features';
 import PropertyExteriorFeaturesForm from './info/forms/exterior_features';
@@ -352,9 +352,9 @@ class PropertiesDashboard extends React.Component
 							loader={ this.state.loader }
 							selectedItem={ this.state.property.id }
 							properties={ this.state.properties }
-							onHandleMainPanel={ this.onHandleMainPanel }
-							onHandleRightPanel={ this.onHandleRightPanel }
-							onHRemove={ this.onHandleRemove }/>
+							onMainPanel={ this.onHandleMainPanel }
+							onRightPanel={ this.onHandleRightPanel }
+							onRemove={ this.onHandleRemove }/>
 					</DisplayPanel>;
 		}
 

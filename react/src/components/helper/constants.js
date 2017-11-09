@@ -12,6 +12,7 @@ export const FEATURES_PANEL 	 	  = 'features';
 export const EXTERIOR_FEATURES_PANEL = 'exterior_features';
 export const INTERIOR_FEATURES_PANEL = 'interior_features';
 export const INFO_PANEL = 'info';
+export const ROOM_PANEL = 'room';
 export const ADD_PANEL = 'add';
 export const LIST_PANEL = 'list';
 export const ROOMS_LIST = 'rooms-list';

@@ -154,7 +154,7 @@ class VehicleForm extends React.Component
 			<form onSubmit={ this.onHandleSubmit }>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Image</label>
+						<label className="control-label">Photo</label>
 						<Uploader
 							inputProps={
 								{   className: "input-group",

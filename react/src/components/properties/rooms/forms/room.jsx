@@ -1,9 +1,9 @@
 import React from 'react';
-import NonAddedRoomsDropdown from '../../rooms/forms/non_added_rooms_dropdown';
-import PropertyRoomWallsDropdown from '../../rooms/forms/walls_dropdown';
-import PropertyPaintsDropdown from '../../rooms/forms/paints_dropdown';
+import NonAddedRoomsDropdown from '../../../helper/forms/hybrid_field';
+import PropertyRoomWallsDropdown from '../../../helper/forms/hybrid_field';
+import PropertyPaintsDropdown from '../../../helper/forms/hybrid_field';
 import Uploader from '../../../helper/uploader';
-import { numberFormat, upperFirstLetter, arrayDiff } from '../../../helper/utils';
+import { numberFormat, upperFirstLetter, arrayDiff, getNestedModifiedState } from '../../../helper/utils';
 
 class PropertyRoomForm extends React.Component
 {
@@ -16,64 +16,65 @@ class PropertyRoomForm extends React.Component
 			disableAddWallsBtn: this.props.isEditingMode,
 			isEditingMode: this.props.isEditingMode,
 			allWallSides: ["left", "right", "front", "back", "ceiling", "all"],
-			wallSides: []
+			wallSides: [],
+			selectedItem: '',
+			assets: []
 		};
 
-		this.handleFormSubmit    = this.handleFormSubmit.bind(this);
-        this.onHandleFormChange  = this.onHandleFormChange.bind(this);
-        this.onHandleWallsChange = this.onHandleWallsChange.bind(this);
-        this.onHandleAddWall     = this.onHandleAddWall.bind(this);
-		this.setAssets     		 = this.setAssets.bind(this);
+		this.onHandleFormChange = this.onHandleFormChange.bind(this);
+        this.onHandleAddWall    = this.onHandleAddWall.bind(this);
+		this.onHandleAssets     = this.onHandleAssets.bind(this);
+		this.onHandleSubmit 	= this.onHandleSubmit.bind(this);
     }
 
 	// Component mounting
     componentWillMount() {
 		this.setState({
 			disableAddWallsBtn: this.shouldDisableAddWallBtn(this.state.room.walls),
-			wallSides: this.state.room.id === '' ? this.state.allWallSides : this.state.wallSides
+			wallSides: this.state.room.id === '' ? this.state.allWallSides : this.state.wallSides,
+			selectedItem: this.paint.id,
+			assets: this.props.paint.assets
 		});
 	}
 
 	// Next state change
 	componentWillReceiveProps(nextProps) {
-    	if (nextProps.room !== this.props.room) {
+    	if (nextProps.room.id !== this.state.selectedItem) {
 			this.setState({
 				room: nextProps.room,
 				isEditingMode: nextProps.room.id === "" ? false : true,
-				disableAddWallsBtn: this.shouldDisableAddWallBtn(nextProps.room.walls)
+				disableAddWallsBtn: this.shouldDisableAddWallBtn(nextProps.room.walls),
+				selectedItem: nextProps.room.id,
+				assets: nextProps.room.assets
 			});
 		}
 	}
 
-	// Handle assets
-	setAssets(assets) {
-		let room = this.state.room;
-		room['assets'] = assets;
-
-		this.setState({
-			room: room
-		});
-	}
-
 	// Handle input changes
-	onHandleFormChange(field, event) {
-    	let room        = this.state.room;
+	onHandleFormChange(event) {
+		let fieldName 	= event.target.name;
 		let chosenValue = event.target.value;
+		let modifiedObj = {};
 
-		switch (field) {
+		switch (fieldName) {
 			case 'total_area':
 				if (chosenValue === 0) {
 					alert('Please enter correct total area.');
 				} else {
-					room[field] = numberFormat(chosenValue);
+					modifiedObj[fieldName] = numberFormat(chosenValue);
 				}
 			break;
 
 			default:
-				room[field] = chosenValue;
+				modifiedObj[fieldName] = chosenValue;
 		}
 
-		this.setState({room: room});
+		this.setState({ room: getNestedModifiedState(this.state.room, modifiedObj) });
+	}
+
+	// Handle assets
+	onHandleAssets(assets) {
+		this.setState({ assets: assets });
 	}
 
 	// Handle walls change
@@ -156,7 +157,7 @@ class PropertyRoomForm extends React.Component
 	}
 
 	// Submit
-	handleFormSubmit(event) {
+	onHandleSubmit(event) {
 		event.preventDefault();
 
 		this.props.onHandleSubmit(this.state.room, 'rooms');
@@ -189,49 +190,77 @@ class PropertyRoomForm extends React.Component
 
 	// Render
 	render() {
-    	let room 			   = this.state.room;
-    	let disableAddWallsBtn = this.state.disableAddWallsBtn;
-
     	// Only show dropdown when entering new room
     	let roomNameField = !this.state.isEditingMode ?
 			<NonAddedRoomsDropdown
-				room={ room }
-				nonAddedRooms={ this.props.nonAddedRooms }
-				onHandleFormChange={ this.onHandleFormChange }
+				inputProps={
+					{
+						auto: false,
+						others: { name: "non_added_rooms", className: "form-control" },
+						list: this.props.nonAddedRooms,
+						value: this.props.room.name,
+						onChange: this.onHandleFormChange,
+						required: true
+					}
+				}
 			/> :
 			<input
 				type="text"
-				value={ upperFirstLetter(room.name) }
+				value={ upperFirstLetter(this.state.room.name) }
 				className="form-control input-sm"
 				disabled="disabled"
 			/>;
 
-    	let wallDetailsFields = room.walls.map((wall, wallIndex) => {
+    	let wallDetailsFields = this.state.room.walls.map((wall, wallIndex) => {
+    		// Room walls
+			let roomWallsField = wallName !== '' ?
+				<input
+					type="text"
+					value={ upperFirstLetter(wall.name) }
+					className="form-control input-sm"
+					disabled="disabled"
+				/> :
+				<PropertyRoomWallsDropdown
+					inputProps={
+						{
+							auto: false,
+							others: {name: "non_added_rooms", className: "form-control"},
+							list: this.state.wallSides,
+							value: wall.name,
+							onChange: this.onHandleWallsChange.bind(this, 'wall_' + wallIndex),
+							required: true
+						}
+					}
+				/>;
+
+			// Paints
+			let paintsField =
+				<PropertyPaintsDropdown
+					inputProps={
+						{
+							auto: false,
+							others: {name: "paint", className: "form-control"},
+							list: this.props.paints,
+							value: wall.paint_id,
+							onChange: this.onHandleWallsChange.bind(this, 'paint_'  + wallIndex),
+							required: true
+						}
+					}
+				/>;
+
 			return (
 				<div key={ wallIndex } className="walls-group">
 					<div className="form-group">
 						<div className="col-xs-12 col-md-8">
 							<label className="control-label">Wall Name</label>
 							<button onClick={ this.onHandleRemoveWall.bind(this, wallIndex) }><i className="fa fa-trash" aria-hidden="true"/></button>
-							<PropertyRoomWallsDropdown
-								index={ wallIndex }
-								wall={ wall }
-								wallSides={ this.state.wallSides }
-								onHandleWallsChange={ this.onHandleWallsChange }
-							/>
+							{ roomWallsField }
 						</div>
 					</div>
 					<div className="form-group">
 						<div className="col-xs-12 col-md-8">
 							<label className="control-label">Paint Color</label>
-							<div className="input-group">
-								<PropertyPaintsDropdown
-									index={ wallIndex }
-									wall={ wall }
-									paints={ this.props.paints }
-									onHandleWallsChange={ this.onHandleWallsChange }
-								/>
-							</div>
+							{ paintsField }
 						</div>
 					</div>
 				</div>
@@ -239,15 +268,15 @@ class PropertyRoomForm extends React.Component
 		});
 
 		let roomForm =
-			<form onSubmit={ this.handleFormSubmit }>
+			<form onSubmit={ this.onHandleSubmit }>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Image</label>
+						<label className="control-label">Photo</label>
 						<Uploader
 							inputProps={
 								{   className: "input-group",
 									assets: this.state.room.assets,
-									isEditingMode: this.props.isEditingMode
+									onChange: this.onHandleAssets
 								}
 							}
 						/>
@@ -256,9 +285,7 @@ class PropertyRoomForm extends React.Component
 				<div className="form-group required">
 					<div className="col-xs-12 col-md-8">
 						<label className="control-label">Room Name</label>
-						<div className="input-group">
-							{ roomNameField }
-						</div>
+						{ roomNameField }
 					</div>
 				</div>
 				<div className="form-group">
@@ -266,9 +293,10 @@ class PropertyRoomForm extends React.Component
 						<label className="control-label">Total Area</label>
 						<div className="input-group">
 							<input
+								name="total_area"
 								type="text"
-								onChange={ this.onHandleFormChange.bind(this, 'total_area') }
-								value={ room.total_area }
+								onChange={ this.onHandleFormChange }
+								value={ this.state.room.total_area }
 								className="form-control input-sm"
 							/>
 						</div>
@@ -277,7 +305,7 @@ class PropertyRoomForm extends React.Component
 
 				{ wallDetailsFields }
 
-				{ !disableAddWallsBtn ?
+				{ !this.state.disableAddWallsBtn ?
 					<div className="form-group">
 						<div className="col-xs-12 col-md-12">
 							<div className="clearfix">
@@ -292,17 +320,18 @@ class PropertyRoomForm extends React.Component
 						<label className="control-label">Description</label>
 						<div className="input-group">
 							<textarea
+								name="description"
 								rows="5"
 								className="form-control"
-								onChange={ this.onHandleFormChange.bind(this, 'description') }
-								value={ room.description }/>
+								onChange={ this.onHandleFormChange }
+								value={ this.state.room.description }/>
 						</div>
 					</div>
 				</div>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input type="hidden" value={ room.id }/>
+							<input type="hidden" value={ this.state.room.id }/>
 						</div>
 					</div>
 				</div>

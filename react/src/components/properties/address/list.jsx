@@ -37,8 +37,8 @@ class PropertiesAddressList extends React.Component
 				addressesHtml = list.map((property, propertyIndex) => {
 					return (
 						<TogglingRows
-							key={propertyIndex}
-							selectedItem={this.props.selectedItem === property.address.id}
+							key={ propertyIndex }
+							selectedItem={ this.props.selectedItem === property.address.id }
 							columnValues={[
 								property.address.street,
 								property.address.city,
@@ -48,12 +48,12 @@ class PropertiesAddressList extends React.Component
 								property.address.country,
 								property.address.subdivision
 							]}
-							addViewBtn={true}
-							onView={this.props.onMainPanel.bind(this, property.address.property_id, INFO_PANEL)}
-							addEditBtn={true}
-							onEdit={this.props.onRightPanel.bind(this, property.address.property_id, PROPERTY_FORM)}
-							addRemoveBtn={true}
-							onRemove={this.props.onRemove.bind(this, property.address.property_id)}
+							addViewBtn={ true }
+							onView={ this.props.onMainPanel.bind(this, property.address.property_id, INFO_PANEL) }
+							addEditBtn={ true }
+							onEdit={ this.props.onRightPanel.bind(this, property.address.property_id, PROPERTY_FORM) }
+							addRemoveBtn={ true }
+							onRemove={ this.props.onRemove.bind(this, property.address.property_id) }
 						/>
 					);
 				});

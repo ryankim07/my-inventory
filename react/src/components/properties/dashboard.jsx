@@ -26,6 +26,7 @@ import { MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
 		 EXTERIOR_FEATURES_PANEL,
 		 INTERIOR_FEATURES_PANEL,
 		 INFO_PANEL,
+		 ROOM_PANEL,
 		 ROOMS_LIST } from '../helper/constants';
 
 // Get room walls initial state
@@ -269,7 +270,7 @@ class PropertiesDashboard extends React.Component
 
 		this.setState({
 			room: room,
-			rightPanel: 'room',
+			rightPanel: ROOM_PANEL,
 			isEditingMode: isEditingMode,
 			showRightPanel: true,
 			flashMessage: null,
@@ -327,7 +328,8 @@ class PropertiesDashboard extends React.Component
 					previousRoute: "/properties/info/view",
 					subForm:
 						<PropertyRoomsList
-							selectedItem={ this.state.property.rooms.id }
+							selectedItem={ this.state.room.id }
+							rooms={ this.state.property.rooms }
 							onHandleRightRoomPanel={ this.onHandleRightRoomPanel }
 							onSubmit={ this.onHandleSubmit }
 							onHRemoveRoom={ this.onHandleRemoveRoom }
@@ -405,7 +407,7 @@ class PropertiesDashboard extends React.Component
 				};
 			break;
 
-			case 'room':
+			case ROOM_PANEL:
 				rightPanelObjs = {
 					id: "room-form",
 					header: "Room",

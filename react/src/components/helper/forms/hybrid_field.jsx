@@ -47,19 +47,30 @@ class HybridField extends React.Component
 	}
 
 	componentWillMount() {
-		const isAuto 	 = this.props.inputProps.auto;
-		const list 	     = this.props.inputProps.list;
-		const label 	 = this.props.inputProps.label !== undefined ? this.props.inputProps.label : 'label';
-		const identifier = this.props.inputProps.identifier !== undefined ? this.props.inputProps.identifier : 'value';
-		let results    	 = [];
+		const isAuto 	  = this.props.inputProps.auto;
+		const list 	      = this.props.inputProps.list;
+		const isFlatArray = this.props.inputProps.isFlatArray !== undefined ? this.props.inputProps.isFlatArray : false;
+		const label 	  = this.props.inputProps.label !== undefined ? this.props.inputProps.label : 'label';
+		const identifier  = this.props.inputProps.identifier !== undefined ? this.props.inputProps.identifier : 'value';
+		let results    	  = [];
 
-		_.forEach(list, function(obj) {
-			if (isAuto) {
-				results.push({ id: obj[identifier].toString(), label: obj[label].toString(),  value: obj[identifier].toString()});
-			} else {
-				results.push(<option key={ obj[identifier] } value={ obj[identifier] }>{ obj[label] }</option>);
-			}
-		});
+		if (isFlatArray) {
+			_.forEach(list, function(obj, objIndex) {
+				results.push(<option key={ objIndex } value={ obj }>{ obj }</option>);
+			});
+		} else {
+			_.forEach(list, function (obj) {
+				if (isAuto) {
+					results.push({
+						id: obj[identifier].toString(),
+						label: obj[label].toString(),
+						value: obj[identifier].toString()
+					});
+				} else {
+					results.push(<option key={obj[identifier]} value={obj[identifier]}>{obj[label]}</option>);
+				}
+			});
+		}
 
 		this.setState({
 			list: results,

@@ -3,7 +3,10 @@ import NonAddedRoomsDropdown from '../../../helper/forms/hybrid_field';
 import PropertyRoomWallsDropdown from '../../../helper/forms/hybrid_field';
 import PropertyPaintsDropdown from '../../../helper/forms/hybrid_field';
 import Uploader from '../../../helper/uploader';
-import { numberFormat, upperFirstLetter, arrayDiff, getNestedModifiedState } from '../../../helper/utils';
+import { numberFormat,
+		 upperFirstLetter,
+		 arrayDiff,
+		 getNestedModifiedState } from '../../../helper/utils';
 
 class PropertyRoomForm extends React.Component
 {
@@ -12,9 +15,7 @@ class PropertyRoomForm extends React.Component
         super(props);
 
 		this.state = {
-			room: this.props.room,
 			disableAddWallsBtn: this.props.isEditingMode,
-			isEditingMode: this.props.isEditingMode,
 			allWallSides: ["left", "right", "front", "back", "ceiling", "all"],
 			wallSides: [],
 			selectedItem: '',
@@ -30,15 +31,15 @@ class PropertyRoomForm extends React.Component
 	// Component mounting
     componentWillMount() {
 		this.setState({
-			disableAddWallsBtn: this.shouldDisableAddWallBtn(this.state.room.walls),
-			wallSides: this.state.room.id === '' ? this.state.allWallSides : this.state.wallSides,
-			selectedItem: this.paint.id,
-			assets: this.props.paint.assets
+			disableAddWallsBtn: this.shouldDisableAddWallBtn(this.props.room.walls),
+			wallSides: this.props.room.id === '' ? this.state.allWallSides : this.state.wallSides,
+			/*selectedItem: this.paint.id,
+			assets: this.props.paint.assets*/
 		});
 	}
 
 	// Next state change
-	componentWillReceiveProps(nextProps) {
+	/*componentWillReceiveProps(nextProps) {
     	if (nextProps.room.id !== this.state.selectedItem) {
 			this.setState({
 				room: nextProps.room,
@@ -48,7 +49,7 @@ class PropertyRoomForm extends React.Component
 				assets: nextProps.room.assets
 			});
 		}
-	}
+	}*/
 
 	// Handle input changes
 	onHandleFormChange(event) {
@@ -69,7 +70,7 @@ class PropertyRoomForm extends React.Component
 				modifiedObj[fieldName] = chosenValue;
 		}
 
-		this.setState({ room: getNestedModifiedState(this.state.room, modifiedObj) });
+		this.props.onChange(getNestedModifiedState(this.props.room, modifiedObj));
 	}
 
 	// Handle assets
@@ -79,7 +80,7 @@ class PropertyRoomForm extends React.Component
 
 	// Handle walls change
 	onHandleWallsChange(propertyName, event) {
-		let room        = this.state.room;
+		let room        = this.props.room;
 		let walls       = room.walls;
 		let chosenValue = event.target.value;
 		let id			= propertyName.match(/\d+$/)[0];
@@ -111,7 +112,7 @@ class PropertyRoomForm extends React.Component
 			paint_id: '',
 			name: ''
 		};
-		let room = this.state.room;
+		let room = this.props.room;
 		let walls = room.walls;
 		let allWallSides = this.state.allWallSides;
 		let wallSides = [];
@@ -147,7 +148,7 @@ class PropertyRoomForm extends React.Component
 	onHandleRemoveWall(index, event) {
 		event.preventDefault();
 
-		let room = this.state.room;
+		let room = this.props.room;
 		room.walls.splice(index, 1);
 
 		this.setState({
@@ -160,7 +161,7 @@ class PropertyRoomForm extends React.Component
 	onHandleSubmit(event) {
 		event.preventDefault();
 
-		this.props.onHandleSubmit(this.state.room, 'rooms');
+		this.props.onSubmit(this.props.room, 'rooms');
 	}
 
 	// Disable add walls button if one of the wall dropdowns
@@ -191,12 +192,12 @@ class PropertyRoomForm extends React.Component
 	// Render
 	render() {
     	// Only show dropdown when entering new room
-    	let roomNameField = !this.state.isEditingMode ?
+    	let roomNameField = !this.props.isEditingMode ?
 			<NonAddedRoomsDropdown
 				inputProps={
 					{
 						auto: false,
-						others: { name: "non_added_rooms", className: "form-control" },
+						others: { name: "name", className: "form-control" },
 						list: this.props.nonAddedRooms,
 						value: this.props.room.name,
 						onChange: this.onHandleFormChange,
@@ -206,15 +207,16 @@ class PropertyRoomForm extends React.Component
 			/> :
 			<input
 				type="text"
-				value={ upperFirstLetter(this.state.room.name) }
+				value={ upperFirstLetter(this.props.room.name) }
 				className="form-control input-sm"
 				disabled="disabled"
 			/>;
 
-    	let wallDetailsFields = this.state.room.walls.map((wall, wallIndex) => {
+    	let wallDetailsFields = this.props.room.walls.map((wall, wallIndex) => {
     		// Room walls
-			let roomWallsField = wallName !== '' ?
+			let roomWallsField = wall.name !== '' ?
 				<input
+					name={ "wall_" + wallIndex }
 					type="text"
 					value={ upperFirstLetter(wall.name) }
 					className="form-control input-sm"
@@ -224,8 +226,9 @@ class PropertyRoomForm extends React.Component
 					inputProps={
 						{
 							auto: false,
-							others: {name: "non_added_rooms", className: "form-control"},
+							others: { name: 'wall_' + wallIndex, className: "form-control "},
 							list: this.state.wallSides,
+							isFlatArray: true,
 							value: wall.name,
 							onChange: this.onHandleWallsChange.bind(this, 'wall_' + wallIndex),
 							required: true
@@ -239,9 +242,11 @@ class PropertyRoomForm extends React.Component
 					inputProps={
 						{
 							auto: false,
-							others: {name: "paint", className: "form-control"},
+							others: {name: 'paint_'  + wallIndex, className: "form-control"},
 							list: this.props.paints,
 							value: wall.paint_id,
+							label: "name",
+							identifier: "id",
 							onChange: this.onHandleWallsChange.bind(this, 'paint_'  + wallIndex),
 							required: true
 						}
@@ -275,7 +280,7 @@ class PropertyRoomForm extends React.Component
 						<Uploader
 							inputProps={
 								{   className: "input-group",
-									assets: this.state.room.assets,
+									assets: this.props.room.assets,
 									onChange: this.onHandleAssets
 								}
 							}
@@ -296,7 +301,7 @@ class PropertyRoomForm extends React.Component
 								name="total_area"
 								type="text"
 								onChange={ this.onHandleFormChange }
-								value={ this.state.room.total_area }
+								value={ this.props.room.total_area }
 								className="form-control input-sm"
 							/>
 						</div>
@@ -324,14 +329,14 @@ class PropertyRoomForm extends React.Component
 								rows="5"
 								className="form-control"
 								onChange={ this.onHandleFormChange }
-								value={ this.state.room.description }/>
+								value={ this.props.room.description }/>
 						</div>
 					</div>
 				</div>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input type="hidden" value={ this.state.room.id }/>
+							<input type="hidden" value={ this.props.room.id }/>
 						</div>
 					</div>
 				</div>

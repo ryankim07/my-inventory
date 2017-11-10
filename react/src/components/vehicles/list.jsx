@@ -64,7 +64,7 @@ class VehiclesList extends React.Component
 			<SearchField
 				inputProps={
 					{
-						objs: this.props.vehicles,
+						list: this.props.vehicles,
 						searchType: "mfg",
 						onSearch: this.onHandleSearch
 					}

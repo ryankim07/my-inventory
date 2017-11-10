@@ -17,11 +17,6 @@ class PropertyRoomsList extends React.Component
 		this.onHandleSearch = this.onHandleSearch.bind(this);
 	}
 
-	// Render component again or not
-	shouldComponentUpdate(nextProps, nextState) {
-		return nextProps.property !== this.props.property;
-	}
-
 	// Handle search
 	onHandleSearch(results) {
 		this.setState({ searchResults: results });
@@ -40,7 +35,7 @@ class PropertyRoomsList extends React.Component
 				return (
 					<TogglingRows
 						key={ roomIndex }
-						selectedItem={ this.props.selectedItem === property.address.id }
+						selectedItem={ this.props.selectedItem === room.id }
 						columnValues={[
 							upperFirstLetter(room.name),
 							room.total_area
@@ -48,7 +43,7 @@ class PropertyRoomsList extends React.Component
 						addEditBtn={ true }
 						onEdit={ this.props.onHandleRightRoomPanel.bind(this, room.id) }
 						addRemoveBtn={ true }
-						onRemove={ this.props.onHandleRemoveRoom.bind(this, this.props.property.id, room.id) }
+						onRemove={ this.props.onRemove.bind(this, room.id) }
 					/>
 				);
 			});
@@ -58,7 +53,7 @@ class PropertyRoomsList extends React.Component
 			<SearchField
 				inputProps={
 					{
-						objs: this.props.rooms,
+						list: this.props.rooms,
 						searchType: "name",
 						onSearch: this.onHandleSearch
 					}

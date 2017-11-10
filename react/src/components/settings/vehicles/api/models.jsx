@@ -53,7 +53,7 @@ class SettingsManufacturerModelsList extends React.Component
 			<SearchField
 				inputProps={
 					{
-						objs: this.props.models,
+						list: this.props.models,
 						searchType: "model",
 						onSearch: this.onHandleSearch
 					}

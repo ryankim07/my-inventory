@@ -62,7 +62,7 @@ class SettingsVendorsList extends React.Component
 			<SearchField
 				inputProps={
 					{
-						objs: this.props.vendors,
+						list: this.props.vendors,
 						searchType: "company",
 						onSearch: this.onHandleSearch
 					}

@@ -61,7 +61,7 @@ class SettingsUsersList extends React.Component
 			<SearchField
 				inputProps={
 					{
-						objs: this.props.users,
+						list: this.props.users,
 						searchType: "first_name",
 						onSearch: this.onHandleSearch
 					}

@@ -62,7 +62,7 @@ class SettingsPaintsList extends React.Component
 			<SearchField
 				inputProps={
 					{
-						objs: this.props.paints,
+						list: this.props.paints,
 						searchType: "name",
 						onSearch: this.onHandleSearch
 					}

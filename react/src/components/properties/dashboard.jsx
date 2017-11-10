@@ -15,7 +15,7 @@ import PropertyInteriorFeaturesForm from './info/forms/interior_features';
 import PropertyRoomsList from './rooms/list';
 import PropertyRoomForm from './rooms/forms/room';
 import FlashMessage from '../helper/flash_message';
-import { getNestedModifiedState } from "../helper/utils";
+import { getSingleModifiedState, getNestedModifiedState } from "../helper/utils";
 import { MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
 		 MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH,
 		 MAIN_SHRINKED_MOBILE_COLUMN_WIDTH,
@@ -36,6 +36,16 @@ const initialWallObj = {
 	paint_id: '',
 	name: ''
 };
+
+const initialRoomObj = {
+	id: '',
+	property_id: '',
+	name: '',
+	total_area: '',
+	description: '',
+	walls: [initialWallObj],
+	assets: []
+}
 
 // Get property initial state
 const initialPropertyObj = {
@@ -97,6 +107,7 @@ class PropertiesDashboard extends React.Component
 
 		this._onChange 		   	 	= this._onChange.bind(this);
 		this.onHandleFormChange 	= this.onHandleFormChange.bind(this);
+		this.onHandleRoomChange     = this.onHandleRoomChange.bind(this);
 		this.onHandleSubmit 		= this.onHandleSubmit.bind(this);
 		this.onHandleRightPanel 	= this.onHandleRightPanel.bind(this);
 		this.onHandleRightRoomPanel = this.onHandleRightRoomPanel.bind(this);
@@ -178,14 +189,18 @@ class PropertiesDashboard extends React.Component
 		this.setState({ property: property });
 	}
 
+	onHandleRoomChange(room) {
+		this.setState({ room: room });
+	}
+
 	// Handle delete
 	onHandleRemove(id) {
 		PropertiesAction.removeProperty(id);
 	}
 
 	// Handle delete
-	onHandleRemoveRoom(propertyId, roomId) {
-		PropertiesAction.removePropertyRoom(propertyId, roomId);
+	onHandleRemoveRoom(roomId) {
+		PropertiesAction.removePropertyRoom(this.state.property.id, roomId);
 	}
 
 	// Handle submit
@@ -254,15 +269,7 @@ class PropertiesDashboard extends React.Component
 
 		// Instantiate new object or load existing object if found
 		let room = isEditingMode ?
-			_.find(rooms, ['id', id]) : {
-				id: '',
-				property_id: this.state.property.id,
-				name: '',
-				total_area: '',
-				description: '',
-				walls: [initialWallObj],
-				assets: []
-			};
+			_.find(rooms, ['id', id]) : getSingleModifiedState(initialRoomObj, 'property_id', this.state.property.id);
 
 		if (isEditingMode && room.walls.length === 0) {
 			room.walls.push(initialWallObj);
@@ -332,7 +339,7 @@ class PropertiesDashboard extends React.Component
 							rooms={ this.state.property.rooms }
 							onHandleRightRoomPanel={ this.onHandleRightRoomPanel }
 							onSubmit={ this.onHandleSubmit }
-							onHRemoveRoom={ this.onHandleRemoveRoom }
+							onRemove={ this.onHandleRemoveRoom }
 						/>
 				};
 			break;
@@ -417,6 +424,7 @@ class PropertiesDashboard extends React.Component
 							nonAddedRooms={ this.state.property.non_added_rooms }
 							paints={ this.state.paints }
 							isEditingMode={ this.state.isEditingMode }
+							onChange={ this.onHandleRoomChange }
 							onSubmit={ this.onHandleSubmit }
 						/>
 				};

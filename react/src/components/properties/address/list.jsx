@@ -66,7 +66,7 @@ class PropertiesAddressList extends React.Component
 			<SearchField
 				inputProps={
 					{
-						objs: this.props.properties,
+						list: this.props.properties,
 						searchType: "street",
 						onSearch: this.onHandleSearch
 					}

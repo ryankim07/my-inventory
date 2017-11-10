@@ -3,7 +3,7 @@
  *
  * Required props:
  *
- * objs: the list to be searched
+ * list: the list to be searched
  * searchType: key to be searched
  * onChange: handle search input
  *
@@ -12,7 +12,7 @@
  * <SearchField
  *		inputProps={
  *			{
- *				objs: this.state.vehicles,
+ *				list: this.state.vehicles,
  *				searchType: "mfg",
  *				onChange: this.onHandleSearch
  *			}
@@ -40,12 +40,12 @@ class SearchField extends React.Component
 	// Handle search
 	onHandleSearch(event) {
 		const searchType = this.props.inputProps.searchType;
-		let paints       = this.props.inputProps.objs;
+		let list       	 = this.props.inputProps.list;
 		let keywords     = event.target.value;
 
-		const newObj = update(paints, {
+		const newObj = update(list, {
 			$set:
-				_.filter(paints, obj => obj[searchType].match(new RegExp(keywords, 'gi')))
+				_.filter(list, obj => obj[searchType].match(new RegExp(keywords, 'gi')))
 		});
 
 		// Set text

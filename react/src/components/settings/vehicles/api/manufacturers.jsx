@@ -91,7 +91,7 @@ class SettingsManufacturersList extends React.Component
 			<SearchField
 				inputProps={
 					{
-						objs: this.props.manufacturers,
+						list: this.props.manufacturers,
 						searchType: "mfg",
 						onSearch: this.onHandleSearch
 					}

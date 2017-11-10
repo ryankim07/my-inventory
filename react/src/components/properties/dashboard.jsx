@@ -384,7 +384,7 @@ class PropertiesDashboard extends React.Component
 					header: "Features",
 					subForm:
 						<PropertyFeaturesForm
-							features={ this.state.property.features }
+							property={ this.state.property }
 							onSubmit={ this.onHandleSubmit }
 						/>
 				};
@@ -396,7 +396,7 @@ class PropertiesDashboard extends React.Component
 					header: "Exterior Features",
 					subForm:
 						<PropertyExteriorFeaturesForm
-							features={ this.state.property.exterior_features }
+							property={ this.state.property }
 							onSubmit={ this.onHandleSubmit }
 						/>
 				};
@@ -408,7 +408,7 @@ class PropertiesDashboard extends React.Component
 					header: "Interior Features",
 					subForm:
 						<PropertyInteriorFeaturesForm
-							features={ this.state.property.interior_features }
+							property={ this.state.property }
 							onSubmit={ this.onHandleSubmit }
 						/>
 				};

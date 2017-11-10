@@ -19,7 +19,7 @@ class AuthLogin extends React.Component
 
 		this._onChange 			= this._onChange.bind(this);
 		this.onHandleFormChange = this.onHandleFormChange.bind(this);
-		this.onHandleSubmit = this.onHandleSubmit.bind(this);
+		this.onHandleSubmit 	= this.onHandleSubmit.bind(this);
 	}
 
 	// Mounting event

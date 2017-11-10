@@ -13,7 +13,7 @@ class PropertyFeaturesForm extends React.Component
 
 	// Handle form change
 	handleFormChange(event) {
-		this.props.onChange(getSingleModifiedState(this.props.features, FEATURES_PANEL, event.target.value));
+		this.props.onChange(getSingleModifiedState(this.props.property, FEATURES_PANEL, event.target.value));
 	}
 
 	// Handle form submit
@@ -35,7 +35,7 @@ class PropertyFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.features.parking }/>
+									value={ this.props.property.features.parking }/>
 						</div>
 					</div>
 				</div>
@@ -48,7 +48,7 @@ class PropertyFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.features.multi_unit }/>
+									value={ this.props.property.features.multi_unit }/>
 						</div>
 					</div>
 				</div>
@@ -61,7 +61,7 @@ class PropertyFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.features.hoa }/>
+									value={ this.props.property.features.hoa }/>
 						</div>
 					</div>
 				</div>
@@ -74,7 +74,7 @@ class PropertyFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.features.utilities }/>
+									value={ this.props.property.features.utilities }/>
 						</div>
 					</div>
 				</div>
@@ -87,7 +87,7 @@ class PropertyFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.features.lot }/>
+									value={ this.props.property.features.lot }/>
 						</div>
 					</div>
 				</div>
@@ -100,7 +100,7 @@ class PropertyFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.features.common_walls }/>
+									value={ this.props.property.features.common_walls }/>
 						</div>
 					</div>
 				</div>
@@ -113,7 +113,7 @@ class PropertyFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.features.facing_direction }/>
+									value={ this.props.property.features.facing_direction }/>
 						</div>
 					</div>
 				</div>
@@ -126,15 +126,15 @@ class PropertyFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.features.others }/>
+									value={ this.props.property.features.others }/>
 						</div>
 					</div>
 				</div>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input type="hidden" value={ this.props.features.id }/>
-							<input type="hidden" value={ this.props.features.property_id }/>
+							<input type="hidden" value={ this.props.property.features.id }/>
+							<input type="hidden" value={ this.props.property.features.property_id }/>
 						</div>
 					</div>
 				</div>

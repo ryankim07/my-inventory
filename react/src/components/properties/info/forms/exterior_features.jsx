@@ -1,6 +1,6 @@
 import React from 'react';
 import { getSingleModifiedState } from '../../../helper/utils';
-import { INTERIOR_FEATURES_PANEL } from '../../../helper/constants';
+import { EXTERIOR_FEATURES_PANEL } from '../../../helper/constants';
 
 class PropertyExteriorFeaturesForm extends React.Component
 {
@@ -14,7 +14,7 @@ class PropertyExteriorFeaturesForm extends React.Component
 
 	// Handle form change
 	handleFormChange(event) {
-		this.props.onChange(getSingleModifiedState(this.props.features, EXTERIOR_FEATURES_PANEL, event.target.value));
+		this.props.onChange(getSingleModifiedState(this.props.property, EXTERIOR_FEATURES_PANEL, event.target.value));
 	}
 
 	// Handle form submit
@@ -36,7 +36,7 @@ class PropertyExteriorFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.features.exterior }/>
+									value={ this.props.property.exterior_features.exterior }/>
 						</div>
 					</div>
 				</div>
@@ -49,7 +49,7 @@ class PropertyExteriorFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.features.foundation }/>
+									value={ this.props.property.exterior_features.foundation }/>
 						</div>
 					</div>
 				</div>
@@ -62,15 +62,15 @@ class PropertyExteriorFeaturesForm extends React.Component
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.features.others }/>
+									value={ this.props.property.exterior_features.others }/>
 						</div>
 					</div>
 				</div>
 				<div className="form-group">
 					<div className="col-xs-12 col-md-8">
 						<div className="input-group">
-							<input type="hidden" value={ this.props.features.id }/>
-							<input type="hidden" value={ this.props.features.property_id }/>
+							<input type="hidden" value={ this.props.property.exterior_features.id }/>
+							<input type="hidden" value={ this.props.property.exterior_features.property_id }/>
 						</div>
 					</div>
 				</div>

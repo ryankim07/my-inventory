@@ -69,7 +69,7 @@ class Rooms
         foreach ($roomsDiff as $index => $value) {
             $diff[] = [
                 'value' => $value,
-                'title' => ucwords($value)
+                'label' => ucwords($value)
             ];
         }
 

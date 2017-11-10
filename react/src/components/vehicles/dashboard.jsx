@@ -65,7 +65,7 @@ class VehiclesDashboard extends React.Component
 		this.onHandleSubmit 	= this.onHandleSubmit.bind(this);
 		this.onHandleRightPanel = this.onHandleRightPanel.bind(this);
 		this.onHandleModal 		= this.onHandleModal.bind(this);
-		this.closeModal         = this.closeModal.bind(this);
+		this.onHandleCloseModal = this.onHandleCloseModal.bind(this);
 		this.onHandleRemove 	= this.onHandleRemove.bind(this);
 		this.setFlashMessage  	= this.setFlashMessage.bind(this);
 		this.onCloseRightPanel  = this.onCloseRightPanel.bind(this);
@@ -186,7 +186,7 @@ class VehiclesDashboard extends React.Component
 	}
 
 	// Close modal
-	closeModal() {
+	onHandleCloseModal() {
 		this.setState({ showModal: !this.state.showModal });
 	}
 
@@ -295,7 +295,7 @@ class VehiclesDashboard extends React.Component
 			<Modal
 				id="view-vehicle"
 				header={ this.state.vehicle.mfg + " " + this.state.vehicle.model }
-				closeModal={ this.closeModal }>
+				onClose={ this.onHandleCloseModal }>
 				<h1>{ this.state.vehicle.mfg }</h1>
 			</Modal> : null;
 

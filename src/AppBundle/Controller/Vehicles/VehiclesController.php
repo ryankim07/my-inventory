@@ -52,7 +52,7 @@ class VehiclesController extends FOSRestController
     public function postAction(Request $request)
     {
         // Request param
-        $data           = json_decode(stripslashes($request->get('data')), true);
+        $data = json_decode(stripslashes($request->get('data')), true);
 
         // Add new assets
         $data['new_assets'] = $request->files->all();

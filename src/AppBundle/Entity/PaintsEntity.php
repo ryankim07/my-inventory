@@ -325,7 +325,7 @@ class PaintsEntity extends AbstractAssetsEntity
      */
     public function removeAsset(PropertyAssetsEntity $asset)
     {
-        if (!$this->assets->contains($asset)) {
+        if (true === $this->assets->contains($asset)) {
             return;
         }
 

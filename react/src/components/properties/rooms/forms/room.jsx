@@ -33,13 +33,13 @@ class PropertyRoomForm extends React.Component
 		this.setState({
 			disableAddWallsBtn: this.shouldDisableAddWallBtn(this.props.room.walls),
 			wallSides: this.props.room.id === '' ? this.state.allWallSides : this.state.wallSides,
-			/*selectedItem: this.paint.id,
-			assets: this.props.paint.assets*/
+			selectedItem: this.props.room.id,
+			assets: this.props.room.assets
 		});
 	}
 
 	// Next state change
-	/*componentWillReceiveProps(nextProps) {
+	componentWillReceiveProps(nextProps) {
     	if (nextProps.room.id !== this.state.selectedItem) {
 			this.setState({
 				room: nextProps.room,
@@ -49,7 +49,7 @@ class PropertyRoomForm extends React.Component
 				assets: nextProps.room.assets
 			});
 		}
-	}*/
+	}
 
 	// Handle input changes
 	onHandleFormChange(event) {

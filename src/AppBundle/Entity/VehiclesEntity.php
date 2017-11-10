@@ -306,7 +306,7 @@ class VehiclesEntity extends AbstractAssetsEntity
      */
     public function addAsset(VehicleAssetsEntity $asset)
     {
-        if (!$this->assets->contains($asset)) {
+        if (true === $this->assets->contains($asset)) {
             return;
         }
 
@@ -322,6 +322,10 @@ class VehiclesEntity extends AbstractAssetsEntity
      */
     public function removeAsset(VehicleAssetsEntity $asset)
     {
+        if (!$this->assets->contains($asset)) {
+            return;
+        }
+
         $this->assets->removeElement($asset);
     }
 }

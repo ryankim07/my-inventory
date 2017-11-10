@@ -10,8 +10,6 @@ import PropertyForm from './main/forms/property';
 import PropertiesList from './address/list';
 import PropertyInfoView from './info/view';
 import PropertyFeaturesForm from './info/forms/features';
-import PropertyExteriorFeaturesForm from './info/forms/exterior_features';
-import PropertyInteriorFeaturesForm from './info/forms/interior_features';
 import PropertyRoomsList from './rooms/list';
 import PropertyRoomForm from './rooms/forms/room';
 import FlashMessage from '../helper/flash_message';
@@ -75,6 +73,22 @@ const initialPropertyObj = {
 	interiorFeatures: {},
 	rooms: [],
 	assets: []
+};
+
+// Header and ID for features form
+const content = {
+	'features': {
+		id: 'features-form',
+		header: 'Features'
+	},
+	'exterior_features': {
+		id: 'exterior-features-form',
+		header: 'Exterior Features'
+	},
+	'interior_features': {
+		id: 'interior-features-form',
+		header: 'Interior Features'
+	}
 };
 
 class PropertiesDashboard extends React.Component
@@ -379,36 +393,16 @@ class PropertiesDashboard extends React.Component
 
 		switch (this.state.rightPanel) {
 			case FEATURES_PANEL:
+			case EXTERIOR_FEATURES_PANEL:
+			case INTERIOR_FEATURES_PANEL:
 				rightPanelObjs = {
-					id: "features-form",
-					header: "Features",
+					id: content[this.state.rightPanel]['id'],
+					header: content[this.state.rightPanel]['header'],
 					subForm:
 						<PropertyFeaturesForm
 							property={ this.state.property }
-							onSubmit={ this.onHandleSubmit }
-						/>
-				};
-			break;
-
-			case EXTERIOR_FEATURES_PANEL:
-				rightPanelObjs = {
-					id: "exterior-features-form",
-					header: "Exterior Features",
-					subForm:
-						<PropertyExteriorFeaturesForm
-							property={ this.state.property }
-							onSubmit={ this.onHandleSubmit }
-						/>
-				};
-			break;
-
-			case INTERIOR_FEATURES_PANEL:
-				rightPanelObjs = {
-					id: "interior-features-form",
-					header: "Interior Features",
-					subForm:
-						<PropertyInteriorFeaturesForm
-							property={ this.state.property }
+							featuresType={ this.state.rightPanel }
+							onChange={ this.onHandleFormChange }
 							onSubmit={ this.onHandleSubmit }
 						/>
 				};

@@ -1,5 +1,10 @@
+/**
+ * This single component dynamically renders forms for
+ * Features, Exterior Features and Interior Features
+ */
+
 import React from 'react';
-import { FEATURES_PANEL } from '../../../helper/constants';
+import { upperFirstLetter, getNestedModifiedState, getSingleModifiedState } from '../../../helper/utils';
 
 class PropertyFeaturesForm extends React.Component
 {
@@ -13,142 +18,77 @@ class PropertyFeaturesForm extends React.Component
 
 	// Handle form change
 	handleFormChange(event) {
-		this.props.onChange(getSingleModifiedState(this.props.property, FEATURES_PANEL, event.target.value));
+    	let property 	 = this.props.property;
+    	let featuresType = this.props.featuresType;
+    	let obj 		 = {};
+
+    	obj[event.target.name] = event.target.value;
+    	let modifiedFeatures   = getNestedModifiedState(property[featuresType], obj);
+		let modifiedObj        = getSingleModifiedState(property, featuresType, modifiedFeatures);
+
+		this.props.onChange(modifiedObj);
 	}
 
 	// Handle form submit
     handleFormSubmit(event) {
 		event.preventDefault();
-		this.props.onSubmit(this.props.features);
+		this.props.onSubmit(this.props.property, this.props.featuresType);
     }
 
     // Render
 	render() {
-		let featuresForm =
-			<form onSubmit={ this.handleFormSubmit }>
-				<div className="form-group">
+		let property 	   = this.props.property;
+		let features       = property[this.props.featuresType];
+    	let featuresFields = [];
+
+		Object.keys(features).forEach((value, key) => {
+			if (value === "id" || value === "property_id") {
+				return;
+			}
+
+			featuresFields.push(
+				<div key={key} className="form-group">
 					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Parking</label>
+						<label className="control-label">{ upperFirstLetter(value) }</label>
 						<div className="input-group">
 								<textarea
-									name="parking"
+									name={value}
 									rows="5"
 									className="form-control"
 									onChange={ this.handleFormChange }
-									value={ this.props.property.features.parking }/>
+									value={ features[value] }
+								/>
 						</div>
 					</div>
 				</div>
-				<div className="form-group">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Multi Unit</label>
-						<div className="input-group">
-								<textarea
-									name="multi_unit"
-									rows="5"
-									className="form-control"
-									onChange={ this.handleFormChange }
-									value={ this.props.property.features.multi_unit }/>
-						</div>
+			);
+		});
+
+		let hiddenFields =
+			<div className="form-group">
+				<div className="col-xs-12 col-md-8">
+					<div className="input-group">
+						<input type="hidden" value={ features['id'] }/>
+						<input type="hidden" value={ features['property_id'] }/>
 					</div>
 				</div>
-				<div className="form-group">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Hoa</label>
-						<div className="input-group">
-								<textarea
-									name="hoa"
-									rows="5"
-									className="form-control"
-									onChange={ this.handleFormChange }
-									value={ this.props.property.features.hoa }/>
-						</div>
+			</div>;
+
+		let submitField =
+			<div className="form-group">
+				<div className="col-xs-12 col-md-12">
+					<div className="clearfix">
+						<button type="submit" value="Save"><i className="fa fa-floppy-o"/> Save</button>
 					</div>
 				</div>
-				<div className="form-group">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Utilities</label>
-						<div className="input-group">
-								<textarea
-									name="utilities"
-									rows="5"
-									className="form-control"
-									onChange={ this.handleFormChange }
-									value={ this.props.property.features.utilities }/>
-						</div>
-					</div>
-				</div>
-				<div className="form-group">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Lot</label>
-						<div className="input-group">
-								<textarea
-									name="lot"
-									rows="5"
-									className="form-control"
-									onChange={ this.handleFormChange }
-									value={ this.props.property.features.lot }/>
-						</div>
-					</div>
-				</div>
-				<div className="form-group">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Common Walls</label>
-						<div className="input-group">
-								<textarea
-									name="common_walls"
-									rows="5"
-									className="form-control"
-									onChange={ this.handleFormChange }
-									value={ this.props.property.features.common_walls }/>
-						</div>
-					</div>
-				</div>
-				<div className="form-group">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Facing Direction</label>
-						<div className="input-group">
-								<textarea
-									name="facing_direction"
-									rows="5"
-									className="form-control"
-									onChange={ this.handleFormChange }
-									value={ this.props.property.features.facing_direction }/>
-						</div>
-					</div>
-				</div>
-				<div className="form-group">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Others</label>
-						<div className="input-group">
-								<textarea
-									name="others"
-									rows="5"
-									className="form-control"
-									onChange={ this.handleFormChange }
-									value={ this.props.property.features.others }/>
-						</div>
-					</div>
-				</div>
-				<div className="form-group">
-					<div className="col-xs-12 col-md-8">
-						<div className="input-group">
-							<input type="hidden" value={ this.props.property.features.id }/>
-							<input type="hidden" value={ this.props.property.features.property_id }/>
-						</div>
-					</div>
-				</div>
-				<div className="form-group">
-					<div className="col-xs-12 col-md-12">
-						<div className="clearfix">
-							<button type="submit" value="Save"><i className="fa fa-floppy-o"/> Save</button>
-						</div>
-					</div>
-				</div>
-			</form>;
+			</div>;
 
         return (
-			<div>{ featuresForm }</div>
+			<form onSubmit={ this.handleFormSubmit }>
+				{ featuresFields }
+				{ hiddenFields }
+				{ submitField }
+			</form>
         );
     }
 }

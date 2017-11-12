@@ -23,6 +23,7 @@ import { MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
 		 FEATURES_PANEL,
 		 EXTERIOR_FEATURES_PANEL,
 		 INTERIOR_FEATURES_PANEL,
+		 ADD_PANEL,
 		 INFO_PANEL,
 		 ROOM_PANEL,
 		 ROOMS_LIST } from '../helper/constants';
@@ -134,6 +135,16 @@ class PropertiesDashboard extends React.Component
 	componentWillMount() {
 		PropertiesStore.addChangeListener(this._onChange);
 		PropertiesStore.removeStoreStatus();
+
+		if (this.props.match.params.section === "add") {
+			this.setState({
+				mainPanel: this.props.match.params.section,
+				mainPanelColumnCss: {
+					mobileWidth: RIGHT_PANEL_MOBILE_COLUMN_WIDTH,
+					desktopWidth: RIGHT_PANEL_DESKTOP_COLUMN_WIDTH
+				}
+			});
+		}
 	}
 
 	// Mounted component
@@ -152,6 +163,10 @@ class PropertiesDashboard extends React.Component
 			let mainPanel = null;
 
 			switch (nextProps.location.pathname) {
+				case '/properties/dashboard/add':
+					mainPanel = ADD_PANEL;
+				break;
+
 				case '/properties/info/view':
 					mainPanel = INFO_PANEL;
 				break;
@@ -213,8 +228,8 @@ class PropertiesDashboard extends React.Component
 	}
 
 	// Handle delete
-	onHandleRemoveRoom(roomId) {
-		PropertiesAction.removePropertyRoom(this.state.property.id, roomId);
+	onHandleRemoveRoom(propertyId, roomId) {
+		PropertiesAction.removePropertyRoom(propertyId, roomId);
 	}
 
 	// Handle submit
@@ -325,12 +340,27 @@ class PropertiesDashboard extends React.Component
 		let mainPanelObjs = {};
 
 		switch (this.state.mainPanel) {
+			case ADD_PANEL:
+				mainPanelObjs = {
+					id: "property-form",
+					displayHeader: "Property",
+					iconBtn: "",
+					subForm:
+						<PropertyForm
+							loader={false}
+							property={this.state.property}
+							onChange={this.onHandleFormChange}
+							onSubmit={this.onHandleSubmit}
+						/>
+				}
+			break;
+
 			case INFO_PANEL:
 				mainPanelObjs = {
 					id: "property-view",
 					displayHeader: "Property Information",
 					iconBtn: "fa fa-window-close",
-					previousRoute: "/properties",
+					previousRoute: "/properties" + this.state.property.id,
 					subForm:
 						<PropertyInfoView
 							property={ this.state.property }
@@ -346,7 +376,7 @@ class PropertiesDashboard extends React.Component
 					displayHeader: "Properties Rooms List",
 					iconBtn: "fa fa-plus",
 					onClick: this.onHandleRightRoomPanel.bind(this, false),
-					previousRoute: "/properties/info/view",
+					previousRoute: "/properties/dashboard/info",
 					subForm:
 						<PropertyRoomsList
 							selectedItem={ this.state.room.id }

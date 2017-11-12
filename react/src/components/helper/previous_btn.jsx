@@ -3,13 +3,13 @@
  */
 
 import React from 'react';
-import { PropTypes } from 'prop-types';
 
+import { withRouter } from 'react-router';
 class PreviousButton extends React.Component
 {
 	// Previous route
 	goBack(route) {
-		this.context.router.history.push(route);
+		this.props.history.push(route);
 	}
 
 	// Render
@@ -20,8 +20,4 @@ class PreviousButton extends React.Component
     }
 }
 
-PreviousButton.contextTypes = {
-	router: PropTypes.object
-}
-
-export default PreviousButton;
+export default withRouter(PreviousButton);

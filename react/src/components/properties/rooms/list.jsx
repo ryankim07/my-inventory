@@ -43,7 +43,7 @@ class PropertyRoomsList extends React.Component
 						addEditBtn={ true }
 						onEdit={ this.props.onHandleRightRoomPanel.bind(this, room.id) }
 						addRemoveBtn={ true }
-						onRemove={ this.props.onRemove.bind(this, room.id) }
+						onRemove={ this.props.onRemove.bind(this, room.property_id, room.id) }
 					/>
 				);
 			});

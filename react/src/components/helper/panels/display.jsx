@@ -18,8 +18,6 @@ class DisplayPanel extends React.Component
 {
 	// Render
 	render() {
-		let previousBtn = this.props.previousRoute !== "" ?
-			<PreviousButton inputProps={ { route: this.props.previousRoute } }/> : null;
 		let clickBtn = this.props.onClick !== "" ?
 			<button onClick={ this.props.onClick }><i className={ this.props.iconBtn } aria-hidden="true"/></button> : null;
 
@@ -34,7 +32,6 @@ class DisplayPanel extends React.Component
 								<span>{ this.props.header }</span>
 							</div>
 							<div className="col-xs-2 col-md-2">
-								{ previousBtn }
 								{ clickBtn }
 							</div>
 						</div>

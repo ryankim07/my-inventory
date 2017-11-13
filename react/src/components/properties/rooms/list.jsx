@@ -41,7 +41,7 @@ class PropertyRoomsList extends React.Component
 							room.total_area
 						]}
 						addEditBtn={ true }
-						onEdit={ this.props.onHandleRightRoomPanel.bind(this, room.id) }
+						onEdit={ this.props.onHandleRoomPanel.bind(this, room.id) }
 						addRemoveBtn={ true }
 						onRemove={ this.props.onRemove.bind(this, room.property_id, room.id) }
 					/>

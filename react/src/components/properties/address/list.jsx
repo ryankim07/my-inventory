@@ -49,9 +49,9 @@ class PropertiesAddressList extends React.Component
 								property.address.subdivision
 							]}
 							addViewBtn={ true }
-							onView={ this.props.onMainPanel.bind(this, property.address.property_id, INFO_PANEL) }
+							onView={ this.props.onHandlePanel.bind(this, property.address.property_id, INFO_PANEL, '', '') }
 							addEditBtn={ true }
-							onEdit={ this.props.onRightPanel.bind(this, property.address.property_id, PROPERTY_FORM) }
+							onEdit={ this.props.onHandlePanel.bind(this, property.address.property_id, '', '', PROPERTY_FORM) }
 							addRemoveBtn={ true }
 							onRemove={ this.props.onRemove.bind(this, property.address.property_id) }
 						/>

@@ -3,7 +3,8 @@ import Gallery from '../../helper/gallery';
 import { FEATURES_PANEL,
 		 EXTERIOR_FEATURES_PANEL,
 		 INTERIOR_FEATURES_PANEL,
-		 ROOMS_LIST } from '../../helper/constants';
+		 INFO_PANEL,
+		 ROOMS_LIST_PANEL } from '../../helper/constants';
 
 class PropertyInfoView extends React.Component
 {
@@ -57,7 +58,7 @@ class PropertyInfoView extends React.Component
 		let property		= this.props.property;
 		property[panelType] = features;
 
-		this.props.onHandleRightPanel(property.id, panelType);
+		this.props.onHandlePanel(property.id, '', '', panelType);
 	}
 
 	// Render
@@ -116,7 +117,7 @@ class PropertyInfoView extends React.Component
 			<div>
 				<h4>Property Details</h4>
 				<div>
-					<button onClick={ this.props.onMainPanel.bind(this, property.id, ROOMS_LIST) }><i className="fa fa-search" aria-hidden="true"/> View</button>
+					<button onClick={ this.props.onHandlePanel.bind(this, property.id, INFO_PANEL, ROOMS_LIST_PANEL, '') }><i className="fa fa-search" aria-hidden="true"/> View rooms</button>
 				</div>
 				<ul>
 					<li>

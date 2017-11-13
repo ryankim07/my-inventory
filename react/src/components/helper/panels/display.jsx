@@ -7,11 +7,9 @@
  * header: header text
  * iconBtn: Fontawesome icon attribute
  * onClick: method to handle on click event
- * previousRoute: the route to be taken if show previous button is enabled
  */
 
 import React from 'react';
-import PreviousButton from '../../helper/previous_btn';
 import { INFO_PANEL } from '../../helper/constants';
 
 class DisplayPanel extends React.Component

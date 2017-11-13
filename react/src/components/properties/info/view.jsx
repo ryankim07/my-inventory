@@ -58,7 +58,7 @@ class PropertyInfoView extends React.Component
 		let property		= this.props.property;
 		property[panelType] = features;
 
-		this.props.onHandlePanel(property.id, '', '', panelType);
+		this.props.onHandlePanel(property.id, INFO_PANEL, '', panelType);
 	}
 
 	// Render

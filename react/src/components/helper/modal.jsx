@@ -40,8 +40,7 @@ class Modal extends React.Component
 					header={ this.props.header }
 					additionalHeader=""
 					iconBtn="fa fa-window-close"
-					onClick={ this.props.onClose }
-					previousRoute="">
+					onClick={ this.props.onClose }>
 					{ this.props.children }
 				</DisplayPanel>
 				<div>

@@ -193,9 +193,7 @@ class SettingsPaintsDashboard extends React.Component
 				header="Paints List"
 				additionalHeader=""
 				iconBtn="fa fa-plus"
-				onClick={ this.onHandleRightPanel.bind(this, false) }
-				showPreviousBtn={ false }
-				previousRoute="">
+				onClick={ this.onHandleRightPanel.bind(this, false) }>
 				<SettingsPaintsList
 					loader={ this.state.loader }
 					selectedItem={ this.state.paint.id }
@@ -212,9 +210,7 @@ class SettingsPaintsDashboard extends React.Component
 				header="Paint"
 				additionalHeader={ !this.state.isEditingMode ? "Add" : "Edit" }
 				iconBtn="fa fa-window-close"
-				onClick={ this.onCloseRightPanel }
-				showPreviousBtn={ false }
-				previousRoute="">
+				onClick={ this.onCloseRightPanel }>
 				<SettingsPaint
 					paint={ this.state.paint }
 					vendors={ this.state.vendors }

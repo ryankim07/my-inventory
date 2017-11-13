@@ -122,8 +122,7 @@ class AuthLogin extends React.Component
 					header="Login"
 					additionalHeader=""
 					iconBtn=""
-					onClick=""
-					previousRoute="">
+					onClick="">
 					{ loginForm }
 				</DisplayPanel>
 			</div>

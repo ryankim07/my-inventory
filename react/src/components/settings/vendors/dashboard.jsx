@@ -169,9 +169,7 @@ class SettingsVendorsDashboard extends React.Component
 				header="Vendors List"
 				additionalHeader=""
 				iconBtn="fa fa-plus"
-				onClick={ this.onHandleRightPanel.bind(this, false) }
-				showPreviousBtn={ false }
-				previousRoute="">
+				onClick={ this.onHandleRightPanel.bind(this, false) }>
 				<SettingsVendorsList
 					loader={ this.state.loader }
 					selectedItem={ this.state.vendor.id }
@@ -188,9 +186,7 @@ class SettingsVendorsDashboard extends React.Component
 				header="Vendor"
 				additionalHeader={ !this.state.isEditingMode ? "Add" : "Edit" }
 				iconBtn="fa fa-window-close"
-				onClick={ this.onCloseRightPanel }
-				showPreviousBtn={ false }
-				previousRoute="">
+				onClick={ this.onCloseRightPanel }>
 				<SettingsVendor
 					vendor={ this.state.vendor }
 					onChange={ this.onHandleFormChange }

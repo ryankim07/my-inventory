@@ -175,9 +175,7 @@ class SettingsUsersDashboard extends React.Component
 				header="Users List"
 				additionalHeader=""
 				iconBtn="fa fa-plus"
-				onClick={ this.onHandleRightPanel.bind(this, false) }
-				showPreviousBtn={ false }
-				previousRoute="">
+				onClick={ this.onHandleRightPanel.bind(this, false) }>
 				<SettingsUsersList
 					loader={ this.state.loader }
 					selectedItem={ this.state.user.id }
@@ -193,9 +191,7 @@ class SettingsUsersDashboard extends React.Component
 				header="User"
 				additionalHeader={ !this.state.isEditingMode ? "Add" : "Edit" }
 				iconBtn="fa fa-window-close"
-				onClick={ this.onCloseRightPanel }
-				showPreviousBtn={ false }
-				previousRoute="">
+				onClick={ this.onCloseRightPanel }>
 				<SettingsUser
 					user={ this.state.user }
 					isEditingMode={ this.state.isEditingMode }

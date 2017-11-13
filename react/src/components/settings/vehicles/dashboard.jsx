@@ -149,9 +149,7 @@ class SettingsVehiclesDashboard extends React.Component
 						header="API Vehicle List"
 						additionalHeader=""
 						iconBtn="fa fa-cloud-download"
-						onClick={ this.onHandleSync.bind(this) }
-						showPreviousBtn={ false }
-						previousRoute="">
+						onClick={ this.onHandleSync.bind(this) }>
 						<SettingsManufacturersList
 							loader={ this.state.loader }
 							page={ this.state.page }
@@ -173,9 +171,7 @@ class SettingsVehiclesDashboard extends React.Component
 				header={ this.state.mfg.mfg + " Models List" }
 				additionalHeader=""
 				iconBtn="fa fa-window-close"
-				onClick={ this.onCloseRightPanel }
-				showPreviousBtn={ false }
-				previousRoute="">
+				onClick={ this.onCloseRightPanel }>
 				<SettingsManufacturerModelsList
 					selectedItem={ this.state.model.id }
 					models={ this.state.mfg.models }

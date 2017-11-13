@@ -18,7 +18,7 @@ import { getSingleModifiedState, getNestedModifiedState } from "../helper/utils"
 import { MAIN_DEFAULT_MOBILE_COLUMN_WIDTH, MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH, MAIN_SHRINKED_MOBILE_COLUMN_WIDTH,
 		 MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH, CENTER_PANEL_MOBILE_COLUMN_WIDTH, CENTER_PANEL_DESKTOP_COLUMN_WIDTH,
 		 RIGHT_PANEL_MOBILE_COLUMN_WIDTH, RIGHT_PANEL_DESKTOP_COLUMN_WIDTH, FEATURES_PANEL, EXTERIOR_FEATURES_PANEL,
-		 INTERIOR_FEATURES_PANEL, ADD_PANEL, INFO_PANEL, ROOM_PANEL, LIST_PANEL } from '../helper/constants';
+		 INTERIOR_FEATURES_PANEL, ADD_PANEL, INFO_PANEL, ROOM_PANEL, ROOMS_LIST_PANEL, LIST_PANEL } from '../helper/constants';
 
 // Get room walls initial state
 const initialWallObj = {
@@ -97,7 +97,7 @@ class PropertiesDashboard extends React.Component
 			paints: [],
 			isEditingMode: false,
 			loader: true,
-			mainPanel: this.props.match.params.section,
+			mainPanel: '',
 			centerPanel: '',
 			rightPanel: '',
 			flashMessage: null,
@@ -116,30 +116,35 @@ class PropertiesDashboard extends React.Component
 			}
 		};
 
-		this._onChange 		   	 = this._onChange.bind(this);
-		this.onHandleFormChange  = this.onHandleFormChange.bind(this);
-		this.onHandleRoomChange  = this.onHandleRoomChange.bind(this);
-		this.onHandlePanel 		 = this.onHandlePanel.bind(this);
-		this.onHandleRoomPanel   = this.onHandleRoomPanel.bind(this);
-		this.onHandleSubmit 	 = this.onHandleSubmit.bind(this);
-		this.setFlashMessage     = this.setFlashMessage.bind(this);
-		this.onCloseRightPanel   = this.onCloseRightPanel.bind(this);
+		this._onChange 		   	= this._onChange.bind(this);
+		this.onHandleFormChange = this.onHandleFormChange.bind(this);
+		this.onHandleRoomChange = this.onHandleRoomChange.bind(this);
+		this.onHandlePanel 		= this.onHandlePanel.bind(this);
+		this.onHandleRoomPanel  = this.onHandleRoomPanel.bind(this);
+		this.onHandleSubmit 	= this.onHandleSubmit.bind(this);
+		this.setFlashMessage    = this.setFlashMessage.bind(this);
 	}
 
 	// Mounting component
 	componentWillMount() {
+		let mainPanelMobile  = MAIN_DEFAULT_MOBILE_COLUMN_WIDTH;
+		let mainPanelDesktop = MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH;
+
 		PropertiesStore.addChangeListener(this._onChange);
 		PropertiesStore.removeStoreStatus();
 
 		if (this.props.match.params.section === "add") {
-			this.setState({
-				mainPanel: this.props.match.params.section,
-				mainPanelColumnCss: {
-					mobileWidth: RIGHT_PANEL_MOBILE_COLUMN_WIDTH,
-					desktopWidth: RIGHT_PANEL_DESKTOP_COLUMN_WIDTH
-				}
-			});
+			mainPanelMobile  = RIGHT_PANEL_MOBILE_COLUMN_WIDTH;
+			mainPanelDesktop = RIGHT_PANEL_DESKTOP_COLUMN_WIDTH;
 		}
+
+		this.setState({
+			mainPanel: this.props.match.params.section,
+			mainPanelColumnCss: {
+				mobileWidth: mainPanelMobile,
+				desktopWidth: mainPanelDesktop
+			}
+		});
 	}
 
 	// Mounted component
@@ -321,10 +326,11 @@ class PropertiesDashboard extends React.Component
 	}
 
 	// Close right panel
-	onCloseRightPanel() {
+	onCloseRightPanel(mainPanel, centerPanel, rightPanel) {
 		this.setState({
-			mainPanel: this.state.mainPanel,
-			rightPanel: '',
+			mainPanel: mainPanel,
+			centerPanel: centerPanel,
+			rightPanel: rightPanel,
 			mainPanelColumnCss: {
 				mobileWidth: MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
 				desktopWidth: MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH
@@ -360,7 +366,6 @@ class PropertiesDashboard extends React.Component
 					id: "property-view",
 					displayHeader: "Property Information",
 					iconBtn: "fa fa-window-close",
-					previousRoute: "/properties",
 					subForm:
 						<PropertyInfoView
 							property={ this.state.property }
@@ -375,7 +380,6 @@ class PropertiesDashboard extends React.Component
 					displayHeader: "Properties List",
 					iconBtn: "fa fa-plus",
 					onClick: this.onHandlePanel.bind(this, '', '', ''),
-					previousRoute: "",
 					subForm:
 						<PropertiesList
 							loader={ this.state.loader }
@@ -393,8 +397,7 @@ class PropertiesDashboard extends React.Component
 				header={ mainPanelObjs.header }
 				additionalHeader={ mainPanelObjs.additionalHeader }
 				iconBtn={ mainPanelObjs.iconBtn }
-				onClick={ mainPanelObjs.onClick }
-				previousRoute={ mainPanelObjs.previousRoute }>
+				onClick={ mainPanelObjs.onClick }>
 				{ mainPanelObjs.subForm }
 			</DisplayPanel>;
 
@@ -405,11 +408,11 @@ class PropertiesDashboard extends React.Component
 				header="Properties Rooms List"
 				additionalHeader={ this.state.isEditingMode ? 'Add' : 'Edit' }
 				iconBtn="fa fa-window-close"
-				onClick={ this.onHandleRoomPanel.bind(this, false) }>
+				onClick={ this.onCloseRightPanel.bind(this, INFO_PANEL, '', '') }>
 				<PropertyRoomsList
 					selectedItem={ this.state.room.id }
 					rooms={ this.state.property.rooms }
-					onHandleRoomPanel={ this.onHandleRoomPanel }
+					onHandleRoomPanel={ this.onHandleRoomPanel.bind(this, false) }
 					onSubmit={ this.onHandleSubmit }
 					onRemove={ this.onHandleRemoveRoom }
 				/>
@@ -425,6 +428,7 @@ class PropertiesDashboard extends React.Component
 				rightPanelObjs = {
 					id: content[this.state.rightPanel]['id'],
 					header: content[this.state.rightPanel]['header'],
+					onClick: this.onCloseRightPanel.bind(this, '', INFO_PANEL, ''),
 					subForm:
 						<PropertyFeaturesForm
 							property={ this.state.property }
@@ -439,6 +443,7 @@ class PropertiesDashboard extends React.Component
 				rightPanelObjs = {
 					id: "room-form",
 					header: "Room",
+					onClick: this.onCloseRightPanel.bind(this, INFO_PANEL, ROOMS_LIST_PANEL, ''),
 					subForm:
 						<PropertyRoomForm
 							room={ this.state.room }
@@ -456,6 +461,7 @@ class PropertiesDashboard extends React.Component
 				rightPanelObjs = {
 					id: "property-form",
 					header: "Property",
+					onClick: this.onCloseRightPanel.bind(this, LIST_PANEL, '', ''),
 					subForm:
 						<PropertyForm
 							loader={false}
@@ -472,8 +478,7 @@ class PropertiesDashboard extends React.Component
 				header={ rightPanelObjs.header }
 				additionalHeader={ this.state.isEditingMode ? 'Add' : 'Edit' }
 				iconBtn="fa fa-window-close"
-				onClick={ this.onCloseRightPanel }
-				previousRoute="">
+				onClick={ rightPanelObjs.onClick }>
 				{ rightPanelObjs.subForm }
 			</DisplayPanel> : null;
 

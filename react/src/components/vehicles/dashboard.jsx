@@ -236,8 +236,7 @@ class VehiclesDashboard extends React.Component
 						header="Vehicle"
 						additionalHeader="Add"
 						iconBtn=""
-						onClick=""
-						previousRoute="">
+						onClick="">
 						<VehicleForm
 							loader={ this.state.loader }
 							vehicle={ this.state.vehicle }
@@ -256,9 +255,7 @@ class VehiclesDashboard extends React.Component
 						header="Vehicle List"
 						additionalHeader=""
 						iconBtn="fa fa-plus"
-						onClick={ this.onHandleRightPanel.bind(this, false) }
-						showPreviousBtn={ false }
-						previousRoute="">
+						onClick={ this.onHandleRightPanel.bind(this, false) }>
 						<VehiclesList
 							loader={ this.state.loader }
 							selectedItem={ this.state.vehicle.id }
@@ -278,8 +275,7 @@ class VehiclesDashboard extends React.Component
 				header="Vehicle"
 				additionalHeader={ !this.state.isEditingMode ? "Add" : "Edit" }
 				iconBtn="fa fa-window-close"
-				onClick={ this.onCloseRightPanel }
-				previousRoute="">
+				onClick={ this.onCloseRightPanel }>
 				<VehicleForm
 					loader={ false }
 					vehicle={ this.state.vehicle }

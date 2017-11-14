@@ -1,6 +1,5 @@
 import React from 'react';
 import _ from 'lodash';
-import { PropTypes } from 'prop-types';
 import PaintsAction from '../../../actions/paints-action';
 import PaintsStore from '../../../stores/paints/store';
 import MainPanel from '../../helper/panels/main';
@@ -92,7 +91,7 @@ class SettingsPaintsDashboard extends React.Component
 		let openRightPanel  = PaintsStore.showRightPanel();
 
 		if (!isAuthenticated){
-			this.context.router.history.push("/auth/forms/login");
+			this.props.history.push("/auth/forms/login");
 			return false;
 		}
 
@@ -237,9 +236,5 @@ class SettingsPaintsDashboard extends React.Component
 		)
 	}
 }
-
-SettingsPaintsDashboard.contextTypes = {
-	router: PropTypes.object.isRequired
-};
 
 export default SettingsPaintsDashboard;

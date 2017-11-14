@@ -1,5 +1,4 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import VendorsAction from '../../../actions/vendors-action';
 import VendorsStore from '../../../stores/vendors/store';
 import MainPanel from '../../helper/panels/main';
@@ -88,7 +87,7 @@ class SettingsVendorsDashboard extends React.Component
 		let openRightPanel  = VendorsStore.showRightPanel();
 
 		if (!isAuthenticated){
-			this.context.router.history.push("/auth/forms/login");
+			this.props.history.push("/auth/forms/login");
 			return false;
 		}
 
@@ -213,9 +212,5 @@ class SettingsVendorsDashboard extends React.Component
 		)
 	}
 }
-
-SettingsVendorsDashboard.contextTypes = {
-	router: PropTypes.object.isRequired
-};
 
 export default SettingsVendorsDashboard;

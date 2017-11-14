@@ -1,5 +1,4 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import AuthStore from '../../../stores/auth/store';
 import AuthAction from '../../../actions/auth-action';
 import DisplayPanel from '../../helper/panels/display';
@@ -38,7 +37,7 @@ class AuthLogin extends React.Component
 		let flashMsg 		= AuthStore.getStoreStatus();
 
 		if (isAuthenticated){
-			this.context.router.history.push("/");
+			this.props.history.push("/");
 			return false;
 		}
 
@@ -129,9 +128,5 @@ class AuthLogin extends React.Component
 		);
 	}
 }
-
-AuthLogin.contextTypes = {
-	router: PropTypes.object.isRequired
-};
 
 export default AuthLogin;

@@ -1,6 +1,5 @@
 import React from 'react';
 import _ from 'lodash';
-import { PropTypes } from 'prop-types';
 import PropertiesAction from '../../actions/properties-action';
 import PropertiesStore from '../../stores/properties/store';
 import MainPanel from '../helper/panels/main';
@@ -133,7 +132,7 @@ class PropertiesDashboard extends React.Component
 		PropertiesStore.addChangeListener(this._onChange);
 		PropertiesStore.removeStoreStatus();
 
-		if (this.props.match.params.section === "add") {
+		if (this.props.match.params.section === ADD_PANEL) {
 			mainPanelMobile  = RIGHT_PANEL_MOBILE_COLUMN_WIDTH;
 			mainPanelDesktop = RIGHT_PANEL_DESKTOP_COLUMN_WIDTH;
 		}
@@ -149,7 +148,9 @@ class PropertiesDashboard extends React.Component
 
 	// Mounted component
 	componentDidMount() {
-		PropertiesAction.getPropertiesAndPaints();
+		if (this.props.match.params.section !== ADD_PANEL) {
+			PropertiesAction.getPropertiesAndPaints();
+		}
 	}
 
 	// Unmount component
@@ -190,7 +191,6 @@ class PropertiesDashboard extends React.Component
 
 	// State changes
 	_onChange() {
-		//let property		= PropertiesStore.getProperty();
 		let properties		= PropertiesStore.getProperties();
 		let paints          = PropertiesStore.getPaints();
 		let storeStatus 	= PropertiesStore.getStoreStatus();
@@ -198,12 +198,11 @@ class PropertiesDashboard extends React.Component
 		let rightPanel 		= PropertiesStore.showRightPanel();
 
 		if (!isAuthenticated){
-			this.context.router.history.push("/auth/forms/login");
+			this.props.history.push("/auth/forms/login");
 			return false;
 		}
 
 		this.setState({
-			//property: Object.keys(property).length === 0 ? { address: {} } : property,
 			properties: properties,
 			paints: paints,
 			rightPanel: rightPanel,
@@ -345,7 +344,6 @@ class PropertiesDashboard extends React.Component
 
 		switch (this.state.mainPanel) {
 			case ADD_PANEL:
-				console.log('add panel');
 				mainPanelObjs = {
 					id: "property-form",
 					displayHeader: "Property",
@@ -361,7 +359,6 @@ class PropertiesDashboard extends React.Component
 			break;
 
 			case INFO_PANEL:
-				console.log('info panel');
 				mainPanelObjs = {
 					id: "property-view",
 					displayHeader: "Property Information",
@@ -501,9 +498,5 @@ class PropertiesDashboard extends React.Component
 		)
 	}
 }
-
-PropertiesDashboard.contextTypes = {
-	router: PropTypes.object.isRequired
-};
 
 export default PropertiesDashboard;

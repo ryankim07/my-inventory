@@ -1,6 +1,5 @@
 import React from 'react';
 import _ from 'lodash';
-import { PropTypes } from 'prop-types';
 import ManufacturersAction from '../../../actions/manufacturers-action';
 import ManufacturersStore from '../../../stores/vehicles/mfgs-store';
 import MainPanel from '../../helper/panels/main';
@@ -196,9 +195,5 @@ class SettingsVehiclesDashboard extends React.Component
 		)
 	}
 }
-
-SettingsVehiclesDashboard.contextTypes = {
-	router: PropTypes.object.isRequired
-};
 
 export default SettingsVehiclesDashboard;

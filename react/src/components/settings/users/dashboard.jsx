@@ -1,6 +1,5 @@
 import React from 'react';
 import _ from 'lodash';
-import { PropTypes } from 'prop-types';
 import UsersAction from '../../../actions/users-action';
 import UsersStore from '../../../stores/users/store';
 import MainPanel from '../../helper/panels/main';
@@ -9,12 +8,8 @@ import RightPanel from '../../helper/panels/right';
 import SettingsUser from './../users/forms/user';
 import SettingsUsersList from './../users/list';
 import FlashMessage from '../../helper/flash_message';
-import { MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
-		 MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH,
-		 MAIN_SHRINKED_MOBILE_COLUMN_WIDTH,
-		 MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH,
-		 RIGHT_PANEL_MOBILE_COLUMN_WIDTH,
-		 RIGHT_PANEL_DESKTOP_COLUMN_WIDTH } from '../../helper/constants';
+import { MAIN_DEFAULT_MOBILE_COLUMN_WIDTH, MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH, MAIN_SHRINKED_MOBILE_COLUMN_WIDTH,
+		 MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH, RIGHT_PANEL_MOBILE_COLUMN_WIDTH, RIGHT_PANEL_DESKTOP_COLUMN_WIDTH, ADD_PANEL } from '../../helper/constants';
 
 const groupsObj = {
 	id: '',
@@ -42,7 +37,7 @@ class SettingsUsersDashboard extends React.Component
 
 		this.state = {
 			users: [],
-			user: {},
+			user: initialUserObj,
 			loader: true,
 			isEditingMode: false,
 			showRightPanel: false,
@@ -70,14 +65,52 @@ class SettingsUsersDashboard extends React.Component
 	componentWillMount() {
 		UsersStore.addChangeListener(this._onChange);
 		UsersStore.removeStoreStatus();
+
+		if (this.props.match.params.section === ADD_PANEL) {
+			this.setState({
+				mainPanelColumnCss: {
+					mobileWidth: RIGHT_PANEL_MOBILE_COLUMN_WIDTH,
+					desktopWidth: RIGHT_PANEL_DESKTOP_COLUMN_WIDTH
+				}
+			});
+		}
 	}
 
 	componentDidMount() {
-		UsersAction.getUsers();
+		if (this.props.match.params.section !== ADD_PANEL) {
+			UsersAction.getUsers();
+		}
 	}
 
 	componentWillUnmount() {
 		UsersStore.removeChangeListener(this._onChange);
+	}
+
+	// Next state change
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.location.action === 'REPLACE' || nextProps.location.action === 'PUSH') {
+			let mainPanel = null;
+
+			switch (nextProps.location.pathname) {
+				case '/settings/users/dashboard/add':
+					mainPanel = ADD_PANEL;
+					break;
+
+				case '/settings/users/dashboard/list':
+					mainPanel = LIST_PANEL;
+					break;
+			}
+
+			this.setState({
+				vehicle: initialUserObj,
+				showRightPanel: false,
+				flashMessage: null,
+				mainPanelColumnCss: {
+					mobileWidth: MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
+					desktopWidth: MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH
+				}
+			});
+		}
 	}
 
 	// Store change
@@ -88,7 +121,7 @@ class SettingsUsersDashboard extends React.Component
 		let openRightPanel  = UsersStore.showRightPanel();
 
 		if (!isAuthenticated){
-			this.context.router.history.push("/auth/forms/login");
+			this.props.history.push("/auth/forms/login");
 			return false;
 		}
 
@@ -169,19 +202,46 @@ class SettingsUsersDashboard extends React.Component
 	// Render
 	render() {
 		// Main panel
+		let mainPanelObjs = this.props.match.params.section === "add" ?
+			{
+				id: "user-form",
+				displayHeader: "User",
+				additionalHeader: !this.state.isEditingMode ? "Add" : "Edit",
+				iconBtn: "fa fa-window-close",
+				onClick: this.onCloseRightPanel,
+				subForm:
+					<SettingsUser
+						user={ this.state.user }
+						isEditingMode={ this.state.isEditingMode }
+						onChange={ this.onHandleFormChange }
+						onSubmit={ this.onHandleSubmit }
+						onCloseRightPanel={ this.onCloseRightPanel }
+					/>
+			} :
+			{
+				id: "user-list",
+				displayHeader: "Users List",
+				additionalHeader: "",
+				iconBtn: "fa fa-plus",
+				onClick: this.onCloseRightPanel,
+				subForm:
+					<SettingsUsersList
+						loader={ this.state.loader }
+						selectedItem={ this.state.user.id }
+						users={ this.state.users }
+						onRemove={ this.onHandleRemove }
+						onHandleRightPanel={ this.onHandleRightPanel.bind(this, false)}
+					/>
+			};
+
 		let mainPanelHtml =
 			<DisplayPanel
-				id="users-list"
-				header="Users List"
-				additionalHeader=""
-				iconBtn="fa fa-plus"
-				onClick={ this.onHandleRightPanel.bind(this, false) }>
-				<SettingsUsersList
-					loader={ this.state.loader }
-					selectedItem={ this.state.user.id }
-					users={ this.state.users }
-					onRemove={ this.onHandleRemove }
-					onHandleRightPanel={ this.onHandleRightPanel }/>
+				id={ mainPanelObjs.id }
+				header={ mainPanelObjs.header }
+				additionalHeader={ mainPanelObjs.additionalHeader }
+				iconBtn={ mainPanelObjs.iconBtn }
+				onClick={ mainPanelObjs.onClick }>
+				{ mainPanelObjs.subForm }
 			</DisplayPanel>;
 
 		// Right panel
@@ -201,6 +261,7 @@ class SettingsUsersDashboard extends React.Component
 				/>
 			</DisplayPanel> : null;
 
+			// Flash message
 		let flashMessage = this.state.flashMessage ?
 			<FlashMessage message={ this.state.flashMessage } alertType={ this.state.alertType }/> : null;
 
@@ -218,9 +279,5 @@ class SettingsUsersDashboard extends React.Component
 		)
 	}
 }
-
-SettingsUsersDashboard.contextTypes = {
-	router: PropTypes.object.isRequired
-};
 
 export default SettingsUsersDashboard;

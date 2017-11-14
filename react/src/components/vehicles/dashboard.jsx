@@ -1,6 +1,5 @@
 import React from 'react';
 import _ from 'lodash';
-import { PropTypes } from 'prop-types';
 import VehiclesAction from '../../actions/vehicles-action';
 import VehiclesStore from '../../stores/vehicles/store';
 import MainPanel from '../helper/panels/main';
@@ -10,14 +9,9 @@ import VehicleForm from './forms/vehicle';
 import VehiclesList from './list';
 import Modal from '../helper/modal';
 import FlashMessage from '../helper/flash_message';
-import { MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
-		 MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH,
-		 MAIN_SHRINKED_MOBILE_COLUMN_WIDTH,
-		 MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH,
-		 RIGHT_PANEL_MOBILE_COLUMN_WIDTH,
-		 RIGHT_PANEL_DESKTOP_COLUMN_WIDTH,
-	     ADD_PANEL,
-		 LIST_PANEL } from '../helper/constants';
+import { MAIN_DEFAULT_MOBILE_COLUMN_WIDTH, MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH, MAIN_SHRINKED_MOBILE_COLUMN_WIDTH,
+		 MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH, RIGHT_PANEL_MOBILE_COLUMN_WIDTH, RIGHT_PANEL_DESKTOP_COLUMN_WIDTH,
+	     ADD_PANEL, LIST_PANEL } from '../helper/constants';
 
 // Get vehicle initial state
 const initialVehicleObj = {
@@ -78,7 +72,7 @@ class VehiclesDashboard extends React.Component
 		VehiclesStore.addChangeListener(this._onChange);
 		VehiclesStore.removeStoreStatus();
 
-		if (this.props.match.params.section === "add") {
+		if (this.props.match.params.section === ADD_PANEL) {
 			this.setState({
 				mainPanel: this.props.match.params.section,
 				mainPanelColumnCss: {
@@ -137,7 +131,7 @@ class VehiclesDashboard extends React.Component
 		let loadList        = VehiclesStore.loadList();
 
 		if (!isAuthenticated){
-			this.context.router.history.push("/auth/forms/login");
+			this.props.history.push("/auth/forms/login");
 			return false;
 		}
 
@@ -312,10 +306,6 @@ class VehiclesDashboard extends React.Component
 			</div>
 		)
 	}
-}
-
-VehiclesDashboard.contextTypes = {
-	router: PropTypes.object.isRequired
 }
 
 export default VehiclesDashboard;

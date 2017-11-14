@@ -1,10 +1,7 @@
 import React from 'react';
 import Gallery from '../../helper/gallery';
-import { FEATURES_PANEL,
-		 EXTERIOR_FEATURES_PANEL,
-		 INTERIOR_FEATURES_PANEL,
-		 INFO_PANEL,
-		 ROOMS_LIST_PANEL } from '../../helper/constants';
+import { FEATURES_PANEL, EXTERIOR_FEATURES_PANEL, INTERIOR_FEATURES_PANEL,
+		 INFO_PANEL, ROOMS_LIST_PANEL } from '../../helper/constants';
 
 class PropertyInfoView extends React.Component
 {

@@ -43,6 +43,7 @@ class VehiclesDashboard extends React.Component
 			showRightPanel: false,
 			flashMessage: null,
 			showModal: false,
+			modalContent: '',
 			alertType: 'success',
 			mainPanelColumnCss: {
 				mobileWidth: MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
@@ -171,11 +172,19 @@ class VehiclesDashboard extends React.Component
 
 	// Handle view
 	onHandleModal(id) {
-		let vehicle= this.state.vehicles.find(obj => obj.id === id);
+		let vehicle 	 = _.find(this.state.vehicles, ['id', id]);
+		let modalContent = [];
+
+		_.forOwn(vehicle, function(value, key) {
+			if (!key.match(new RegExp('id', 'gi'))) {
+				modalContent.push(<li key={key}>{key}: {vehicle[key].toString()}</li>);
+			}
+		});
 
 		this.setState({
 			vehicle: vehicle,
-			showModal: !this.state.showModal
+			showModal: !this.state.showModal,
+			modalContent: modalContent
 		});
 	}
 
@@ -286,7 +295,9 @@ class VehiclesDashboard extends React.Component
 				id="view-vehicle"
 				header={ this.state.vehicle.mfg + " " + this.state.vehicle.model }
 				onClose={ this.onHandleCloseModal }>
-				<h1>{ this.state.vehicle.mfg }</h1>
+
+				{ this.state.modalContent }
+
 			</Modal> : null;
 
 		let flashMessage = this.state.flashMessage ?

@@ -9,6 +9,7 @@ import VehicleForm from './forms/vehicle';
 import VehiclesList from './list';
 import Modal from '../helper/modal';
 import FlashMessage from '../helper/flash_message';
+import UnorderedList from '../helper/lists/unordered';
 import { MAIN_DEFAULT_MOBILE_COLUMN_WIDTH, MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH, MAIN_SHRINKED_MOBILE_COLUMN_WIDTH,
 		 MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH, RIGHT_PANEL_MOBILE_COLUMN_WIDTH, RIGHT_PANEL_DESKTOP_COLUMN_WIDTH,
 	     ADD_PANEL, LIST_PANEL } from '../helper/constants';
@@ -172,19 +173,12 @@ class VehiclesDashboard extends React.Component
 
 	// Handle view
 	onHandleModal(id) {
-		let vehicle 	 = _.find(this.state.vehicles, ['id', id]);
-		let modalContent = [];
-
-		_.forOwn(vehicle, function(value, key) {
-			if (!key.match(new RegExp('id', 'gi'))) {
-				modalContent.push(<li key={key}>{key}: {vehicle[key].toString()}</li>);
-			}
-		});
+		let vehicle = _.find(this.state.vehicles, ['id', id]);
 
 		this.setState({
 			vehicle: vehicle,
 			showModal: !this.state.showModal,
-			modalContent: modalContent
+			modalContent: <UnorderedList obj={ vehicle}/>
 		});
 	}
 
@@ -295,9 +289,7 @@ class VehiclesDashboard extends React.Component
 				id="view-vehicle"
 				header={ this.state.vehicle.mfg + " " + this.state.vehicle.model }
 				onClose={ this.onHandleCloseModal }>
-
 				{ this.state.modalContent }
-
 			</Modal> : null;
 
 		let flashMessage = this.state.flashMessage ?

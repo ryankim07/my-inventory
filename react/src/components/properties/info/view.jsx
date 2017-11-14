@@ -1,7 +1,42 @@
 import React from 'react';
 import Gallery from '../../helper/gallery';
+import UnorderedList from '../../helper/lists/unordered';
 import { FEATURES_PANEL, EXTERIOR_FEATURES_PANEL, INTERIOR_FEATURES_PANEL,
 		 INFO_PANEL, ROOMS_LIST_PANEL } from '../../helper/constants';
+
+const initialFeaturesObj = {
+	id: '',
+	property_id: this.props.property.id,
+	parking: '',
+	multi_unit: '',
+	hoa: '',
+	utilities: '',
+	lot: '',
+	common_walls: '',
+	facing_direction: '',
+	others: ''
+};
+
+const initialExteriorFeaturesObj = {
+	id: '',
+	property_id: this.props.property.id,
+	exterior: '',
+	foundation: '',
+	others: ''
+};
+
+const initialInteriorFeaturesObj = {
+	id: '',
+	property_id: this.props.property.id,
+	laundry: '',
+	kitchen: '',
+	bathroom: '',
+	cooling: '',
+	heating: '',
+	fireplace: '',
+	flooring: '',
+	others: ''
+};
 
 class PropertyInfoView extends React.Component
 {
@@ -12,43 +47,15 @@ class PropertyInfoView extends React.Component
 
 		switch (panelType) {
 			case FEATURES_PANEL:
-				features = isEditingMode ? obj : {
-					id: '',
-					property_id: this.props.property.id,
-					parking: '',
-					multi_unit: '',
-					hoa: '',
-					utilities: '',
-					lot: '',
-					common_walls: '',
-					facing_direction: '',
-					others: ''
-				};
+				features = isEditingMode ? obj : initialFeaturesObj;
 			break;
 
 			case EXTERIOR_FEATURES_PANEL:
-				features = isEditingMode ? obj : {
-					id: '',
-					property_id: this.props.property.id,
-					exterior: '',
-					foundation: '',
-					others: ''
-				};
+				features = isEditingMode ? obj : initialExteriorFeaturesObj;
 			break;
 
 			case INTERIOR_FEATURES_PANEL:
-				features = isEditingMode ? obj : {
-					id: '',
-					property_id: this.props.property.id,
-					laundry: '',
-					kitchen: '',
-					bathroom: '',
-					cooling: '',
-					heating: '',
-					fireplace: '',
-					flooring: '',
-					others: ''
-				};
+				features = isEditingMode ? obj : initialInteriorFeaturesObj;
 			break;
 		}
 
@@ -78,36 +85,7 @@ class PropertyInfoView extends React.Component
 		let addressHtml = address !== null ?
 			<div>
 				<h4>Address</h4>
-				<ul>
-					<li>
-						<label>Street:</label>
-						<span>{ address.street }</span>
-					</li>
-					<li>
-						<label>City:</label>
-						<span>{ address.city }</span>
-					</li>
-					<li>
-						<label>State:</label>
-						<span>{ address.state }</span>
-					</li>
-					<li>
-						<label>Zip:</label>
-						<span>{ address.zip }</span>
-					</li>
-					<li>
-						<label>County:</label>
-						<span>{ address.county }</span>
-					</li>
-					<li>
-						<label>Country:</label>
-						<span>{ address.country }</span>
-					</li>
-					<li>
-						<label>Subdivision:</label>
-						<span>{ address.subdivision }</span>
-					</li>
-				</ul>
+				<UnorderedList obj={ address }/>
 			</div> : null;
 
 		let detailsHtml = property !== null ?
@@ -116,44 +94,7 @@ class PropertyInfoView extends React.Component
 				<div>
 					<button onClick={ this.props.onHandlePanel.bind(this, property.id, INFO_PANEL, ROOMS_LIST_PANEL, '') }><i className="fa fa-search" aria-hidden="true"/> View rooms</button>
 				</div>
-				<ul>
-					<li>
-						<label>Built:</label>
-						<span>{ property.built }</span>
-					</li>
-					<li>
-						<label>Style:</label>
-						<span>{ property.style }</span>
-					</li>
-					<li>
-						<label>Floors:</label>
-						<span>{ property.floors }</span>
-					</li>
-					<li>
-						<label>Beds:</label>
-						<span>{ property.beds }</span>
-					</li>
-					<li>
-						<label>Baths:</label>
-						<span>{ property.baths }</span>
-					</li>
-					<li>
-						<label>Finished Area:</label>
-						<span>{ property.finished_area }</span>
-					</li>
-					<li>
-						<label>Unfinished Area:</label>
-						<span>{ property.unfinished_area }</span>
-					</li>
-					<li>
-						<label>Total Area:</label>
-						<span>{ property.total_area }</span>
-					</li>
-					<li>
-						<label>Parcel Number:</label>
-						<span>{ property.parcel_number }</span>
-					</li>
-				</ul>
+				<UnorderedList obj={ property } exclude={ 'id|assets|address|rooms|non_added_rooms' }/>
 			</div> : null;
 
 		let featuresHtml = features !== null ?
@@ -162,40 +103,7 @@ class PropertyInfoView extends React.Component
 				<div>
 					<button onClick={ this.handleRightPanel.bind(this, features, FEATURES_PANEL) }><i className="fa fa-pencil" aria-hidden="true"/> Edit</button>
 				</div>
-				<ul>
-					<li>
-						<label>Parking:</label>
-						<span>{ features.parking }</span>
-					</li>
-					<li>
-						<label>Multi Unit:</label>
-						<span>{ features.multi_unit }</span>
-					</li>
-					<li>
-						<label>Hoa:</label>
-						<span>{ features.hoa }</span>
-					</li>
-					<li>
-						<label>Utilities:</label>
-						<span>{ features.utilities }</span>
-					</li>
-					<li>
-						<label>Lot:</label>
-						<span>{ features.lot }</span>
-					</li>
-					<li>
-						<label>Common Walls:</label>
-						<span>{ features.common_walls }</span>
-					</li>
-					<li>
-						<label>Facing Direction:</label>
-						<span>{ features.facing_direction }</span>
-					</li>
-					<li>
-						<label>Others:</label>
-						<span>{ features.others }</span>
-					</li>
-				</ul>
+				<UnorderedList obj={ features }/>
 			</div> : null;
 
 		let exteriorFeaturesHtml = exteriorFeatures !== null ?
@@ -204,20 +112,7 @@ class PropertyInfoView extends React.Component
 				<div>
 					<button onClick={ this.handleRightPanel.bind(this, exteriorFeatures, EXTERIOR_FEATURES_PANEL) }><i className="fa fa-pencil" aria-hidden="true"/> Edit</button>
 				</div>
-				<ul>
-					<li>
-						<label>Exterior:</label>
-						<span>{ exteriorFeatures.exterior }</span>
-					</li>
-					<li>
-						<label>Foundation:</label>
-						<span>{ exteriorFeatures.foundation }</span>
-					</li>
-					<li>
-						<label>Others:</label>
-						<span>{ exteriorFeatures.others }</span>
-					</li>
-				</ul>
+				<UnorderedList obj={ exteriorFeatures }/>
 			</div> : null;
 
 		let interiorFeaturesHtml = interiorFeatures !== null ?
@@ -226,40 +121,7 @@ class PropertyInfoView extends React.Component
 				<div>
 					<button onClick={ this.handleRightPanel.bind(this, interiorFeatures, INTERIOR_FEATURES_PANEL) }><i className="fa fa-pencil" aria-hidden="true"/> Edit</button>
 				</div>
-				<ul>
-					<li>
-						<label>Kitchen:</label>
-						<span>{ interiorFeatures.kitchen }</span>
-					</li>
-					<li>
-						<label>Bathroom:</label>
-						<span>{ interiorFeatures.bathroom }</span>
-					</li>
-					<li>
-						<label>Laundry:</label>
-						<span>{ interiorFeatures.laundry }</span>
-					</li>
-					<li>
-						<label>Cooling:</label>
-						<span>{ interiorFeatures.cooling }</span>
-					</li>
-					<li>
-						<label>Heating:</label>
-						<span>{ interiorFeatures.heating }</span>
-					</li>
-					<li>
-						<label>Fireplace:</label>
-						<span>{ interiorFeatures.fireplace }</span>
-					</li>
-					<li>
-						<label>Flooring:</label>
-						<span>{ interiorFeatures.flooring }</span>
-					</li>
-					<li>
-						<label>Others:</label>
-						<span>{ interiorFeatures.others }</span>
-					</li>
-				</ul>
+				<UnorderedList obj={ interiorFeatures }/>
 			</div> : null;
 
 		return (
@@ -270,13 +132,11 @@ class PropertyInfoView extends React.Component
 					{ exteriorFeaturesBtn }
 					{ interiorFeaturesBtn }
 				</div>
-
 				{ addressHtml }
 				{ detailsHtml }
 				{ featuresHtml }
 				{ exteriorFeaturesHtml }
 				{ interiorFeaturesHtml }
-
 			</div>
 		);
 	}

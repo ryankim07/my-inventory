@@ -308,7 +308,7 @@ class PropertiesDashboard extends React.Component
 			case EXTERIOR_FEATURES_PANEL:
 			case INTERIOR_FEATURES_PANEL:
 				PropertiesAction.updateProperty(obj);
-				break;
+			break;
 
 			default:
 				if (!this.state.isEditingMode) {

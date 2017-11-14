@@ -44,12 +44,14 @@ class Header extends React.Component
 					<li className="dropdown dropdown-submenu">
 						<a href="#" className="dropdown-toggle" data-toggle="dropdown">Paints</a>
 						<ul className="dropdown-menu">
+							<li><Link to="/settings/paints/dashboard/add" className="menu-link"><i className="fa paint-brush menu-link-icon" aria-hidden="true"/> Add</Link></li>
 							<li><Link to="/settings/paints/dashboard/paints"><i className="fa fa-paint-brush menu-link-icon" aria-hidden="true"/> List</Link></li>
 						</ul>
 					</li>
 					<li className="dropdown dropdown-submenu">
 						<a href="#" className="dropdown-toggle" data-toggle="dropdown">Vendors</a>
 						<ul className="dropdown-menu">
+							<li><Link to="/settings/vendors/dashboard/add" className="menu-link"><i className="fa fa-shopping-bag menu-link-icon" aria-hidden="true"/> Add</Link></li>
 							<li><Link to="/settings/vendors/dashboard/vendors"><i className="fa fa-shopping-bag menu-link-icon" aria-hidden="true"/> List</Link></li>
 						</ul>
 					</li>

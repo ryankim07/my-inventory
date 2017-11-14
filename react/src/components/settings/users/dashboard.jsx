@@ -9,7 +9,8 @@ import SettingsUser from './../users/forms/user';
 import SettingsUsersList from './../users/list';
 import FlashMessage from '../../helper/flash_message';
 import { MAIN_DEFAULT_MOBILE_COLUMN_WIDTH, MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH, MAIN_SHRINKED_MOBILE_COLUMN_WIDTH,
-		 MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH, RIGHT_PANEL_MOBILE_COLUMN_WIDTH, RIGHT_PANEL_DESKTOP_COLUMN_WIDTH, ADD_PANEL } from '../../helper/constants';
+		 MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH, RIGHT_PANEL_MOBILE_COLUMN_WIDTH, RIGHT_PANEL_DESKTOP_COLUMN_WIDTH,
+		 ADD_PANEL, LIST_PANEL } from '../../helper/constants';
 
 const groupsObj = {
 	id: '',
@@ -102,7 +103,7 @@ class SettingsUsersDashboard extends React.Component
 			}
 
 			this.setState({
-				vehicle: initialUserObj,
+				user: initialUserObj,
 				showRightPanel: false,
 				flashMessage: null,
 				mainPanelColumnCss: {
@@ -208,7 +209,7 @@ class SettingsUsersDashboard extends React.Component
 				displayHeader: "User",
 				additionalHeader: !this.state.isEditingMode ? "Add" : "Edit",
 				iconBtn: "fa fa-window-close",
-				onClick: this.onCloseRightPanel,
+				onClick: "",
 				subForm:
 					<SettingsUser
 						user={ this.state.user }

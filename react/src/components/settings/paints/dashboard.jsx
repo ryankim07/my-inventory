@@ -8,12 +8,9 @@ import RightPanel from '../../helper/panels/right';
 import SettingsPaintsList from './../paints/list';
 import SettingsPaint from './../paints/forms/paint';
 import FlashMessage from '../../helper/flash_message';
-import { MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
-		 MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH,
-		 MAIN_SHRINKED_MOBILE_COLUMN_WIDTH,
-		 MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH,
-		 RIGHT_PANEL_MOBILE_COLUMN_WIDTH,
-		 RIGHT_PANEL_DESKTOP_COLUMN_WIDTH } from '../../helper/constants';
+import { MAIN_DEFAULT_MOBILE_COLUMN_WIDTH, MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH, MAIN_SHRINKED_MOBILE_COLUMN_WIDTH,
+		 MAIN_SHRINKED_DESKTOP_COLUMN_WIDTH, RIGHT_PANEL_MOBILE_COLUMN_WIDTH, RIGHT_PANEL_DESKTOP_COLUMN_WIDTH,
+		 ADD_PANEL, LIST_PANEL } from '../../helper/constants';
 
 // Get paint initial state
 const initialPaintObj = {
@@ -70,6 +67,15 @@ class SettingsPaintsDashboard extends React.Component
 	componentWillMount() {
 		PaintsStore.addChangeListener(this._onChange);
 		PaintsStore.removeStoreStatus();
+
+		if (this.props.match.params.section === ADD_PANEL) {
+			this.setState({
+				mainPanelColumnCss: {
+					mobileWidth: RIGHT_PANEL_MOBILE_COLUMN_WIDTH,
+					desktopWidth: RIGHT_PANEL_DESKTOP_COLUMN_WIDTH
+				}
+			});
+		}
 	}
 
 	// Mounted component
@@ -80,6 +86,33 @@ class SettingsPaintsDashboard extends React.Component
 	// Un-mounting component
 	componentWillUnmount() {
 		PaintsStore.removeChangeListener(this._onChange);
+	}
+
+	// Next state change
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.location.action === 'REPLACE' || nextProps.location.action === 'PUSH') {
+			let mainPanel = null;
+
+			switch (nextProps.location.pathname) {
+				case '/settings/paints/dashboard/add':
+					mainPanel = ADD_PANEL;
+					break;
+
+				case '/settings/paints/dashboard/list':
+					mainPanel = LIST_PANEL;
+					break;
+			}
+
+			this.setState({
+				user: initialUserObj,
+				showRightPanel: false,
+				flashMessage: null,
+				mainPanelColumnCss: {
+					mobileWidth: MAIN_DEFAULT_MOBILE_COLUMN_WIDTH,
+					desktopWidth: MAIN_DEFAULT_DESKTOP_COLUMN_WIDTH
+				}
+			});
+		}
 	}
 
 	// Store change
@@ -186,20 +219,46 @@ class SettingsPaintsDashboard extends React.Component
 	// Render
 	render() {
 		// Main panel
+		let mainPanelObjs = this.props.match.params.section === "add" ?
+			{
+				id: "paint-form",
+				displayHeader: "Paint",
+				additionalHeader: !this.state.isEditingMode ? "Add" : "Edit",
+				iconBtn: "fa fa-window-close",
+				onClick: "",
+				subForm:
+					<SettingsPaint
+						paint={ this.state.paint }
+						vendors={ this.state.vendors }
+						onChange={ this.onHandleFormChange }
+						onSubmit={ this.onHandleSubmit }
+						onCloseRightPanel={ this.onCloseRightPanel }
+					/>
+			} :
+			{
+				id: "paints-list",
+				displayHeader: "Paints List",
+				additionalHeader: "",
+				iconBtn: "fa fa-plus",
+				onClick: this.onHandleRightPanel.bind(this, false),
+				subForm:
+					<SettingsPaintsList
+						loader={ this.state.loader }
+						selectedItem={ this.state.paint.id }
+						paints={ this.state.paints }
+						onRemove={ this.onHandleRemove }
+						onHandleRightPanel={ this.onHandleRightPanel }
+					/>
+			};
+
 		let mainPanelHtml =
 			<DisplayPanel
-				id="paints-list"
-				header="Paints List"
-				additionalHeader=""
-				iconBtn="fa fa-plus"
-				onClick={ this.onHandleRightPanel.bind(this, false) }>
-				<SettingsPaintsList
-					loader={ this.state.loader }
-					selectedItem={ this.state.paint.id }
-					paints={ this.state.paints }
-					onRemove={ this.onHandleRemove }
-					onHandleRightPanel={ this.onHandleRightPanel }
-				/>
+				id={ mainPanelObjs.id }
+				header={ mainPanelObjs.header }
+				additionalHeader={ mainPanelObjs.additionalHeader }
+				iconBtn={ mainPanelObjs.iconBtn }
+				onClick={ mainPanelObjs.onClick }>
+				{ mainPanelObjs.subForm }
 			</DisplayPanel>;
 
 		// Right panel

@@ -23,6 +23,7 @@ const Main = () => (
 		)}/>
 		<Route exact path="/auth/forms/login" component={ AuthLogin }/>
 		<Route exact path="/auth/forms/logout" component={ AuthLogout }/>
+
 		<Route path="/vehicles/dashboard/:section" component={ VehicleDashboard }/>
 		<Route path="/properties/dashboard/:section" component={ PropertiesDashboard }/>
 		<Route path="/settings/vehicles/dashboard/:section" component={ SettingsVehiclesDashboard }/>

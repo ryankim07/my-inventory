@@ -4,40 +4,6 @@ import UnorderedList from '../../helper/lists/unordered';
 import { FEATURES_PANEL, EXTERIOR_FEATURES_PANEL, INTERIOR_FEATURES_PANEL,
 		 INFO_PANEL, ROOMS_LIST_PANEL } from '../../helper/constants';
 
-const initialFeaturesObj = {
-	id: '',
-	property_id: this.props.property.id,
-	parking: '',
-	multi_unit: '',
-	hoa: '',
-	utilities: '',
-	lot: '',
-	common_walls: '',
-	facing_direction: '',
-	others: ''
-};
-
-const initialExteriorFeaturesObj = {
-	id: '',
-	property_id: this.props.property.id,
-	exterior: '',
-	foundation: '',
-	others: ''
-};
-
-const initialInteriorFeaturesObj = {
-	id: '',
-	property_id: this.props.property.id,
-	laundry: '',
-	kitchen: '',
-	bathroom: '',
-	cooling: '',
-	heating: '',
-	fireplace: '',
-	flooring: '',
-	others: ''
-};
-
 class PropertyInfoView extends React.Component
 {
 	// Handle right panel
@@ -47,15 +13,43 @@ class PropertyInfoView extends React.Component
 
 		switch (panelType) {
 			case FEATURES_PANEL:
-				features = isEditingMode ? obj : initialFeaturesObj;
+				features = isEditingMode ? obj : {
+					id: '',
+					property_id: this.props.property.id,
+					parking: '',
+					multi_unit: '',
+					hoa: '',
+					utilities: '',
+					lot: '',
+					common_walls: '',
+					facing_direction: '',
+					others: ''
+				};
 			break;
 
 			case EXTERIOR_FEATURES_PANEL:
-				features = isEditingMode ? obj : initialExteriorFeaturesObj;
+				features = isEditingMode ? obj : {
+					id: '',
+					property_id: this.props.property.id,
+					exterior: '',
+					foundation: '',
+					others: ''
+				};
 			break;
 
 			case INTERIOR_FEATURES_PANEL:
-				features = isEditingMode ? obj : initialInteriorFeaturesObj;
+				features = isEditingMode ? obj : {
+					id: '',
+					property_id: this.props.property.id,
+					laundry: '',
+					kitchen: '',
+					bathroom: '',
+					cooling: '',
+					heating: '',
+					fireplace: '',
+					flooring: '',
+					others: ''
+				};
 			break;
 		}
 

@@ -2,8 +2,9 @@ import React from 'react';
 import _ from 'lodash';
 import VehiclesAction from '../../actions/vehicles-action';
 import VehiclesStore from '../../stores/vehicles/store';
+import { Card, CardHeader, CardText, CardActions } from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
 import MainPanel from '../helper/panels/main';
-import DisplayPanel from '../helper/panels/display';
 import RightPanel from '../helper/panels/right';
 import VehicleForm from './forms/vehicle';
 import VehiclesList from './list';
@@ -97,7 +98,7 @@ class VehiclesDashboard extends React.Component
 
 	// Next state change
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.location.action === 'REPLACE' || nextProps.location.action === 'PUSH') {
+		if (nextProps.history.action === 'REPLACE' || nextProps.history.action === 'PUSH') {
 			let mainPanel = null;
 
 			switch (nextProps.location.pathname) {
@@ -178,7 +179,7 @@ class VehiclesDashboard extends React.Component
 		this.setState({
 			vehicle: vehicle,
 			showModal: !this.state.showModal,
-			modalContent: <UnorderedList obj={ vehicle}/>
+			modalContent: <UnorderedList obj={ vehicle }/>
 		});
 	}
 
@@ -228,60 +229,68 @@ class VehiclesDashboard extends React.Component
 		switch (this.state.mainPanel) {
 			case ADD_PANEL:
 				mainPanelHtml =
-					<DisplayPanel
-						id="vehicle-form"
-						header="Vehicle"
-						additionalHeader="Add"
-						iconBtn=""
-						onClick="">
-						<VehicleForm
-							loader={ this.state.loader }
-							vehicle={ this.state.vehicle }
-							manufacturers={ this.state.manufacturers }
-							onChange={ this.onHandleFormChange }
-							onSubmit={ this.onHandleSubmit }
-							onCloseRightPanel=""
+					<Card>
+						<CardHeader
+							title="Vehicle"
+							subtitle=" "
+							style={ { backgroundColor: '#CCC' } }
 						/>
-					</DisplayPanel>;
+						<CardText>
+							<VehicleForm
+								loader={ this.state.loader }
+								vehicle={ this.state.vehicle }
+								manufacturers={ this.state.manufacturers }
+								onChange={ this.onHandleFormChange }
+								onSubmit={ this.onHandleSubmit }
+								onCloseRightPanel=""
+							/>
+						</CardText>
+					</Card>;
 			break;
 
 			default:
 				mainPanelHtml =
-					<DisplayPanel
-						id="vehicles-list"
-						header="Vehicle List"
-						additionalHeader=""
-						iconBtn="fa fa-plus"
-						onClick={ this.onHandleRightPanel.bind(this, false) }>
-						<VehiclesList
-							loader={ this.state.loader }
-							selectedItem={ this.state.vehicle.id }
-							vehicles={ this.state.vehicles }
-							onRemove={ this.onHandleRemove }
-							onSearch={ this.onHandleSearch }
-							onModal={ this.onHandleModal }
-							onHandleRightPanel={ this.onHandleRightPanel }
+					<Card>
+						<CardHeader
+							title="Vehicle List"
+							subtitle=" "
+							style={ { backgroundColor: '#CCC' } }
 						/>
-					</DisplayPanel>;
+						<CardActions>
+							<FlatButton label="Add new" onClick={ this.onHandleRightPanel.bind(this, false) }/>
+						</CardActions>
+						<CardText>
+							<VehiclesList
+								loader={ this.state.loader }
+								selectedItem={ this.state.vehicle.id }
+								vehicles={ this.state.vehicles }
+								onRemove={ this.onHandleRemove }
+								onSearch={ this.onHandleSearch }
+								onModal={ this.onHandleModal }
+								onHandleRightPanel={ this.onHandleRightPanel }
+							/>
+						</CardText>
+					</Card>;
 		}
 
 		// Right panel
 		let rightPanelHtml = this.state.showRightPanel ?
-			<DisplayPanel
-				id="vehicle-form"
-				header="Vehicle"
-				additionalHeader={ !this.state.isEditingMode ? "Add" : "Edit" }
-				iconBtn="fa fa-window-close"
-				onClick={ this.onCloseRightPanel }>
-				<VehicleForm
-					loader={ false }
-					vehicle={ this.state.vehicle }
-					manufacturers={ this.state.manufacturers }
-					onChange={ this.onHandleFormChange }
-					onSubmit={ this.onHandleSubmit }
-					onCloseRightPanel={ this.onCloseRightPanel }
+			<Card>
+				<CardHeader
+					title="Vehicle"
+					style={ { backgroundColor: '#CCC' } }
 				/>
-			</DisplayPanel> : null;
+				<CardText>
+					<VehicleForm
+						loader={ this.state.loader }
+						vehicle={ this.state.vehicle }
+						manufacturers={ this.state.manufacturers }
+						onChange={ this.onHandleFormChange }
+						onSubmit={ this.onHandleSubmit }
+						onCloseRightPanel=""
+					/>
+				</CardText>
+			</Card> : null;
 
 		// Modal window
 		let modalWindowHtml = this.state.showModal ?

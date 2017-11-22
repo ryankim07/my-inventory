@@ -22,6 +22,7 @@
 
 import React from 'react';
 import update from 'react-addons-update';
+import TextField from 'material-ui/TextField';
 import _ from 'lodash';
 
 class SearchField extends React.Component
@@ -62,14 +63,13 @@ class SearchField extends React.Component
 	render() {
         return (
             <div className="input-group col-lg-12" id={ ['search-', this.props.inputProps.searchType].join(' ') }>
-				<i className="fa fa-search fa-2x" aria-hidden="true"/>
-                <input
+				<TextField
 					name="search"
-                    type="text"
-					className="form-control"
-                    value={ this.state.keywords }
-                    onChange={ this.onHandleSearch }
-                />
+					type="text"
+					value={ this.state.keywords }
+					onChange={ this.onHandleSearch }
+				/>
+				<i className="material-icons">search</i>
             </div>
         );
     }

@@ -1,6 +1,6 @@
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import ActionConstants from '../constants/action-constants';
-import Api from '../services/Api';
+import Api from '../services/api';
 
 let VendorsAction = {
 	getVendors: function() {

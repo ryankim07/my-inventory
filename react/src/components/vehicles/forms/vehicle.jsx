@@ -1,14 +1,23 @@
 import React from 'react';
 import _ from 'lodash';
-import YearsField from '../../helper/forms/hybrid_field';
-import ColorsField  from '../../helper/forms/hybrid_field';
+import AutoComplete from 'material-ui/AutoComplete';
+import TextField from 'material-ui/TextField';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import RaisedButton from 'material-ui/RaisedButton';
 import Uploader from '../../helper/uploader';
 import Loader from '../../helper/loader';
+import { vehicleValidators } from '../../helper/validation/vehicle';
+import { updateValidators, resetValidators, displayValidationErrors, isFormValid } from '../../helper/validation/validator';
 import { getVehicleColors } from "../../helper/lists/colors";
 import { upperFirstLetter,
 		 sequencedObject,
-		 getSingleModifiedState,
 		 getNestedModifiedState } from '../../helper/utils';
+
+const dataSourceConfig = {
+	text: 'label',
+	value: 'value',
+};
 
 class VehicleForm extends React.Component
 {
@@ -17,18 +26,25 @@ class VehicleForm extends React.Component
         super(props);
 
 		this.state = {
+			years: [],
+			colors: [],
 			selectedItem: '',
 			assets: []
 		};
 
-        this.onHandleFormChange = this.onHandleFormChange.bind(this);
-		this.onHandleAssets     = this.onHandleAssets.bind(this);
-		this.onHandleSubmit 	= this.onHandleSubmit.bind(this);
+		// Initiate validators
+		resetValidators(vehicleValidators);
+
+        this.onHandleChange = this.onHandleChange.bind(this);
+		this.onHandleAssets = this.onHandleAssets.bind(this);
+		this.onHandleSubmit = this.onHandleSubmit.bind(this);
 	}
 
 	// Mounting component
 	componentWillMount() {
 		this.setState({
+			years: sequencedObject(2010, (new Date()).getFullYear() + 1),
+			colors: getVehicleColors(),
 			selectedItem: this.props.vehicle.id,
 			assets: this.props.vehicle.assets
 		});
@@ -45,7 +61,7 @@ class VehicleForm extends React.Component
     }
 
     // Handle input changes
-    onHandleFormChange(event) {
+    onHandleChange(event) {
     	let fieldName 	= event.target.name;
         let chosenValue = event.target.value;
 		let modifiedObj = {};
@@ -73,11 +89,27 @@ class VehicleForm extends React.Component
         }
 
         this.props.onChange(getNestedModifiedState(this.props.vehicle, modifiedObj));
+		updateValidators(vehicleValidators, fieldName, chosenValue);
     }
 
-	// Handle when years and color dropdown field is selected
-	onHandleSelect(property, value) {
-    	this.props.onChange(getSingleModifiedState(this.props.vehicle, property, value));
+    // Handle select fields
+	onHandleSelect(fieldName, event, index, chosenValue) {
+		let modifiedObj = {};
+		modifiedObj[fieldName] = chosenValue;
+		modifiedObj['vin'] = '';
+
+		this.props.onChange(getNestedModifiedState(this.props.vehicle, modifiedObj));
+		updateValidators(vehicleValidators, fieldName, chosenValue);
+	}
+
+	// Handle auto complete fields
+	onHandleAuto(fieldName, chosenValue) {
+		let modifiedObj = {};
+		modifiedObj[fieldName] = chosenValue;
+		modifiedObj['vin'] = '';
+
+		this.props.onChange(getNestedModifiedState(this.props.vehicle, modifiedObj));
+		updateValidators(vehicleValidators, fieldName, chosenValue);
 	}
 
 	// Handle assets
@@ -99,9 +131,8 @@ class VehicleForm extends React.Component
 		let manufacturers = this.props.manufacturers;
 		let defaultMfgId  = this.props.vehicle.mfg_id !== "" ? parseInt(this.props.vehicle.mfg_id) : false;
 
-		// Generate json list of manufacturers
-		let mfgOptions = manufacturers.map((mfgs, mfgIndex) => {
-			return (<option key={ mfgIndex } value={ mfgs.id }>{ mfgs.mfg }</option>);
+		let mfgOptions = _.map(manufacturers, function (mfg, optionIndex) {
+			return <MenuItem key={ optionIndex } value={ mfg['id'] } primaryText={ mfg['mfg'] }/>
 		});
 
 		// Get selected choice from api vehicles dropdown
@@ -109,149 +140,90 @@ class VehicleForm extends React.Component
 			_.filter(manufacturers, ['id', defaultMfgId]) : false;
 
 		// Generate json list of models
-		let modelsOptions = selectedMfg ? selectedMfg[0].models.map((manufacturer, modelIndex) => {
-			return (<option key={ modelIndex } value={ manufacturer.model_id }>{ manufacturer.model }</option>);
+		let modelsOptions = selectedMfg ? selectedMfg[0].models.map((model, modelIndex) => {
+			return <MenuItem key={ modelIndex } value={ model['model_id'] } primaryText={ model['model'] }/>
 		}) : '';
 
 		// Need to display loader if add new vehicle component is accessed from header
-		let mfgAndModelsFields = !this.props.loader ?
-			<div>
-				<div className="form-group required">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Manufacturer</label>
-						<div className="input-group">
-							<select
-								name="mfg_id"
-								className="form-control input-sm"
-								value={ this.props.vehicle.mfg_id }
-								onChange={ this.onHandleFormChange }
-								required="required">
-								<option value="">Select One</option>
-								{ mfgOptions }
-							</select>
-						</div>
-					</div>
-				</div>
-				<div className="form-group required">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Model</label>
-						<div className="input-group">
-							<select
-								name="model_id"
-								className="form-control input-sm"
-								value={ this.props.vehicle.model_id }
-								onChange={ this.onHandleFormChange }
-								required="required">
-								<option value="">Select One</option>
-								{ modelsOptions }
-							</select>
-						</div>
-					</div>
-				</div>
-			</div> : <div><Loader/></div>;
-
-		let vehicleForm =
+		let vehicleForm = !this.props.loader ?
 			<form onSubmit={ this.onHandleSubmit }>
-				<div className="form-group">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Photo</label>
-						<Uploader
-							inputProps={
-								{   className: "input-group",
-									assets: this.state.assets,
-									onChange: this.onHandleAssets
-								}
+				<div>
+					<label className="control-label">Photo</label>
+					<Uploader
+						inputProps={
+							{   className: "input-group",
+								assets: this.state.assets,
+								onChange: this.onHandleAssets
 							}
-						/>
-					</div>
+						}
+					/>
 				</div>
-				<div className="form-group required">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Year</label>
-						<YearsField
-							inputProps={
-								{
-									auto: true,
-									others: { name: "year", className: "form-control" },
-									list: sequencedObject(2010, (new Date()).getFullYear() + 1),
-									value: this.props.vehicle.year,
-									onChange: this.onHandleFormChange,
-									onSelect: this.onHandleSelect.bind(this, 'year'),
-									required: true
-								}
-							}
-						/>
-					</div>
+				<AutoComplete
+					searchText={ this.props.vehicle.year }
+					floatingLabelText="Year"
+					filter={ AutoComplete.caseInsensitiveFilter }
+					dataSource={ this.state.years }
+					dataSourceConfig={ dataSourceConfig }
+					errorText={ displayValidationErrors(vehicleValidators['year']) }
+					onUpdateInput={ this.onHandleAuto.bind(this,  'year') }
+					openOnFocus={ true }
+				/><br/>
+				<SelectField
+					id="mfg_id"
+					floatingLabelText="Manufacturer"
+					value={ this.props.vehicle.mfg_id }
+					onChange={ this.onHandleSelect.bind(this, 'mfg_id') }>
+					{ mfgOptions }
+				</SelectField><br/>
+				<SelectField
+					id="model_id"
+					floatingLabelText="Model"
+					value={ this.props.vehicle.model_id }
+					onChange={ this.onHandleSelect.bind(this, 'model_id') }>
+					{ modelsOptions }
+				</SelectField><br/>
+				<AutoComplete
+					searchText={ this.props.vehicle.color }
+					floatingLabelText="Color"
+					filter={ AutoComplete.caseInsensitiveFilter }
+					dataSource={ this.state.colors }
+					dataSourceConfig={ dataSourceConfig }
+					errorText={ displayValidationErrors(vehicleValidators['color']) }
+					onUpdateInput={ this.onHandleAuto.bind(this,  'color') }
+					openOnFocus={ true }
+				/><br/>
+				<TextField
+					name="vin"
+					type="text"
+					value={ this.props.vehicle.vin }
+					floatingLabelText="VIN"
+					errorText={ displayValidationErrors(vehicleValidators['vin']) }
+					onChange={ this.onHandleChange }
+				/><br/>
+				<TextField
+					name="plate"
+					type="text"
+					value={ this.props.vehicle.plate }
+					floatingLabelText="Plate"
+					errorText={ displayValidationErrors(vehicleValidators['plate']) }
+					onChange={ this.onHandleChange }
+				/><br/>
+				<div>
+					<input type="hidden" value={ this.props.vehicle.id }/>
+					<input type="hidden" value={ this.props.vehicle.mfg }/>
+					<input type="hidden" value={ this.props.vehicle.model }/>
 				</div>
-
-				{ mfgAndModelsFields }
-
-				<div className="form-group required">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Color</label>
-						<ColorsField
-							inputProps={
-								{
-									auto: true,
-									others: { name: "color", className: "form-control" },
-									list: getVehicleColors(),
-									value: this.props.vehicle.color,
-									onChange: this.onHandleFormChange,
-									onSelect: this.onHandleSelect.bind(this, 'color'),
-									required: true
-								}
-							}
-						/>
-					</div>
-				</div>
-				<div className="form-group required">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">VIN</label>
-						<div className="input-group">
-							<input
-								name="vin"
-								type="text"
-								onChange={ this.onHandleFormChange }
-								value={ this.props.vehicle.vin }
-								className="form-control input-sm"
-								required="required"/>
-						</div>
-					</div>
-				</div>
-				<div className="form-group required">
-					<div className="col-xs-12 col-md-8">
-						<label className="control-label">Plate</label>
-						<div className="input-group">
-							<input
-								name="plate"
-								type="text"
-								onChange={ this.onHandleFormChange }
-								value={ this.props.vehicle.plate }
-								className="form-control input-sm"
-								required="required"/>
-						</div>
-					</div>
-				</div>
-				<div className="form-group">
-					<div className="col-xs-12 col-md-8">
-						<div className="input-group">
-							<input type="hidden" value={ this.props.vehicle.id }/>
-							<input type="hidden" value={ this.props.vehicle.mfg }/>
-							<input type="hidden" value={ this.props.vehicle.model }/>
-						</div>
-					</div>
-				</div>
-				<div className="form-group">
-					<div className="col-xs-12 col-md-12">
-						<div className="clearfix">
-							<button type="submit" value="Save"><i className="fa fa-floppy-o"/> Save</button>
-						</div>
-					</div>
-				</div>
-			</form>;
+				<RaisedButton
+					type="submit"
+					label="Save"
+					disabled={ isFormValid(vehicleValidators) ? false : true }
+				/>
+			</form> : <div><Loader/></div>;
 
         return (
-			<div>{ vehicleForm }</div>
+			<div>
+				{ vehicleForm }
+			</div>
         );
     }
 }

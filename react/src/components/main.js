@@ -4,6 +4,7 @@ import Home from './home';
 import AuthStore from '../stores/auth/store';
 import AuthLogin from './auth/forms/login';
 import AuthLogout from './auth/forms/logout';
+import AuthPasswordReset from './auth/forms/password_reset';
 import VehicleDashboard from './vehicles/dashboard';
 import PropertiesDashboard from './properties/dashboard';
 import SettingsVehiclesDashboard from './settings/vehicles/dashboard';
@@ -23,7 +24,7 @@ const Main = () => (
 		)}/>
 		<Route exact path="/auth/forms/login" component={ AuthLogin }/>
 		<Route exact path="/auth/forms/logout" component={ AuthLogout }/>
-
+		<Route exact path="/auth/forms/password_reset" component={ AuthPasswordReset }/>
 		<Route path="/vehicles/dashboard/:section" component={ VehicleDashboard }/>
 		<Route path="/properties/dashboard/:section" component={ PropertiesDashboard }/>
 		<Route path="/settings/vehicles/dashboard/:section" component={ SettingsVehiclesDashboard }/>

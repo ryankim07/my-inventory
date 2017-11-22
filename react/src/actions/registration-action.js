@@ -1,20 +1,20 @@
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import ActionConstants from '../constants/action-constants';
-import Auth from '../services/auth';
+import Registration from '../services/registration';
 
-let AuthAction = {
-	login: function(data)  {
-		Auth
-			.post('http://mcs.dev/auth/login', data)
+let RegistrationAction = {
+	newPassword: function(data)  {
+		Registration
+			.post('http://mcs.dev/registration/password/reset', data)
 			.then(function (resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.LOGIN_USER,
+					actionType: ActionConstants.NEW_PASSWORD_LINK,
 					token: resp.token
 				});
 			})
 			.catch(function(resp) {
 				AppDispatcher.handleViewAction({
-					actionType: ActionConstants.LOGIN_USER_ERROR,
+					actionType: ActionConstants.NEW_PASSWORD_LINK_ERROR,
 					status: resp.status,
 					results: resp.msg
 				});
@@ -22,4 +22,4 @@ let AuthAction = {
 	}
 };
 
-export default AuthAction;
+export default RegistrationAction;

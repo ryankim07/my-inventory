@@ -10,35 +10,32 @@
  */
 
 import React from 'react';
-import { INFO_PANEL } from '../../helper/constants';
+import { Card, CardHeader, CardText } from 'material-ui/Card';
 
 class DisplayPanel extends React.Component
 {
 	// Render
 	render() {
-		let clickBtn = this.props.onClick !== "" ?
-			<button onClick={ this.props.onClick }><i className={ this.props.iconBtn } aria-hidden="true"/></button> : null;
+		const headerStyle = {
+			backgroundColor: this.props.headerBackground !== undefined ?
+				this.props.headerBackground : '#CCC'
+		};
 
-		let panelType = this.props.displayType ? this.props.displayType : INFO_PANEL;
+		/*let clickBtn = this.props.onClick !== "" ?
+			<button onClick={ this.props.onClick }><i className={ this.props.iconBtn } aria-hidden="true"/></button> : null;*/
 
 		return (
-			<div className="row" id={ this.props.id }>
-				<div className={"panel panel-" + panelType }>
-					<div className="panel-heading">
-						<div className="row">
-							<div className="col-xs-10 col-md-10">
-								<span>{ this.props.header }</span>
-							</div>
-							<div className="col-xs-2 col-md-2">
-								{ clickBtn }
-							</div>
-						</div>
-					</div>
-					<div className="panel-body">
-						{ this.props.children }
-					</div>
-				</div>
-			</div>
+			<Card>
+				<CardHeader
+					title={ this.props.title }
+					subtitle={ this.props.subtitle}
+					style={ headerStyle }
+					avatar={ this.props.avatar }
+				/>
+				<CardText>
+					{ this.props.children }
+				</CardText>
+			</Card>
 		)
 	}
 }

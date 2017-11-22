@@ -38,28 +38,28 @@ class Header extends React.Component
 					<li className="dropdown dropdown-submenu">
 						<a href="#" className="dropdown-toggle" data-toggle="dropdown">API Vehicles</a>
 						<ul className="dropdown-menu">
-							<li><Link to="/settings/vehicles/dashboard/manufacturers"><i className="fa fa-car menu-link-icon" aria-hidden="true"/> List</Link></li>
+							<li><Link to="/settings/vehicles/dashboard/manufacturers"><i className="material-icons">directions_car</i><span className="icons-text">List</span></Link></li>
 						</ul>
 					</li>
 					<li className="dropdown dropdown-submenu">
 						<a href="#" className="dropdown-toggle" data-toggle="dropdown">Paints</a>
 						<ul className="dropdown-menu">
-							<li><Link to="/settings/paints/dashboard/add" className="menu-link"><i className="fa fa-paint-brush menu-link-icon" aria-hidden="true"/> Add</Link></li>
-							<li><Link to="/settings/paints/dashboard/paints"><i className="fa fa-paint-brush menu-link-icon" aria-hidden="true"/> List</Link></li>
+							<li><Link to="/settings/paints/dashboard/add" className="menu-link"><i className="material-icons">format_paint</i><span className="icons-text">Add</span></Link></li>
+							<li><Link to="/settings/paints/dashboard/paints"><i className="material-icons">format_paint</i><span className="icons-text">List</span></Link></li>
 						</ul>
 					</li>
 					<li className="dropdown dropdown-submenu">
 						<a href="#" className="dropdown-toggle" data-toggle="dropdown">Vendors</a>
 						<ul className="dropdown-menu">
-							<li><Link to="/settings/vendors/dashboard/add" className="menu-link"><i className="fa fa-shopping-bag menu-link-icon" aria-hidden="true"/> Add</Link></li>
-							<li><Link to="/settings/vendors/dashboard/vendors"><i className="fa fa-shopping-bag menu-link-icon" aria-hidden="true"/> List</Link></li>
+							<li><Link to="/settings/vendors/dashboard/add" className="menu-link"><i className="material-icons">store</i><span className="icons-text">Add</span></Link></li>
+							<li><Link to="/settings/vendors/dashboard/vendors"><i className="material-icons">store</i><span className="icons-text">List</span></Link></li>
 						</ul>
 					</li>
 					<li className="dropdown-submenu">
 						<a href="#" className="dropdown-toggle" data-toggle="dropdown">Users</a>
 						<ul className="dropdown-menu">
-							<li><Link to="/settings/users/dashboard/add" className="menu-link"><i className="fa fa-users menu-link-icon" aria-hidden="true"/> Add</Link></li>
-							<li><Link to="/settings/users/dashboard/users"><i className="fa fa-users menu-link-icon" aria-hidden="true"/> List</Link></li>
+							<li><Link to="/settings/users/dashboard/add" className="menu-link"><i className="material-icons">person_add</i><span className="icons-text">Add</span></Link></li>
+							<li><Link to="/settings/users/dashboard/users"><i className="material-icons">people</i><span className="icons-text">List</span></Link></li>
 						</ul>
 					</li>
 				</ul>
@@ -93,18 +93,16 @@ class Header extends React.Component
 									<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Vehicles <span className="caret"/></a>
 									<ul className="dropdown-menu" role="menu">
 										<li>
-											<Link to="/vehicles/dashboard/add" className="menu-link"><i className="fa fa-car menu-link-icon" aria-hidden="true"/> Add</Link>
-											<Link to="/vehicles/dashboard/list" className="menu-link"><i className="fa fa-car menu-link-icon" aria-hidden="true"/> All</Link>
+											<Link to="/vehicles/dashboard/add" className="menu-link"><i className="material-icons">directions_car</i><span className="icons-text">Add</span></Link>
+											<Link to="/vehicles/dashboard/list" className="menu-link"><i className="material-icons">directions_car</i><span className="icons-text">All</span></Link>
 										</li>
 									</ul>
 								</li>
 								<li className="dropdown">
 									<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Properties <span className="caret"/></a>
 									<ul className="dropdown-menu" role="menu">
-										<li>
-											<Link to="/properties/dashboard/add" className="menu-link"><i className="fa fa-car menu-link-icon" aria-hidden="true"/> Add</Link>
-											<Link to="/properties/dashboard/list" className="menu-link"><i className="fa fa-home menu-link-icon" aria-hidden="true"/> All</Link>
-										</li>
+										<li><Link to="/properties/dashboard/add" className="menu-link"><i className="material-icons">home</i><span className="icons-text">Add</span></Link></li>
+										<li><Link to="/properties/dashboard/list" className="menu-link"><i className="material-icons">home</i><span className="icons-text">All</span></Link></li>
 									</ul>
 								</li>
 								{settingsHtml}
@@ -112,10 +110,10 @@ class Header extends React.Component
 							</ul>
 							<ul className="nav navbar-nav navbar-right">
 								<li className="dropdown">
-									<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{ userName }<span className="caret"/></a>
+									<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i className="material-icons">public</i><span className="icons-text">{ userName }</span><span className="caret"/></a>
 									<ul className="dropdown-menu" role="menu">
 										<li>
-											<Link to="/auth/forms/logout" className="menu-link"><i className="fa fa-sign-out menu-link-icon" aria-hidden="true"/> Logout</Link>
+											<Link to="/auth/forms/logout" className="menu-link"><i className="material-icons">exit_to_app</i><span className="icons-text">Logout</span></Link>
 										</li>
 									</ul>
 								</li>

@@ -18,7 +18,8 @@ class SwiftMessage
 
     /**
      * Constructor
-     * @param \Swift_Mailer $
+     *
+     * @param \Swift_Mailer $mailer
      * @param \Twig_Environment $twig
      */
     public function __construct(\Swift_Mailer $mailer, \Twig_Environment $twig)
@@ -33,11 +34,11 @@ class SwiftMessage
      * @param $subject
      * @param $from
      * @param $email
-     * @param $firstName
-     * @param $code
+     * @param $template
+     * @param $templateParams
      * @return bool
      */
-    public function send($subject, $from, $email, $firstName, $code)
+    public function send($subject, $from, $email, $template, $templateParams)
     {
         $message = \Swift_Message::newInstance()
             ->setSubject($subject)
@@ -45,12 +46,8 @@ class SwiftMessage
             ->setTo($email)
             ->setBody(
                 $this->twig->render(
-                    'emails/registration.html.twig',
-                    [
-                        'name'  => $firstName,
-                        'email' => $email,
-                        'code'  => $code
-                    ]
+                    "emails" . DIRECTORY_SEPARATOR . $template,
+                    $templateParams
                 ),
                 'text/html'
             );

@@ -178,6 +178,6 @@ export function sequencedObject(from, to, step) {
 	let range = _.range(from, to, step);
 
 	return _.map(range, function (value) {
-		return { id: value, label: value, value: value }
+		return { label: value.toString(), value: value }
 	})
 }

@@ -218,7 +218,28 @@ class Users
                 'msg'  => $msg
             ];
         } catch (\Exception $e) {
-            throw new Exception('Invalid email or code.');
+            throw new Exception($e);
+        }
+    }
+
+    /**
+     * Get user info by email
+     *
+     * @param $email
+     * @return array
+     */
+    public function getUserDetails($email)
+    {
+        try {
+            $user = $this->repo->findOneByEmail($email);
+
+            if (!$user) {
+                throw new \Exception('A user with this email does not exist.');
+            }
+
+            return $user;
+        } catch (\Exception $e) {
+            throw new Exception($e);
         }
     }
 }

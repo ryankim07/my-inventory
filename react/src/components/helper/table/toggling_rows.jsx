@@ -41,16 +41,10 @@ class TogglingRows extends React.Component
 			return (<td key={ cellIndex }>{ column }</td>);
 		});
 
-		let rowCss = {};
+		let rowCss    = {};
 		let buttonCss = {};
-
-		if (this.props.selectedItem || this.state.hoverFlag) {
-			rowCss['background'] = '#ececec';
-			buttonCss['display'] = 'block';
-		} else {
-			rowCss['background'] = '#ffffff';
-			buttonCss['display'] = 'none';
-		}
+		rowCss['background'] = this.props.selectedItem || this.state.hoverFlag ? '#ececec' : '#ffffff';
+		buttonCss['display'] = this.props.selectedItem || this.state.hoverFlag ? 'block' : 'none';
 
 		let viewAction = this.props.addViewBtn ?
 			<button key="a" onClick={ this.props.onView }><i className="fa fa-search" aria-hidden="true"/></button> : null;

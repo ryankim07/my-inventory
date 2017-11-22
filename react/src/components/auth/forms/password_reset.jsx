@@ -1,17 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import AuthStore from '../../../stores/auth/store';
-import AuthAction from '../../../actions/auth-action';
+import RegistrationAction from '../../../actions/registration-action';
 import { Card, CardHeader, CardText, CardActions } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import FontIcon from 'material-ui/FontIcon';
 import RaisedButton from 'material-ui/RaisedButton';
-import FlashMessage from '../../helper/flash_message';
-import { loginValidators } from '../../helper/validation/login';
+import { passwordResetValidators } from '../../helper/validation/password_reset';
 import { updateValidators, resetValidators, displayValidationErrors, isFormValid } from '../../helper/validation/validator';
 import { getSingleModifiedState } from '../../helper/utils';
 
-class AuthLogin extends React.Component
+class AuthPasswordReset extends React.Component
 {
 	// Constructor
 	constructor(props) {
@@ -20,42 +17,14 @@ class AuthLogin extends React.Component
 		this.state = {
 			username: '',
 			password: '',
-			authenticated: false,
-			flashMessage: null
+			confirmPassword: ''
 		};
 
 		// Initiate validators
-		resetValidators(loginValidators);
+		resetValidators(passwordResetValidators);
 
-		this._onChange 		= this._onChange.bind(this);
 		this.onHandleChange = this.onHandleChange.bind(this);
 		this.onHandleSubmit = this.onHandleSubmit.bind(this);
-	}
-
-	// Mounting event
-	componentWillMount() {
-		AuthStore.addChangeListener(this._onChange);
-	}
-
-	// Unmounting event
-	componentWillUnmount() {
-		AuthStore.removeChangeListener(this._onChange);
-	}
-
-	// Form changes
-	_onChange() {
-		let isAuthenticated = AuthStore.isAuthenticated();
-		let flashMsg 		= AuthStore.getStoreStatus();
-
-		if (isAuthenticated){
-			this.props.history.push("/");
-			return false;
-		}
-
-		this.setState({
-			authenticated: isAuthenticated,
-			flashMessage: flashMsg !== null ? flashMsg : null
-		});
 	}
 
 	// Handle errors
@@ -64,23 +33,21 @@ class AuthLogin extends React.Component
 		let chosenValue = event.target.value;
 
 		this.setState(getSingleModifiedState(this.state, fieldName,  chosenValue));
-		updateValidators(loginValidators, fieldName, chosenValue);
+		updateValidators(passwordResetValidators, fieldName, chosenValue);
 	}
 
 	// Submit
 	onHandleSubmit(event) {
 		event.preventDefault();
 
-		AuthAction.login({
+		RegistrationAction.newPassword({
 			username: this.state.username,
-			password: this.state.password
+			password: this.state.password,
+			confirmPassword: this.state.confirmPassword
 		});
 	}
 
 	render() {
-		let flashMessage = this.state.flashMessage ?
-			<FlashMessage message={ this.state.flashMessage } alertType="danger"/> : null;
-
 		let cardStyle = {
 			display: 'block',
 			width: '40vw',
@@ -88,50 +55,58 @@ class AuthLogin extends React.Component
 
 		return (
 			<div className="login-form">
-				{ flashMessage }
-
 				<form onSubmit={ this.onHandleSubmit }>
 					<Card style={ cardStyle }>
 						<CardHeader
-							title="Sign into your account"
+							title="Reset Your Password"
 							titleStyle={ { fontSize: '36px' } }
 							subtitle=""
 						/>
 						<CardText>
+								<div><span>To reset your MyInventory password, enter all the information below.</span></div>
 								<div className="textfield-container">
-									<div><FontIcon className="material-icons">person</FontIcon></div>
 									<div>
 										<TextField
 											name="username"
 											type="text"
 											value={ this.state.username }
 											floatingLabelText="Username"
-											errorText={ displayValidationErrors(loginValidators['username']) }
+											errorText={ displayValidationErrors(passwordResetValidators['email']) }
 											onChange={ this.onHandleChange }
 										/>
 									</div>
 								</div>
 								<div className="textfield-container">
-									<div><FontIcon className="material-icons">lock</FontIcon></div>
 									<div>
 										<TextField
 											name="password"
 											type="password"
 											value={ this.state.password }
-											floatingLabelText="Password"
-											errorText={ displayValidationErrors(loginValidators['password']) }
+											floatingLabelText="New password"
+											errorText={ displayValidationErrors(passwordResetValidators['password']) }
 											onChange={ this.onHandleChange }
-										/><br/>
+										/>
+									</div>
+								</div>
+								<div className="textfield-container">
+									<div>
+										<TextField
+											name="confirm-password"
+											type="password"
+											value={ this.state.confirmPassword }
+											floatingLabelText="Confirm password"
+											errorText={ displayValidationErrors(passwordResetValidators['confirm_password']) }
+											onChange={ this.onHandleChange }
+										/>
 									</div>
 								</div>
 						</CardText>
 						<CardActions>
 							<RaisedButton
 								type="submit"
-								label="Login"
-								disabled={ isFormValid(loginValidators) ? false : true }
-							/><br/>
-							<Link to="/auth/forms/password_reset" className="menu-link"><span className="icons-text">Forgot Password</span></Link>
+								label="Reset"
+								disabled={ isFormValid(passwordResetValidators) ? false : true }
+							/>
 						</CardActions>
 					</Card>
 				</form>
@@ -140,4 +115,4 @@ class AuthLogin extends React.Component
 	}
 }
 
-export default AuthLogin;
+export default AuthPasswordReset;

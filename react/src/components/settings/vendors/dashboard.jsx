@@ -87,7 +87,7 @@ class SettingsVendorsDashboard extends React.Component
 
 	// Next state change
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.location.action === 'REPLACE' || nextProps.location.action === 'PUSH') {
+		if (nextProps.history.action === 'REPLACE' || nextProps.history.action === 'PUSH') {
 			let mainPanel = null;
 
 			switch (nextProps.location.pathname) {

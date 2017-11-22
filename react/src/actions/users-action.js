@@ -1,6 +1,6 @@
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import ActionConstants from '../constants/action-constants';
-import Users from '../services/Users';
+import Users from '../services/users';
 
 let UsersAction = {
 	getUsers: function() {
@@ -69,7 +69,25 @@ let UsersAction = {
 					results: resp.status + ' : ' + resp.msg
 				});
 			});
-	}
+	}/*,
+
+	newPasswordLink: function(data)  {
+		Auth
+			.post('http://mcs.dev/auth/password/link', data)
+			.then(function (resp) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.NEW_PASSWORD_LINK,
+					token: resp.token
+				});
+			})
+			.catch(function(resp) {
+				AppDispatcher.handleViewAction({
+					actionType: ActionConstants.NEW_PASSWORD_LINK_ERROR,
+					status: resp.status,
+					results: resp.msg
+				});
+			});
+	}*/
 };
 
 export default UsersAction;

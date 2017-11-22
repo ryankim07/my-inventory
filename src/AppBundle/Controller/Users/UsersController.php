@@ -68,42 +68,21 @@ class UsersController extends FOSRestController
         // Send email only to new registration
         if (!$user->getIsActive) {
             $emailService = $this->get('Email');
+            $templateParams = [
+                'name'  => $user->getFirstName(),
+                'email' => $user->getEmail(),
+                'code'  => $user->getRegistration()->getCode()
+            ];
+
             $emailService->send(
                 'Welcome to My Inventory',
                 'admin@my-inventory.com',
                 'ryankim07@gmail.com',//$user->getEmail(),
-                $user->getFirstName(),
-                $user->getRegistration()->getCode()
+                'registration.html.twig',
+                $templateParams
             );
         }
 
         return new View($results, Response::HTTP_OK);
-    }
-
-    /**
-     * Activate new user
-     *
-     * @Rest\Get("/api/registration/activate/{email}/{code}", name="activate_user")
-     *
-     * @param $email
-     * @param $code
-     * @return Response
-     */
-    public function activateAction($email, $code)
-    {
-        try {
-            $userService = $this->get('Users');
-            $results     = $userService->activate($email, $code);
-
-            $token = $this->container->get('lexik_jwt_authentication.jwt_manager')->create($results['user']);
-
-            // Use below to skip login
-            /*$authenticationSuccessHandler->handleAuthenticationSuccess($results['user'], $token);
-            $authenticationSuccessHandler = $this->container->get('lexik_jwt_authentication.handler.authentication_success');*/
-
-            return $this->redirectToRoute('homepage', array('token' => $token));
-        } catch (\Exception $e) {
-            return ['err_msg' => $e];
-        }
     }
 }

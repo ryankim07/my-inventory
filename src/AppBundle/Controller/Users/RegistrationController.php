@@ -51,4 +51,44 @@ class RegistrationController extends FOSRestController
             return ['err_msg' => $e];
         }
     }
+
+    /**
+     * Send user link with instructions to reset password
+     *
+     * @Rest\Post("/registration/password/reset", name="password_reset")
+     *
+     * @param Request $request
+     * @return array|View
+     */
+    public function resetAction(Request $request)
+    {
+        try {
+            $email = json_decode(stripslashes($request->get('data')), true);
+
+            $userService  = $this->get('Users');
+            $user = $userService->getUserDetails($email);
+
+            // Send email only to new registration
+            if ($user) {
+                $emailService = $this->get('Email');
+                $templateParams = [
+                    'name'  => $user->getUsername(),
+                    'email' => $email,
+                    'code'  => $user->getRegistration()->getCode()
+                ];
+
+                $emailService->send(
+                    'Welcome to My Inventory',
+                    'admin@my-inventory.com',
+                    'ryankim07@gmail.com',//$email,
+                    'password_reset_link.html.twig',
+                    $templateParams
+                );
+            }
+
+            return $this->redirectToRoute('login', []);
+        } catch (\Exception $e) {
+            return ['err_msg' => $e];
+        }
+    }
 }
